@@ -101,7 +101,8 @@ public class GraphTest {
 		PelagiosGraph graph = graphBuilder.build();
 		
 		// Query by ID
-		System.out.println("Query by URI: " + graph.getPlace(new URI("http://pleiades.stoa.org/places/991339")).getLabel());
+		Place corsica = graph.getPlace(new URI("http://pleiades.stoa.org/places/991339"));
+		System.out.println("Query by URI: " + corsica.getLabel());
 		
 		// Query by listPlaces()
 		for (Place p : graph.listPlaces()) {

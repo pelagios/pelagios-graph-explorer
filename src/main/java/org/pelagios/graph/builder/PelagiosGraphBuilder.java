@@ -71,7 +71,7 @@ public class PelagiosGraphBuilder {
 	
 	private Node createPlaceSubreferenceNode(GraphDatabaseService graphDb) {
 		Node node = graphDb.createNode();
-		graphDb.getReferenceNode().createRelationshipTo(node, PelagiosRelationships.PLACE);
+		graphDb.getReferenceNode().createRelationshipTo(node, PelagiosRelationships.PLACES);
 		return node;
 	}
 
