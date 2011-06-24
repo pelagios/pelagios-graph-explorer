@@ -15,6 +15,8 @@ import org.pelagios.graph.Dataset;
 import org.pelagios.graph.PelagiosGraph;
 import org.pelagios.graph.PelagiosRelationships;
 import org.pelagios.graph.Place;
+import org.pelagios.graph.exception.DatasetNotFoundException;
+import org.pelagios.graph.exception.PlaceExistsException;
 
 /**
  * Implementation of the PelagiosGraph interface.
@@ -79,29 +81,49 @@ class PelagiosGraphImpl implements PelagiosGraph {
 	}
 	
 	public void addDataset(DatasetBuilder dataset) {
+		try {
+			addDataset(dataset, null);
+		} catch (DatasetNotFoundException e) {
+			// Can never happen
+			throw new RuntimeException(e);
+		}
+	}
+
+	public void addDataset(DatasetBuilder dataset, DatasetBuilder parent) throws DatasetNotFoundException {
 		Transaction tx = graphDb.beginTx();
 		try {
-			Node subreferenceNode = subreferenceNodes.get(PelagiosRelationships.DATASETS);
 			DatasetImpl d = dataset.build(graphDb, getDatasetIndex());
-			Node datasetNode = d.backingNode;
-			subreferenceNode.createRelationshipTo(datasetNode, PelagiosRelationships.DATASET);
+			if (parent == null) {
+				// Top-level data set - attach to sub-reference node
+				Node subreference = subreferenceNodes.get(PelagiosRelationships.DATASETS);
+				subreference.createRelationshipTo(d.backingNode, PelagiosRelationships.DATASET);				
+			} else {
+				// Sub-set - attach to parent node (if it exists)
+				IndexHits<Node> hits = getDatasetIndex()
+					.get(Dataset.KEY_NAME, parent.getName());
+				
+				if (hits.size() == 0)
+					throw new DatasetNotFoundException(parent.getName());
+				
+				Node parentNode = hits.getSingle();
+				d.backingNode.createRelationshipTo(parentNode, PelagiosRelationships.IS_SUBSET_OF);
+			}			
 			tx.success();
 		} finally {
 			tx.finish();
 		}
 	}
-
-	public void addDataset(DatasetBuilder dataset, DatasetBuilder parent) {
-		// TODO Auto-generated method stub
-		
-	}
 	
-	public Dataset getDataset(String name) {
+	public Dataset getDataset(String name) throws DatasetNotFoundException {
 		IndexHits<Node> hits = getDatasetIndex().get(Dataset.KEY_NAME, name);
+		
+		if (hits.size() == 0)
+			throw new DatasetNotFoundException(name);
+		
 		return new DatasetImpl(hits.getSingle());
 	}
 	
-	public void addPlaces(List<PlaceBuilder> places) {
+	public void addPlaces(List<PlaceBuilder> places) throws PlaceExistsException {
 		Transaction tx = graphDb.beginTx();
 		try {
 			for (PlaceBuilder b : places) {

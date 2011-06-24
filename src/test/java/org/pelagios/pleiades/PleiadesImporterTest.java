@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.pelagios.graph.PelagiosGraph;
 import org.pelagios.graph.Place;
 import org.pelagios.graph.builder.PelagiosGraphBuilder;
+import org.pelagios.graph.exception.PlaceExistsException;
 
 public class PleiadesImporterTest extends TestCase {
 	
@@ -21,7 +22,7 @@ public class PleiadesImporterTest extends TestCase {
 	private static final String NAMES_CSV = "src/test/resources/pleiades-names-20110607.csv";
 		
 	@Test
-	public void testPleiadesImporter() throws IOException, URISyntaxException {
+	public void testPleiadesImporter() throws IOException, URISyntaxException, PlaceExistsException {
 		PelagiosGraphBuilder graphBuilder = new PelagiosGraphBuilder(DATA_DIR);
 		PelagiosGraph graph = graphBuilder.build();
 		

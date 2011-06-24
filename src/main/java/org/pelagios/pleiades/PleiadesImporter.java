@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.pelagios.graph.PelagiosGraph;
 import org.pelagios.graph.builder.PlaceBuilder;
+import org.pelagios.graph.exception.PlaceExistsException;
 import org.pelagios.pleiades.locations.LocationParser;
 import org.pelagios.pleiades.locations.LocationRecord;
 import org.pelagios.pleiades.locations.shape.Point;
@@ -26,8 +27,11 @@ public class PleiadesImporter {
 	 * @param namesCSV the names dump file
 	 * @param graph the Pelagios graph
 	 * @throws IOException if something is wrong with the dump files
+	 * @throws PlaceExistsException if one (or more) place(s) in the dump are duplicates
 	 */
-	public void importPleiadesDump(File locationsCSV, File namesCSV, PelagiosGraph graph) throws IOException {
+	public void importPleiadesDump(File locationsCSV, File namesCSV, PelagiosGraph graph)
+		throws IOException, PlaceExistsException {
+		
 		LocationParser lp = new LocationParser();
 		HashMap<String, LocationRecord> locations = lp.parseLocationsCSV(locationsCSV);
 		

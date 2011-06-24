@@ -3,11 +3,10 @@ package org.pelagios.graph;
 import java.net.URI;
 import java.util.List;
 
-import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.Node;
-import org.neo4j.graphdb.index.Index;
 import org.pelagios.graph.builder.DatasetBuilder;
 import org.pelagios.graph.builder.PlaceBuilder;
+import org.pelagios.graph.exception.DatasetNotFoundException;
+import org.pelagios.graph.exception.PlaceExistsException;
 
 /**
  * The PelagiosGraph interface.
@@ -15,24 +14,6 @@ import org.pelagios.graph.builder.PlaceBuilder;
  * @author Rainer Simon
  */
 public interface PelagiosGraph {
-	
-	/**
-	 * Returns the underlying graph DB
-	 * @return the graph DB
-	 */
-	GraphDatabaseService getGraphDB();
-	
-	/**
-	 * Returns the underlying dataset index
-	 * @return the dataset index
-	 */
-	Index<Node> getDatasetIndex();
-	
-	/**
-	 * Returns the underlying place index
-	 * @return
-	 */
-	Index<Node> getPlaceIndex();
 	
 	/**
 	 * Returns all top-level data sets in the graph.
@@ -52,20 +33,21 @@ public interface PelagiosGraph {
 	 * @param dataset the data set
 	 * @param parent the parent data set (i.e. super set)
 	 */
-	public void addDataset(DatasetBuilder dataset, DatasetBuilder parent);
+	public void addDataset(DatasetBuilder dataset, DatasetBuilder parent)
+		throws DatasetNotFoundException;
 	
 	/**
 	 * Retrieves the data set with the specified name.
 	 * @param name the name
 	 * @return the data set
 	 */
-	public Dataset getDataset(String name);
+	public Dataset getDataset(String name) throws DatasetNotFoundException;
 	
 	/**
 	 * Adds a place to the graph.
 	 * @param place
 	 */
-	public void addPlaces(List<PlaceBuilder> places);
+	public void addPlaces(List<PlaceBuilder> places) throws PlaceExistsException;
 	
 	/**
 	 * Find a place by URI.

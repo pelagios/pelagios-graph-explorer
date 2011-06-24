@@ -5,7 +5,9 @@ import java.net.URI;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.index.Index;
+import org.neo4j.graphdb.index.IndexHits;
 import org.pelagios.graph.Place;
+import org.pelagios.graph.exception.PlaceExistsException;
 
 public class PlaceBuilder {
 
@@ -52,7 +54,14 @@ public class PlaceBuilder {
 		return uri;
 	}
 	
-	public PlaceImpl build(GraphDatabaseService graphDb, Index<Node> index) {
+	public PlaceImpl build(GraphDatabaseService graphDb, Index<Node> index)
+		throws PlaceExistsException {
+		
+		// Check uniqueness
+		IndexHits<Node> hits = index.get(Place.KEY_URI, uri);
+		if (hits.size() > 0)
+			throw new PlaceExistsException(label);
+		
 		Node node = graphDb.createNode();
 		PlaceImpl place = new PlaceImpl(node);
 		place.setLabel(label);

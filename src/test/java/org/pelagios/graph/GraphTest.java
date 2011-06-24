@@ -5,11 +5,14 @@ import java.net.URISyntaxException;
 import java.util.Arrays;
 
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.pelagios.graph.builder.DatasetBuilder;
 import org.pelagios.graph.builder.PelagiosGraphBuilder;
 import org.pelagios.graph.builder.PlaceBuilder;
+import org.pelagios.graph.exception.DatasetNotFoundException;
+import org.pelagios.graph.exception.PlaceExistsException;
 
 public class GraphTest {
 	
@@ -30,12 +33,13 @@ public class GraphTest {
 	}
 	
 	@BeforeClass
-	public static void buildTestGraph() throws URISyntaxException {
+	public static void buildTestGraph() throws URISyntaxException, DatasetNotFoundException {
 		// Get the Pelagios graph instance
 		PelagiosGraphBuilder graphBuilder = new PelagiosGraphBuilder(DATA_DIR);
 		PelagiosGraph graph = graphBuilder.build();
 		
 		// Create a few datasets
+		System.out.print("Creating sample datasets... ");
 		DatasetBuilder nomisma = new DatasetBuilder("nomisma");
 		DatasetBuilder gap = new DatasetBuilder("gap");
 		DatasetBuilder gapSub1 = new DatasetBuilder("gap-subset1");
@@ -51,10 +55,30 @@ public class GraphTest {
 		graph.addDataset(gapSub3, gap);
 		graph.addDataset(gapSub2Sub1, gapSub2);
 		graph.addDataset(gapSub2Sub2, gapSub2);
+		System.out.println("done.");
 		
 		// Create a few places
+		System.out.print("Creating sample place... ");
 		PlaceBuilder corsica = new PlaceBuilder("Corsica", 5, 40, new URI("http://pleiades.stoa.org/places/991339"));
-		graph.addPlaces(Arrays.asList(corsica));
+		try {
+			graph.addPlaces(Arrays.asList(corsica));
+			System.out.println("done.");
+		} catch (PlaceExistsException e) {
+			// We don't want this exception to happen
+			Assert.assertTrue(false);
+		}
+		
+		try {
+			System.out.print("Trying to create a duplicate place... ");
+			graph.addPlaces(Arrays.asList(corsica));
+			
+			// We're trying to add a duplicate - so this time
+			// we expect an exception!
+			Assert.assertTrue(false);
+		} catch (PlaceExistsException e) {
+			// We're expecting this
+			System.out.println("rejected. Perfect!");
+		}
 		graph.shutdown();
 	}
 	

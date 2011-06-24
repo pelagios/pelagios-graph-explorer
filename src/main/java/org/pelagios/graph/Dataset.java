@@ -24,13 +24,7 @@ public interface Dataset {
 	 * Sets the name for this dataset.
 	 */
 	public void setName(String name);
-	
-	/**
-	 * Append a data sub-set to this data set 
-	 * @param child the sub-set
-	 */
-	public void appendSubset(Dataset child);
-	
+		
 	/**
 	 * Checks wether this data set has any sub-sets attached to it.
 	 * @return true in case there are sub-sets
