@@ -19,9 +19,9 @@ public class GraphTest {
 	private static final String DATA_DIR = "c:/neo4j-data";
 	
 	private void printDataset(Dataset dataset, int lvl) {
-		StringBuffer indent = new StringBuffer();
+		StringBuffer indent = new StringBuffer(" -");
 		for (int i=0; i<lvl; i++) {
-			indent.append("  ");
+			indent.append("-");
 		}
 		
 		System.out.println(indent.toString() + dataset.getName());
@@ -57,7 +57,7 @@ public class GraphTest {
 		graph.addDataset(gapSub2Sub2, gapSub2);
 		System.out.println("done.");
 		
-		// Create a few places
+		// Create a place
 		System.out.print("Creating sample place... ");
 		PlaceBuilder corsica = new PlaceBuilder("Corsica", 5, 40, new URI("http://pleiades.stoa.org/places/991339"));
 		try {
@@ -87,6 +87,7 @@ public class GraphTest {
 		// TODO don't just print out, verify with assertions!
 		PelagiosGraphBuilder graphBuilder = new PelagiosGraphBuilder(DATA_DIR);
 		PelagiosGraph graph = graphBuilder.build();
+		System.out.println("Logging sample dataset graph:");
 		for (Dataset dataset : graph.listTopLevelDatasets()) {
 			printDataset(dataset, 0);
 		}
@@ -98,7 +99,14 @@ public class GraphTest {
 		// TODO don't just print out, verify with assertions!
 		PelagiosGraphBuilder graphBuilder = new PelagiosGraphBuilder(DATA_DIR);
 		PelagiosGraph graph = graphBuilder.build();
-		System.out.println(graph.getPlace(new URI("http://pleiades.stoa.org/places/991339")).getLabel());
+		
+		// Query by ID
+		System.out.println("Query by URI: " + graph.getPlace(new URI("http://pleiades.stoa.org/places/991339")).getLabel());
+		
+		// Query by listPlaces()
+		for (Place p : graph.listPlaces()) {
+			System.out.println("Query by listPlaces(): " + p.getLabel());
+		}		
 		graph.shutdown();
 	}
 	

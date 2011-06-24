@@ -3,6 +3,7 @@ package org.pelagios.graph.builder;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import org.neo4j.graphdb.GraphDatabaseService;
@@ -143,6 +144,34 @@ class PelagiosGraphImpl implements PelagiosGraph {
 		return new PlaceImpl(hits.getSingle());
 	}
 	
+	public Iterable<Place> listPlaces() {
+		Node subreference = subreferenceNodes.get(PelagiosRelationships.PLACES);
+
+		final Iterator<Relationship> relationships = subreference
+			.getRelationships(PelagiosRelationships.PLACE).iterator();
+		
+		return new Iterable<Place>() {		
+			public Iterator<Place> iterator() {
+				return new Iterator<Place>() {
+					
+					public boolean hasNext() {
+						return relationships.hasNext();
+					}
+
+					public Place next() {
+						return new PlaceImpl(relationships.next().getEndNode());
+					}
+
+					public void remove() {
+						relationships.remove();
+						
+					}
+					
+				};
+			}
+		};
+	}
+	
 	public void shutdown() {
 		graphDb.shutdown();
 	}
@@ -168,5 +197,5 @@ class PelagiosGraphImpl implements PelagiosGraph {
 			tx.finish();
 		}
 	}
-
+		
 }

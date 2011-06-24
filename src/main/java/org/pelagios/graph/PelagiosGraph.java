@@ -57,6 +57,12 @@ public interface PelagiosGraph {
 	public Place getPlace(URI uri);
 	
 	/**
+	 * Returns an iterator with all the places in the graph.
+	 * @return the places
+	 */
+	public Iterable<Place> listPlaces();
+	
+	/**
 	 * Disconnects the graph DB.
 	 */
 	public void shutdown();

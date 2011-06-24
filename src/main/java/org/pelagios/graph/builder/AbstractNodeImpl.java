@@ -10,7 +10,7 @@ import org.neo4j.graphdb.Node;
  */
 class AbstractNodeImpl {
 	
-	final Node backingNode;
+	Node backingNode;
 	
 	public AbstractNodeImpl(Node backingNode) {
 		this.backingNode = backingNode;
