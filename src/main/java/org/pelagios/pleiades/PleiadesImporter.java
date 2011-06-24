@@ -2,13 +2,17 @@ package org.pelagios.pleiades;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import org.pelagios.graph.PelagiosGraph;
+import org.pelagios.graph.builder.PlaceBuilder;
 import org.pelagios.pleiades.locations.LocationParser;
 import org.pelagios.pleiades.locations.LocationRecord;
+import org.pelagios.pleiades.locations.shape.Point;
 import org.pelagios.pleiades.names.NameParser;
 import org.pelagios.pleiades.names.NameRecord;
 
@@ -30,43 +34,34 @@ public class PleiadesImporter {
 		NameParser np = new NameParser();
 		HashMap<String, NameRecord> names = np.parseNamesCSV(namesCSV);
 		
-		List<MergedRecord> records = mergeRecords(locations, names);
-		
-		// TODO add to graph
+		graph.addPlaces(mergeRecords(locations, names));
 	}
 	
-	private List<MergedRecord> mergeRecords(
+	private List<PlaceBuilder> mergeRecords(
 			HashMap<String, LocationRecord> locations,
 			HashMap<String, NameRecord> names) {
 		
-		List<MergedRecord> records = new ArrayList<MergedRecord>();	
+		List<PlaceBuilder> records = new ArrayList<PlaceBuilder>();	
 		
 		for (LocationRecord lRec : locations.values()) {
 			NameRecord nRec = names.get(lRec.getPid());
 			if (nRec != null) {
-				records.add(new MergedRecord(lRec, nRec));
+				try {
+					Point p = lRec.getGeometry().getShape().getCentroid();
+					records.add(new PlaceBuilder(
+							nRec.getNameTransliterated(), 
+							p.getLon(),
+							p.getLat(),
+							new URI(PLEIADES_BASE_URI + nRec.getPid())
+					));
+				} catch (URISyntaxException e) {
+					// Should never happen
+					throw new IllegalArgumentException(e);
+				}
 			}
 		}
 		
 		return records;
 	}
-	
-	/**
-	 * A simple class that wraps a Pleiades location record with its
-	 * corresponding name record.
-	 */
-	class MergedRecord {
-		
-		LocationRecord lRec;
-		
-		NameRecord nRec;
-		
-		MergedRecord(LocationRecord lRec, NameRecord nRec) {
-			this.lRec = lRec;
-			this.nRec = nRec;
-		}
-		
-	}
-
 	
 }

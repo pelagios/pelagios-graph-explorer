@@ -9,9 +9,8 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 import org.pelagios.graph.PelagiosGraph;
-import org.pelagios.graph.PelagiosGraphFactory;
 import org.pelagios.graph.Place;
-import org.pelagios.graph.impl.PelagiosGraphFactoryImpl;
+import org.pelagios.graph.builder.PelagiosGraphBuilder;
 
 public class PleiadesImporterTest extends TestCase {
 	
@@ -23,15 +22,15 @@ public class PleiadesImporterTest extends TestCase {
 		
 	@Test
 	public void testPleiadesImporter() throws IOException, URISyntaxException {
-		PelagiosGraphFactory factory = new PelagiosGraphFactoryImpl();
-		PelagiosGraph graph = factory.init(DATA_DIR);
+		PelagiosGraphBuilder graphBuilder = new PelagiosGraphBuilder(DATA_DIR);
+		PelagiosGraph graph = graphBuilder.build();
 		
 		PleiadesImporter importer = new PleiadesImporter();
 		importer.importPleiadesDump(
 				new File(LOCATIONS_CSV),
 				new File(NAMES_CSV),
 				graph);
-
+		
 		Place sample = graph.getPlace(new URI("http://pleiades.stoa.org/places/570481"));
 		System.out.println(sample.getLabel() + " " + sample.getURI());
 		assertTrue(sample.getLabel().equals("Anthana"));

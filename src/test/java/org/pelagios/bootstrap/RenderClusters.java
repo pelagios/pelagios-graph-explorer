@@ -14,9 +14,8 @@ import javax.imageio.ImageIO;
 import org.pelagios.clustering.Cluster;
 import org.pelagios.clustering.ClusterBuilder;
 import org.pelagios.graph.PelagiosGraph;
-import org.pelagios.graph.PelagiosGraphFactory;
 import org.pelagios.graph.Place;
-import org.pelagios.graph.impl.PelagiosGraphFactoryImpl;
+import org.pelagios.graph.builder.PelagiosGraphBuilder;
 
 /**
  * A utility class that renders the places contained in
@@ -43,15 +42,15 @@ public class RenderClusters {
 	 * @throws IOException if anything goes wrong while saving the image
 	 */
 	public static void main(String[] args) throws IOException {		
-		PelagiosGraphFactory factory = new PelagiosGraphFactoryImpl();
-		PelagiosGraph graph = factory.init(DATA_DIR);
+		PelagiosGraphBuilder graphBuilder = new PelagiosGraphBuilder(DATA_DIR);
+		PelagiosGraph graph = graphBuilder.build();
 
 		// TODO get all the places from the graph
 		List<Place> places = new ArrayList<Place>();
 		System.out.println(places.size() + " places");
 		
-		ClusterBuilder builder = new ClusterBuilder(places);
-		List<Cluster> clusters = builder.build(6);
+		ClusterBuilder clusterBuilder = new ClusterBuilder(places);
+		List<Cluster> clusters = clusterBuilder.build(6);
 		System.out.println(clusters.size() + " clusters");
 		
 		BufferedImage img = new BufferedImage(640, 480, BufferedImage.TYPE_INT_ARGB);

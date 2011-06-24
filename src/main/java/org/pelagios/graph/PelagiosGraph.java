@@ -6,6 +6,8 @@ import java.util.List;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.index.Index;
+import org.pelagios.graph.builder.DatasetBuilder;
+import org.pelagios.graph.builder.PlaceBuilder;
 
 /**
  * The PelagiosGraph interface.
@@ -42,7 +44,15 @@ public interface PelagiosGraph {
 	 * Adds a top-level data set to the graph.
 	 * @param dataset the data set
 	 */
-	public void addDataset(Dataset dataset);
+	public void addDataset(DatasetBuilder dataset);
+	
+	/**
+	 * Adds a data sub-set to the graph, with the
+	 * specified parent data set.
+	 * @param dataset the data set
+	 * @param parent the parent data set (i.e. super set)
+	 */
+	public void addDataset(DatasetBuilder dataset, DatasetBuilder parent);
 	
 	/**
 	 * Retrieves the data set with the specified name.
@@ -55,7 +65,7 @@ public interface PelagiosGraph {
 	 * Adds a place to the graph.
 	 * @param place
 	 */
-	public void addPlace(Place place);
+	public void addPlaces(List<PlaceBuilder> places);
 	
 	/**
 	 * Find a place by URI.
