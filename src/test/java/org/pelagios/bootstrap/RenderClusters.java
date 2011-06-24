@@ -47,6 +47,9 @@ public class RenderClusters {
 
 		// TODO get all the places from the graph
 		List<Place> places = new ArrayList<Place>();
+		for (Place p : graph.listPlaces()) {
+			places.add(p);
+		}
 		System.out.println(places.size() + " places");
 		
 		ClusterBuilder clusterBuilder = new ClusterBuilder(places);

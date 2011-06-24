@@ -6,9 +6,7 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import javax.imageio.ImageIO;
 
@@ -45,17 +43,13 @@ public class RenderPlaces {
 		PelagiosGraphBuilder graphBuilder = new PelagiosGraphBuilder(DATA_DIR);
 		PelagiosGraph graph = graphBuilder.build();
 
-		// TODO get all the places from the graph
-		List<Place> places = new ArrayList<Place>();
-		System.out.println(places.size() + " unique geolocated places");
-		
 		BufferedImage img = new BufferedImage(640, 480, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = (Graphics2D) img.getGraphics();
 		g.setPaint(new Color(0, 0, 0));
 		g.fillRect(0, 0, 640, 480);
 		
 		int max = 1;
-		for (Place p : places) {
+		for (Place p : graph.listPlaces()) {
 			Point xy = transform(p.getLon(), p.getLat());
 			if (points.containsKey(xy)) {
 				Integer count = points.get(xy);
