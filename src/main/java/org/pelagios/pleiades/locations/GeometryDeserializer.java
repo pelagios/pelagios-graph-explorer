@@ -2,10 +2,10 @@ package org.pelagios.pleiades.locations;
 
 import java.lang.reflect.Type;
 
+import org.pelagios.geo.shape.LineString;
+import org.pelagios.geo.shape.Point;
+import org.pelagios.geo.shape.Polygon;
 import org.pelagios.pleiades.locations.Geometry.Relation;
-import org.pelagios.pleiades.locations.shape.LineString;
-import org.pelagios.pleiades.locations.shape.Point;
-import org.pelagios.pleiades.locations.shape.Polygon;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

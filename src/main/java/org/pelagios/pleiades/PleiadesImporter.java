@@ -8,12 +8,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.pelagios.geo.shape.Point;
 import org.pelagios.graph.PelagiosGraph;
 import org.pelagios.graph.builder.PlaceBuilder;
 import org.pelagios.graph.exception.PlaceExistsException;
 import org.pelagios.pleiades.locations.LocationParser;
 import org.pelagios.pleiades.locations.LocationRecord;
-import org.pelagios.pleiades.locations.shape.Point;
 import org.pelagios.pleiades.names.NameParser;
 import org.pelagios.pleiades.names.NameRecord;
 

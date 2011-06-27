@@ -1,6 +1,6 @@
 package org.pelagios.pleiades.locations;
 
-import org.pelagios.pleiades.locations.shape.Shape;
+import org.pelagios.geo.shape.Shape;
 
 
 /**
