@@ -2,6 +2,8 @@ package org.pelagios.geo.shape;
 
 public interface Shape {
 	
-	public abstract Point getCentroid();
+	public Point getCentroid();
+	
+	public String toWKT();
 
 }

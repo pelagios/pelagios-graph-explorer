@@ -25,13 +25,15 @@ public class LineString implements Shape {
 		return new Point(0, 0, 0);
 	}
 
-	@Override
-	public String toString() {
-		StringBuffer sb = new StringBuffer("LINESTRING: [");
+	public String toWKT() {
+		StringBuffer sb = new StringBuffer("LINESTRING (");
+		
 		for (Point p : points) {
-			sb.append("[ " + p.toString() + " ], ");
+			sb.append(p.getLon() + " " + p.getLat() + " " + p.getAlt() + ", ");
 		}
-		return sb.substring(0, sb.length() - 2) + "]";
+		
+		sb.delete(sb.length() - 2, sb.length());
+		sb.append(")");
+		return sb.toString();
 	}
-	
 }

@@ -1,6 +1,5 @@
 package org.pelagios.geo.shape;
 
-
 /**
  * A 3D Point
  * 
@@ -27,14 +26,13 @@ public class Point implements Shape {
 	public double getAlt() {
 		return alt;
 	}
-
+	
 	public Point getCentroid() {
 		return this;
 	}
 	
-	@Override
-	public String toString() {
-		return "POINT: " + lon + ", " + lat + ", " + alt;
+	public String toWKT() {
+		return "POINT (" + lon + " " + lat + " " + alt +")";
 	}
 	
 }

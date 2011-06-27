@@ -16,15 +16,17 @@ public class Polygon implements Shape {
 		// TODO implement this
 		return new Point(0, 0, 0);
 	}
-	
-	@Override
-	public String toString() {
-		StringBuffer sb = new StringBuffer("POLYGON: [");
-		for (Point p : outline.getPoints()) {
-			sb.append("[ " + p.toString() + " ], ");
-		}
-		return sb.substring(0, sb.length() - 2) + "]";
-	}
 
+	public String toWKT() {
+		StringBuffer sb = new StringBuffer("POLYGON ((");
+		
+		for (Point p : outline.getPoints()) {
+			sb.append(p.getLon() + " " + p.getLat() + " " + p.getAlt() + ", ");
+		}
+		
+		sb.delete(sb.length() - 2, sb.length());
+		sb.append("))");
+		return sb.toString();
+	}
 	
 }
