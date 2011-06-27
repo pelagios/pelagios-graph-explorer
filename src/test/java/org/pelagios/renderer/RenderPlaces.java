@@ -1,4 +1,4 @@
-package org.pelagios.bootstrap;
+package org.pelagios.renderer;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
