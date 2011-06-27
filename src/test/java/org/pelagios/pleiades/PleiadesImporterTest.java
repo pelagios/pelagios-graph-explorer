@@ -18,8 +18,8 @@ public class PleiadesImporterTest extends TestCase {
 	private static final String DATA_DIR = "c:/neo4j-data";
 
 	// Note: you should always test with the latest Pleiades dump file
-	private static final String LOCATIONS_CSV = "src/test/resources/pleiades-locations-20110607.csv";
-	private static final String NAMES_CSV = "src/test/resources/pleiades-names-20110607.csv";
+	private static final String LOCATIONS_CSV = "src/test/resources/pleiades-locations-20110627.csv";
+	private static final String NAMES_CSV = "src/test/resources/pleiades-names-20110627.csv";
 		
 	@Test
 	public void testPleiadesImporter() throws IOException, URISyntaxException, PlaceExistsException {
