@@ -1,5 +1,7 @@
 package org.pelagios.geo.shape;
 
+import com.vividsolutions.jts.geom.Coordinate;
+
 /**
  * A 3D Point
  * 
@@ -7,32 +9,30 @@ package org.pelagios.geo.shape;
  */
 public class Point implements Shape {
 
-	private double lon, lat, alt;
+	private Coordinate c;
 
 	public Point(double lon, double lat, double alt) {
-		this.lon = lon;
-		this.lat = lat;
-		this.alt = alt;
+		c = new Coordinate(lon, lat, alt);
 	}
 	
 	public double getLon() {
-		return lon;
+		return c.x;
 	}
 
 	public double getLat() {
-		return lat;
+		return c.y;
 	}
 
 	public double getAlt() {
-		return alt;
+		return c.z;
 	}
 	
-	public Point getCentroid() {
-		return this;
+	public Coordinate getCentroid() {
+		return c;
 	}
 	
 	public String toWKT() {
-		return "POINT (" + lon + " " + lat + " " + alt +")";
+		return "POINT (" + c.x + " " + c.y + " " + c.z +")";
 	}
 	
 }

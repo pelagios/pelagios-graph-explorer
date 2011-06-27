@@ -15,6 +15,7 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.vividsolutions.jts.geom.Coordinate;
 
 public class GeometryDeserializer implements JsonDeserializer<Geometry> {
 
@@ -89,7 +90,8 @@ public class GeometryDeserializer implements JsonDeserializer<Geometry> {
 		
 		LineString ls = new LineString();
 		for (int i=0; i<coordList.size(); i++) {
-			ls.addPoint(deserializePoint(coordList.get(i)));
+			Point p = deserializePoint(coordList.get(i));
+			ls.addCoordinate(new Coordinate(p.getLon(), p.getLat(), p.getAlt()));
 		}
 		
 		return ls;

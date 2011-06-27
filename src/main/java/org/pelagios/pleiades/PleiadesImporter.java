@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.pelagios.geo.shape.Point;
 import org.pelagios.graph.PelagiosGraph;
 import org.pelagios.graph.builder.PlaceBuilder;
 import org.pelagios.graph.exception.PlaceExistsException;
@@ -16,6 +15,8 @@ import org.pelagios.pleiades.locations.LocationParser;
 import org.pelagios.pleiades.locations.LocationRecord;
 import org.pelagios.pleiades.names.NameParser;
 import org.pelagios.pleiades.names.NameRecord;
+
+import com.vividsolutions.jts.geom.Coordinate;
 
 public class PleiadesImporter {
 
@@ -51,11 +52,10 @@ public class PleiadesImporter {
 			NameRecord nRec = names.get(lRec.getPid());
 			if (nRec != null) {
 				try {
-					Point p = lRec.getGeometry().getShape().getCentroid();
+					Coordinate c = lRec.getGeometry().getShape().getCentroid();
 					records.add(new PlaceBuilder(
 							nRec.getNameTransliterated(), 
-							p.getLon(),
-							p.getLat(),
+							c.x, c.y,
 							new URI(PLEIADES_BASE_URI + nRec.getPid())
 					));
 				} catch (URISyntaxException e) {

@@ -3,6 +3,7 @@ package org.pelagios.renderer;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -11,11 +12,17 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import org.geotools.geometry.DirectPosition2D;
+import org.opengis.geometry.DirectPosition;
+import org.opengis.geometry.MismatchedDimensionException;
+import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.TransformException;
 import org.pelagios.clustering.Cluster;
 import org.pelagios.clustering.ClusterBuilder;
 import org.pelagios.graph.PelagiosGraph;
 import org.pelagios.graph.Place;
 import org.pelagios.graph.builder.PelagiosGraphBuilder;
+import org.pelagios.rendering.ShapefileRenderer;
 
 /**
  * A utility class that renders the places contained in
@@ -29,19 +36,42 @@ import org.pelagios.graph.builder.PelagiosGraphBuilder;
  * @author Rainer Simon
  */
 public class RenderClusters {
-			
+		
+	/**
+	 * Graph DB data directory
+	 */
 	private static final String DATA_DIR = "c:/neo4j-data";
 	
-	private static final String IMAGE_FILE_NAME = "test.png";
+	/**
+	 * World map shapefile
+	 */
+	private static final String SHAPEFILE = "src\\test\\resources\\110m-coastline\\110m_coastline.shp";
+	
+	/**
+	 * Result file
+	 */
+	private static final String OUTPUT_FILE = "rendered-map.png";
 	
 	/**
 	 * IMPORTANT: This application assumes the graph DB is already 
 	 * populated with Pleiades places.
-	 * 
-	 * @param args no arguments needed
-	 * @throws IOException if anything goes wrong while saving the image
 	 */
-	public static void main(String[] args) throws IOException {		
+	public static void main(String[] args)
+		throws IOException, MismatchedDimensionException, TransformException {
+		
+		// Create a 640x400 pixel drawing canvas
+		Rectangle paintArea = new Rectangle(0, 0, 640, 400);
+		BufferedImage bg = new BufferedImage(
+				(int) paintArea.getWidth(),
+				(int) paintArea.getHeight(), 
+				BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g2d = bg.createGraphics();
+		
+		// Render the world map shapefile
+		ShapefileRenderer renderer = new ShapefileRenderer(new File(SHAPEFILE));
+		MathTransform transform = renderer.renderShapefile(g2d, paintArea);
+		
+		// Get a handle on the Pelagios Graph
 		PelagiosGraphBuilder graphBuilder = new PelagiosGraphBuilder(DATA_DIR);
 		PelagiosGraph graph = graphBuilder.build();
 
@@ -52,16 +82,13 @@ public class RenderClusters {
 		}
 		System.out.println(places.size() + " places");
 		
+		// TODO need to figure out a way to define the
+		// cluster threshold based on the actual pixel distance
+		// on the screen!
 		ClusterBuilder clusterBuilder = new ClusterBuilder(places);
 		List<Cluster> clusters = clusterBuilder.build(6);
 		System.out.println(clusters.size() + " clusters");
 		
-		BufferedImage img = new BufferedImage(640, 480, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g = (Graphics2D) img.getGraphics();
-		g.setPaint(new Color(0, 0, 0));
-		g.fillRect(0, 0, 640, 480);
-		g.setPaint(new Color(128, 128, 255));
-				
 		int max = 0;
 		for (Cluster c : clusters) {
 			if (c.size() > max)
@@ -69,21 +96,26 @@ public class RenderClusters {
 		}
 		System.out.println("Max cluster size: " + max);
 		
+		g2d.setPaint(Color.RED);
 		double delta = 10.0 / max;
 		for (Cluster c : clusters) {
-			Point p = transform(c.getLon(), c.getLat());
+			Point p = transform(c.getLon(), c.getLat(), transform);
 			int size = (int) (delta * c.size()) + 1;
-			g.fillOval(p.x - size, p.y - size, size * 2, size * 2);
+			g2d.fillOval(p.x - size, p.y - size, size * 2, size * 2);
 		}
 		
-		ImageIO.write(img, "PNG", new File(IMAGE_FILE_NAME));
+		graph.shutdown();
+		ImageIO.write(bg, "png", new File(OUTPUT_FILE));
 	}
 
-	private static Point transform(double lon, double lat) {
-		// TODO well... do a decent projection here!
-		double x = lon / 180 * 1200 + 160;
-		double y = - lat / 90 * 768 + 540;
-		return new Point((int) x, (int) y);
+	private static Point transform(double lon, double lat, MathTransform transform)
+		throws MismatchedDimensionException, TransformException {
+		
+		DirectPosition src = new DirectPosition2D(lon, lat);
+		DirectPosition dst = new DirectPosition2D(); 
+		dst = transform.transform(src, dst);
+		
+		return new Point((int) dst.getCoordinate()[0], (int) dst.getCoordinate()[1]);
 	}
 
 }

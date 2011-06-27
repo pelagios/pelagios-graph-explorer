@@ -1,5 +1,8 @@
 package org.pelagios.geo.shape;
 
+import com.vividsolutions.jts.algorithm.CentroidArea;
+import com.vividsolutions.jts.geom.Coordinate;
+
 public class Polygon implements Shape {
 
 	private LineString outline;
@@ -12,16 +15,17 @@ public class Polygon implements Shape {
 		return outline;
 	}
 
-	public Point getCentroid() {
-		// TODO implement this
-		return new Point(0, 0, 0);
+	public Coordinate getCentroid() {
+		CentroidArea c = new CentroidArea();
+		c.add(outline.getCoordinate().toArray(new Coordinate[outline.getCoordinate().size()]));
+		return c.getCentroid();
 	}
 
 	public String toWKT() {
 		StringBuffer sb = new StringBuffer("POLYGON ((");
 		
-		for (Point p : outline.getPoints()) {
-			sb.append(p.getLon() + " " + p.getLat() + " " + p.getAlt() + ", ");
+		for (Coordinate p : outline.getCoordinate()) {
+			sb.append(p.x + " " + p.y + " " + p.z + ", ");
 		}
 		
 		sb.delete(sb.length() - 2, sb.length());

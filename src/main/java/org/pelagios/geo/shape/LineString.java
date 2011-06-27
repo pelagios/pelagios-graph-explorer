@@ -3,6 +3,9 @@ package org.pelagios.geo.shape;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.vividsolutions.jts.algorithm.CentroidLine;
+import com.vividsolutions.jts.geom.Coordinate;
+
 /**
  * A LineString, consisting of a list of Points.
  * 
@@ -10,26 +13,27 @@ import java.util.List;
  */
 public class LineString implements Shape {
 
-	private List<Point> points = new ArrayList<Point>();
+	private List<Coordinate> coords = new ArrayList<Coordinate>();
 	
-	public void addPoint(Point p) {
-		points.add(p);
+	public void addCoordinate(Coordinate c) {
+		coords.add(c);
 	}
 	
-	public List<Point> getPoints() {
-		return points;
+	public List<Coordinate> getCoordinate() {
+		return coords;
 	}
 
-	public Point getCentroid() {
-		// TODO implement this
-		return new Point(0, 0, 0);
+	public Coordinate getCentroid() {
+		CentroidLine c = new CentroidLine();
+		c.add(coords.toArray(new Coordinate[coords.size()]));
+		return c.getCentroid();
 	}
 
 	public String toWKT() {
 		StringBuffer sb = new StringBuffer("LINESTRING (");
 		
-		for (Point p : points) {
-			sb.append(p.getLon() + " " + p.getLat() + " " + p.getAlt() + ", ");
+		for (Coordinate c : coords) {
+			sb.append(c.x + " " + c.y + " " + c.z + ", ");
 		}
 		
 		sb.delete(sb.length() - 2, sb.length());
