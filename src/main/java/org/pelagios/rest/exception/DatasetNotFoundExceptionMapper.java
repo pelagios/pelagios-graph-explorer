@@ -10,7 +10,6 @@ import org.pelagios.graph.exception.DatasetNotFoundException;
 @Provider
 public class DatasetNotFoundExceptionMapper implements ExceptionMapper<DatasetNotFoundException> {
 
-	@Override
 	public Response toResponse(DatasetNotFoundException e) {
 		return Response.status(Status.NOT_FOUND).entity(e.getMessage()).build();
 	}
