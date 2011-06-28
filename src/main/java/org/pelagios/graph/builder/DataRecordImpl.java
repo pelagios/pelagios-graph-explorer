@@ -1,6 +1,7 @@
 package org.pelagios.graph.builder;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
 import org.neo4j.graphdb.Node;
@@ -14,12 +15,16 @@ public class DataRecordImpl extends AbstractNodeImpl implements DataRecord {
 	}
 	
 	void setDataURL(URI url) {
-		set(DataRecord.KEY_URI, url);
+		set(DataRecord.KEY_URI, url.toString());
 	}
 
 	public URI getDataURL() {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			return new URI(getAsString(DataRecord.KEY_URI));
+		} catch (URISyntaxException e) {
+			// Should never happen
+			throw new RuntimeException(e);
+		}
 	}
 
 	public List<Place> listPlaces() {

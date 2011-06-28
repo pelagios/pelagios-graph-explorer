@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.pelagios.graph.builder.DatasetBuilder;
 import org.pelagios.graph.builder.PelagiosGraphBuilder;
 import org.pelagios.graph.builder.PlaceBuilder;
+import org.pelagios.graph.exception.DatasetExistsException;
 import org.pelagios.graph.exception.DatasetNotFoundException;
 import org.pelagios.graph.exception.PlaceExistsException;
 
@@ -33,7 +34,9 @@ public class GraphTest {
 	}
 	
 	@BeforeClass
-	public static void buildTestGraph() throws URISyntaxException, DatasetNotFoundException {
+	public static void buildTestGraph() 
+		throws URISyntaxException, DatasetNotFoundException, DatasetExistsException {
+		
 		// Get the Pelagios graph instance
 		PelagiosGraphBuilder graphBuilder = new PelagiosGraphBuilder(DATA_DIR);
 		PelagiosGraph graph = graphBuilder.build();

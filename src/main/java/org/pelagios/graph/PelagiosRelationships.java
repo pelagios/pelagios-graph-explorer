@@ -16,7 +16,7 @@ public enum PelagiosRelationships implements RelationshipType {
 	DATASETS, PLACES,
 	
 	// Dataset relations
-	DATASET, IS_SUBSET_OF,
+	DATASET, IS_SUBSET_OF, RECORD,
 	
 	// Place relations
 	PLACE

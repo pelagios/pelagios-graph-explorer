@@ -16,6 +16,7 @@ import org.pelagios.graph.Dataset;
 import org.pelagios.graph.PelagiosGraph;
 import org.pelagios.graph.PelagiosRelationships;
 import org.pelagios.graph.Place;
+import org.pelagios.graph.exception.DatasetExistsException;
 import org.pelagios.graph.exception.DatasetNotFoundException;
 import org.pelagios.graph.exception.PlaceExistsException;
 
@@ -81,7 +82,7 @@ class PelagiosGraphImpl implements PelagiosGraph {
 	    return datasets;
 	}
 	
-	public void addDataset(DatasetBuilder dataset) {
+	public void addDataset(DatasetBuilder dataset) throws DatasetExistsException {
 		try {
 			addDataset(dataset, null);
 		} catch (DatasetNotFoundException e) {
@@ -90,7 +91,13 @@ class PelagiosGraphImpl implements PelagiosGraph {
 		}
 	}
 
-	public void addDataset(DatasetBuilder dataset, DatasetBuilder parent) throws DatasetNotFoundException {
+	public void addDataset(DatasetBuilder dataset, DatasetBuilder parent) 
+		throws DatasetExistsException, DatasetNotFoundException {
+		
+		IndexHits<Node> hits = getDatasetIndex().get(Dataset.KEY_NAME, dataset.getName());
+		if (hits.size() > 0)
+			throw new DatasetExistsException(dataset.getName());
+		
 		Transaction tx = graphDb.beginTx();
 		try {
 			DatasetImpl d = dataset.build(graphDb, getDatasetIndex());
@@ -100,13 +107,13 @@ class PelagiosGraphImpl implements PelagiosGraph {
 				subreference.createRelationshipTo(d.backingNode, PelagiosRelationships.DATASET);				
 			} else {
 				// Sub-set - attach to parent node (if it exists)
-				IndexHits<Node> hits = getDatasetIndex()
+				IndexHits<Node> parentHits = getDatasetIndex()
 					.get(Dataset.KEY_NAME, parent.getName());
 				
-				if (hits.size() == 0)
+				if (parentHits.size() == 0)
 					throw new DatasetNotFoundException(parent.getName());
 				
-				Node parentNode = hits.getSingle();
+				Node parentNode = parentHits.getSingle();
 				d.backingNode.createRelationshipTo(parentNode, PelagiosRelationships.IS_SUBSET_OF);
 			}			
 			tx.success();
@@ -122,6 +129,27 @@ class PelagiosGraphImpl implements PelagiosGraph {
 			throw new DatasetNotFoundException(name);
 		
 		return new DatasetImpl(hits.getSingle());
+	}
+	
+	public void addDataRecords(List<DataRecordBuilder> records, DatasetBuilder parent)
+		throws DatasetNotFoundException{
+		
+		Transaction tx = graphDb.beginTx();
+		try {
+			for (DataRecordBuilder b : records) {
+				IndexHits<Node> hits = getDatasetIndex().get(Dataset.KEY_NAME, parent.getName());
+				if (hits.size() == 0)
+					throw new DatasetNotFoundException(parent.getName());
+				
+				Node parentNode = hits.getSingle();
+				DataRecordImpl record = b.build(graphDb);
+				Node recordNode = record.backingNode;
+				parentNode.createRelationshipTo(recordNode, PelagiosRelationships.RECORD);
+			}
+			tx.success();
+		} finally {
+			tx.finish();
+		}		
 	}
 	
 	public void addPlaces(List<PlaceBuilder> places) throws PlaceExistsException {

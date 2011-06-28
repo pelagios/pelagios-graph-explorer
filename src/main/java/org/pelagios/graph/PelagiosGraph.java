@@ -3,8 +3,10 @@ package org.pelagios.graph;
 import java.net.URI;
 import java.util.List;
 
+import org.pelagios.graph.builder.DataRecordBuilder;
 import org.pelagios.graph.builder.DatasetBuilder;
 import org.pelagios.graph.builder.PlaceBuilder;
+import org.pelagios.graph.exception.DatasetExistsException;
 import org.pelagios.graph.exception.DatasetNotFoundException;
 import org.pelagios.graph.exception.PlaceExistsException;
 
@@ -25,7 +27,8 @@ public interface PelagiosGraph {
 	 * Adds a top-level data set to the graph.
 	 * @param dataset the data set
 	 */
-	public void addDataset(DatasetBuilder dataset);
+	public void addDataset(DatasetBuilder dataset)
+		throws DatasetExistsException;
 	
 	/**
 	 * Adds a data sub-set to the graph, with the
@@ -34,7 +37,7 @@ public interface PelagiosGraph {
 	 * @param parent the parent data set (i.e. super set)
 	 */
 	public void addDataset(DatasetBuilder dataset, DatasetBuilder parent)
-		throws DatasetNotFoundException;
+		throws DatasetExistsException, DatasetNotFoundException;
 	
 	/**
 	 * Retrieves the data set with the specified name.
@@ -44,8 +47,18 @@ public interface PelagiosGraph {
 	public Dataset getDataset(String name) throws DatasetNotFoundException;
 	
 	/**
-	 * Adds a place to the graph.
-	 * @param place
+	 * Adds a list of data records to the graph, belonging to the
+	 * specified data set.
+	 * @param records the data record
+	 * @param parent the parent data set
+	 * @throws DatasetNotFoundException if the parent data set was not found in the graph
+	 */
+	public void addDataRecords(List<DataRecordBuilder> records, DatasetBuilder parent)
+		throws DatasetNotFoundException;
+	
+	/**
+	 * Adds a list of places to the graph.
+	 * @param place the places
 	 */
 	public void addPlaces(List<PlaceBuilder> places) throws PlaceExistsException;
 	
