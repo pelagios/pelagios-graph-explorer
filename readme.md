@@ -8,7 +8,9 @@ PELAGIOS project.
 ## Getting Started
 
 The PELAGIOS Data Visualization Toolkit is built with [Gradle]
-(http://www.gradle.org). To test and compile the project, run
+(http://www.gradle.org). (Download and installation instructions for
+Gradle are [here] (http://www.gradle.org/installation.html)). To test
+and compile the project, run
 
 ``gradle build``
 
@@ -26,9 +28,9 @@ are building the project.)
 The project comes with an included starter class that will launch 
 the application demo in an embedded Jetty Web server. Locate the class
 
-org.pelagios.bootstrap.StartServer
+``org.pelagios.bootstrap.StartServer``
 
-in the */src/main/test* folder, and launch it as a Java application. Per
+in the /src/main/test folder, and launch it as a Java application. Per
 default, Jetty will launch on port 8080. The PELAGIOS Data Visualization
 Toolkit demo will be available at
 
