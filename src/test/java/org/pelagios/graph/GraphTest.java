@@ -90,6 +90,7 @@ public class GraphTest {
 		// TODO don't just print out, verify with assertions!
 		PelagiosGraphBuilder graphBuilder = new PelagiosGraphBuilder(DATA_DIR);
 		PelagiosGraph graph = graphBuilder.build();
+		
 		System.out.println("Logging sample dataset graph:");
 		for (Dataset dataset : graph.listTopLevelDatasets()) {
 			printDataset(dataset, 0);
