@@ -3,15 +3,13 @@ window.onload = function () {
 
     var move = function (dx, dy) {
         this.attr({cx: this.ox + dx, cy: this.oy + dy});
-    };
-    
-    var dragger = function () {
+    },
+    dragger = function () {
         this.ox = this.attr("cx");
         this.oy = this.attr("cy");
         this.animate({"fill-opacity": .2}, 100);
-    };
-    
-    var up = function () {
+    },
+    up = function () {
         this.animate({"fill-opacity": 0.8}, 100);
     };
     
@@ -23,5 +21,4 @@ window.onload = function () {
     	datasets[i].attr({fill:"#ff0000", stroke:"#ff0000", "fill-opacity": 0.8, "stroke-width": 2, cursor: "move"});
     	datasets[i].drag(move, dragger, up);
     }
-    
 }
