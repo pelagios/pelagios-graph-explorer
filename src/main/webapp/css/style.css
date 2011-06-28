@@ -1,0 +1,12 @@
+html, body {
+	padding:0px;
+	margin:0px;
+	background-color:#fff;
+	width:100%;
+	height:100%;
+}
+
+#dataset-panel {
+	width:100%;
+	height:100%;
+}
