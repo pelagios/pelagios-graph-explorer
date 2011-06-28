@@ -5,6 +5,9 @@ import java.util.List;
 /**
  * The Pelagios Dataset interface.
  * 
+ * TODO probably we should return iterators instead of lists
+ * for the listSubsets() and listPlaces() methods.
+ * 
  * @author Rainer Simon
  */
 public interface Dataset {
@@ -19,11 +22,6 @@ public interface Dataset {
 	 * @return the name
 	 */
 	public String getName();
-	
-	/**
-	 * Sets the name for this dataset.
-	 */
-	public void setName(String name);
 		
 	/**
 	 * Checks wether this data set has any sub-sets attached to it.
@@ -32,9 +30,15 @@ public interface Dataset {
 	public boolean hasSubsets();
 	
 	/**
-	 * Lists all subsets of contained in this dataset
-	 * @return
+	 * Lists all sub sets of contained in this data set
+	 * @return the sub sets 
 	 */
 	public List<Dataset> listSubsets();
+	
+	/**
+	 * Lists all places contained in this data set
+	 * @return the places
+	 */
+	public List<Place> listPlaces();
 		
 }

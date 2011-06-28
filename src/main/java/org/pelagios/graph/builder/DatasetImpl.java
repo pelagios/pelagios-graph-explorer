@@ -8,6 +8,7 @@ import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
 import org.pelagios.graph.Dataset;
 import org.pelagios.graph.PelagiosRelationships;
+import org.pelagios.graph.Place;
 
 /**
  * Implementation of the Dataset graph node type.
@@ -24,7 +25,7 @@ class DatasetImpl extends AbstractNodeImpl implements Dataset {
 		return getAsString(Dataset.KEY_NAME);
 	}
 
-	public void setName(String name) {
+	void setName(String name) {
 		set(Dataset.KEY_NAME, name);
 	}
 
@@ -43,6 +44,11 @@ class DatasetImpl extends AbstractNodeImpl implements Dataset {
 		}
 		
 		return subsets;
+	}
+
+	public List<Place> listPlaces() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }
