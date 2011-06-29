@@ -114,7 +114,7 @@ function addDataset(dataset, parent) {
 	blob.attr({fill:"#ff0000", stroke:"#ff0000", "fill-opacity": 0.8, "stroke-width": 2, cursor: "move"});
 	blob.drag(move, dragger, up);
 	blob.dblclick(function (event) {
-		fetchDatasets(this.name);
+		fetchDatasets(this);
 	});
 	blob.name = dataset.name;
     datasets.push(blob);
