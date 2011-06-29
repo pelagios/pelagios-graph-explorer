@@ -1,5 +1,7 @@
 package org.pelagios.rest;
 
+import java.util.List;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -18,6 +20,15 @@ import org.pelagios.graph.exception.DatasetNotFoundException;
  */
 @Path("/datasets")
 public class DatasetController extends AbstractController {
+
+	@GET
+	@Produces("application/json")
+	@Path("/")
+	public Response listDatasets() {
+		List<Dataset> datasets = Backend.getInstance().listTopLevelDatasets();
+		System.out.println(toJSON(datasets));
+		return Response.ok(toJSON(datasets)).build();
+	}
 	
 	@GET
 	@Produces("application/json")

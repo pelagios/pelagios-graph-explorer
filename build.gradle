@@ -10,6 +10,13 @@ repositories {
 	mavenRepo urls: 'http://repository.jboss.org/nexus/content/groups/public/'
 }
 
+eclipse {
+
+	classpath {	
+		classesOutputDir = file('src/main/webapp/WEB-INF/classes')
+	}
+}
+
 dependencies {
 	compile group: 'com.hp.hpl.jena', name: 'jena', version: '2.6.4'
 	compile group: 'org.neo4j', name: 'neo4j', version: '1.4.M03'
