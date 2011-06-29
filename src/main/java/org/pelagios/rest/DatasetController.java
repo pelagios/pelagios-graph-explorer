@@ -36,7 +36,6 @@ public class DatasetController extends AbstractController {
 		throws DatasetNotFoundException {
 		
 		List<Dataset> datasets = Backend.getInstance().getDataset(superset).listSubsets();	
-		System.out.println(toJSON(datasets));
 		return Response.ok(toJSON(datasets)).build();
 	}
 
