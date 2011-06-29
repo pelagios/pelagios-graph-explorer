@@ -1,4 +1,5 @@
 window.onload = function () {
+	fetchDatasets();
     var p = Raphael("dataset-panel", "100%", "100%");
 
     // convert to/from screen coordinates
@@ -93,6 +94,13 @@ window.onload = function () {
 			  node.dataset.attr({cx: xy.x, cy: xy.y});
 		  });
     renderer.start();
+}
+
+function fetchDatasets() {
+	$.getJSON("datasets", function() {
+		  alert("success");
+	})
+	.error(function() { alert("error"); });
 }
 
 function getViewportSize() {
