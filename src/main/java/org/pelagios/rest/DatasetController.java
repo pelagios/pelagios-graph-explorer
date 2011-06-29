@@ -26,18 +26,18 @@ public class DatasetController extends AbstractController {
 	@Path("/")
 	public Response listDatasets() {
 		List<Dataset> datasets = Backend.getInstance().listTopLevelDatasets();
-		System.out.println(toJSON(datasets));
 		return Response.ok(toJSON(datasets)).build();
 	}
 	
 	@GET
 	@Produces("application/json")
-	@Path("/{name}")
-	public Response getDataset(@PathParam("name") String name) 
+	@Path("/{superset}")
+	public Response getSubsets(@PathParam("superset") String superset) 
 		throws DatasetNotFoundException {
 		
-		Dataset dataset = Backend.getInstance().getDataset(name);		
-		return Response.ok(toJSON(dataset)).build();
+		List<Dataset> datasets = Backend.getInstance().getDataset(superset).listSubsets();	
+		System.out.println(toJSON(datasets));
+		return Response.ok(toJSON(datasets)).build();
 	}
 
 }

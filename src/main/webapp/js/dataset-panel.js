@@ -1,6 +1,12 @@
+var graph;
+var datasets;
+var p;
+var connections;
+
+var move, dragger, up;
+
 window.onload = function () {
-	fetchDatasets();
-    var p = Raphael("dataset-panel", "100%", "100%");
+    p = Raphael("dataset-panel", "100%", "100%");
 
     // convert to/from screen coordinates
     var toScreen = function(p) {
@@ -23,7 +29,7 @@ window.onload = function () {
 	    return new Vector(px, py);
     };
     
-    var move = function (dx, dy) {
+    move = function (dx, dy) {
         this.attr({cx: this.ox + dx, cy: this.oy + dy});
         for (var i = connections.length; i--;) {
             p.connection(connections[i]);
@@ -31,17 +37,19 @@ window.onload = function () {
         var pt = fromScreen(new Vector(this.ox + dx, this.oy + dy));
         layout.point(this.graphnode).p = pt;
         renderer.start(); 
-    },
+    };
+    
     dragger = function () {
         this.ox = this.attr("cx");
         this.oy = this.attr("cy");
         this.animate({"fill-opacity": .2}, 100);
-    },
+    };
+    
     up = function () {
         this.animate({"fill-opacity": 0.8}, 100);
     };
     
-	var datasets = new Array();
+	datasets = new Array();
     datasets.push(p.ellipse(190, 100, 30, 30));
     datasets.push(p.ellipse(450, 100, 20, 20));
     datasets.push(p.ellipse(320, 250, 15, 15));
@@ -49,15 +57,19 @@ window.onload = function () {
     for (var i=0, ii=datasets.length; i<ii; i++) {
     	datasets[i].attr({fill:"#ff0000", stroke:"#ff0000", "fill-opacity": 0.8, "stroke-width": 2, cursor: "move"});
     	datasets[i].drag(move, dragger, up);
+    	datasets[i].dblclick(function (event) {
+    		fetchDatasets(this);
+    	});
+    	datasets[i].name = "Ptolemy Machine";
     }
     
-    var connections = new Array();
+    connections = new Array();
     connections.push(p.connection(datasets[0], datasets[1], "#000"));
     connections.push(p.connection(datasets[1], datasets[2], "#000", "#fff|5"));
     connections.push(p.connection(datasets[0], datasets[2], "#000", "#fff"));
     
     // make a new graph
-    var graph = new Graph();
+    graph = new Graph();
 
     // make some nodes
     var node1 = graph.newNode();
@@ -77,7 +89,7 @@ window.onload = function () {
     graph.newEdge(node1, node3);
     graph.newEdge(node2, node3);
     
-    var layout = new Layout.ForceDirected(graph, 400.0, 400.0, 0.5);
+    var layout = new Layout.ForceDirected(graph, 800.0, 400.0, 0.5);
     
     var renderer = new Renderer(10, layout,
 		  function clear() {
@@ -96,9 +108,31 @@ window.onload = function () {
     renderer.start();
 }
 
-function fetchDatasets() {
-	$.getJSON("datasets", function() {
-		  alert("success");
+function addDataset(dataset, parent) {
+	// Add to visual representation
+	var blob = p.ellipse(10, 10, 20, 20);
+	blob.attr({fill:"#ff0000", stroke:"#ff0000", "fill-opacity": 0.8, "stroke-width": 2, cursor: "move"});
+	blob.drag(move, dragger, up);
+	blob.dblclick(function (event) {
+		fetchDatasets(this.name);
+	});
+	blob.name = dataset.name;
+    datasets.push(blob);
+    
+	// Add to graph model
+	var node = graph.newNode();
+	node.dataset = blob;
+	blob.graphnode = node;
+	
+	if (parent)
+		connections.push(p.connection(blob, parent, "#000"));
+}
+
+function fetchDatasets(parent) {
+	$.getJSON("datasets/" + parent.name, function(data) {
+		  for (var i=0; i<data.length; i++) {
+			  addDataset(data[i], parent);
+		  }
 	})
 	.error(function() { alert("error"); });
 }
