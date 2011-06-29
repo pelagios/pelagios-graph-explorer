@@ -26,5 +26,22 @@ public interface DataRecord {
 	 * @return the places
 	 */
 	public List<Place> listPlaces();
+	
+	/**
+	 * Returns the (lowest-level) data (sub-)set 
+	 * this data record belongs to.
+	 * @return the parent data set
+	 */
+	public Dataset getParentDataset(); 
 
+	/**
+	 * Returns the top-level data set this data
+	 * record belongs to. If the data set is not
+	 * structured into sub sets, this method
+	 * will return the same data set as 
+	 * getParentDataset().
+	 * @return the root data set
+	 */
+	public Dataset getRootDataset();
+	
 }

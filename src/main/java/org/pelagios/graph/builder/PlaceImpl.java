@@ -2,8 +2,10 @@ package org.pelagios.graph.builder;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 import org.neo4j.graphdb.Node;
+import org.pelagios.graph.DataRecord;
 import org.pelagios.graph.Place;
 
 /**
@@ -51,6 +53,11 @@ class PlaceImpl extends AbstractNodeImpl implements Place {
 
 	public void setURI(URI uri) {
 		set(Place.KEY_URI, uri.toString());
+	}
+
+	public List<DataRecord> listDataRecords() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

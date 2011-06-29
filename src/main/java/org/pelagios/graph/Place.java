@@ -1,6 +1,7 @@
 package org.pelagios.graph;
 
 import java.net.URI;
+import java.util.List;
 
 /**
  * The Pelagios Place interface.
@@ -24,34 +25,16 @@ public interface Place {
 	public String getLabel();
 	
 	/**
-	 * Sets the label for this place
-	 * @param label the label
-	 */
-	public void setLabel(String label);
-
-	/**
 	 * Returns the longitude of this place.
 	 * @return the longitude
 	 */
 	public double getLon();
-	
-	/**
-	 * Sets the longitude of this place.
-	 * @param lon the longitude
-	 */
-	public void setLon(double lon);
-	
+		
 	/**
 	 * Returns the latitude of this place.
 	 * @return the latitude
 	 */
 	public double getLat();
-
-	/**
-	 * Sets the latitude of this place.
-	 * @param lat the latitude
-	 */
-	public void setLat(double lat);
 	
 	/**
 	 * Returns the URI of this place.
@@ -60,9 +43,9 @@ public interface Place {
 	public URI getURI();
 	
 	/**
-	 * Sets the URI of this place.
-	 * @param uri the URI
+	 * Returns a list of all data records that reference this place.
+	 * @return the data records
 	 */
-	public void setURI(URI uri);
+	public List<DataRecord> listDataRecords();
 	
 }

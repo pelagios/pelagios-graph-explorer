@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.neo4j.graphdb.Node;
 import org.pelagios.graph.DataRecord;
+import org.pelagios.graph.Dataset;
 import org.pelagios.graph.Place;
 
 public class DataRecordImpl extends AbstractNodeImpl implements DataRecord {
@@ -28,6 +29,16 @@ public class DataRecordImpl extends AbstractNodeImpl implements DataRecord {
 	}
 
 	public List<Place> listPlaces() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Dataset getParentDataset() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Dataset getRootDataset() {
 		// TODO Auto-generated method stub
 		return null;
 	}
