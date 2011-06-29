@@ -26,11 +26,14 @@ To generate an Eclipse project, run
 are building the project.)
 
 A note to developers: the project comes with an included starter class that 
-will launch the application demo in an embedded Jetty Web server. Locate the class
+will launch the application demo in an embedded Jetty Web server. Please 
+ensure that your IDE compiles the application classes to the 
+*/src/main/webapp/WEB-INF/classes* directory. (If you use Eclipse, the
+gradle script will ensure this.) Locate the class
 
 ``org.pelagios.bootstrap.StartServer``
 
-in the /src/main/test folder, and launch it as a Java application. Per
+in the */src/main/test* folder, and launch it as a Java application. Per
 default, Jetty will launch on port 8080. The PELAGIOS Data Visualization
 Demo will be available at
 
@@ -43,7 +46,7 @@ or application root path.
 
 In order to run the unit tests you need a set of CSV dump files
 of the [Pleiades] (http://pleiades.stoa.org) gazetteer. These files
-are not included in this project to save repository space. 
+are _not_ included in this project to save repository space. 
 
 Please obtain recent versions of the *pleiades-locations-YYYYMMDD.csv.gz*
 and *pleiades-names-YYYMMDD.csv.gz* CSV dumps from 
