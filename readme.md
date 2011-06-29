@@ -1,13 +1,13 @@
-# PELAGIOS Data Visualization Toolkit
+# PELAGIOS Data Visualization Demonstrator
 
-Welcome to the future home of the PELAGIOS Data Visualization Toolkit!
+Welcome to the future home of the PELAGIOS Data Visualization Demonstrator!
 
 Visit http://pelagios-project.blogspot.com for information about the
 PELAGIOS project. 
 
 ## Getting Started
 
-The PELAGIOS Data Visualization Toolkit is built with [Gradle]
+The PELAGIOS Data Visualization Demonstrator is built with [Gradle]
 (http://www.gradle.org). (Download and installation instructions for
 Gradle are [here] (http://www.gradle.org/installation.html)). To test
 and compile the project, run
@@ -32,7 +32,7 @@ the application demo in an embedded Jetty Web server. Locate the class
 
 in the /src/main/test folder, and launch it as a Java application. Per
 default, Jetty will launch on port 8080. The PELAGIOS Data Visualization
-Toolkit demo will be available at
+Demo will be available at
 
 http://localhost:8080/pelagios
 
@@ -53,3 +53,9 @@ http://atlantides.org/downloads/pleiades/dumps/
 Unzip them and place them in the /src/test/resources folder. Note: presently
 you also need to update the file names in the unit test source code. This
 is only a temporary issue, though.
+
+## Future Work
+
+Split this (now rather monolithic) demo up into (more re-usable) sub-projects.
+E.g. a visualization frontend, a graph backend (including dataset importers),
+and a Web API project.
