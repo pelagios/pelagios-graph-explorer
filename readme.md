@@ -25,8 +25,8 @@ To generate an Eclipse project, run
 (Note: dependency download may take a while the first time you
 are building the project.)
 
-The project comes with an included starter class that will launch 
-the application demo in an embedded Jetty Web server. Locate the class
+A note to developers: the project comes with an included starter class that 
+will launch the application demo in an embedded Jetty Web server. Locate the class
 
 ``org.pelagios.bootstrap.StartServer``
 
