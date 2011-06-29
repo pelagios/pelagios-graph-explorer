@@ -1,7 +1,7 @@
 TODO...
 
-...too much to list it all here - at the moment. We'll start populating this
-file as soon as the most basic functionality is up and running.
-
 - Clean up the unit tests
-- Add Groovy HTTP scripts for harvesting Ptolemy Machine place data 
+- See whether it's possible/useful to port a few things to Groovy and/or Scala to reduce LoC
+- Add HTTP scripts for harvesting Ptolemy Machine place data (Groovy?)
+- Clean up the JavaScript mess (possibly include Closure Compiler in build)
+- Add licence and 3rd party credits 
