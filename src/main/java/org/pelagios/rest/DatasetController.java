@@ -21,6 +21,11 @@ import org.pelagios.graph.exception.DatasetNotFoundException;
 @Path("/datasets")
 public class DatasetController extends AbstractController {
 
+	/**
+	 * Returns a list of all top-level data sets stored in the
+	 * Pelagios graph.
+	 * @return the data sets
+	 */
 	@GET
 	@Produces("application/json")
 	@Path("/")
@@ -29,6 +34,13 @@ public class DatasetController extends AbstractController {
 		return Response.ok(toJSON(datasets)).build();
 	}
 	
+	/**
+	 * Returns a list of all data sub-sets to the specified parent
+	 * data set.
+	 * @param superset the superset/parent data set
+	 * @return the sub-sets
+	 * @throws DatasetNotFoundException if the parent data set was not found (HTTP 404)
+	 */
 	@GET
 	@Produces("application/json")
 	@Path("/{superset}")

@@ -1,26 +1,15 @@
-var graph;
-var nodes;
-var links;
-var force;
-var vis;
-
-var move, dragger, up;
+var vis, force, nodes, links;
 
 window.onload = function () {
+	initialize();
+	
 	nodes = new Array();
 	nodes.push({nodeName:"Ptolemy Machine", group:1, idx:0});
-	// nodes.push({nodeName:"Test2", group:1, idx:1});
-	// nodes.push({nodeName:"Test3", group:2, idx:2});
-	// nodes.push({nodeName:"Test4", group:2, idx:3});
-    
     links = new Array();
     links.push({source:0, target:0, value:1});
- //  links.push({source:0, target:2, value:1});
- //  links.push({source:0, target:3, value:5});
- //  links.push({source:2, target:3, value:20});
 	
 	var w = document.body.clientWidth,
-	    h = document.body.clientHeight,
+	    h = document.body.clientHeight * 0.6,
 	    colors = pv.Colors.category19();
 	
 	vis = new pv.Panel()
@@ -72,11 +61,24 @@ function addDataset(dataset, parent) {
 
 function fetchDatasets(parent) {
 	$.getJSON("datasets/" + parent.nodeName, function(data) {
-		  for (var i=0; i<data.length; i++) {
-			  addDataset(data[i], parent);
-		  }
+		if (data.length == 0) {
+			fetchPlaces(parent);
+		} else {
+			for (var i=0; i<data.length; i++) {
+				addDataset(data[i], parent);
+			}
+		}
 	})
-	.error(function() { alert("error"); });
+	.error(function(response) alert("Something went wrong: " + response.responseText));
+}
+
+function fetchPlaces(dataset) {
+	$.getJSON("places/" + dataset.nodeName, function(data) {
+		
+	})
+	.error(function(response) 
+			alert("Something went wrong: " + response.responseText)
+	);
 }
 
 

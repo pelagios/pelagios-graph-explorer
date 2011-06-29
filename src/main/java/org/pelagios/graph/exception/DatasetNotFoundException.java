@@ -13,7 +13,7 @@ public class DatasetNotFoundException extends Exception {
 	private static final long serialVersionUID = 4568005232202481716L;
 
 	private static final String DEFAULT_MESSAGE_TEMPLATE = 
-		"Error: the dataset '@name@' was not found in the graph";
+		"The dataset '@name@' was not found in the graph";
 
 	public DatasetNotFoundException(String name) {
 		super(DEFAULT_MESSAGE_TEMPLATE.replace("@name@", name));

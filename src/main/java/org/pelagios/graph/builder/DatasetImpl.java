@@ -47,8 +47,8 @@ class DatasetImpl extends AbstractNodeImpl implements Dataset {
 	}
 
 	public List<Place> listPlaces() {
-		// TODO Auto-generated method stub
-		return null;
+		// TODO implement this
+		return new ArrayList<Place>();
 	}
 	
 }
