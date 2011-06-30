@@ -1,5 +1,6 @@
 package org.pelagios.graph.builder;
 
+import org.apache.log4j.Logger;
 import org.neo4j.graphdb.Node;
 
 /**
@@ -12,7 +13,7 @@ class AbstractNodeImpl {
 	
 	Node backingNode;
 	
-	// protected Logger log = LoggerFactory.getLogger(AbstractNodeImpl.class);
+	protected Logger log = Logger.getLogger(AbstractNodeImpl.class);
 	
 	public AbstractNodeImpl(Node backingNode) {
 		this.backingNode = backingNode;

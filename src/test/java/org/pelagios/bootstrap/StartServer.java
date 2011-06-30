@@ -8,9 +8,13 @@ import org.mortbay.jetty.webapp.WebAppContext;
 public class StartServer {
 
 	public static void main(String[] args) throws Exception {
+		new StartServer().start();
+	}
+	
+	public void start() {
 		Server server = new Server();
 		SocketConnector connector = new SocketConnector();
-		
+	
 		connector.setMaxIdleTime(1000 * 60 * 60);
 		connector.setSoLingerTime(-1);
 		connector.setPort(8080);
