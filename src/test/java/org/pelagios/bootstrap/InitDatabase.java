@@ -2,13 +2,14 @@ package org.pelagios.bootstrap;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 
 import org.pelagios.graph.PelagiosGraph;
 import org.pelagios.graph.builder.PelagiosGraphBuilder;
 import org.pelagios.graph.exception.DatasetExistsException;
 import org.pelagios.graph.exception.PlaceExistsException;
 import org.pelagios.importer.nomisma.NomismaDatasetImporter;
-import org.pelagios.importer.perseus.PerseusDatasetImporter;
+import org.pelagios.importer.perseus.PerseusImporter;
 import org.pelagios.importer.ptolemymachine.PtolemyDatasetImporter;
 import org.pelagios.pleiades.PleiadesImporter;
 import org.slf4j.Logger;
@@ -107,8 +108,9 @@ public class InitDatabase {
 	}
 	
 	private static void importPerseus(PelagiosGraph graph) throws DatasetExistsException {
-		PerseusDatasetImporter importer = new PerseusDatasetImporter(new File(PERSEUS_GRECO_ROMAN_RDF));
-		importer.importData(graph);
+		HashMap<String, File> perseusFiles = new HashMap<String, File>();
+		perseusFiles.put("Perseus Greco-Roman", new File(PERSEUS_GRECO_ROMAN_RDF));
+		new PerseusImporter(perseusFiles, graph);
 	}
 	
 	private static void delete(File file) {
