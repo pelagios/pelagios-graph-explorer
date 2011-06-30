@@ -20,11 +20,9 @@ import com.hp.hpl.jena.rdf.model.Resource;
  * @author Rainer Simon
  */
 public class NomismaDatasetImporter extends AbstractDatasetImporter {
-	
-	private DatasetBuilder rootNode = new DatasetBuilder("nomisma");
 
 	public NomismaDatasetImporter(File rdf) {
-		super(rdf);
+		super(rdf, new DatasetBuilder("nomisma"));
 	}
 
 	@Override

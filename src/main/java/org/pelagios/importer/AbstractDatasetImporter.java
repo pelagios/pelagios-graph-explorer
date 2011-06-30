@@ -2,19 +2,19 @@ package org.pelagios.importer;
 
 import java.io.File;
 import java.io.InputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.pelagios.graph.PelagiosGraph;
+import org.pelagios.graph.builder.DataRecordBuilder;
+import org.pelagios.graph.builder.DatasetBuilder;
 import org.pelagios.graph.exception.DatasetExistsException;
+import org.pelagios.graph.exception.DatasetNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.rdf.model.NodeIterator;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.util.FileManager;
@@ -32,8 +32,8 @@ public abstract class AbstractDatasetImporter {
 	/**
 	 * String constants
 	 */
-	protected String OAC_NAMESPACE = "http://www.openannotation.org/ns/";
-	
+	protected static final String OAC_NAMESPACE = "http://www.openannotation.org/ns/";
+
 	/**
 	 * OAC hasBody property
 	 */
@@ -50,6 +50,11 @@ public abstract class AbstractDatasetImporter {
 	protected Model model;
 	
 	/**
+	 * The top-level root node for this data set
+	 */
+	protected DatasetBuilder rootNode;
+	
+	/**
 	 * The logger
 	 */
 	protected Logger log = LoggerFactory.getLogger(AbstractDatasetImporter.class);
@@ -59,13 +64,15 @@ public abstract class AbstractDatasetImporter {
 	 * for further processing.
 	 * @param rdf the RDF file
 	 */
-	public AbstractDatasetImporter(File rdf) {
+	public AbstractDatasetImporter(File rdf, DatasetBuilder rootNode) {
 		InputStream is = FileManager.get().open(rdf.getAbsolutePath());
 		model = ModelFactory.createDefaultModel();
 		model.read(is, null);
 		
 		OAC_HASBODY = model.createProperty(OAC_NAMESPACE, "hasBody");
 		OAC_HASTARGET = model.createProperty(OAC_NAMESPACE, "hasTarget");
+		
+		this.rootNode = rootNode;
 	}
 	
 	public abstract void importData(PelagiosGraph graph) throws DatasetExistsException;
@@ -80,73 +87,51 @@ public abstract class AbstractDatasetImporter {
 			.listResourcesWithProperty(OAC_HASBODY)
 			.toList();
 	}
-	
+
 	/**
-	 * Utility method that lists all OAC bodies in 
-	 * the Jena model by their URIs
-	 * @return the body URIs
+	 * Utility method which adds a list of (hierarchical) data records
+	 * to the graph.
+	 * @param records the records
+	 * @param graph the graph
 	 */
-	protected List<URI> listOACBodies() {
-		NodeIterator it = model
-				.listObjectsOfProperty(OAC_HASBODY);
-		return listResourceURIs(it);
+	protected void batchAdd(HashMap<FlexHierarchy, List<DataRecordBuilder>> records, PelagiosGraph graph) {
+		for (FlexHierarchy h : records.keySet()) {
+			try {
+				DatasetBuilder parent = buildHierarchy(h, graph);
+				graph.addDataRecords(records.get(h), parent);
+			} catch (DatasetNotFoundException e) {
+				// Can never happen
+				throw new RuntimeException(e);
+			}
+		}
 	}
 
 	/**
-	 * Utility method that lists all OAC targets
-	 * in the Jena model by their URIs
-	 * @return the target URIs
+	 * Checks whether the specified hierarchy exists in the graph,
+	 * and creates it if it doesn't.
+	 * @param hierarchy the hierarchy
+	 * @param graph the graph
+	 * @return the lowest level DatasetBuilder in the hierarchy
 	 */
-	protected List<URI> listOACTargets() {
-		NodeIterator it = model
-			.listObjectsOfProperty(OAC_HASTARGET);
-		return listResourceURIs(it);
-	}
-	
-	/**
-	 * Utility method that compiles a list of URIs from
-	 * a NodeIterator.
-	 * @param it the iterator
-	 * @return the list of URIs
-	 */
-	private List<URI> listResourceURIs(NodeIterator it) {
-		List<URI> uris = new ArrayList<URI>();
-		while (it.hasNext()) {
-			Resource resource = it.next().asResource();
+	private DatasetBuilder buildHierarchy(FlexHierarchy hierarchy, PelagiosGraph graph) {
+		
+		// Starting at the top, check whether all hierarchy levels
+		// exist in the graph - and create them if they don't
+		DatasetBuilder parentLvl = rootNode;
+		for (String lvl : hierarchy.getLevels()) {
+			DatasetBuilder currentLvl = new DatasetBuilder(lvl);
 			try {
-				uris.add(new URI(resource.toString()));
-			} catch (URISyntaxException e) {
-				log.warn("Could not resolve URI. Might be a problem with the dataset. " +
-					e.getMessage());
-			}		
+				graph.addDataset(currentLvl, parentLvl);
+			} catch (DatasetExistsException e) {
+				// Already exists - never mind
+			} catch (DatasetNotFoundException e) {
+				// Can never happen
+				throw new RuntimeException(e);
+			} finally {
+				parentLvl = currentLvl;
+			}
 		}
-		return uris;
-	}
-	
-	protected class Hierarchy {
-		
-		public int parentIdx, subsetIdx;
-		
-		public Hierarchy(int parentIdx, int subsetIdx) {
-			this.parentIdx = parentIdx;
-			this.subsetIdx = subsetIdx;
-		}
-		
-		@Override
-		public boolean equals(Object arg) {
-			if (!(arg instanceof Hierarchy))
-				return false;
-			
-			Hierarchy other = (Hierarchy) arg;
-			
-			if (other.subsetIdx != subsetIdx)
-				return false;
-			
-			if (other.parentIdx != parentIdx)
-				return false;
-			
-			return true;
-		}
+		return parentLvl;
 	}
 
 }

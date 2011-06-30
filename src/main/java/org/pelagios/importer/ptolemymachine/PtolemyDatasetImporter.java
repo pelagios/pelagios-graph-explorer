@@ -4,6 +4,7 @@ import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -12,8 +13,8 @@ import org.pelagios.graph.PelagiosGraph;
 import org.pelagios.graph.builder.DataRecordBuilder;
 import org.pelagios.graph.builder.DatasetBuilder;
 import org.pelagios.graph.exception.DatasetExistsException;
-import org.pelagios.graph.exception.DatasetNotFoundException;
 import org.pelagios.importer.AbstractDatasetImporter;
+import org.pelagios.importer.FlexHierarchy;
 
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
@@ -58,11 +59,9 @@ import com.hp.hpl.jena.vocabulary.DCTerms;
  * @author Rainer Simon
  */
 public class PtolemyDatasetImporter extends AbstractDatasetImporter {
-	
-	private DatasetBuilder rootNode = new DatasetBuilder("Ptolemy Machine");
-	
+
 	public PtolemyDatasetImporter(File rdf) {
-		super(rdf);
+		super(rdf, new DatasetBuilder("Ptolemy Machine"));
 	}
 	
 	/**
@@ -76,8 +75,8 @@ public class PtolemyDatasetImporter extends AbstractDatasetImporter {
 		// Start by creating the root node
 		graph.addDataset(rootNode);
 		
-		HashMap<Hierarchy, List<DataRecordBuilder>> allRecords = 
-			new HashMap<Hierarchy, List<DataRecordBuilder>>();
+		HashMap<FlexHierarchy, List<DataRecordBuilder>> allRecords = 
+			new HashMap<FlexHierarchy, List<DataRecordBuilder>>();
 		
 		for (Resource oac : listOACAnnotations()) {
 			// Annotation title ... place name
@@ -98,7 +97,7 @@ public class PtolemyDatasetImporter extends AbstractDatasetImporter {
 
 			// Create the record and store in memory - we'll batch-add 
 			// all records to the graph later for added performance
-			Hierarchy h = getHierarchy(recordURN);
+			FlexHierarchy h = getHierarchy(recordURN);
 			try {
 				List<DataRecordBuilder> records = allRecords.get(h);
 				if (records == null) {
@@ -113,57 +112,7 @@ public class PtolemyDatasetImporter extends AbstractDatasetImporter {
 			}
 		}
 		
-		batchAddAll(allRecords, graph);
-	}
-	
-	private void batchAddAll(HashMap<Hierarchy, List<DataRecordBuilder>> records, PelagiosGraph graph) {	
-		for (Hierarchy h : records.keySet()) {
-			DatasetBuilder parent = getDatasetBuilder(h, graph);
-			try {
-				graph.addDataRecords(records.get(h), parent);
-			} catch (DatasetNotFoundException e) {
-				// Can never happen
-				throw new RuntimeException(e);
-			}
-		}
-	}
-	
-	/**
-	 * Utility method which creates a DatasetBuilder for the specified sub-set. The method
-	 * also makes sure the sub-set and parent set are created in the graph if they don't
-	 * exist already
-	 * @param parentIdx the parent-level index
-	 * @param subsetIdx the subset-level index
-	 * @param graph the Pelagios graph
-	 * @return the DatasetBuilder
-	 */
-	private DatasetBuilder getDatasetBuilder(Hierarchy h, PelagiosGraph graph) {
-		String parentName = "Ptolemy Machine " + h.parentIdx;
-		String subsetName = "Ptolemy Machine " + h.parentIdx + ":" + h.subsetIdx;
-		
-		// Create parent data set (if it doesn't exist)
-		try {
-			graph.addDataset(new DatasetBuilder(parentName), rootNode);
-		} catch (DatasetNotFoundException e) {
-			// Can never happen
-			throw new RuntimeException(e);
-		} catch (DatasetExistsException e) {
-			// Already exists - never mind
-		}
-		
-		// Create sub set (if it doesn't exist)
-		try {
-			graph.addDataset(
-					new DatasetBuilder(subsetName),
-					new DatasetBuilder(parentName));
-		} catch (DatasetNotFoundException e) {
-			// Can never happen
-			throw new RuntimeException(e);
-		} catch (DatasetExistsException e) {
-			// Already exists - never mind
-		}
-		
-		return new DatasetBuilder(subsetName);
+		batchAdd(allRecords, graph);
 	}
 	
 	/**
@@ -178,7 +127,7 @@ public class PtolemyDatasetImporter extends AbstractDatasetImporter {
 	 * @param urn the urn
 	 * @return the hierarchy indexes
 	 */
-	Hierarchy getHierarchy(String urn) {
+	private FlexHierarchy getHierarchy(String urn) {
 		StringTokenizer tokenizer = new StringTokenizer(urn, ":");
 
 		if (tokenizer.countTokens() < 5)
@@ -192,7 +141,10 @@ public class PtolemyDatasetImporter extends AbstractDatasetImporter {
 		if (s.length < 2)
 			throw new RuntimeException("Illegal URN format - looks like an error in the dataset: " + urn);
 		
-		return new Hierarchy(Integer.parseInt(s[0]), Integer.parseInt(s[1]));
+		List<String> hierarchy  = new ArrayList<String>();
+		hierarchy.add("Ptolemy Machine " + s[0]);
+		hierarchy.add("Ptolemy Machine " + s[0] + ":" + s[1]);
+		return new FlexHierarchy(hierarchy);
 	}
 	
 }
