@@ -24,6 +24,19 @@ public interface Dataset {
 	public String getName();
 		
 	/**
+	 * Returns the number of data records contained in this data set.
+	 * @return the number of data records
+	 */
+	public int countRecords();
+	
+	/**
+	 * Returns the number of places referenced by the data records
+	 * in this data set
+	 * @return the number of places referenced in the data set
+	 */
+	public int countPlaces();
+	
+	/**
 	 * Checks wether this data set has any sub-sets attached to it.
 	 * @return true in case there are sub-sets
 	 */

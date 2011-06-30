@@ -28,6 +28,16 @@ class DatasetImpl extends AbstractNodeImpl implements Dataset {
 	void setName(String name) {
 		set(Dataset.KEY_NAME, name);
 	}
+	
+	public int countRecords() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public int countPlaces() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
 	public boolean hasSubsets() {
 		Iterable<Relationship> rels = backingNode
