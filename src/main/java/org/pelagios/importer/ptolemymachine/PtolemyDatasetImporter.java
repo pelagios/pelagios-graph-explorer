@@ -13,7 +13,7 @@ import org.pelagios.graph.builder.DataRecordBuilder;
 import org.pelagios.graph.builder.DatasetBuilder;
 import org.pelagios.graph.exception.DatasetExistsException;
 import org.pelagios.importer.AbstractDatasetImporter;
-import org.pelagios.importer.FlexHierarchy;
+import org.pelagios.importer.Hierarchy;
 
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
@@ -74,8 +74,8 @@ public class PtolemyDatasetImporter extends AbstractDatasetImporter {
 		// Start by creating the root node
 		graph.addDataset(rootNode);
 		
-		HashMap<FlexHierarchy, List<DataRecordBuilder>> allRecords = 
-			new HashMap<FlexHierarchy, List<DataRecordBuilder>>();
+		HashMap<Hierarchy, List<DataRecordBuilder>> allRecords = 
+			new HashMap<Hierarchy, List<DataRecordBuilder>>();
 		
 		for (Resource oac : listOACAnnotations()) {
 			// Annotation title ... place name
@@ -96,7 +96,7 @@ public class PtolemyDatasetImporter extends AbstractDatasetImporter {
 
 			// Create the record and store in memory - we'll batch-add 
 			// all records to the graph later for added performance
-			FlexHierarchy h = getHierarchy(recordURN);
+			Hierarchy h = getHierarchy(recordURN);
 			try {
 				List<DataRecordBuilder> records = allRecords.get(h);
 				if (records == null) {
@@ -126,7 +126,7 @@ public class PtolemyDatasetImporter extends AbstractDatasetImporter {
 	 * @param urn the urn
 	 * @return the hierarchy indexes
 	 */
-	private FlexHierarchy getHierarchy(String urn) {
+	private Hierarchy getHierarchy(String urn) {
 		StringTokenizer tokenizer = new StringTokenizer(urn, ":");
 
 		if (tokenizer.countTokens() < 5)
@@ -143,7 +143,7 @@ public class PtolemyDatasetImporter extends AbstractDatasetImporter {
 		List<String> hierarchy  = new ArrayList<String>();
 		hierarchy.add("Ptolemy Machine " + s[0]);
 		hierarchy.add("Ptolemy Machine " + s[0] + ":" + s[1]);
-		return new FlexHierarchy(hierarchy);
+		return new Hierarchy(hierarchy);
 	}
 	
 }

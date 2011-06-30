@@ -2,11 +2,11 @@ package org.pelagios.importer;
 
 import java.util.List;
 
-public class FlexHierarchy {
+public class Hierarchy {
 	
 	private List<String> levels;
 	
-	public FlexHierarchy(List<String> levels) {
+	public Hierarchy(List<String> levels) {
 		this.levels = levels;
 	}
 	
@@ -16,10 +16,10 @@ public class FlexHierarchy {
 	
 	@Override
 	public boolean equals(Object arg) {
-		if (!(arg instanceof FlexHierarchy))
+		if (!(arg instanceof Hierarchy))
 			return false;
 		
-		FlexHierarchy other = (FlexHierarchy) arg;
+		Hierarchy other = (Hierarchy) arg;
 		if (this.levels.size() != other.levels.size())
 			return false;
 		

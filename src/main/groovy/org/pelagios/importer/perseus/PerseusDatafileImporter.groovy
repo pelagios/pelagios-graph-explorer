@@ -5,7 +5,7 @@ import org.pelagios.graph.builder.DataRecordBuilder
 import org.pelagios.graph.builder.DatasetBuilder
 import org.pelagios.graph.exception.DatasetExistsException
 import org.pelagios.importer.AbstractDatasetImporter
-import org.pelagios.importer.FlexHierarchy
+import org.pelagios.importer.Hierarchy
 
 import com.hp.hpl.jena.rdf.model.Resource
 
@@ -58,12 +58,12 @@ class PerseusDatafileImporter extends AbstractDatasetImporter {
 		graph.addDataset(newRoot, rootNode)
 		rootNode = newRoot;
 		
-		HashMap<FlexHierarchy, List<DataRecordBuilder>> allRecords = 
-			new HashMap<FlexHierarchy, List<DataRecordBuilder>>()
+		HashMap<Hierarchy, List<DataRecordBuilder>> allRecords = 
+			new HashMap<Hierarchy, List<DataRecordBuilder>>()
 		
 		for (Resource oac : listOACAnnotations()) {			
 			// Annotation URI for building the hierarchy
-			FlexHierarchy h = getHierarchy(oac.toString())
+			Hierarchy h = getHierarchy(oac.toString())
 			
 			// Target = data record URN
 			String recordURL = oac.getProperty(OAC_HASTARGET).getObject().toString()
@@ -104,7 +104,7 @@ class PerseusDatafileImporter extends AbstractDatasetImporter {
 	* @param uri the URI
 	* @return the hierarchy
 	*/
-   FlexHierarchy getHierarchy(String uri) {
+   Hierarchy getHierarchy(String uri) {
 	   List<String> hierarchy = new ArrayList<String>()
 	   
 	   StringTokenizer tokenizer = new StringTokenizer(uri, ":")
@@ -137,7 +137,7 @@ class PerseusDatafileImporter extends AbstractDatasetImporter {
 		   }
 	   }
 	   	   
-	   return new FlexHierarchy(hierarchy)
+	   return new Hierarchy(hierarchy)
    }
 
 }

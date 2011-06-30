@@ -94,8 +94,8 @@ public abstract class AbstractDatasetImporter {
 	 * @param records the records
 	 * @param graph the graph
 	 */
-	protected void batchAdd(HashMap<FlexHierarchy, List<DataRecordBuilder>> records, PelagiosGraph graph) {
-		for (FlexHierarchy h : records.keySet()) {
+	protected void batchAdd(HashMap<Hierarchy, List<DataRecordBuilder>> records, PelagiosGraph graph) {
+		for (Hierarchy h : records.keySet()) {
 			try {
 				DatasetBuilder parent = buildHierarchy(h, graph);
 				graph.addDataRecords(records.get(h), parent);
@@ -113,7 +113,7 @@ public abstract class AbstractDatasetImporter {
 	 * @param graph the graph
 	 * @return the lowest level DatasetBuilder in the hierarchy
 	 */
-	private DatasetBuilder buildHierarchy(FlexHierarchy hierarchy, PelagiosGraph graph) {
+	private DatasetBuilder buildHierarchy(Hierarchy hierarchy, PelagiosGraph graph) {
 		
 		// Starting at the top, check whether all hierarchy levels
 		// exist in the graph - and create them if they don't
