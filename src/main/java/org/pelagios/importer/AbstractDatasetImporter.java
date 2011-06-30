@@ -7,6 +7,8 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.pelagios.graph.PelagiosGraph;
+import org.pelagios.graph.exception.DatasetExistsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,6 +67,8 @@ public abstract class AbstractDatasetImporter {
 		OAC_HASBODY = model.createProperty(OAC_NAMESPACE, "hasBody");
 		OAC_HASTARGET = model.createProperty(OAC_NAMESPACE, "hasTarget");
 	}
+	
+	public abstract void importData(PelagiosGraph graph) throws DatasetExistsException;
 	
 	/**
 	 * Utility method that lists all OAC annotations

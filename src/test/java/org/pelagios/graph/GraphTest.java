@@ -14,6 +14,7 @@ import org.pelagios.graph.builder.PlaceBuilder;
 import org.pelagios.graph.exception.DatasetExistsException;
 import org.pelagios.graph.exception.DatasetNotFoundException;
 import org.pelagios.graph.exception.PlaceExistsException;
+import org.pelagios.graph.exception.PlaceNotFoundException;
 
 public class GraphTest {
 	
@@ -99,7 +100,7 @@ public class GraphTest {
 	}
 	
 	@Test
-	public void testPlaces() throws URISyntaxException {
+	public void testPlaces() throws URISyntaxException, PlaceNotFoundException {
 		// TODO don't just print out, verify with assertions!
 		PelagiosGraphBuilder graphBuilder = new PelagiosGraphBuilder(DATA_DIR);
 		PelagiosGraph graph = graphBuilder.build();

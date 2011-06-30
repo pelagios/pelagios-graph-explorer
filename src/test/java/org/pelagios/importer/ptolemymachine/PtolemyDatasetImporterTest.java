@@ -8,6 +8,7 @@ import org.pelagios.graph.Dataset;
 import org.pelagios.graph.PelagiosGraph;
 import org.pelagios.graph.builder.PelagiosGraphBuilder;
 import org.pelagios.graph.exception.DatasetExistsException;
+import org.pelagios.graph.exception.PlaceNotFoundException;
 import org.pelagios.importer.ptolemymachine.PtolemyDatasetImporter.Hierarchy;
 
 public class PtolemyDatasetImporterTest {
@@ -42,7 +43,7 @@ public class PtolemyDatasetImporterTest {
 	}
 	
 	@Test
-	public void testImport() throws DatasetExistsException {
+	public void testImport() throws DatasetExistsException, PlaceNotFoundException {
 		PtolemyDatasetImporter importer = new PtolemyDatasetImporter(new File(RDF_FILE));
 		
 		// Just a quick test on the hierarchy parsing method

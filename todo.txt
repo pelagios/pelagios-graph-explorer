@@ -1,5 +1,6 @@
 TODO...
 
+- Document the graph model (in an extra readme? in the PelagiosRelationships?)
 - Clean up the unit tests (overall cleanup + mock objects)
 - See whether it's possible/useful to port a few things to Groovy and/or Scala to reduce LoC
 - Add HTTP scripts for harvesting Ptolemy Machine place data (Groovy?)

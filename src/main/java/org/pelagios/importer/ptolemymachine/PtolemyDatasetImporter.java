@@ -69,7 +69,9 @@ public class PtolemyDatasetImporter extends AbstractDatasetImporter {
 	 * Imports the RDF data into the Pelagios Graph.
 	 * @param graph the graph
 	 * @throws DatasetExistsException 
+	 * @throws PlaceNotFoundException 
 	 */
+	@Override
 	public void importData(PelagiosGraph graph) throws DatasetExistsException {
 		// Start by creating the root node
 		graph.addDataset(rootNode);
@@ -114,7 +116,7 @@ public class PtolemyDatasetImporter extends AbstractDatasetImporter {
 		batchAddAll(allRecords, graph);
 	}
 	
-	private void batchAddAll(HashMap<Hierarchy, List<DataRecordBuilder>> records, PelagiosGraph graph) {
+	private void batchAddAll(HashMap<Hierarchy, List<DataRecordBuilder>> records, PelagiosGraph graph) {	
 		for (Hierarchy h : records.keySet()) {
 			DatasetBuilder parent = getDatasetBuilder(h, graph);
 			try {

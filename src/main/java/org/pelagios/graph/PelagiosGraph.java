@@ -9,6 +9,7 @@ import org.pelagios.graph.builder.PlaceBuilder;
 import org.pelagios.graph.exception.DatasetExistsException;
 import org.pelagios.graph.exception.DatasetNotFoundException;
 import org.pelagios.graph.exception.PlaceExistsException;
+import org.pelagios.graph.exception.PlaceNotFoundException;
 
 /**
  * The PelagiosGraph interface.
@@ -52,6 +53,7 @@ public interface PelagiosGraph {
 	 * @param records the data record
 	 * @param parent the parent data set
 	 * @throws DatasetNotFoundException if the parent data set was not found in the graph
+	 * @throws PlaceNotFoundException if records contain references to places not in the graph
 	 */
 	public void addDataRecords(List<DataRecordBuilder> records, DatasetBuilder parent)
 		throws DatasetNotFoundException;
@@ -67,7 +69,7 @@ public interface PelagiosGraph {
 	 * @param uri the URI
 	 * @return the place
 	 */
-	public Place getPlace(URI uri);
+	public Place getPlace(URI uri) throws PlaceNotFoundException;
 	
 	/**
 	 * Returns an iterator with all the places in the graph.

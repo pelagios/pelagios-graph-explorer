@@ -19,6 +19,7 @@ import org.pelagios.graph.Place;
 import org.pelagios.graph.exception.DatasetExistsException;
 import org.pelagios.graph.exception.DatasetNotFoundException;
 import org.pelagios.graph.exception.PlaceExistsException;
+import org.pelagios.graph.exception.PlaceNotFoundException;
 
 /**
  * Implementation of the PelagiosGraph interface.
@@ -132,7 +133,7 @@ class PelagiosGraphImpl implements PelagiosGraph {
 	}
 	
 	public void addDataRecords(List<DataRecordBuilder> records, DatasetBuilder parent)
-		throws DatasetNotFoundException{
+		throws DatasetNotFoundException {
 		
 		Transaction tx = graphDb.beginTx();
 		try {
@@ -142,7 +143,7 @@ class PelagiosGraphImpl implements PelagiosGraph {
 					throw new DatasetNotFoundException(parent.getName());
 				
 				Node parentNode = hits.getSingle();
-				DataRecordImpl record = b.build(graphDb);
+				DataRecordImpl record = b.build(graphDb, getPlaceIndex());
 				Node recordNode = record.backingNode;
 				parentNode.createRelationshipTo(recordNode, PelagiosRelationships.RECORD);
 			}
@@ -167,8 +168,12 @@ class PelagiosGraphImpl implements PelagiosGraph {
 		}			
 	}
 
-	public Place getPlace(URI uri) {
+	public Place getPlace(URI uri) throws PlaceNotFoundException {
 		IndexHits<Node> hits = getPlaceIndex().get(Place.KEY_URI, uri);
+		
+		if (hits.size() == 0)
+			throw new PlaceNotFoundException(uri);
+		
 		return new PlaceImpl(hits.getSingle());
 	}
 	
