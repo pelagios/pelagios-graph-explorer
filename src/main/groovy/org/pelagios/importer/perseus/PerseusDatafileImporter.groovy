@@ -1,26 +1,13 @@
 package org.pelagios.importer.perseus
 
-import java.io.File
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.StringTokenizer;
-
-import javassist.bytecode.StackMapTable.NewRemover;
-
-import org.apache.lucene.analysis.Tokenizer;
 import org.pelagios.graph.PelagiosGraph
-import org.pelagios.graph.builder.DataRecordBuilder;
+import org.pelagios.graph.builder.DataRecordBuilder
 import org.pelagios.graph.builder.DatasetBuilder
 import org.pelagios.graph.exception.DatasetExistsException
-import org.pelagios.graph.exception.DatasetNotFoundException;
 import org.pelagios.importer.AbstractDatasetImporter
-import org.pelagios.importer.FlexHierarchy;
+import org.pelagios.importer.FlexHierarchy
 
-import com.hp.hpl.jena.rdf.model.RDFNode;
-import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.Resource
 
 /**
  * Importer for one Perseus data file. RDF/XML sample:
