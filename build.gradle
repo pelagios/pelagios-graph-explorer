@@ -1,4 +1,5 @@
 apply plugin: 'java'
+apply plugin: 'groovy'
 apply plugin: 'war'
 apply plugin: 'eclipse'
 
@@ -18,6 +19,7 @@ eclipse {
 }
 
 dependencies {
+	groovy group: 'org.codehaus.groovy', name: 'groovy', version: '1.7.10'
 	compile group: 'com.hp.hpl.jena', name: 'jena', version: '2.6.4'
 	compile group: 'org.neo4j', name: 'neo4j', version: '1.4.M03'
 	compile group: 'org.geotools', name: 'gt-main', version: '2.7.2' 
@@ -26,6 +28,6 @@ dependencies {
 	compile group: 'org.jboss.resteasy', name: 'resteasy-jaxrs', version: '2.2.1.GA'
 	compile group: 'com.google.code.gson', name:'gson', version:'1.7.1'
 	compile group: 'net.sf.opencsv', name: 'opencsv', version: '2.1'
-	testCompile group: 'org.eclipse.jetty/', name:'jetty', version: '6.1.26'
+	testCompile group: 'org.mortbay.jetty/', name:'jetty', version: '6.1.26'
 	testCompile group: 'junit', name: 'junit', version: '4.8.2'
 }

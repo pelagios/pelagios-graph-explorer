@@ -8,6 +8,7 @@ import org.pelagios.graph.builder.PelagiosGraphBuilder;
 import org.pelagios.graph.exception.DatasetExistsException;
 import org.pelagios.graph.exception.PlaceExistsException;
 import org.pelagios.importer.nomisma.NomismaDatasetImporter;
+import org.pelagios.importer.perseus.PerseusDatasetImporter;
 import org.pelagios.importer.ptolemymachine.PtolemyDatasetImporter;
 import org.pelagios.pleiades.PleiadesImporter;
 import org.slf4j.Logger;
@@ -33,7 +34,7 @@ public class InitDatabase {
 	
 	private static final String NEO4J_DIR = "c:/neo4j-data";
 	
-	private static final String DATASETS_DIR = "src/test/resources/datasets";
+	private static final String DATASETS_DIR = "src/test/resources/datasets/";
 	
 	private static final String PLEIADES_LOCATIONS_CSV = "src/test/resources/pleiades-locations-20110627.csv";
 	private static final String PLEIADES_NAMES_CSV = "src/test/resources/pleiades-names-20110627.csv";
@@ -106,8 +107,8 @@ public class InitDatabase {
 	}
 	
 	private static void importPerseus(PelagiosGraph graph) throws DatasetExistsException {
-		// PerseusDatasetImporter importer = new PerseusDatasetImporter(new File(PERSEUS_GRECO_ROMAN_RDF));
-		// importer.importData(graph);
+		PerseusDatasetImporter importer = new PerseusDatasetImporter(new File(PERSEUS_GRECO_ROMAN_RDF));
+		importer.importData(graph);
 	}
 	
 	private static void delete(File file) {
