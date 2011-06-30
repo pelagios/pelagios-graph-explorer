@@ -46,7 +46,7 @@ or application root path.
 
 In order to run the unit tests you need a set of CSV dump files
 of the [Pleiades] (http://pleiades.stoa.org) gazetteer. These files
-are _not_ included in this project to save repository space. 
+are __not__ included in this project to save repository space. 
 
 Please obtain recent versions of the *pleiades-locations-YYYYMMDD.csv.gz*
 and *pleiades-names-YYYMMDD.csv.gz* CSV dumps from 
