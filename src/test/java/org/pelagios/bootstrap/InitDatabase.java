@@ -45,6 +45,8 @@ public class InitDatabase {
 	private static final String PTOLEMY_MACHINE_RDF = DATASETS_DIR + "ptolemy.rdf";
 	
 	private static final String PERSEUS_GRECO_ROMAN_RDF = DATASETS_DIR + "perseus-greco-roman.rdf";
+	private static final String PERSEUS_RENAISSANCE_RDF = DATASETS_DIR + "perseus-renaissance.rdf";
+	private static final String PERSEUS_RICHMOND_TIMES_RDF = DATASETS_DIR + "perseus-richmond-times.rdf";
 	
 	public static void main(String[] args) 
 		throws IOException, PlaceExistsException, DatasetExistsException {
@@ -110,6 +112,8 @@ public class InitDatabase {
 	private static void importPerseus(PelagiosGraph graph) throws DatasetExistsException {
 		HashMap<String, File> perseusFiles = new HashMap<String, File>();
 		perseusFiles.put("Perseus Greco-Roman", new File(PERSEUS_GRECO_ROMAN_RDF));
+		perseusFiles.put("Perseus Renaissance", new File(PERSEUS_RENAISSANCE_RDF));
+		perseusFiles.put("Perseus Richmond Times", new File(PERSEUS_RICHMOND_TIMES_RDF));
 		new PerseusImporter(perseusFiles, graph);
 	}
 	
