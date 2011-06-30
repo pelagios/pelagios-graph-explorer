@@ -29,7 +29,6 @@ public class NomismaDatasetImporter extends AbstractDatasetImporter {
 
 	@Override
 	public void importData(PelagiosGraph graph) throws DatasetExistsException {
-		
 		graph.addDataset(rootNode);
 		
 		List<DataRecordBuilder> records = new ArrayList<DataRecordBuilder>();

@@ -33,12 +33,16 @@ public class InitDatabase {
 	
 	private static final String NEO4J_DIR = "c:/neo4j-data";
 	
+	private static final String DATASETS_DIR = "src/test/resources/datasets";
+	
 	private static final String PLEIADES_LOCATIONS_CSV = "src/test/resources/pleiades-locations-20110627.csv";
 	private static final String PLEIADES_NAMES_CSV = "src/test/resources/pleiades-names-20110627.csv";
 	
-	private static final String NOMISMA_RDF = "src/test/resources/datasets/nomisma.org.pelagios.rdf";
+	private static final String NOMISMA_RDF = DATASETS_DIR + "nomisma.org.rdf";
 	
-	private static final String PTOLEMY_MACHINE_RDF = "src/test/resources/datasets/ptolemy-oac.rdf";
+	private static final String PTOLEMY_MACHINE_RDF = DATASETS_DIR + "ptolemy.rdf";
+	
+	private static final String PERSEUS_GRECO_ROMAN_RDF = DATASETS_DIR + "perseus-greco-roman.rdf";
 	
 	public static void main(String[] args) 
 		throws IOException, PlaceExistsException, DatasetExistsException {
@@ -71,6 +75,11 @@ public class InitDatabase {
 		importPtolemyMachine(graph);
 		log.info("Done. (" + (System.currentTimeMillis() - taskStart) + " ms)");
 		
+		taskStart = System.currentTimeMillis();
+		log.info("Importing Perseus dataset");	
+		importPerseus(graph);
+		log.info("Done. (" + (System.currentTimeMillis() - taskStart) + " ms)");	
+		
 		graph.shutdown();
 		log.info("Database initialized. Took " + 
 				(System.currentTimeMillis() - initStart)/1000 + " seconds.");
@@ -94,6 +103,11 @@ public class InitDatabase {
 	private static void importPtolemyMachine(PelagiosGraph graph) throws DatasetExistsException {
 		PtolemyDatasetImporter importer = new PtolemyDatasetImporter(new File(PTOLEMY_MACHINE_RDF));
 		importer.importData(graph);
+	}
+	
+	private static void importPerseus(PelagiosGraph graph) throws DatasetExistsException {
+		// PerseusDatasetImporter importer = new PerseusDatasetImporter(new File(PERSEUS_GRECO_ROMAN_RDF));
+		// importer.importData(graph);
 	}
 	
 	private static void delete(File file) {
