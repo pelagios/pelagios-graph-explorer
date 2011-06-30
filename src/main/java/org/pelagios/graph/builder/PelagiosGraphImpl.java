@@ -208,27 +208,5 @@ class PelagiosGraphImpl implements PelagiosGraph {
 	public void shutdown() {
 		graphDb.shutdown();
 	}
-	
-	public void clear() {
-		Transaction tx = graphDb.beginTx();
-		
-		try {
-			getDatasetIndex().delete();
-			getPlaceIndex().delete();
-			
-			for (Node n : graphDb.getAllNodes()) {
-				for (Relationship s : n.getRelationships()) {
-					s.delete();
-				}
-				
-				if (!n.equals(graphDb.getReferenceNode()))
-					n.delete();
-			}
-			
-			tx.success();
-		} finally {
-			tx.finish();
-		}
-	}
 		
 }

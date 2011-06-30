@@ -82,9 +82,4 @@ public interface PelagiosGraph {
 	 */
 	public void shutdown();
 	
-	/**
-	 * Deletes the entire graph (use with caution!)
-	 */
-	public void clear();
-	
 }

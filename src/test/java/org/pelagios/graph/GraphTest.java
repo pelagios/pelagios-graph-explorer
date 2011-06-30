@@ -120,7 +120,6 @@ public class GraphTest {
 	public static void shutdown() {
 		PelagiosGraphBuilder graphBuilder = new PelagiosGraphBuilder(DATA_DIR);
 		PelagiosGraph graph = graphBuilder.build();
-		graph.clear();
 		graph.shutdown();
 	}
 

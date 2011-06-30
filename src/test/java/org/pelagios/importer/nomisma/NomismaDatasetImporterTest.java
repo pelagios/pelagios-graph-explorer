@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.pelagios.graph.PelagiosGraph;
 import org.pelagios.graph.builder.PelagiosGraphBuilder;
 import org.pelagios.graph.exception.DatasetExistsException;
-import org.pelagios.graph.exception.PlaceNotFoundException;
 
 public class NomismaDatasetImporterTest {
 	
