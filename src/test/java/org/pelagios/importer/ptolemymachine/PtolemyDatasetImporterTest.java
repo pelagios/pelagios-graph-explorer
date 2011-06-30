@@ -2,14 +2,12 @@ package org.pelagios.importer.ptolemymachine;
 
 import java.io.File;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.pelagios.graph.Dataset;
 import org.pelagios.graph.PelagiosGraph;
 import org.pelagios.graph.builder.PelagiosGraphBuilder;
 import org.pelagios.graph.exception.DatasetExistsException;
 import org.pelagios.graph.exception.PlaceNotFoundException;
-import org.pelagios.importer.ptolemymachine.PtolemyDatasetImporter.Hierarchy;
 
 public class PtolemyDatasetImporterTest {
 	
@@ -22,12 +20,7 @@ public class PtolemyDatasetImporterTest {
 	 * Path to the RDF file
 	 */
 	private static final String RDF_FILE = "src/test/resources/datasets/ptolemy-oac.rdf";
-	
-	/**
-	 * A sampel URN to test hierarchy parsing
-	 */
-	private static final String SAMPLE_URN = "urn:cts:greekLit:tlg0363.tlg009.chs01:4.7.10:???????????????";
-	
+		
 	private void printDataset(Dataset dataset, int lvl) {
 		StringBuffer indent = new StringBuffer(" -");
 		for (int i=0; i<lvl; i++) {
@@ -45,11 +38,6 @@ public class PtolemyDatasetImporterTest {
 	@Test
 	public void testImport() throws DatasetExistsException, PlaceNotFoundException {
 		PtolemyDatasetImporter importer = new PtolemyDatasetImporter(new File(RDF_FILE));
-		
-		// Just a quick test on the hierarchy parsing method
-		Hierarchy h = importer.getHierarchy(SAMPLE_URN);
-		Assert.assertEquals(4, h.parentIdx);
-		Assert.assertEquals(7, h.subsetIdx);
 		
 		// Run the import
 		PelagiosGraphBuilder graphBuilder = new PelagiosGraphBuilder(DATA_DIR);

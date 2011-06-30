@@ -195,30 +195,4 @@ public class PtolemyDatasetImporter extends AbstractDatasetImporter {
 		return new Hierarchy(Integer.parseInt(s[0]), Integer.parseInt(s[1]));
 	}
 	
-	class Hierarchy {
-		
-		int parentIdx, subsetIdx;
-		
-		public Hierarchy(int parentIdx, int subsetIdx) {
-			this.parentIdx = parentIdx;
-			this.subsetIdx = subsetIdx;
-		}
-		
-		@Override
-		public boolean equals(Object arg) {
-			if (!(arg instanceof Hierarchy))
-				return false;
-			
-			Hierarchy other = (Hierarchy) arg;
-			
-			if (other.subsetIdx != subsetIdx)
-				return false;
-			
-			if (other.parentIdx != parentIdx)
-				return false;
-			
-			return true;
-		}
-	}
-	
 }
