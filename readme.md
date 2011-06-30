@@ -28,8 +28,8 @@ are building the project.)
 A note to developers: the project comes with an included starter class that 
 will launch the application demo in an embedded Jetty Web server. Please 
 ensure that your IDE compiles the application classes to the 
-*/src/main/webapp/WEB-INF/classes* directory. (If you use Eclipse, the
-gradle script will ensure this.) Locate the class
+*/src/main/webapp/WEB-INF/classes* directory (if you use Eclipse, the
+gradle script will handle this for you). Locate the class
 
 ``org.pelagios.bootstrap.StartServer``
 
