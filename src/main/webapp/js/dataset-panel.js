@@ -3,10 +3,12 @@ var vis, force, nodes, links;
 window.onload = function () {
 	initialize();
 	
+	fetchDatasets();
+
 	nodes = new Array();
-	nodes.push({nodeName:"Ptolemy Machine", group:1, idx:0});
+	// nodes.push({nodeName:"Ptolemy Machine", group:1, idx:0});
     links = new Array();
-    links.push({source:0, target:0, value:1});
+    // links.push({source:0, target:0, value:1});
 	
 	var w = document.body.clientWidth,
 	    h = document.body.clientHeight * 0.6,
@@ -50,7 +52,11 @@ function addDataset(dataset, parent) {
 	var newNode = {nodeName:dataset.name, group:1, idx:nodes.length};
 
 	nodes.push(newNode);
-	links.push({source:parent.idx, target:newNode.idx, value:1});
+	if (parent) {
+		links.push({source:parent.idx, target:newNode.idx, value:1});
+	} else {
+		links.push({source:newNode.idx, target:newNode.idx, value:1});
+	}
 	
     force.links(links);
     force.nodes(nodes);
@@ -60,7 +66,11 @@ function addDataset(dataset, parent) {
 }
 
 function fetchDatasets(parent) {
-	$.getJSON("datasets/" + parent.nodeName, function(data) {
+	var url = "datasets/";
+	if (parent)
+		url += parent.nodeName;
+		
+	$.getJSON(url, function(data) {
 		if (data.length == 0) {
 			fetchPlaces(parent);
 		} else {
@@ -73,8 +83,10 @@ function fetchDatasets(parent) {
 }
 
 function fetchPlaces(dataset) {
-	$.getJSON("places/" + dataset.nodeName, function(data) {
-		
+	$.getJSON("datasets/" + dataset.nodeName + "/places/", function(data) {
+		for (var i=0; i<data.length; i++) {
+			addPoint(data[i].lat, data[i].lon, data.label);
+		}
 	})
 	.error(function(response) 
 			alert("Something went wrong: " + response.responseText)

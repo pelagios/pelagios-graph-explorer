@@ -10,6 +10,7 @@ import javax.ws.rs.core.Response;
 
 import org.pelagios.Backend;
 import org.pelagios.graph.Dataset;
+import org.pelagios.graph.Place;
 import org.pelagios.graph.exception.DatasetNotFoundException;
 
 /**
@@ -49,6 +50,22 @@ public class DatasetController extends AbstractController {
 		
 		List<Dataset> datasets = Backend.getInstance().getDataset(superset).listSubsets();	
 		return Response.ok(toJSON(datasets)).build();
+	}
+	
+	/**
+	 * Returns a list of all places referenced in the specified data set.
+	 * @param dataset the data set
+	 * @return the places
+	 * @throws DatasetNotFoundException 
+	 */
+	@GET
+	@Produces("application/json")
+	@Path("/{dataset}/places")
+	public Response getPlaces(@PathParam("dataset") String dataset)
+		throws DatasetNotFoundException {
+		
+		List<Place> places = Backend.getInstance().getDataset(dataset).listPlaces();
+		return Response.ok(toJSON(places)).build();
 	}
 
 }

@@ -17,8 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class DataRecordImpl extends AbstractNodeImpl implements DataRecord {
-	
-	Logger log = LoggerFactory.getLogger(AbstractNodeImpl.class);
 
 	public DataRecordImpl(Node backingNode) {
 		super(backingNode);
@@ -41,7 +39,7 @@ public class DataRecordImpl extends AbstractNodeImpl implements DataRecord {
 		for (URI uri : uris) {
 			IndexHits<Node> hits = placeIndex.get(Place.KEY_URI, uri);
 			if (hits.size() == 0) {
-				log.warn("Place " + uri.toString() + " not in graph - skipping this reference");
+				// log.warn("Place " + uri.toString() + " not in graph - skipping this reference");
 			} else {
 				Node placeNode = hits.getSingle();
 				backingNode.createRelationshipTo(placeNode, PelagiosRelationships.REFERENCES);

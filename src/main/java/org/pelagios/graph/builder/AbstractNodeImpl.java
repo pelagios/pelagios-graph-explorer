@@ -12,6 +12,8 @@ class AbstractNodeImpl {
 	
 	Node backingNode;
 	
+	// protected Logger log = LoggerFactory.getLogger(AbstractNodeImpl.class);
+	
 	public AbstractNodeImpl(Node backingNode) {
 		this.backingNode = backingNode;
 	}

@@ -6,6 +6,7 @@ import java.util.List;
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
+import org.pelagios.graph.DataRecord;
 import org.pelagios.graph.Dataset;
 import org.pelagios.graph.PelagiosRelationships;
 import org.pelagios.graph.Place;
@@ -28,16 +29,6 @@ class DatasetImpl extends AbstractNodeImpl implements Dataset {
 	void setName(String name) {
 		set(Dataset.KEY_NAME, name);
 	}
-	
-	public int countRecords() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public int countPlaces() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
 	public boolean hasSubsets() {
 		Iterable<Relationship> rels = backingNode
@@ -55,10 +46,35 @@ class DatasetImpl extends AbstractNodeImpl implements Dataset {
 		
 		return subsets;
 	}
+	
+	public int countRecords() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	public List<DataRecord> listRecords() {
+		List<DataRecord> records = new ArrayList<DataRecord>(); 
+		
+		for (Relationship r : backingNode.getRelationships(PelagiosRelationships.RECORD)) {
+			records.add(new DataRecordImpl(r.getEndNode()));
+		}
+		
+		return records;
+	}
+
+	public int countPlaces() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
 	public List<Place> listPlaces() {
-		// TODO implement this
-		return new ArrayList<Place>();
+		List<Place> places = new ArrayList<Place>(); 
+		
+		for (DataRecord r : listRecords()) {
+			places.addAll(r.listPlaces());
+		}
+		
+		return places;
 	}
 	
 }
