@@ -90,11 +90,8 @@ public interface PelagiosGraph {
 	 * them.
 	 * @param datasets the data sets
 	 * @return the shared places
-	 * @throws DatasetNotFoundException if (at least) one of the data sets
-	 * was not found in the graph
 	 */
-	public List<Place> listSharedPlaces(List<Dataset> datasets)
-		throws DatasetNotFoundException;
+	public List<Place> listSharedPlaces(List<Dataset> datasets);
 	
 	/**
 	 * Be kind. Always disconnect the graph DB before leaving.

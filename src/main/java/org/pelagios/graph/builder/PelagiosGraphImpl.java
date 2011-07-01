@@ -210,10 +210,20 @@ class PelagiosGraphImpl implements PelagiosGraph {
 		};
 	}
 	
-	public List<Place> listSharedPlaces(List<Dataset> datasets)
-		throws DatasetNotFoundException {
+	public List<Place> listSharedPlaces(List<Dataset> datasets) {
+		if (datasets.size() == 0)
+			return new ArrayList<Place>();
 		
-		return null;
+		if (datasets.size() == 1)
+			return datasets.get(0).listPlaces(true);
+
+		// TODO this can be further improved by sorting the
+		// datasets by number of places!
+		List<Place> sharedPlaces = datasets.get(0).listPlaces(true);
+		for (int i=1; i<datasets.size(); i++) {
+			sharedPlaces = datasets.get(i).filterReferenced(sharedPlaces, true);
+		}
+		return sharedPlaces;
 	}
 	
 	public void shutdown() {

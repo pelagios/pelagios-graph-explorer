@@ -47,11 +47,37 @@ public interface Dataset {
 	 * will either return ONLY the places referenced in the
 	 * records contained directly in this data set, or include
 	 * also the places referenced in sub-sets of this data set,
-	 * depending on the includeSubsets flag.  
+	 * depending on the <code>includeSubsets</code> flag.  
 	 * @param includeSubsets if <code>true</code>, places contained in
 	 * sub-sets of this data set will also be returned
 	 * @return the places
 	 */
 	public List<Place> listPlaces(boolean includeSubsets);
+	
+	/**
+	 * Checks whether the specified place is referenced
+	 * in this data set. If <code>includeSubsets</code> is set
+	 * to true, the operation will also consider places contained
+	 * in sub-sets of this data set.
+	 * @param place the place
+	 * @param includeSubsets if <code>true</code>, places contained in
+	 * sub-sets of this data set will also be returned
+	 * @return true if the place is referenced in this data set
+	 */
+	public boolean isPlaceReferenced(Place place, boolean includeSubsets);
+	
+	/**
+	 * Checks all places in the given list, and returns only those
+	 * places from the list which are referenced in this data set.
+	 * If <code>includeSubsets</code> is set to true, the operation
+	 * will also consider places contained in sub-sets of this
+	 * data set.
+	 * @param places a list of places to check
+	 * @param includeSubsets if <code>true</code>, places contained in
+	 * sub-sets of this data set will also be returned
+	 * @return those places from the list which are also referenced 
+	 * in this data set
+	 */
+	public List<Place> filterReferenced(List<Place> places, boolean includeSubsets);
 		
 }

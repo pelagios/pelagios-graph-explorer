@@ -66,8 +66,7 @@ public class MockGraph implements PelagiosGraph {
 		
 	}
 
-	public List<Place> listSharedPlaces(List<Dataset> datasets)
-			throws DatasetNotFoundException {
+	public List<Place> listSharedPlaces(List<Dataset> datasets) {
 		// TODO Auto-generated method stub
 		return null;
 	}

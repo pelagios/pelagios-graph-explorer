@@ -15,6 +15,12 @@ import org.pelagios.graph.Place;
  */
 class PlaceImpl extends AbstractNodeImpl implements Place {
 	
+	/**
+	 * We'll also keep the URI in memory. Otherwise
+	 * each .equals will result in a DB transaction
+	 */
+	private URI memCachedURI = null;
+	
 	PlaceImpl(Node backingNode) {
 		super(backingNode);
 	}
@@ -45,19 +51,42 @@ class PlaceImpl extends AbstractNodeImpl implements Place {
 
 	public URI getURI() {
 		try {
-			return new URI(getAsString(Place.KEY_URI));
+			if (memCachedURI == null)
+				memCachedURI = new URI(getAsString(Place.KEY_URI));
+			
+			return memCachedURI;
 		} catch (URISyntaxException e) {
 			throw new IllegalArgumentException(e);
 		}
 	}
 
 	public void setURI(URI uri) {
+		memCachedURI = null;
 		set(Place.KEY_URI, uri.toString());
 	}
 
 	public List<DataRecord> listDataRecords() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	/**
+	 * Places are considered equal as soon as 
+	 * their URIs are equal! We don't care about
+	 * the rest.
+	 */
+	@Override
+	public boolean equals(Object arg) {
+		if (!(arg instanceof PlaceImpl))
+			return false;
+		
+		PlaceImpl other = (PlaceImpl) arg;
+		return getURI().equals(other.getURI());
+	}
+	
+	@Override
+	public int hashCode() {
+		return getURI().hashCode();
 	}
 
 }

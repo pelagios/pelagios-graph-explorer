@@ -1,6 +1,7 @@
 package org.pelagios.graph.builder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.neo4j.graphdb.Direction;
@@ -71,6 +72,20 @@ class DatasetImpl extends AbstractNodeImpl implements Dataset {
 		}
 		
 		return places;
+	}
+
+	public boolean isPlaceReferenced(Place place, boolean includeSubsets) {
+		List<Place> filtered = filterReferenced(Arrays.asList(place), includeSubsets);
+		return filtered.size() != 0;
+	}
+
+	public List<Place> filterReferenced(List<Place> places, boolean includeSubsets) {
+		List<Place> filtered = new ArrayList<Place>();
+		for (Place p : listPlaces(includeSubsets)) {
+			if (places.contains(p))
+				filtered.add(p);
+		}
+		return filtered;
 	}
 	
 }

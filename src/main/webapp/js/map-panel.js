@@ -20,7 +20,7 @@ function addPoint(lat, lng, label) {
 }
 
 
-function addPolygon(points, label) {
+function addPolygon(points, color) {
 	var coords = new Array();
 	for (var i=0,ii=points.length; i<ii; i++) {
 		coords.push(new google.maps.LatLng(points[i][1], points[i][0]));
@@ -28,10 +28,10 @@ function addPolygon(points, label) {
 	
 	var polygon = new google.maps.Polygon({
 		paths: coords,
-		strokeColor: "#FF0000",
+		strokeColor: color,
 		strokeOpacity: 0.8,
 		strokeWeight: 2,
-		fillColor: "#FF0000",
+		fillColor: color,
 		fillOpacity: 0.35
 	});
 	
