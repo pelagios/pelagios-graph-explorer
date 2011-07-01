@@ -1,4 +1,4 @@
-package org.pelagios.rest.json;
+package org.pelagios.rest.json.graph;
 
 import java.lang.reflect.Type;
 

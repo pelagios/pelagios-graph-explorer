@@ -18,3 +18,22 @@ function addPoint(lat, lng, label) {
 	});
 	marker.setMap(map); 
 }
+
+
+function addPolygon(points, label) {
+	var coords = new Array();
+	for (var i=0,ii=points.length; i<ii; i++) {
+		coords.push(new google.maps.LatLng(points[i][1], points[i][0]));
+	}
+	
+	var polygon = new google.maps.Polygon({
+		paths: coords,
+		strokeColor: "#FF0000",
+		strokeOpacity: 0.8,
+		strokeWeight: 2,
+		fillColor: "#FF0000",
+		fillOpacity: 0.35
+	});
+	
+	polygon.setMap(map);
+}

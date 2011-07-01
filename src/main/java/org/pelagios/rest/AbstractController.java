@@ -3,12 +3,14 @@ package org.pelagios.rest;
 import org.pelagios.graph.DataRecord;
 import org.pelagios.graph.Dataset;
 import org.pelagios.graph.Place;
-import org.pelagios.rest.json.DataRecordSerializer;
-import org.pelagios.rest.json.DatasetSerializer;
-import org.pelagios.rest.json.PlaceSerializer;
+import org.pelagios.rest.json.geo.GeometrySerializer;
+import org.pelagios.rest.json.graph.DataRecordSerializer;
+import org.pelagios.rest.json.graph.DatasetSerializer;
+import org.pelagios.rest.json.graph.PlaceSerializer;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.vividsolutions.jts.geom.Geometry;
 
 public class AbstractController {
 	
@@ -22,6 +24,7 @@ public class AbstractController {
 		gsonBuilder.registerTypeHierarchyAdapter(Dataset.class, new DatasetSerializer());
 		gsonBuilder.registerTypeHierarchyAdapter(DataRecord.class, new DataRecordSerializer());
 		gsonBuilder.registerTypeHierarchyAdapter(Place.class, new PlaceSerializer());
+		gsonBuilder.registerTypeHierarchyAdapter(Geometry.class, new GeometrySerializer());
 	}
 	
 	protected String toJSON(Object object) {

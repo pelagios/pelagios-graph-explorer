@@ -83,7 +83,8 @@ function fetchDatasets(parent) {
 }
 
 function fetchPlaces(dataset) {
-	$.getJSON("datasets/" + dataset.nodeName + "/places/", function(data) {
+	$.getJSON("datasets/" + dataset.nodeName + "/places", function(data) {
+		// addPolygon(data);
 		for (var i=0; i<data.length; i++) {
 			addPoint(data[i].lat, data[i].lon, data.label);
 		}

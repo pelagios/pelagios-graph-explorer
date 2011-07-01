@@ -9,6 +9,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
 import org.pelagios.Backend;
+import org.pelagios.geo.GeoUtils;
 import org.pelagios.graph.Dataset;
 import org.pelagios.graph.Place;
 import org.pelagios.graph.exception.DatasetNotFoundException;
@@ -66,7 +67,25 @@ public class DatasetController extends AbstractController {
 		throws DatasetNotFoundException {
 		
 		List<Place> places = Backend.getInstance().getDataset(dataset).listPlaces(true);
+		GeoUtils.computeConvexHull(places);
 		return Response.ok(toJSON(places)).build();
+	}
+	
+	/**
+	 * Returns the convex hull of the places referenced in the specified data set 
+	 * (including its subsets).
+	 * @param dataset the data set
+	 * @return the convex hull
+	 * @throws DatasetNotFoundException if the specified data set is not in the graph  
+	 */
+	@GET
+	@Produces("application/json")
+	@Path("/{dataset}/places/cv")
+	public Response getConvexHull(@PathParam("dataset") String dataset)
+		throws DatasetNotFoundException {
+		
+		List<Place> places = Backend.getInstance().getDataset(dataset).listPlaces(true);
+		return Response.ok(toJSON(GeoUtils.computeConvexHull(places))).build();
 	}
 
 }
