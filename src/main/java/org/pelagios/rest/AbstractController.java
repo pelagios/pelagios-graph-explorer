@@ -10,6 +10,7 @@ import org.pelagios.rest.json.graph.PlaceSerializer;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import com.vividsolutions.jts.geom.Geometry;
 
 public class AbstractController {
@@ -30,6 +31,11 @@ public class AbstractController {
 	protected String toJSON(Object object) {
 		Gson gson = gsonBuilder.create();
 		return gson.toJson(object);
+	}
+	
+	protected JsonElement toJSONTree(Object object) {
+		Gson gson = gsonBuilder.create();
+		return gson.toJsonTree(object);
 	}
 
 }

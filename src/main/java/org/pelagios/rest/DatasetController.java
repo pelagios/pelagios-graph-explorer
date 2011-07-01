@@ -1,18 +1,25 @@
 package org.pelagios.rest;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
 import org.pelagios.Backend;
 import org.pelagios.geo.GeoUtils;
 import org.pelagios.graph.Dataset;
+import org.pelagios.graph.PelagiosGraph;
 import org.pelagios.graph.Place;
 import org.pelagios.graph.exception.DatasetNotFoundException;
+import org.pelagios.rest.api.Link;
+
+import com.google.gson.JsonObject;
 
 /**
  * This controller exposes data about PELAGIOS data sets
@@ -31,8 +38,32 @@ public class DatasetController extends AbstractController {
 	@GET
 	@Produces("application/json")
 	@Path("/")
-	public Response listDatasets() {
-		List<Dataset> datasets = Backend.getInstance().listTopLevelDatasets();
+	public Response listDatasets(@QueryParam("links") boolean links) {
+		PelagiosGraph graph = Backend.getInstance();
+		List<Dataset> datasets = graph.listTopLevelDatasets();
+		
+		if (links) {
+			// Compute link information
+			List<Link> l = new ArrayList<Link>();
+			for (int i=0; i<datasets.size(); i++) {
+				Dataset source = datasets.get(i);
+				
+				for (int j=i + 1; j<datasets.size(); j++) {
+					Dataset target = datasets.get(j);
+					l.add(new Link(
+							source.getName(),
+							target.getName(),
+							graph.listSharedPlaces(Arrays.asList(source, target)).size()
+					));
+				}
+			}
+			
+			JsonObject json = new JsonObject();
+			json.add("datasets", toJSONTree(datasets));
+			json.add("links", toJSONTree(l));
+			return Response.ok(json.toString()).build();
+		}
+		
 		return Response.ok(toJSON(datasets)).build();
 	}
 	
