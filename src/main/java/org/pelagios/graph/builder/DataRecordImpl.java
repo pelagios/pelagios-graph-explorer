@@ -33,16 +33,28 @@ public class DataRecordImpl extends AbstractNodeImpl implements DataRecord {
 		}
 	}
 
-	void addPlaces(List<URI> uris, Index<Node> placeIndex) {
+	/**
+	 * Batch-adds a list of place references to this data record. If
+	 * the list contains URIs to places which are NOT in the graph, the
+	 * method will simply skip those. All skipped places are added to 
+	 * a list. This list is returned as result of the method. 
+	 * @param uris the place URIs
+	 * @param placeIndex the graph's Lucene index for places
+	 * @return the list of places which were skipped during import
+	 */
+	List<URI> addPlaces(List<URI> uris, Index<Node> placeIndex) {
+		List<URI> skipped = new ArrayList<URI>();
 		for (URI uri : uris) {
 			IndexHits<Node> hits = placeIndex.get(Place.KEY_URI, uri);
 			if (hits.size() == 0) {
 				log.warn("Place " + uri.toString() + " not in graph - skipping this reference");
+				skipped.add(uri);
 			} else {
 				Node placeNode = hits.getSingle();
 				backingNode.createRelationshipTo(placeNode, PelagiosRelationships.REFERENCES);
 			}
 		}
+		return skipped;
 	}
 	
 	public List<Place> listPlaces() {

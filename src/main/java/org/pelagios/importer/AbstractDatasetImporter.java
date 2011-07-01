@@ -87,7 +87,7 @@ public abstract class AbstractDatasetImporter {
 			.listResourcesWithProperty(OAC_HASBODY)
 			.toList();
 	}
-
+	
 	/**
 	 * Utility method which adds a list of (hierarchical) data records
 	 * to the graph.
@@ -114,7 +114,6 @@ public abstract class AbstractDatasetImporter {
 	 * @return the lowest level DatasetBuilder in the hierarchy
 	 */
 	private DatasetBuilder buildHierarchy(Hierarchy hierarchy, PelagiosGraph graph) {
-		
 		// Starting at the top, check whether all hierarchy levels
 		// exist in the graph - and create them if they don't
 		DatasetBuilder parentLvl = rootNode;
