@@ -53,10 +53,11 @@ public class DatasetController extends AbstractController {
 	}
 	
 	/**
-	 * Returns a list of all places referenced in the specified data set.
+	 * Returns a list of all places referenced in the specified data set 
+	 * (including its subsets).
 	 * @param dataset the data set
 	 * @return the places
-	 * @throws DatasetNotFoundException 
+	 * @throws DatasetNotFoundException if the specified data set is not in the graph  
 	 */
 	@GET
 	@Produces("application/json")
@@ -64,7 +65,7 @@ public class DatasetController extends AbstractController {
 	public Response getPlaces(@PathParam("dataset") String dataset)
 		throws DatasetNotFoundException {
 		
-		List<Place> places = Backend.getInstance().getDataset(dataset).listPlaces();
+		List<Place> places = Backend.getInstance().getDataset(dataset).listPlaces(true);
 		return Response.ok(toJSON(places)).build();
 	}
 

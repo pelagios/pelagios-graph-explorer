@@ -15,6 +15,7 @@ public class NomismaDatasetImporterTest {
 
 	@Test
 	public void testNomismaImport() throws DatasetExistsException {
+		// Just test for failure of success
 		NomismaDatasetImporter importer = new NomismaDatasetImporter(new File(RDF_FILE));	
 		importer.importData(new MockGraph());
 	}

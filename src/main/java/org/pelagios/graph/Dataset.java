@@ -36,28 +36,22 @@ public interface Dataset {
 	public List<Dataset> listSubsets();
 	
 	/**
-	 * Returns the number of data records contained in this data set.
-	 * @return the number of data records
-	 */
-	public int countRecords();
-	
-	/**
 	 * Returns a list of all data records contained in this data set.
 	 * @return the list of data records;
 	 */
 	public List<DataRecord> listRecords();
 	
+
 	/**
-	 * Returns the number of places referenced by the data records
-	 * in this data set
-	 * @return the number of places referenced in the data set
-	 */
-	public int countPlaces();
-	
-	/**
-	 * Lists all places contained in this data set
+	 * Lists all places contained in this data set. The method
+	 * will either return ONLY the places referenced in the
+	 * records contained directly in this data set, or include
+	 * also the places referenced in sub-sets of this data set,
+	 * depending on the includeSubsets flag.  
+	 * @param includeSubsets if <code>true</code>, places contained in
+	 * sub-sets of this data set will also be returned
 	 * @return the places
 	 */
-	public List<Place> listPlaces();
+	public List<Place> listPlaces(boolean includeSubsets);
 		
 }

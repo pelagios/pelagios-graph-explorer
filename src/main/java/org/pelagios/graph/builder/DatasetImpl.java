@@ -47,11 +47,6 @@ class DatasetImpl extends AbstractNodeImpl implements Dataset {
 		return subsets;
 	}
 	
-	public int countRecords() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
 	public List<DataRecord> listRecords() {
 		List<DataRecord> records = new ArrayList<DataRecord>(); 
 		
@@ -62,16 +57,17 @@ class DatasetImpl extends AbstractNodeImpl implements Dataset {
 		return records;
 	}
 
-	public int countPlaces() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public List<Place> listPlaces() {
+	public List<Place> listPlaces(boolean includeSubsets) {
 		List<Place> places = new ArrayList<Place>(); 
 		
 		for (DataRecord r : listRecords()) {
 			places.addAll(r.listPlaces());
+		}
+		
+		if (includeSubsets) {
+			for (Dataset subset : listSubsets()) {
+				places.addAll(subset.listPlaces(true));
+			}
 		}
 		
 		return places;
