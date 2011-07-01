@@ -7,7 +7,8 @@ var move, dragger, up;
 
 window.onload = function () {
 	initialize();
-    p = Raphael("dataset-panel", "100%", "100%");
+	var viewport = getViewportSize();
+    p = Raphael("dataset-panel", "100%", "200px");
 
     // convert to/from screen coordinates
     var toScreen = function(p) {
@@ -90,7 +91,7 @@ window.onload = function () {
     graph.newEdge(node1, node3);
     graph.newEdge(node2, node3);
     
-    var layout = new Layout.ForceDirected(graph, 800.0, 400.0, 0.5);
+    var layout = new Layout.ForceDirected(graph, 20, 200, 0.8);
     
     var renderer = new Renderer(10, layout,
 		  function clear() {
