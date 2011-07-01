@@ -1,94 +1,174 @@
-var vis, force, nodes, links;
+var graph;
+var datasets;
+var p;
+var connections;
+
+var move, dragger, up;
 
 window.onload = function () {
 	initialize();
-	fetchDatasets();
+    p = Raphael("dataset-panel", "100%", "100%");
 
-	nodes = new Array();
-    links = new Array();
+    // convert to/from screen coordinates
+    var toScreen = function(p) {
+    	var viewport = getViewportSize();
+    	var graph = layout.getBoundingBox();
+    	
+    	var graphSize = graph.topright.subtract(graph.bottomleft);
+    	var sx = p.subtract(graph.bottomleft).divide(graphSize.x).x * viewport.x;
+    	var sy = p.subtract(graph.bottomleft).divide(graphSize.y).y * viewport.y;
+    	return new Vector(sx, sy);
+    };
+
+    fromScreen = function(s) {
+    	var viewport = getViewportSize();
+    	var graph = layout.getBoundingBox();
+    	
+	    var graphSize = graph.topright.subtract(graph.bottomleft);
+	    var px = (s.x / viewport.x) * graphSize.x + graph.bottomleft.x;
+	    var py = (s.y / viewport.y) * graphSize.y + graph.bottomleft.y;
+	    return new Vector(px, py);
+    };
+    
+    move = function (dx, dy) {
+        this.attr({cx: this.ox + dx, cy: this.oy + dy});
+        for (var i = connections.length; i--;) {
+            p.connection(connections[i]);
+        }
+        var pt = fromScreen(new Vector(this.ox + dx, this.oy + dy));
+        layout.point(this.graphnode).p = pt;
+        renderer.start(); 
+    };
+    
+    dragger = function () {
+        this.ox = this.attr("cx");
+        this.oy = this.attr("cy");
+        this.animate({"fill-opacity": .2}, 100);
+    };
+    
+    up = function () {
+        this.animate({"fill-opacity": 0.8}, 100);
+    };
+    
+	datasets = new Array();
+    datasets.push(p.ellipse(190, 100, 30, 30));
+    datasets.push(p.ellipse(450, 100, 20, 20));
+    datasets.push(p.ellipse(320, 250, 15, 15));
 	
-	var w = document.body.clientWidth,
-	    h = document.body.clientHeight * 0.6,
-	    colors = pv.Colors.category19();
-	
-	vis = new pv.Panel()
-		.width(w)
-		.height(h)
-	    .fillStyle("white")
-	    .event("mousedown", pv.Behavior.pan())
-	    .event("mousewheel", pv.Behavior.zoom());
-	
-	force = vis.add(pv.Layout.Force)
-	    .nodes(nodes)
-	    .links(links)
-	    .chargeConstant(-100)
-	    .springConstant(0.09)
-	    .springLength(70);
-	
-	force.link.add(pv.Line);
-	
-	force.node.add(pv.Dot)
-	    .size(function(n)(n.linkDegree * 20) * Math.pow(this.scale, -1.5))
-	    .fillStyle(function(n) n.fix ? "brown" : colors(n.group))
-	    .strokeStyle(function() this.fillStyle().darker())
-	    .lineWidth(1)
-	    .title(function(d) d.nodeName)
-	    .event("mousedown", pv.Behavior.drag())
-	    .event("drag", force)
-	    .event("dblclick", function(n) fetchDatasets(n))
-    	.add(pv.Label)
-    		.textAlign("center")
-    		.textBaseline("bottom")
-    		.textMargin(function(n) 4 + n.linkDegree / 2)
-    		.text(function(n) n.nodeName);
-	
-	vis.render();
+    for (var i=0, ii=datasets.length; i<ii; i++) {
+    	datasets[i].attr({fill:"#ff0000", stroke:"#ff0000", "fill-opacity": 0.8, "stroke-width": 2, cursor: "move"});
+    	datasets[i].drag(move, dragger, up);
+    	datasets[i].dblclick(function (event) {
+    		fetchDatasets(this);
+    	});
+    	datasets[i].name = "Ptolemy Machine";
+    }
+    
+    connections = new Array();
+    connections.push(p.connection(datasets[0], datasets[1], "#000"));
+    connections.push(p.connection(datasets[1], datasets[2], "#000", "#fff|5"));
+    connections.push(p.connection(datasets[0], datasets[2], "#000", "#fff"));
+    
+    // make a new graph
+    graph = new Graph();
+
+    // make some nodes
+    var node1 = graph.newNode();
+    node1.dataset = datasets[0];
+    datasets[0].graphnode = node1;
+    
+    var node2 = graph.newNode();
+    node2.dataset = datasets[1];
+    datasets[1].graphnode = node2;
+    
+    var node3 = graph.newNode();
+    node3.dataset = datasets[2];
+    datasets[2].graphnode = node3;
+    
+    // connect them with an edge
+    graph.newEdge(node1, node2);
+    graph.newEdge(node1, node3);
+    graph.newEdge(node2, node3);
+    
+    var layout = new Layout.ForceDirected(graph, 800.0, 400.0, 0.5);
+    
+    var renderer = new Renderer(10, layout,
+		  function clear() {
+		    // do nothing
+		  },
+		  function drawEdge(edge, p1, p2) {
+		    // do nothing
+		  },
+		  function drawNode(node, pt) {
+			  var xy = toScreen(pt);
+		      for (var i = connections.length; i--;) {
+		    	  p.connection(connections[i]);
+		      }
+			  node.dataset.attr({cx: xy.x, cy: xy.y});
+		  });
+    renderer.start();
 }
 
 function addDataset(dataset, parent) {
-	var newNode = {nodeName:dataset.name, group:1, idx:nodes.length};
-
-	nodes.push(newNode);
-	if (parent) {
-		links.push({source:parent.idx, target:newNode.idx, value:1});
-	} else {
-		links.push({source:newNode.idx, target:newNode.idx, value:1});
-	}
-	
-    force.links(links);
-    force.nodes(nodes);
+	// Add to visual representation
+	var blob = p.ellipse(10, 10, 20, 20);
+	blob.attr({fill:"#ff0000", stroke:"#ff0000", "fill-opacity": 0.8, "stroke-width": 2, cursor: "move"});
+	blob.drag(move, dragger, up);
+	blob.dblclick(function (event) {
+		fetchDatasets(this);
+	});
+	blob.name = dataset.name;
+    datasets.push(blob);
     
-    force.reset();
-    vis.render();
+	// Add to graph model
+	var node = graph.newNode();
+	node.dataset = blob;
+	blob.graphnode = node;
+	
+	if (parent)
+		connections.push(p.connection(blob, parent, "#000"));
 }
 
 function fetchDatasets(parent) {
-	var url = "datasets/";
-	if (parent)
-		url += parent.nodeName;
-		
-	$.getJSON(url, function(data) {
-		if (data.length == 0) {
-			fetchPlaces(parent);
-		} else {
-			for (var i=0; i<data.length; i++) {
-				addDataset(data[i], parent);
-			}
-		}
+	$.getJSON("datasets/" + parent.name, function(data) {
+		  for (var i=0; i<data.length; i++) {
+			  addDataset(data[i], parent);
+		  }
 	})
-	.error(function(response) alert("Something went wrong: " + response.responseText));
+	.error(function() { alert("error"); });
 }
 
-function fetchPlaces(dataset) {
-	$.getJSON("datasets/" + dataset.nodeName + "/places", function(data) {
-		for (var i=0; i<data.length; i++) {
-			addPoint(data[i].lat, data[i].lon, data.label);
-		}
-	})
-	.error(function(response) 
-			alert("Something went wrong: " + response.responseText)
-	);
-}
+function getViewportSize() {
+	 var viewportwidth;
+	 var viewportheight;
+	 
+	 // the more standards compliant browsers (mozilla/netscape/opera/IE7) use window.innerWidth and window.innerHeight
+	 
+	 if (typeof window.innerWidth != 'undefined')
+	 {
+	      viewportwidth = window.innerWidth,
+	      viewportheight = window.innerHeight
+	 }
+	 
+	// IE6 in standards compliant mode (i.e. with a valid doctype as the first line in the document)
 
+	 else if (typeof document.documentElement != 'undefined'
+	     && typeof document.documentElement.clientWidth !=
+	     'undefined' && document.documentElement.clientWidth != 0)
+	 {
+	       viewportwidth = document.documentElement.clientWidth,
+	       viewportheight = document.documentElement.clientHeight
+	 }
+	 
+	 // older versions of IE
+	 
+	 else
+	 {
+	       viewportwidth = document.getElementsByTagName('body')[0].clientWidth,
+	       viewportheight = document.getElementsByTagName('body')[0].clientHeight
+	 }	
+	 
+	 return new Vector(viewportwidth, viewportheight);
+}
 
 
