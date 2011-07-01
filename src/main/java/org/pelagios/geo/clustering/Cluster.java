@@ -1,4 +1,4 @@
-package org.pelagios.clustering;
+package org.pelagios.geo.clustering;
 
 import java.util.ArrayList;
 import java.util.List;
