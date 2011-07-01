@@ -5,7 +5,7 @@ Welcome to the future home of the PELAGIOS Data Visualization Demonstrator!
 Visit http://pelagios-project.blogspot.com for information about the
 PELAGIOS project.
 
-## What is the PELAGIOS Data Visualization Demonstrator
+## What is the PELAGIOS Data Visualization Demonstrator?
 
 todo... 
 

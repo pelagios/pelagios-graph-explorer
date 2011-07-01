@@ -3,6 +3,7 @@ TODO...
 - Document the REST API
 - Document the graph model (in an extra readme? in the PelagiosRelationships?)
 - Clean up the unit tests (overall cleanup + mock objects)
+- Scala unit tests?
 - See whether it's possible/useful to port a few things to Groovy and/or Scala to reduce LoC
 - Add HTTP scripts for harvesting Ptolemy Machine place data (Groovy?)
 - Clean up the JavaScript mess (possibly include Closure Compiler in build)
