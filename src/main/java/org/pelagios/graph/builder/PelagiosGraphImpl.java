@@ -163,6 +163,11 @@ class PelagiosGraphImpl implements PelagiosGraph {
 				subreferenceNode.createRelationshipTo(placeNode, PelagiosRelationships.PLACE);
 			}
 			tx.success();
+		} catch (PlaceExistsException e) {
+			tx.failure();
+			
+			// Pass it on, man
+			throw e;
 		} finally {
 			tx.finish();
 		}			
@@ -203,6 +208,12 @@ class PelagiosGraphImpl implements PelagiosGraph {
 				};
 			}
 		};
+	}
+	
+	public List<Place> listSharedPlaces(List<Dataset> datasets)
+		throws DatasetNotFoundException {
+		
+		return null;
 	}
 	
 	public void shutdown() {

@@ -15,8 +15,8 @@ import org.pelagios.graph.Place;
 import org.pelagios.graph.exception.DatasetNotFoundException;
 
 /**
- * This controller exposes JSON serializations of the PELAGIOS dataset
- * descriptions (i.e. their metadata - not their contents!)
+ * This controller exposes data about PELAGIOS data sets
+ * stored in the graph (metadata, referenced places, etc).
  *  
  * @author Rainer Simon
  */
@@ -80,7 +80,7 @@ public class DatasetController extends AbstractController {
 	 */
 	@GET
 	@Produces("application/json")
-	@Path("/{dataset}/places/cv")
+	@Path("/{dataset}/places/convexhull")
 	public Response getConvexHull(@PathParam("dataset") String dataset)
 		throws DatasetNotFoundException {
 		

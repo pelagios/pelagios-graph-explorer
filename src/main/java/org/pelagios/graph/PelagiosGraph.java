@@ -36,6 +36,8 @@ public interface PelagiosGraph {
 	 * specified parent data set.
 	 * @param dataset the data set
 	 * @param parent the parent data set (i.e. super set)
+	 * @throws DatasetExitsException if the data set is already in the graph
+	 * @throws DatasetNotFoundException if the parent set is not in the graph
 	 */
 	public void addDataset(DatasetBuilder dataset, DatasetBuilder parent)
 		throws DatasetExistsException, DatasetNotFoundException;
@@ -44,6 +46,7 @@ public interface PelagiosGraph {
 	 * Retrieves the data set with the specified name.
 	 * @param name the name
 	 * @return the data set
+	 * @throws DatasetNotFoundException if the data set is not in the graph
 	 */
 	public Dataset getDataset(String name) throws DatasetNotFoundException;
 	
@@ -53,21 +56,25 @@ public interface PelagiosGraph {
 	 * @param records the data record
 	 * @param parent the parent data set
 	 * @throws DatasetNotFoundException if the parent data set was not found in the graph
-	 * @throws PlaceNotFoundException if records contain references to places not in the graph
 	 */
 	public void addDataRecords(List<DataRecordBuilder> records, DatasetBuilder parent)
 		throws DatasetNotFoundException;
 	
 	/**
-	 * Adds a list of places to the graph.
+	 * Adds a list of places to the graph. Places are unique. I.e. if the
+	 * list contains a place that's already in the graph, this method will
+	 * fail with a PlaceExistsException. The transaction will be rolled back.
 	 * @param place the places
+	 * @throws PlaceExistsException if a place in the list exists in the graph
 	 */
-	public void addPlaces(List<PlaceBuilder> places) throws PlaceExistsException;
+	public void addPlaces(List<PlaceBuilder> places)
+		throws PlaceExistsException;
 	
 	/**
 	 * Find a place by URI.
 	 * @param uri the URI
 	 * @return the place
+	 * @throws PlaceNotFoundException if the place is not in the graph
 	 */
 	public Place getPlace(URI uri) throws PlaceNotFoundException;
 	
@@ -78,7 +85,19 @@ public interface PelagiosGraph {
 	public Iterable<Place> listPlaces();
 	
 	/**
-	 * Disconnects the graph DB.
+	 * Returns the list of shared places in the specified
+	 * data sets, i.e. all places which appear in each of
+	 * them.
+	 * @param datasets the data sets
+	 * @return the shared places
+	 * @throws DatasetNotFoundException if (at least) one of the data sets
+	 * was not found in the graph
+	 */
+	public List<Place> listSharedPlaces(List<Dataset> datasets)
+		throws DatasetNotFoundException;
+	
+	/**
+	 * Be kind. Always disconnect the graph DB before leaving.
 	 */
 	public void shutdown();
 	
