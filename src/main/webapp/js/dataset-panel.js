@@ -1,37 +1,37 @@
-var graph;
-var datasets;
-var p;
-var connections;
-
-var move, dragger, up;
-
 window.onload = function () {
-	initialize();
-	var viewport = getViewportSize();
-    p = Raphael("dataset-panel", "100%", "200px");
-
-    // convert to/from screen coordinates
-    var toScreen = function(p) {
-    	var viewport = getViewportSize();
-    	var graph = layout.getBoundingBox();
-    	
-    	var graphSize = graph.topright.subtract(graph.bottomleft);
-    	var sx = p.subtract(graph.bottomleft).divide(graphSize.x).x * viewport.x;
-    	var sy = p.subtract(graph.bottomleft).divide(graphSize.y).y * viewport.y;
-    	return new Vector(sx, sy);
-    };
-
-    fromScreen = function(s) {
-    	var viewport = getViewportSize();
-    	var graph = layout.getBoundingBox();
-    	
-	    var graphSize = graph.topright.subtract(graph.bottomleft);
-	    var px = (s.x / viewport.x) * graphSize.x + graph.bottomleft.x;
-	    var py = (s.y / viewport.y) * graphSize.y + graph.bottomleft.y;
-	    return new Vector(px, py);
-    };
-    
-    move = function (dx, dy) {
+	var paper = new Raphael("dataset-panel", 640, 480);
+	
+	var myRenderer = {
+			init: function(system) {
+				sys.screenSize(640, 480); 
+			},
+			redraw: function() {
+		        sys.eachEdge(function(edge, pt1, pt2){
+		            // edge: {source:Node, target:Node, length:#, data:{}}
+		            // pt1:  {x:#, y:#}  source position in screen coords
+		            // pt2:  {x:#, y:#}  target position in screen coords
+		        	paper.path('M' + pt1.x + ' ' + pt1.y + 'L' + pt2.x + ' ' + pt2.y);
+		        })
+		        
+				sys.eachNode(function(node, pt){
+		            // node: {mass:#, p:{x,y}, name:"", data:{}}
+		            // pt:   {x:#, y:#}  node position in screen coords
+		        	paper.ellipse(pt.x, pt.y, 10, 10);
+		        })    			
+			}
+	}
+	
+    var sys = arbor.ParticleSystem(20, 200, 0.8);
+	sys.parameters({gravity:true});
+	sys.renderer = myRenderer;	
+	
+    sys.addEdge('a','b');
+    sys.addEdge('a','c');
+    sys.addEdge('a','d');
+    sys.addEdge('a','e');
+    sys.addEdge('e','b');
+	
+    /*  move = function (dx, dy) {
         this.attr({cx: this.ox + dx, cy: this.oy + dy});
         for (var i = connections.length; i--;) {
             p.connection(connections[i]);
@@ -107,9 +107,10 @@ window.onload = function () {
 		      }
 			  node.dataset.attr({cx: xy.x, cy: xy.y});
 		  });
-    renderer.start();
+    renderer.start(); */
 }
 
+/*
 function addDataset(dataset, parent) {
 	// Add to visual representation
 	var blob = p.ellipse(10, 10, 20, 20);
@@ -171,5 +172,5 @@ function getViewportSize() {
 	 
 	 return new Vector(viewportwidth, viewportheight);
 }
-
+*/
 
