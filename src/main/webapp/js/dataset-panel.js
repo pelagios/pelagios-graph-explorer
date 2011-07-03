@@ -33,7 +33,7 @@ window.onload = function () {
     move = function (dx, dy) {
         this.attr({cx: this.ox + dx, cy: this.oy + dy});
         for (var i = connections.length; i--;) {
-            p.Connection(connections[i]);
+            p.pelagios.connection(connections[i]);
         }
         var pt = fromScreen(new Vector(this.ox + dx, this.oy + dy));
         layout.point(this.graphnode).p = pt;
@@ -51,18 +51,18 @@ window.onload = function () {
     };
     
 	datasets = new Array();
-    datasets.push(p.Dataset(12));
-    datasets.push(p.Dataset(8));
-    datasets.push(p.Dataset(6));
-    datasets.push(p.Dataset(9));
-    datasets.push(p.Dataset(9));
+    datasets.push(p.pelagios.dataset(12));
+    datasets.push(p.pelagios.dataset(8));
+    datasets.push(p.pelagios.dataset(6));
+    datasets.push(p.pelagios.dataset(9));
+    datasets.push(p.pelagios.dataset(9));
 	
     connections = new Array();
-    connections.push(p.Connection(datasets[0], datasets[1], "#000", 4));
-    connections.push(p.Connection(datasets[1], datasets[2], "#000", 12));
-    connections.push(p.Connection(datasets[0], datasets[2], "#000", 2));
-    connections.push(p.Connection(datasets[0], datasets[3], "#000", 2));
-    connections.push(p.Connection(datasets[0], datasets[4], "#000", 9));
+    connections.push(p.pelagios.connection(datasets[0], datasets[1], "#000", 4));
+    connections.push(p.pelagios.connection(datasets[1], datasets[2], "#000", 12));
+    connections.push(p.pelagios.connection(datasets[0], datasets[2], "#000", 2));
+    connections.push(p.pelagios.connection(datasets[0], datasets[3], "#000", 2));
+    connections.push(p.pelagios.connection(datasets[0], datasets[4], "#000", 9));
     
     for (var i=0, ii=datasets.length; i<ii; i++) {
     	datasets[i].attr({fill:"#9C9EDE", stroke:"#777", "fill-opacity": 1, "stroke-width": 1, cursor: "move"});
@@ -116,7 +116,7 @@ window.onload = function () {
 		  function drawNode(node, pt) {
 			  var xy = toScreen(pt);
 		      for (var i = connections.length; i--;) {
-		    	  p.Connection(connections[i]);
+		    	  p.pelagios.connection(connections[i]);
 		      }
 			  node.dataset.attr({cx: xy.x, cy: xy.y});
 		  });
