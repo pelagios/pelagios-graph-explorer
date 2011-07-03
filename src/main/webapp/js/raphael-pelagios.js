@@ -11,7 +11,7 @@ Raphael.fn.pelagios = {
 		this.name = name;
 		
 		return this
-			.ellipse(0, 0, size, size)
+			.ellipse(this.width / 2, this.height / 2, size, size)
 			.attr({
 				"fill" : "#9C9EDE", 
 				"stroke" : "#777", 
