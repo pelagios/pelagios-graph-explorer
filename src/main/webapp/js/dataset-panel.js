@@ -6,9 +6,8 @@ var connections;
 var move, dragger, up;
 
 window.onload = function () {
-	initialize();
 	var viewport = getViewportSize();
-    p = Raphael("dataset-panel", "100%", "200px");
+    p = Raphael("dataset-panel", "100%", "100%");
 
     // convert to/from screen coordinates
     var toScreen = function(p) {
@@ -48,28 +47,32 @@ window.onload = function () {
     };
     
     up = function () {
-        this.animate({"fill-opacity": 0.8}, 100);
+        this.animate({"fill-opacity": 1}, 100);
     };
     
 	datasets = new Array();
-    datasets.push(p.ellipse(190, 100, 30, 30));
-    datasets.push(p.ellipse(450, 100, 20, 20));
-    datasets.push(p.ellipse(320, 250, 15, 15));
+    datasets.push(p.ellipse(320, 240, 12, 12));
+    datasets.push(p.ellipse(320, 240, 8, 8));
+    datasets.push(p.ellipse(320, 240, 6, 6));
+    datasets.push(p.ellipse(320, 240, 9, 9));
+    datasets.push(p.ellipse(320, 240, 9, 9));
 	
+    connections = new Array();
+    connections.push(p.connection(datasets[0], datasets[1], "#000"));
+    connections.push(p.connection(datasets[1], datasets[2], "#000"));
+    connections.push(p.connection(datasets[0], datasets[2], "#000"));
+    connections.push(p.connection(datasets[0], datasets[3], "#000"));
+    connections.push(p.connection(datasets[0], datasets[4], "#000"));
+    
     for (var i=0, ii=datasets.length; i<ii; i++) {
-    	datasets[i].attr({fill:"#ff0000", stroke:"#ff0000", "fill-opacity": 0.8, "stroke-width": 2, cursor: "move"});
+    	datasets[i].attr({fill:"#9C9EDE", stroke:"#777", "fill-opacity": 1, "stroke-width": 1, cursor: "move"});
     	datasets[i].drag(move, dragger, up);
     	datasets[i].dblclick(function (event) {
     		fetchDatasets(this);
     	});
-    	datasets[i].name = "Ptolemy Machine";
+    	datasets[i].toFront();
     }
-    
-    connections = new Array();
-    connections.push(p.connection(datasets[0], datasets[1], "#000"));
-    connections.push(p.connection(datasets[1], datasets[2], "#000", "#fff|5"));
-    connections.push(p.connection(datasets[0], datasets[2], "#000", "#fff"));
-    
+        
     // make a new graph
     graph = new Graph();
 
@@ -85,13 +88,23 @@ window.onload = function () {
     var node3 = graph.newNode();
     node3.dataset = datasets[2];
     datasets[2].graphnode = node3;
+
+    var node4 = graph.newNode();
+    node4.dataset = datasets[3];
+    datasets[3].graphnode = node4;
+
+    var node5 = graph.newNode();
+    node5.dataset = datasets[4];
+    datasets[4].graphnode = node5;
     
     // connect them with an edge
     graph.newEdge(node1, node2);
     graph.newEdge(node1, node3);
     graph.newEdge(node2, node3);
+    graph.newEdge(node4, node1);
+    graph.newEdge(node5, node1);
     
-    var layout = new Layout.ForceDirected(graph, 20, 200, 0.8);
+    var layout = new Layout.ForceDirected(graph, 800, 200, 0.2);
     
     var renderer = new Renderer(10, layout,
 		  function clear() {

@@ -491,7 +491,7 @@ Vector = function(x, y)
 
 Vector.random = function()
 {
-	return new Vector(10.0 * (Math.random() - 0.5), 10.0 * (Math.random() - 0.5));
+	return new Vector(Math.random() - 0.5, Math.random() - 0.5);
 };
 
 Vector.prototype.add = function(v2)
