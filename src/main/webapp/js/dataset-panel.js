@@ -1,40 +1,39 @@
+var graph;
+var datasets;
+var p;
+var connections;
+
+var move, dragger, up;
+
 window.onload = function () {
-	var paper = new Raphael("dataset-panel", 640, 480);
-	
-	var myRenderer = {
-			init: function(system) {
-				sys.screenSize(640, 480); 
-			},
-			redraw: function() {
-		        sys.eachEdge(function(edge, pt1, pt2){
-		            // edge: {source:Node, target:Node, length:#, data:{}}
-		            // pt1:  {x:#, y:#}  source position in screen coords
-		            // pt2:  {x:#, y:#}  target position in screen coords
-		        	paper.path('M' + pt1.x + ' ' + pt1.y + 'L' + pt2.x + ' ' + pt2.y);
-		        })
-		        
-				sys.eachNode(function(node, pt){
-		            // node: {mass:#, p:{x,y}, name:"", data:{}}
-		            // pt:   {x:#, y:#}  node position in screen coords
-		        	paper.ellipse(pt.x, pt.y, 10, 10);
-		        })    			
-			}
-	}
-	
-    var sys = arbor.ParticleSystem(20, 200, 0.8);
-	sys.parameters({gravity:true});
-	sys.renderer = myRenderer;	
-	
-    sys.addEdge('a','b');
-    sys.addEdge('a','c');
-    sys.addEdge('a','d');
-    sys.addEdge('a','e');
-    sys.addEdge('e','b');
-	
-    /*  move = function (dx, dy) {
+	var viewport = getViewportSize();
+    p = Raphael("dataset-panel", "100%", "100%");
+
+    // convert to/from screen coordinates
+    var toScreen = function(p) {
+    	var viewport = getViewportSize();
+    	var graph = layout.getBoundingBox();
+    	
+    	var graphSize = graph.topright.subtract(graph.bottomleft);
+    	var sx = p.subtract(graph.bottomleft).divide(graphSize.x).x * viewport.x;
+    	var sy = p.subtract(graph.bottomleft).divide(graphSize.y).y * viewport.y;
+    	return new Vector(sx, sy);
+    };
+
+    fromScreen = function(s) {
+    	var viewport = getViewportSize();
+    	var graph = layout.getBoundingBox();
+    	
+	    var graphSize = graph.topright.subtract(graph.bottomleft);
+	    var px = (s.x / viewport.x) * graphSize.x + graph.bottomleft.x;
+	    var py = (s.y / viewport.y) * graphSize.y + graph.bottomleft.y;
+	    return new Vector(px, py);
+    };
+    
+    move = function (dx, dy) {
         this.attr({cx: this.ox + dx, cy: this.oy + dy});
         for (var i = connections.length; i--;) {
-            p.connection(connections[i]);
+            p.pelagios.connection(connections[i]);
         }
         var pt = fromScreen(new Vector(this.ox + dx, this.oy + dy));
         layout.point(this.graphnode).p = pt;
@@ -48,28 +47,32 @@ window.onload = function () {
     };
     
     up = function () {
-        this.animate({"fill-opacity": 0.8}, 100);
+        this.animate({"fill-opacity": 1}, 100);
     };
     
 	datasets = new Array();
-    datasets.push(p.ellipse(190, 100, 30, 30));
-    datasets.push(p.ellipse(450, 100, 20, 20));
-    datasets.push(p.ellipse(320, 250, 15, 15));
+    datasets.push(p.pelagios.dataset(12));
+    datasets.push(p.pelagios.dataset(8));
+    datasets.push(p.pelagios.dataset(6));
+    datasets.push(p.pelagios.dataset(9));
+    datasets.push(p.pelagios.dataset(9));
 	
+    connections = new Array();
+    connections.push(p.pelagios.connection(datasets[0], datasets[1], "#000", 4));
+    connections.push(p.pelagios.connection(datasets[1], datasets[2], "#000", 12));
+    connections.push(p.pelagios.connection(datasets[0], datasets[2], "#000", 2));
+    connections.push(p.pelagios.connection(datasets[0], datasets[3], "#000", 2));
+    connections.push(p.pelagios.connection(datasets[0], datasets[4], "#000", 9));
+    
     for (var i=0, ii=datasets.length; i<ii; i++) {
-    	datasets[i].attr({fill:"#ff0000", stroke:"#ff0000", "fill-opacity": 0.8, "stroke-width": 2, cursor: "move"});
+    	datasets[i].attr({fill:"#9C9EDE", stroke:"#777", "fill-opacity": 1, "stroke-width": 1, cursor: "move"});
     	datasets[i].drag(move, dragger, up);
     	datasets[i].dblclick(function (event) {
     		fetchDatasets(this);
     	});
-    	datasets[i].name = "Ptolemy Machine";
+    	datasets[i].toFront();
     }
-    
-    connections = new Array();
-    connections.push(p.connection(datasets[0], datasets[1], "#000"));
-    connections.push(p.connection(datasets[1], datasets[2], "#000", "#fff|5"));
-    connections.push(p.connection(datasets[0], datasets[2], "#000", "#fff"));
-    
+        
     // make a new graph
     graph = new Graph();
 
@@ -85,13 +88,23 @@ window.onload = function () {
     var node3 = graph.newNode();
     node3.dataset = datasets[2];
     datasets[2].graphnode = node3;
+
+    var node4 = graph.newNode();
+    node4.dataset = datasets[3];
+    datasets[3].graphnode = node4;
+
+    var node5 = graph.newNode();
+    node5.dataset = datasets[4];
+    datasets[4].graphnode = node5;
     
     // connect them with an edge
     graph.newEdge(node1, node2);
     graph.newEdge(node1, node3);
     graph.newEdge(node2, node3);
+    graph.newEdge(node4, node1);
+    graph.newEdge(node5, node1);
     
-    var layout = new Layout.ForceDirected(graph, 20, 200, 0.8);
+    var layout = new Layout.ForceDirected(graph, 800, 200, 0.2);
     
     var renderer = new Renderer(10, layout,
 		  function clear() {
@@ -103,14 +116,13 @@ window.onload = function () {
 		  function drawNode(node, pt) {
 			  var xy = toScreen(pt);
 		      for (var i = connections.length; i--;) {
-		    	  p.connection(connections[i]);
+		    	  p.pelagios.connection(connections[i]);
 		      }
 			  node.dataset.attr({cx: xy.x, cy: xy.y});
 		  });
-    renderer.start(); */
+    renderer.start();
 }
 
-/*
 function addDataset(dataset, parent) {
 	// Add to visual representation
 	var blob = p.ellipse(10, 10, 20, 20);
@@ -172,5 +184,5 @@ function getViewportSize() {
 	 
 	 return new Vector(viewportwidth, viewportheight);
 }
-*/
+
 
