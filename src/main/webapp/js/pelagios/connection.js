@@ -1,4 +1,9 @@
-Raphael.fn.connection = function (obj1, obj2, line, bg) {
+/**
+ * Connection between two nodes in the Pelagios graph
+ * view, based on the Raphael 'graffle' demo at
+ * http://raphaeljs.com/graffle.html  
+ */
+Raphael.fn.Connection = function (obj1, obj2, line, width) {
     if (obj1.line && obj1.from && obj1.to) {
         line = obj1;
         obj1 = line.from;
@@ -18,7 +23,7 @@ Raphael.fn.connection = function (obj1, obj2, line, bg) {
         line.line.attr({path: path});
     } else {
         return {
-            line: this.path(path).attr({"stroke-width":4, opacity:.3, stroke: "#777", fill: "none"}),
+            line: this.path(path).attr({"stroke-width":width, opacity:.3, stroke: "#777", fill: "none"}),
             from: obj1,
             to: obj2
         };
