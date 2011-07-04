@@ -38,11 +38,14 @@ Raphael.fn.pelagios = {
     		(bb2.y + bb2.height / 2);
     
 		if (line && line.line) {
-			line.bg && line.bg.attr({path: path});
 			line.line.attr({path: path});
 		} else {
 			return {
-				line: this.path(path).attr({"stroke-width":width, opacity:.3, stroke: "#777", fill: "none"}),
+				line: this.path(path).attr({
+					"stroke-width" : width,
+					"opacity" : .3,
+					"stroke": "#777",
+					fill: "none"}).toBack(),
 				from: obj1,
 				to: obj2
 			};
