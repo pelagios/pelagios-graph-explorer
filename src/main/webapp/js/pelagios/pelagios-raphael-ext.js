@@ -1,7 +1,4 @@
-/**
- * PELAGIOS-specific drawing elements, implemented
- * as a 'namespaced' Raphael extension.
- */
+// PELAGIOS-specific drawing elements, implemented as a 'namespaced' Raphael extension.
 Raphael.fn.pelagios = {
 		
 	/**
