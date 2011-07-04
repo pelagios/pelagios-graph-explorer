@@ -6,34 +6,15 @@ var move, dragger, up;
 
 window.onload = function () {
 	var viewport = Pelagios.getViewport();
-    p = Raphael("dataset-panel", "100%", "100%");
+    p = Raphael("dataset-panel", viewport.x, viewport.y);
 
-    // convert to/from screen coordinates
-    var toScreen = function(p) {
-    	var graph = layout.getBoundingBox();
-    	
-    	var graphSize = graph.topright.subtract(graph.bottomleft);
-    	var sx = p.subtract(graph.bottomleft).divide(graphSize.x).x * viewport.x;
-    	var sy = p.subtract(graph.bottomleft).divide(graphSize.y).y * viewport.y;
-    	return new Vector(sx, sy);
-    };
-
-    fromScreen = function(s) {
-    	var graph = layout.getBoundingBox();
-    	
-	    var graphSize = graph.topright.subtract(graph.bottomleft);
-	    var px = (s.x / viewport.x) * graphSize.x + graph.bottomleft.x;
-	    var py = (s.y / viewport.y) * graphSize.y + graph.bottomleft.y;
-	    return new Vector(px, py);
-    };
-    
     move = function (dx, dy) {
         this.attr({cx: this.ox + dx, cy: this.oy + dy});
         for (var i = connections.length; i--;) {
             p.pelagios.connection(connections[i]);
         }
-        var pt = fromScreen(new Vector(this.ox + dx, this.oy + dy));
-        layout.point(this.graphnode).p = pt;
+        var pt = pGraph.fromScreen(new Vector(this.ox + dx, this.oy + dy));
+        pGraph.layout.point(this.gnode).p = pt;
         renderer.start(); 
     };
     
@@ -70,54 +51,21 @@ window.onload = function () {
     	datasets[i].toFront();
     }
         
-    // make a new graph
-    graph = new Graph();
-
-    // make some nodes
-    var node1 = graph.newNode();
-    node1.dataset = datasets[0];
-    datasets[0].graphnode = node1;
-    
-    var node2 = graph.newNode();
-    node2.dataset = datasets[1];
-    datasets[1].graphnode = node2;
-    
-    var node3 = graph.newNode();
-    node3.dataset = datasets[2];
-    datasets[2].graphnode = node3;
-
-    var node4 = graph.newNode();
-    node4.dataset = datasets[3];
-    datasets[3].graphnode = node4;
-
-    var node5 = graph.newNode();
-    node5.dataset = datasets[4];
-    datasets[4].graphnode = node5;
+    var pGraph = new Pelagios.Graph();
+    var node1 = pGraph.newNode(datasets[0]);
+    var node2 = pGraph.newNode(datasets[1]);
+    var node3 = pGraph.newNode(datasets[2]);
+    var node4 = pGraph.newNode(datasets[3]);
+    var node5 = pGraph.newNode(datasets[4]);
     
     // connect them with an edge
-    graph.newEdge(node1, node2);
-    graph.newEdge(node1, node3);
-    graph.newEdge(node2, node3);
-    graph.newEdge(node4, node1);
-    graph.newEdge(node5, node1);
+    pGraph.newEdge(node1, node2);
+    pGraph.newEdge(node1, node3);
+    pGraph.newEdge(node2, node3);
+    pGraph.newEdge(node4, node1);
+    pGraph.newEdge(node5, node1);
     
-    var layout = new Layout.ForceDirected(graph, 800, 200, 0.2);
-    
-    var renderer = new Renderer(10, layout,
-		  function clear() {
-		    // do nothing
-		  },
-		  function drawEdge(edge, p1, p2) {
-		    // do nothing
-		  },
-		  function drawNode(node, pt) {
-			  var xy = toScreen(pt);
-		      for (var i = connections.length; i--;) {
-		    	  p.pelagios.connection(connections[i]);
-		      }
-			  node.dataset.attr({cx: xy.x, cy: xy.y});
-		  });
-    renderer.start();
+    pGraph.renderer.start();
 }
 
 function addDataset(dataset, parent) {
@@ -134,7 +82,7 @@ function addDataset(dataset, parent) {
 	// Add to graph model
 	var node = graph.newNode();
 	node.dataset = blob;
-	blob.graphnode = node;
+	blob.node = node;
 	
 	if (parent)
 		connections.push(p.connection(blob, parent, "#000"));
