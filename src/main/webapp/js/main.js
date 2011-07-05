@@ -2,7 +2,6 @@ var raphael;
 var pGraph;
 var pMap;
 
-// TODO move the instantiation of drawing elements into the Graph
 window.onload = function () {
 	var viewport = Pelagios.getViewport();
     raphael = Raphael("dataset-panel", viewport.x, viewport.y);
