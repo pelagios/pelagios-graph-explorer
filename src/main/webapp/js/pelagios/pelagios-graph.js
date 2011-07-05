@@ -1,7 +1,6 @@
 // Graph-related code
 Pelagios.Graph = function(raphael) {	
 	this.graph = new Graph();
-	this.edges = {};
     this.layout = new Layout.ForceDirected(this.graph, 800, 200, 0.2);
     this.raphael = raphael;
     
@@ -15,7 +14,7 @@ Pelagios.Graph = function(raphael) {
   		  
   		  function drawNode(node, pt) {
   			  var xy = toScreen(pt, this.layout);
-   			  node.el.attr({cx: xy.x, cy: xy.y});
+  			  raphael.pelagios.dataset(node.set, xy.x, xy.y);
   		  }
     );
     
@@ -48,34 +47,29 @@ Pelagios.Graph.prototype.fromScreen = function(s) {
 Pelagios.Graph.prototype.newNode = function(name, size, dblClickCallback) {
     var n = this.graph.newNode();
     n.name = name;
-    n.el = this.raphael.pelagios.dataset(size);
-        
-    n.el.attr({
-    	"fill" : "#9C9EDE",
-    	"stroke" : "#777",
-    	"fill-opacity" : 1,
-    	"stroke-width" : 1,
-    	"cursor" : "move"});
-    
-    n.el.drag(
+    n.set = this.raphael.pelagios.dataset(name, size);
+    n.set.drag(
     	this.handler.move,
     	this.handler.drag,
     	this.handler.up);
     
     if (dblClickCallback)
-    	n.el.dblclick(function(event) { new dblClickCallback(n, event) });
+    	n.set.dblclick(function(event) { new dblClickCallback(n, event) });
     
     // Seems kind of recursive... but we need that in
     // the move handler, which only has access to the
-    // Raphael el.
-    n.el.graphNode = n;
+    // individual elements inside the set, not the original
+    // set or graph node.
+    for (var i=0, ii=n.set.length; i<ii; i++) {
+        n.set[i].graphNode = n;    	
+    }
     
     return n;
 }
 		
 Pelagios.Graph.prototype.newEdge = function(from, to, width) {
     var e = this.graph.newEdge(from, to);
-    e.connection = raphael.pelagios.connection(from.el, to.el, "#000", width);
+    e.connection = raphael.pelagios.connection(from.set[0], to.set[0], "#000", width);
     return e;
 }
 
@@ -84,11 +78,10 @@ Pelagios.Graph.prototype.handler = {
 	drag : function() {
 		this.ox = this.attr("cx");
 		this.oy = this.attr("cy");
-		this.animate({"fill-opacity": .2}, 100);
 	},
 		
 	move : function(dx, dy) {
-		this.attr({cx: this.ox + dx, cy: this.oy + dy});
+		raphael.pelagios.dataset(this.graphNode.set, this.ox + dx, this.oy + dy);
 		var pt = window.pGraph.fromScreen(new Vector(this.ox + dx, this.oy + dy));
 		window.pGraph.layout.point(this.graphNode).p = pt;
 		window.pGraph.renderer.start(); 

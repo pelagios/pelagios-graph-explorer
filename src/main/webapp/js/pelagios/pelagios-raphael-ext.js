@@ -2,17 +2,43 @@
 Raphael.fn.pelagios = {
 		
 	// A graph node that represents a Pelagios data set
-	dataset : function(size, name) {
-		this.name = name;
-		
-		return this
-			.ellipse(this.width / 2, this.height / 2, size, size)
-			.attr({
-				"fill" : "#9C9EDE", 
-				"stroke" : "#777", 
-				"fill-opacity" : 1,
-				"stroke-width" : 1,
-				"cursor": "move"});		
+	dataset : function(arg0, arg1, arg2) {
+		if (arg2) {
+			// arg0 -> set, arg1 -> x, arg2 -> y
+			arg0[0].attr({cx: arg1, cy: arg2});
+			arg0[1].attr({x: arg1, y: arg2 + arg0.size + 10});
+			return;
+		} else {
+			// arg0 -> name, arg1 -> size;
+		    var s = this.set();
+			s.size = arg1;
+		    s.push(
+		    	this.ellipse(this.width / 2, this.height / 2, arg1, arg1)
+					.attr({
+						"fill" : "#9C9EDE", 
+						"stroke" : "#777", 
+						"fill-opacity" : 1,
+						"stroke-width" : 1,
+						"cursor": "move"}));
+		    
+			s[0].mouseover(function (event) {
+			    this.animate({
+			    	"scale" : "1.25, 1.25",
+			    	"stroke" : "#555",
+					"stroke-width" : 2
+			    }, 100);
+			});
+			s[0].mouseout(function (event) {
+			    this.animate({
+			    	"scale" : "1.0, 1.0",
+				    "stroke" : "#777",
+					"stroke-width" : 1
+			    }, 100);
+			});
+
+		    s.push(this.text(this.width / 2, this.height / 2, arg0));
+			return s;
+		}
 	},
 
 	// Connection between two graph nodes, based on the Raphael 'graffle'
