@@ -7,29 +7,18 @@ window.onload = function () {
     raphael = Raphael("dataset-panel", viewport.x, viewport.y);
     
     pGraph = new Pelagios.Graph(raphael);
-    var node1 = pGraph.newNode(12);
-    var node2 = pGraph.newNode(8);
-    var node3 = pGraph.newNode(6);
-    var node4 = pGraph.newNode(9);
-    var node5 = pGraph.newNode(9);
+    
+    var node1 = pGraph.newNode("Ptolemy Machine", 12, fetchDatasets);
+    var node2 = pGraph.newNode("Ptolemy Machine 1", 8, fetchDatasets);   
+    var node3 = pGraph.newNode("Ptolemy Machine 2", 6, fetchDatasets);
+    var node4 = pGraph.newNode("Ptolemy Machine 3", 9, fetchDatasets);
+    var node5 = pGraph.newNode("Ptolemy Machine 4", 9, fetchDatasets);
     
     pGraph.newEdge(node1, node2, 4);
     pGraph.newEdge(node1, node3, 12);
     pGraph.newEdge(node2, node3, 2);
     pGraph.newEdge(node4, node1, 2);
     pGraph.newEdge(node5, node1, 9);
-
-    // TODO get rid of this
-    for (var i=0, ii=datasets.length; i<ii; i++) {
-    	datasets[i].attr({fill:"#9C9EDE", stroke:"#777", "fill-opacity": 1, "stroke-width": 1, cursor: "move"});
-    	datasets[i].drag(pGraph.handler.move, pGraph.handler.drag, pGraph.handler.up);
-    	datasets[i].dblclick(function (event) {
-    		fetchDatasets(this);
-    	});
-    	datasets[i].toFront();
-    }
-        
-    pGraph.renderer.start();
 }
 
 function addDataset(dataset, parent) {

@@ -1,9 +1,7 @@
 // PELAGIOS-specific drawing elements, implemented as a 'namespaced' Raphael extension.
 Raphael.fn.pelagios = {
 		
-	/**
-	 * A graph node that represents a Pelagios data set
-	 */
+	// A graph node that represents a Pelagios data set
 	dataset : function(size, name) {
 		this.name = name;
 		
@@ -17,11 +15,8 @@ Raphael.fn.pelagios = {
 				"cursor": "move"});		
 	},
 
-	/**
-	 * Connection between two graph nodes, based on
-	 * the Raphael 'graffle' demo at
-	 * http://raphaeljs.com/graffle.html  
-	 */
+	// Connection between two graph nodes, based on the Raphael 'graffle'
+	// demo at http://raphaeljs.com/graffle.html  
 	connection : function (obj1, obj2, line, width) {
 		if (obj1.line && obj1.from && obj1.to) {
 			line = obj1;
