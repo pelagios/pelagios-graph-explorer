@@ -28,10 +28,10 @@ Raphael.fn.pelagios = {
 		    
 			s[0].mouseover(function(event) {
 			    this.animate({
-			    	"scale" : "1.25, 1.25",
+			    	"scale" : "1.3, 1.3",
 			    	"stroke" : "#555",
 					"stroke-width" : 2
-			    }, 100);
+			    }, 350, "bounce");
 			    
 			    s.push(raphael.text(this.attr("cx"), this.attr("cy") + s.size + 24, arg2 + " Records"));
 			    s.push(raphael.text(this.attr("cx"), this.attr("cy") + s.size + 38, arg3 + " Places"));
