@@ -2,14 +2,19 @@
 Raphael.fn.pelagios = {
 		
 	// A graph node that represents a Pelagios data set
-	dataset : function(arg0, arg1, arg2) {
-		if (arg2) {
+	dataset : function(arg0, arg1, arg2, arg3) {
+		if (arg0.size) {
 			// arg0 -> set, arg1 -> x, arg2 -> y
 			arg0[0].attr({cx: arg1, cy: arg2});
 			arg0[1].attr({x: arg1, y: arg2 + arg0.size + 10});
-			return;
+			if (arg0[2])
+				arg0[2].attr({x: arg1, y: arg2 + arg0.size + 24});
+			if (arg0[3])
+				arg0[3].attr({x: arg1, y: arg2 + arg0.size + 38});
+			return;	
 		} else {
-			// arg0 -> name, arg1 -> size;
+			// arg0 -> name, arg1 -> size, arg2 -> records, arg3 -> places
+			var raphael = this;
 		    var s = this.set();
 			s.size = arg1;
 		    s.push(
@@ -21,12 +26,15 @@ Raphael.fn.pelagios = {
 						"stroke-width" : 1,
 						"cursor": "move"}));
 		    
-			s[0].mouseover(function (event) {
+			s[0].mouseover(function(event) {
 			    this.animate({
 			    	"scale" : "1.25, 1.25",
 			    	"stroke" : "#555",
 					"stroke-width" : 2
 			    }, 100);
+			    
+			    s.push(raphael.text(this.attr("cx"), this.attr("cy") + s.size + 24, arg2 + " Records"));
+			    s.push(raphael.text(this.attr("cx"), this.attr("cy") + s.size + 38, arg3 + " Places"));
 			});
 			s[0].mouseout(function (event) {
 			    this.animate({
@@ -34,6 +42,8 @@ Raphael.fn.pelagios = {
 				    "stroke" : "#777",
 					"stroke-width" : 1
 			    }, 100);
+			    s.pop().remove();
+			    s.pop().remove();
 			});
 
 		    s.push(this.text(this.width / 2, this.height / 2, arg0));

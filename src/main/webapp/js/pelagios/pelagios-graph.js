@@ -1,7 +1,7 @@
 // Graph-related code
 Pelagios.Graph = function(raphael) {	
 	this.graph = new Graph();
-    this.layout = new Layout.ForceDirected(this.graph, 800, 200, 0.2);
+    this.layout = new Layout.ForceDirected(this.graph, 200, 200, 0.4);
     this.raphael = raphael;
     
 	var toScreen = this.toScreen;
@@ -44,17 +44,25 @@ Pelagios.Graph.prototype.fromScreen = function(s) {
     return new Vector(px, py);
 }
 
-Pelagios.Graph.prototype.newNode = function(name, size, dblClickCallback) {
+Pelagios.Graph.prototype.newNode = function(name, size, records, places, 
+		dblclick, mouseover, mouseout) {
+	
     var n = this.graph.newNode();
     n.name = name;
-    n.set = this.raphael.pelagios.dataset(name, size);
+    n.set = this.raphael.pelagios.dataset(name, size, records, places);
     n.set.drag(
     	this.handler.move,
     	this.handler.drag,
     	this.handler.up);
     
-    if (dblClickCallback)
-    	n.set.dblclick(function(event) { new dblClickCallback(n, event) });
+    if (dblclick)
+    	n.set.dblclick(function(event) { new dblclick(n, event) });
+    
+    if (mouseover)
+    	n.set.mouseover(mouseover);
+    
+    if (mouseout)
+    	n.set.mouseout(mouseout);
     
     // Seems kind of recursive... but we need that in
     // the move handler, which only has access to the

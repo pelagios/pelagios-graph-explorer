@@ -55,6 +55,10 @@ class DatasetImpl extends AbstractNodeImpl implements Dataset {
 			records.add(new DataRecordImpl(r.getEndNode()));
 		}
 		
+		for (Dataset subset : listSubsets()) {
+			records.addAll(subset.listRecords());
+		}
+		
 		return records;
 	}
 

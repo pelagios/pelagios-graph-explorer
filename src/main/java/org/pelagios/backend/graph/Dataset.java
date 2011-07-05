@@ -16,6 +16,8 @@ public interface Dataset {
 	 * String constants
 	 */
 	public static final String KEY_NAME = "name";
+	public static final String KEY_RECORDS = "records";
+	public static final String KEY_PLACES = "places";
 	
 	/**
 	 * Returns the name of this dataset.

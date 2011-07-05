@@ -2,7 +2,6 @@
 
 // Namespace declarations
 Pelagios = {};
-Pelagios.handler = {};
 
 Pelagios.getViewport = function() {
 	 var w, h;
@@ -20,5 +19,5 @@ Pelagios.getViewport = function() {
 	       h = document.getElementsByTagName('body')[0].clientHeight;
 	 }
 	 
-	 return new Vector(w, h);
+	 return new Vector(w, h * 0.6);
 }
