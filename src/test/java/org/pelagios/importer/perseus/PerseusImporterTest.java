@@ -4,11 +4,11 @@ import java.io.File;
 import java.util.HashMap;
 
 import org.junit.Test;
-import org.pelagios.graph.Dataset;
-import org.pelagios.graph.PelagiosGraph;
-import org.pelagios.graph.builder.PelagiosGraphBuilder;
-import org.pelagios.graph.exception.DatasetExistsException;
-import org.pelagios.graph.exception.DatasetNotFoundException;
+import org.pelagios.backend.graph.Dataset;
+import org.pelagios.backend.graph.PelagiosGraph;
+import org.pelagios.backend.graph.builder.PelagiosGraphBuilder;
+import org.pelagios.backend.graph.exception.DatasetExistsException;
+import org.pelagios.backend.graph.exception.DatasetNotFoundException;
 
 public class PerseusImporterTest {
 	

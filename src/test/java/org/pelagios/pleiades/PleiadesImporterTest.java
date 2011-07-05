@@ -8,11 +8,12 @@ import java.net.URISyntaxException;
 import junit.framework.TestCase;
 
 import org.junit.Test;
-import org.pelagios.graph.PelagiosGraph;
-import org.pelagios.graph.Place;
-import org.pelagios.graph.builder.PelagiosGraphBuilder;
-import org.pelagios.graph.exception.PlaceExistsException;
-import org.pelagios.graph.exception.PlaceNotFoundException;
+import org.pelagios.backend.graph.PelagiosGraph;
+import org.pelagios.backend.graph.Place;
+import org.pelagios.backend.graph.builder.PelagiosGraphBuilder;
+import org.pelagios.backend.graph.exception.PlaceExistsException;
+import org.pelagios.backend.graph.exception.PlaceNotFoundException;
+import org.pelagios.importer.pleiades.PleiadesImporter;
 
 public class PleiadesImporterTest extends TestCase {
 	

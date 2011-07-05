@@ -1,11 +1,11 @@
 package org.pelagios.importer.perseus
 
-import org.pelagios.graph.PelagiosGraph
-import org.pelagios.graph.builder.DataRecordBuilder
-import org.pelagios.graph.builder.DatasetBuilder
-import org.pelagios.graph.exception.DatasetExistsException
-import org.pelagios.importer.AbstractDatasetImporter
-import org.pelagios.importer.Hierarchy
+import org.pelagios.backend.graph.PelagiosGraph;
+import org.pelagios.backend.graph.builder.DataRecordBuilder;
+import org.pelagios.backend.graph.builder.DatasetBuilder;
+import org.pelagios.backend.graph.exception.DatasetExistsException;
+import org.pelagios.importer.AbstractDatasetImporter;
+import org.pelagios.importer.Hierarchy;
 
 import com.hp.hpl.jena.rdf.model.Resource
 

@@ -9,11 +9,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
-import org.pelagios.Backend;
-import org.pelagios.graph.Dataset;
-import org.pelagios.graph.PelagiosGraph;
-import org.pelagios.graph.Place;
-import org.pelagios.graph.exception.DatasetNotFoundException;
+import org.pelagios.backend.Backend;
+import org.pelagios.backend.graph.Dataset;
+import org.pelagios.backend.graph.PelagiosGraph;
+import org.pelagios.backend.graph.Place;
+import org.pelagios.backend.graph.exception.DatasetNotFoundException;
 
 /**
  * This controller provides basic query operation on

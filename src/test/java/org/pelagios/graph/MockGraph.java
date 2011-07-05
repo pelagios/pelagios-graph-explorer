@@ -3,12 +3,15 @@ package org.pelagios.graph;
 import java.net.URI;
 import java.util.List;
 
-import org.pelagios.graph.builder.DataRecordBuilder;
-import org.pelagios.graph.builder.DatasetBuilder;
-import org.pelagios.graph.builder.PlaceBuilder;
-import org.pelagios.graph.exception.DatasetExistsException;
-import org.pelagios.graph.exception.DatasetNotFoundException;
-import org.pelagios.graph.exception.PlaceExistsException;
+import org.pelagios.backend.graph.Dataset;
+import org.pelagios.backend.graph.PelagiosGraph;
+import org.pelagios.backend.graph.Place;
+import org.pelagios.backend.graph.builder.DataRecordBuilder;
+import org.pelagios.backend.graph.builder.DatasetBuilder;
+import org.pelagios.backend.graph.builder.PlaceBuilder;
+import org.pelagios.backend.graph.exception.DatasetExistsException;
+import org.pelagios.backend.graph.exception.DatasetNotFoundException;
+import org.pelagios.backend.graph.exception.PlaceExistsException;
 
 public class MockGraph implements PelagiosGraph {
 

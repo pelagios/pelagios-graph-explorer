@@ -1,8 +1,8 @@
 package org.pelagios.rest;
 
-import org.pelagios.graph.DataRecord;
-import org.pelagios.graph.Dataset;
-import org.pelagios.graph.Place;
+import org.pelagios.backend.graph.DataRecord;
+import org.pelagios.backend.graph.Dataset;
+import org.pelagios.backend.graph.Place;
 import org.pelagios.rest.json.geo.GeometrySerializer;
 import org.pelagios.rest.json.graph.DataRecordSerializer;
 import org.pelagios.rest.json.graph.DatasetSerializer;

@@ -2,6 +2,8 @@ package org.pelagios.geo.shape;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.pelagios.backend.geo.shape.LineString;
+import org.pelagios.backend.geo.shape.Polygon;
 
 import com.vividsolutions.jts.geom.Coordinate;
 

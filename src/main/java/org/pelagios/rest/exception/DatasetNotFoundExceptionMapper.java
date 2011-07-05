@@ -5,7 +5,7 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import org.pelagios.graph.exception.DatasetNotFoundException;
+import org.pelagios.backend.graph.exception.DatasetNotFoundException;
 
 @Provider
 public class DatasetNotFoundExceptionMapper implements ExceptionMapper<DatasetNotFoundException> {

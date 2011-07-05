@@ -2,7 +2,7 @@ package org.pelagios.rest.json.graph;
 
 import java.lang.reflect.Type;
 
-import org.pelagios.graph.Dataset;
+import org.pelagios.backend.graph.Dataset;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

@@ -2,7 +2,7 @@ package org.pelagios.rest.json.graph;
 
 import java.lang.reflect.Type;
 
-import org.pelagios.graph.Place;
+import org.pelagios.backend.graph.Place;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

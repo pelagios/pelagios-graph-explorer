@@ -3,11 +3,12 @@ package org.pelagios.importer.ptolemymachine;
 import java.io.File;
 
 import org.junit.Test;
-import org.pelagios.graph.Dataset;
-import org.pelagios.graph.PelagiosGraph;
-import org.pelagios.graph.builder.PelagiosGraphBuilder;
-import org.pelagios.graph.exception.DatasetExistsException;
-import org.pelagios.graph.exception.PlaceNotFoundException;
+import org.pelagios.backend.graph.Dataset;
+import org.pelagios.backend.graph.PelagiosGraph;
+import org.pelagios.backend.graph.builder.PelagiosGraphBuilder;
+import org.pelagios.backend.graph.exception.DatasetExistsException;
+import org.pelagios.backend.graph.exception.PlaceNotFoundException;
+import org.pelagios.importer.ptolemymachine.PtolemyDatasetImporter;
 
 public class PtolemyDatasetImporterTest {
 	

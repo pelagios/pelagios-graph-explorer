@@ -1,7 +1,7 @@
 package org.pelagios.importer.perseus
 
-import org.pelagios.graph.PelagiosGraph;
-import org.pelagios.graph.builder.DatasetBuilder;
+import org.pelagios.backend.graph.PelagiosGraph;
+import org.pelagios.backend.graph.builder.DatasetBuilder;
 
 /**
  * Importer for a collection of Perseus data sets.

@@ -6,12 +6,12 @@ import java.net.URISyntaxException
 import java.util.ArrayList
 import java.util.List
 
-import org.pelagios.graph.PelagiosGraph
-import org.pelagios.graph.builder.DataRecordBuilder
-import org.pelagios.graph.builder.DatasetBuilder
-import org.pelagios.graph.exception.DatasetExistsException
-import org.pelagios.graph.exception.DatasetNotFoundException
-import org.pelagios.importer.AbstractDatasetImporter
+import org.pelagios.backend.graph.PelagiosGraph;
+import org.pelagios.backend.graph.builder.DataRecordBuilder;
+import org.pelagios.backend.graph.builder.DatasetBuilder;
+import org.pelagios.backend.graph.exception.DatasetExistsException;
+import org.pelagios.backend.graph.exception.DatasetNotFoundException;
+import org.pelagios.importer.AbstractDatasetImporter;
 
 import com.hp.hpl.jena.rdf.model.Resource
 

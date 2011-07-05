@@ -5,11 +5,11 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 
-import org.pelagios.graph.PelagiosGraph;
-import org.pelagios.graph.builder.DataRecordBuilder;
-import org.pelagios.graph.builder.DatasetBuilder;
-import org.pelagios.graph.exception.DatasetExistsException;
-import org.pelagios.graph.exception.DatasetNotFoundException;
+import org.pelagios.backend.graph.PelagiosGraph;
+import org.pelagios.backend.graph.builder.DataRecordBuilder;
+import org.pelagios.backend.graph.builder.DatasetBuilder;
+import org.pelagios.backend.graph.exception.DatasetExistsException;
+import org.pelagios.backend.graph.exception.DatasetNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

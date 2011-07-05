@@ -16,9 +16,9 @@ import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
-import org.pelagios.graph.PelagiosGraph;
-import org.pelagios.graph.Place;
-import org.pelagios.graph.builder.PelagiosGraphBuilder;
+import org.pelagios.backend.graph.PelagiosGraph;
+import org.pelagios.backend.graph.Place;
+import org.pelagios.backend.graph.builder.PelagiosGraphBuilder;
 import org.pelagios.rendering.ShapefileRenderer;
 
 /**
