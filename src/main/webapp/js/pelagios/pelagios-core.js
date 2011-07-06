@@ -19,7 +19,7 @@ Pelagios.getViewport = function() {
 	       h = document.getElementsByTagName('body')[0].clientHeight;
 	 }
 	 
-	 return new Vector(w * 0.65, h);
+	 return new Vector(w, h);
 }
 
 Pelagios.Palette = function() {

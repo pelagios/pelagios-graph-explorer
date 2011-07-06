@@ -1,7 +1,7 @@
 // Graph-related code
 Pelagios.Graph = function(raphael) {	
 	this.graph = new Graph();
-    this.layout = new Layout.ForceDirected(this.graph, 400, 80, 0.4);
+    this.layout = new Layout.ForceDirected(this.graph, 400, 20, 0.4);
     this.raphael = raphael;
     
     // Keep track of parent->child relations
@@ -35,7 +35,7 @@ Pelagios.Graph = function(raphael) {
 Pelagios.Graph.prototype.toScreen = function(p, layout) {
 	var viewport = Pelagios.getViewport();
 	var g = layout.getBoundingBox();
-	
+		
 	var graphSize = g.topright.subtract(g.bottomleft);
 	var sx = p.subtract(g.bottomleft).divide(graphSize.x).x * viewport.x;
 	var sy = p.subtract(g.bottomleft).divide(graphSize.y).y * viewport.y;
@@ -188,7 +188,7 @@ Pelagios.Graph.prototype.handler = {
 		window.pGraph.raphael.pelagios.dataset(this.graphNode.set, this.ox + dx, this.oy + dy);
 		var pt = window.pGraph.fromScreen(new Vector(this.ox + dx, this.oy + dy));
 		window.pGraph.layout.point(this.graphNode).p = pt;
-		window.pGraph.renderer.start(); 
+		window.pGraph.renderer.start();
 	},
 		
 	up : function() {
