@@ -9,6 +9,11 @@ PELAGIOS project.
 
 todo... 
 
+## License
+
+The PELAGIOS Data Visualization Demonstrator is licensed under the 
+[GNU General Public License v3.0] (http://www.gnu.org/licenses/gpl.html).
+
 ## Getting Started
 
 The PELAGIOS Data Visualization Demonstrator is built with [Gradle]
