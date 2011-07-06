@@ -46,7 +46,8 @@ public class PlacesController extends AbstractController {
 			datasets.add(graph.getDataset(s));
 		}
 		
-		List<Place> sharedPlaces = graph.listSharedPlaces(datasets);		
+		List<Place> sharedPlaces = graph.listSharedPlaces(datasets);	
+		System.out.println(toJSON(sharedPlaces));
 		return Response.ok(toJSON(sharedPlaces)).build();
 	}
 

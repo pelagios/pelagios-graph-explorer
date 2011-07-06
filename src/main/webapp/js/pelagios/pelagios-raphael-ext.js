@@ -11,6 +11,9 @@ Raphael.fn.pelagios = {
 				arg0[2].attr({x: arg1, y: arg2 + arg0.size + 24});
 			if (arg0[3])
 				arg0[3].attr({x: arg1, y: arg2 + arg0.size + 38});
+			
+			if (arg0.selection)
+				arg0.selection.attr({cx: arg1, cy: arg2});
 			return;	
 		} else {
 			// arg0 -> name, arg1 -> size, arg2 -> records, arg3 -> places

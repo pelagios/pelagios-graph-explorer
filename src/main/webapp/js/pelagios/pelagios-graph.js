@@ -10,6 +10,9 @@ Pelagios.Graph = function(raphael) {
     // Keep track of node->outbound edges relations
     this.edges = new Array();
     
+    // Keep track of selected nodes
+    this.selectedNodes = new Array();
+    
 	var toScreen = this.toScreen;
     this.renderer = new Renderer(10, this.layout,
   		  function clear() { },
@@ -65,7 +68,7 @@ Pelagios.Graph.prototype.newNode = function(name, size, records, places,
     	this.handler.up);
     
     if (click)
-    	n.set.click(function(event) { n.selected = !n.selected; new click(event) });
+    	n.set.click(function(event) { this.toggleSelect(n); new click(event) }.bind(this));
     
     if (dblclick)
     	n.set.dblclick(function(event) { new dblclick(n, event); });
@@ -98,33 +101,6 @@ Pelagios.Graph.prototype.newNode = function(name, size, records, places,
     return n;
 }
 
-Pelagios.Graph.prototype.getChildNodes = function(parent) {
-	if (this.children[parent.name])
-		return this.children[parent.name];
-	
-	return new Array();
-}
-
-Pelagios.Graph.prototype.removeChildNodes = function(parent) {
-	// Remove outbound edges (SVG only - graph edges are handled by Springy)
-	var ed = this.edges[parent.name];
-	if (ed) {
-		for (var i=0, ii=ed.length; i<ii; i++) {
-			ed[i].connection.line.remove();
-		}
-		this.edges[parent.name] = null;
-		
-		// Remove child nodes
-		var ch = this.children[parent.name];
-		for (var i=0, ii=ch.length; i<ii; i++) {
-			ch[i].set.remove();
-			this.graph.removeNode(ch[i]);
-		}
-		this.children[parent.name] = null;
-		parent.opened = false;
-	}
-}
-		
 Pelagios.Graph.prototype.newEdge = function(from, to, width) {
 	var ed;
 	if (this.edges[from.name]) {
@@ -138,6 +114,61 @@ Pelagios.Graph.prototype.newEdge = function(from, to, width) {
     e.connection = this.raphael.pelagios.connection(from.set[0], to.set[0], "#000", width);
     ed.push(e);
     return e;
+}
+
+Pelagios.Graph.prototype.toggleSelect = function(node) {
+	node.selected = !node.selected;
+	if (node.selected) {
+		var cx = node.set[0].attr("cx");
+		var cy = node.set[0].attr("cy");
+		var size = node.set.size + 5;
+		node.set.selection = this.raphael.ellipse(cx, cy, size, size)
+			.attr({
+				"stroke" : "#000",
+				"stroke-width" : 2,
+				"opacity" : 0.3,
+				"stroke-dasharray" : "-"
+			});
+		this.selectedNodes[node.name] = node;
+	} else {
+		delete this.selectedNodes[node.name];
+		node.set.selection.remove();
+	}
+}
+
+Pelagios.Graph.prototype.getChildNodes = function(parent) {
+	if (this.children[parent.name])
+		return this.children[parent.name];
+	return new Array();
+}
+
+Pelagios.Graph.prototype.getSelected = function() {
+	return this.selectedNodes;
+}
+
+Pelagios.Graph.prototype.removeChildNodes = function(parent) {
+	// Remove outbound edges (SVG only - graph edges are handled by Springy)
+	var ed = this.edges[parent.name];
+	if (ed) {
+		for (var i=0, ii=ed.length; i<ii; i++) {
+			ed[i].connection.line.remove();
+		}
+		delete this.edges[parent.name];
+		
+		// Remove child nodes
+		var ch = this.children[parent.name];
+		for (var i=0, ii=ch.length; i<ii; i++) {
+			ch[i].set.remove();
+			this.graph.removeNode(ch[i]);
+			
+			// Remove selection, if any
+			if (ch[i].selected)
+				this.toggleSelect(ch[i]);
+			delete this.selectedNodes[ch[i].name];
+		}
+		delete this.children[parent.name];
+		parent.opened = false;
+	}
 }
 
 Pelagios.Graph.prototype.handler = {

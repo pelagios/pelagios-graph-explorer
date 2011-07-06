@@ -27,7 +27,9 @@ window.onload = function () {
     		size, dataset.records, dataset.places,
     		
     		// click
-    		function(event) {}, 
+    		function(event) {
+    			computeOverlaps();
+    		}, 
     		
     		// dblclick
     		function(node) {
@@ -90,6 +92,26 @@ window.onload = function () {
     		pMap.addPolygon(dataset.name, data);
     	})
     	.error(function(data) { alert("Something went wrong: " + data.responseText); });	
+    }
+    
+    function computeOverlaps() {
+    	// Selected nodes come in an associative array
+    	var selected = new Array();
+    	for (var node in pGraph.getSelected()) {
+    		selected.push(node);
+    	}
+    	
+    	if (selected.length > 1) {
+	    	var url = "places/intersect?";
+	    	for (var i=0, ii=selected.length; i<ii; i++) {
+	    		url += "set=" + selected[i] + "&";
+	    	}
+	    	
+	    	$.getJSON(url, function(data) {
+	    		alert(data.length + " shared places");
+	    	})
+	    	.error(function(data) { alert("Something went wrong: " + data.responseText); });
+    	}
     }
 }
 
