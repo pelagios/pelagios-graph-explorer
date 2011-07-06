@@ -4,6 +4,12 @@ Pelagios.Graph = function(raphael) {
     this.layout = new Layout.ForceDirected(this.graph, 200, 200, 0.4);
     this.raphael = raphael;
     
+    // Keep track of parent->child relations
+    this.children = new Array();
+    
+    // Keep track of node->outbound edges relations
+    this.edges = new Array();
+    
 	var toScreen = this.toScreen;
     this.renderer = new Renderer(10, this.layout,
   		  function clear() { },
@@ -45,18 +51,24 @@ Pelagios.Graph.prototype.fromScreen = function(s) {
 }
 
 Pelagios.Graph.prototype.newNode = function(name, size, records, places, 
-		dblclick, mouseover, mouseout) {
+		click, dblclick, mouseover, mouseout, parent) {
 	
     var n = this.graph.newNode();
     n.name = name;
+    n.selected = false;
+    n.opened = false;
+    
     n.set = this.raphael.pelagios.dataset(name, size, records, places);
     n.set.drag(
     	this.handler.move,
     	this.handler.drag,
     	this.handler.up);
     
+    if (click)
+    	n.set.click(function(event) { n.selected = !n.selected; new click(event) });
+    
     if (dblclick)
-    	n.set.dblclick(function(event) { new dblclick(n, event) });
+    	n.set.dblclick(function(event) { new dblclick(n, event); });
     
     if (mouseover)
     	n.set.mouseover(mouseover);
@@ -72,12 +84,59 @@ Pelagios.Graph.prototype.newNode = function(name, size, records, places,
         n.set[i].graphNode = n;    	
     }
     
+    if (parent) {
+    	var c;
+    	if (this.children[parent.name]) {
+    		c = this.children[parent.name];
+    	} else {
+    		c = new Array();
+    		this.children[parent.name] = c;
+    	}
+    	c.push(n);
+    }
+    
     return n;
+}
+
+Pelagios.Graph.prototype.getChildNodes = function(parent) {
+	if (this.children[parent.name])
+		return this.children[parent.name];
+	
+	return new Array();
+}
+
+Pelagios.Graph.prototype.removeChildNodes = function(parent) {
+	// Remove outbound edges (SVG only - graph edges are handled by Springy)
+	var ed = this.edges[parent.name];
+	if (ed) {
+		for (var i=0, ii=ed.length; i<ii; i++) {
+			ed[i].connection.line.remove();
+		}
+		this.edges[parent.name] = null;
+		
+		// Remove child nodes
+		var ch = this.children[parent.name];
+		for (var i=0, ii=ch.length; i<ii; i++) {
+			ch[i].set.remove();
+			this.graph.removeNode(ch[i]);
+		}
+		this.children[parent.name] = null;
+		parent.opened = false;
+	}
 }
 		
 Pelagios.Graph.prototype.newEdge = function(from, to, width) {
+	var ed;
+	if (this.edges[from.name]) {
+		ed = this.edges[from.name];
+	} else {
+		ed = new Array();
+		this.edges[from.name] = ed;
+	}
+	
     var e = this.graph.newEdge(from, to);
-    e.connection = raphael.pelagios.connection(from.set[0], to.set[0], "#000", width);
+    e.connection = this.raphael.pelagios.connection(from.set[0], to.set[0], "#000", width);
+    ed.push(e);
     return e;
 }
 
@@ -89,14 +148,16 @@ Pelagios.Graph.prototype.handler = {
 	},
 		
 	move : function(dx, dy) {
-		raphael.pelagios.dataset(this.graphNode.set, this.ox + dx, this.oy + dy);
+		window.pGraph.raphael.pelagios.dataset(this.graphNode.set, this.ox + dx, this.oy + dy);
 		var pt = window.pGraph.fromScreen(new Vector(this.ox + dx, this.oy + dy));
 		window.pGraph.layout.point(this.graphNode).p = pt;
 		window.pGraph.renderer.start(); 
 	},
 		
 	up : function() {
-		this.animate({"fill-opacity": 1}, 100);
+		this.animate({
+			"scale" : "1.0, 1.0",
+		}, 350, "bounce");
 	}
 
 }

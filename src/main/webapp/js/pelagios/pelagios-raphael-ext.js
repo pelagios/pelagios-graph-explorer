@@ -21,16 +21,12 @@ Raphael.fn.pelagios = {
 		    	this.ellipse(this.width / 2, this.height / 2, arg1, arg1)
 					.attr({
 						"fill" : "#9C9EDE", 
-						"stroke" : "#777", 
-						"fill-opacity" : 1,
-						"stroke-width" : 1,
-						"cursor": "move"}));
+						"stroke" : "#fff", 
+						"stroke-width" : 2}));
 		    
 			s[0].mouseover(function(event) {
 			    this.animate({
 			    	"scale" : "1.3, 1.3",
-			    	"stroke" : "#555",
-					"stroke-width" : 2
 			    }, 350, "bounce");
 			    
 			    s.push(raphael.text(this.attr("cx"), this.attr("cy") + s.size + 24, arg2 + " Records"));
@@ -39,9 +35,7 @@ Raphael.fn.pelagios = {
 			s[0].mouseout(function (event) {
 			    this.animate({
 			    	"scale" : "1.0, 1.0",
-				    "stroke" : "#777",
-					"stroke-width" : 1
-			    }, 100);
+			    }, 350, "bounce");
 			    s.pop().remove();
 			    s.pop().remove();
 			});
@@ -74,9 +68,9 @@ Raphael.fn.pelagios = {
 			return {
 				line: this.path(path).attr({
 					"stroke-width" : width,
-					"opacity" : .3,
+					"opacity" : 0.2,
 					"stroke": "#777",
-					fill: "none"}).toBack(),
+					"fill" : "none"}).toBack(),
 				from: obj1,
 				to: obj2
 			};
