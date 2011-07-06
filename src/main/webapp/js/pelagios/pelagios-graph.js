@@ -1,7 +1,7 @@
 // Graph-related code
 Pelagios.Graph = function(raphael) {	
 	this.graph = new Graph();
-    this.layout = new Layout.ForceDirected(this.graph, 200, 200, 0.4);
+    this.layout = new Layout.ForceDirected(this.graph, 800, 30, 0.3);
     this.raphael = raphael;
     
     // Keep track of parent->child relations
@@ -110,7 +110,7 @@ Pelagios.Graph.prototype.newEdge = function(from, to, width) {
 		this.edges[from.name] = ed;
 	}
 	
-    var e = this.graph.newEdge(from, to);
+    var e = this.graph.newEdge(from, to, { length: width / 30 });
     e.connection = this.raphael.pelagios.connection(from.set[0], to.set[0], "#000", width);
     ed.push(e);
     return e;
