@@ -178,12 +178,13 @@ Pelagios.Graph.prototype.removeChildNodes = function(parent) {
 Pelagios.Graph.prototype.handler = {
 
 	drag : function() {
+		this.graphNode.data.mass = 10000;
 		this.ox = this.attr("cx");
 		this.oy = this.attr("cy");
-		this.graphNode.data.mass = 10000;
 	},
 		
 	move : function(dx, dy) {
+		this.graphNode.data.mass = 10000;
 		window.pGraph.raphael.pelagios.dataset(this.graphNode.set, this.ox + dx, this.oy + dy);
 		var pt = window.pGraph.fromScreen(new Vector(this.ox + dx, this.oy + dy));
 		window.pGraph.layout.point(this.graphNode).p = pt;
