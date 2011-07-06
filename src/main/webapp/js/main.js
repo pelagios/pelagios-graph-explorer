@@ -3,9 +3,10 @@ window.onload = function () {
 	var viewport = Pelagios.getViewport();
     var raphael = Raphael("dataset-panel", viewport.x, viewport.y);
     
-    // Create Pelagios graph and map objects
+    // Create Pelagios graph, map and palette objects
     var pGraph = new Pelagios.Graph(raphael);
     var pMap = new Pelagios.Map();
+    var palette = new Pelagios.Palette();
 
     // Fetch datasets from server
     fetchDatasets();
@@ -22,9 +23,20 @@ window.onload = function () {
     	if (size < 5)
     		size = 5;
     	
+    	var fill, stroke;
+    	if (parent) {
+    		fill = parent.fill;
+    		stroke = parent.stroke;
+    	} else {
+    		fill = palette.next();
+    		stroke = palette.darker(fill);
+    	}
+    		
+    	
     	var node = pGraph.newNode(
     		dataset.name,
     		size, dataset.records, dataset.places,
+    		fill, stroke,
     		
     		// click
     		function(event) {
@@ -48,7 +60,7 @@ window.onload = function () {
     		
     		parent);
     	
-    	node.convexHull = fetchConvexHull(dataset);
+    	node.convexHull = fetchConvexHull(node);
     	
     	if (parent)
     		pGraph.newEdge(parent, node, size / 2);
@@ -87,9 +99,9 @@ window.onload = function () {
     	.error(function() { parent.opened = false; alert("Error."); });
     }
 
-    function fetchConvexHull(dataset) {
-    	$.getJSON("datasets/" + dataset.name + "/places/convexhull", function(data) {
-    		pMap.addPolygon(dataset.name, data);
+    function fetchConvexHull(node) {
+    	$.getJSON("datasets/" + node.name + "/places/convexhull", function(data) {
+    		pMap.addPolygon(node.name, data, node.stroke);
     	})
     	.error(function(data) { alert("Something went wrong: " + data.responseText); });	
     }

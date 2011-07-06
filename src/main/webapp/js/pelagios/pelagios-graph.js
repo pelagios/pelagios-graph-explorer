@@ -1,7 +1,7 @@
 // Graph-related code
 Pelagios.Graph = function(raphael) {	
 	this.graph = new Graph();
-    this.layout = new Layout.ForceDirected(this.graph, 800, 30, 0.3);
+    this.layout = new Layout.ForceDirected(this.graph, 400, 80, 0.4);
     this.raphael = raphael;
     
     // Keep track of parent->child relations
@@ -54,14 +54,18 @@ Pelagios.Graph.prototype.fromScreen = function(s) {
 }
 
 Pelagios.Graph.prototype.newNode = function(name, size, records, places, 
-		click, dblclick, mouseover, mouseout, parent) {
+		fill, stroke, click, dblclick, mouseover, mouseout, parent) {
 	
     var n = this.graph.newNode();
+    n.size = size;
     n.name = name;
     n.selected = false;
     n.opened = false;
+    n.fill = fill;
+    n.stroke = stroke
+    n.data.mass = size / 3;
     
-    n.set = this.raphael.pelagios.dataset(name, size, records, places);
+    n.set = this.raphael.pelagios.dataset(name, size, records, places, fill, stroke);
     n.set.drag(
     	this.handler.move,
     	this.handler.drag,
@@ -69,7 +73,7 @@ Pelagios.Graph.prototype.newNode = function(name, size, records, places,
     
     if (click)
     	n.set.click(function(event) { this.toggleSelect(n); new click(event) }.bind(this));
-    
+
     if (dblclick)
     	n.set.dblclick(function(event) { new dblclick(n, event); });
     
@@ -110,7 +114,7 @@ Pelagios.Graph.prototype.newEdge = function(from, to, width) {
 		this.edges[from.name] = ed;
 	}
 	
-    var e = this.graph.newEdge(from, to, { length: width / 30 });
+    var e = this.graph.newEdge(from, to, { length: 0 });
     e.connection = this.raphael.pelagios.connection(from.set[0], to.set[0], "#000", width);
     ed.push(e);
     return e;
@@ -176,6 +180,7 @@ Pelagios.Graph.prototype.handler = {
 	drag : function() {
 		this.ox = this.attr("cx");
 		this.oy = this.attr("cy");
+		this.graphNode.data.mass = 10000;
 	},
 		
 	move : function(dx, dy) {
@@ -189,6 +194,7 @@ Pelagios.Graph.prototype.handler = {
 		this.animate({
 			"scale" : "1.0, 1.0",
 		}, 350, "bounce");
+		this.graphNode.data.mass = this.graphNode.data.size / 3;
 	}
 
 }

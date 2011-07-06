@@ -2,7 +2,7 @@
 Raphael.fn.pelagios = {
 		
 	// A graph node that represents a Pelagios data set
-	dataset : function(arg0, arg1, arg2, arg3) {
+	dataset : function(arg0, arg1, arg2, arg3, arg4, arg5) {
 		if (arg0.size) {
 			// arg0 -> set, arg1 -> x, arg2 -> y
 			arg0[0].attr({cx: arg1, cy: arg2});
@@ -16,15 +16,15 @@ Raphael.fn.pelagios = {
 				arg0.selection.attr({cx: arg1, cy: arg2});
 			return;	
 		} else {
-			// arg0 -> name, arg1 -> size, arg2 -> records, arg3 -> places
+			// arg0 -> name, arg1 -> size, arg2 -> records, arg3 -> places, arg4 -> fill, arg5 -> stroke
 			var raphael = this;
 		    var s = this.set();
 			s.size = arg1;
 		    s.push(
 		    	this.ellipse(this.width / 2, this.height / 2, arg1, arg1)
 					.attr({
-						"fill" : "#9C9EDE", 
-						"stroke" : "#fff", 
+						"fill" : arg4, 
+						"stroke" : arg5, 
 						"stroke-width" : 2}));
 		    
 			s[0].mouseover(function(event) {

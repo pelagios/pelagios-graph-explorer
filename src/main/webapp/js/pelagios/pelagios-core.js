@@ -19,5 +19,30 @@ Pelagios.getViewport = function() {
 	       h = document.getElementsByTagName('body')[0].clientHeight;
 	 }
 	 
-	 return new Vector(w, h * 0.6);
+	 return new Vector(w * 0.65, h);
+}
+
+Pelagios.Palette = function() {
+	this.bright = ["#9c9ede", "#cedb9c", "#e7cb94", "#e7969c", "#de9ed6"];
+	
+	this.dark = new Array();
+	this.dark["#9c9ede"] = "#4a5584";
+	this.dark["#cedb9c"] = "#637939";
+	this.dark["#e7cb94"] = "#8c6d31";
+	this.dark["#e7969c"] = "#843c39";
+	this.dark["#de9ed6"] = "#7b4173";	
+
+    this.counter = -1;
+}
+
+Pelagios.Palette.prototype.next = function() {
+	this.counter++;
+	if (this.bright > this.bright.length)
+		this.counter = 0;
+	
+	return this.bright[this.counter];
+}
+
+Pelagios.Palette.prototype.darker = function(color) {
+	return this.dark[color];
 }

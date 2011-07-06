@@ -377,7 +377,7 @@ Layout.ForceDirected.prototype.attractToCentre = function()
 {
 	this.eachNode(function(node, point) {
 		var direction = point.p.multiply(-1.0);
-		point.applyForce(direction.multiply(this.repulsion * 2.0));
+		point.applyForce(direction.multiply(this.repulsion * 1.1));
 	});
 };
 

@@ -11,7 +11,7 @@ Pelagios.Map = function() {
 	this.polygons = new Array();
 }
 
-Pelagios.Map.prototype.addPolygon = function(name, coords) {
+Pelagios.Map.prototype.addPolygon = function(name, coords, fill) {
 	var gCoords = new Array();
 	for (var i=0, ii=coords.length; i<ii; i++) {
 		gCoords.push(new google.maps.LatLng(coords[i][1], coords[i][0]));
@@ -19,11 +19,11 @@ Pelagios.Map.prototype.addPolygon = function(name, coords) {
 	
 	this.polygons[name] = new google.maps.Polygon({
 		paths: gCoords,
-		strokeColor: "#ff0000",
+		strokeColor: fill,
 		strokeOpacity: 0.8,
 		strokeWeight: 1,
-		fillColor: "#ff0000",
-		fillOpacity: 0.35
+		fillColor: fill,
+		fillOpacity: 0.5
 	});
 }
 

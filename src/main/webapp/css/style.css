@@ -8,16 +8,20 @@ html, body {
 }
 
 #dataset-panel {
-	width:100%;
-	height:100%;	
+	clear:left;
+	float:left;
+	width:65%;
+	height:100%;
+	padding:0px;
+	margin:0px;
+	display:inline;
 }
 
 #map-panel {
-	position:relative;
-	top:-40%;
-	width:60%;
-	height:40%;
 	float:right;
-	border-top:1px solid #000;
-	border-left:1px solid #000;
+	width:35%;
+	height:100%;
+	padding:0px;
+	margin:0px;
+	display:inline;
 }
