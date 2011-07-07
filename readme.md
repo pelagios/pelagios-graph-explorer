@@ -9,6 +9,8 @@ PELAGIOS project.
 
 todo... 
 
+![PELAGIOS Graph Explorer - Dev Screenshot](http://dl.dropbox.com/u/6192626/graph-explorer.jpg)
+
 ## License
 
 The PELAGIOS Graph Explorer is licensed under the 
