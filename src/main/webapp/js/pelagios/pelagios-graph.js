@@ -77,7 +77,7 @@ Pelagios.Graph.prototype.newNode = function(name, size, records, places,
     var clickDelay = 200;
     
     var lastClick = null;
-    var maxClickTime = 500;
+    var maxClickTime = 300;
     
     var self = this;
     
