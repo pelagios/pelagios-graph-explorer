@@ -71,11 +71,33 @@ Pelagios.Graph.prototype.newNode = function(name, size, records, places,
     	this.handler.drag,
     	this.handler.up);
     
+    // This is to enable clicks AND double clicks on the same element 
+    // See http://christopherj.us/javascript-click-and-double-click-on-same-element/
+    var clickTimeout = null;
+    var clickDelay = 200;
+    var self = this;
+    
     if (click)
-    	n.set.click(function(event) { this.toggleSelect(n); new click(event) }.bind(this));
+    	n.set.click(function(event) { 
+    		if(clickTimeout){ return; }
+    		
+    		clickTimeout = window.setTimeout(function(){
+    			clickTimeout = null;  
+    			self.toggleSelect(n);
+    			new click(event); 
+    		}, clickDelay);
+    	});
 
     if (dblclick)
-    	n.set.dblclick(function(event) { new dblclick(n, event); });
+    	n.set.dblclick(function(event) {
+    		
+    		if(clickTimeout){
+    			clearTimeout(clickTimeout);
+    			clickTimeout = null;
+    		}
+    		
+    		new dblclick(n, event); 
+    	});
     
     if (mouseover)
     	n.set.mouseover(mouseover);
