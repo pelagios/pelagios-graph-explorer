@@ -158,12 +158,12 @@ Pelagios.Graph.prototype.toggleSelect = function(node) {
 	if (node.selected) {
 		var cx = node.set[0].attr("cx");
 		var cy = node.set[0].attr("cy");
-		var size = node.set.size + 5;
+		var size = node.set.size + 8;
 		node.set.selection = this.raphael.ellipse(cx, cy, size, size)
 			.attr({
-				"stroke" : "#000",
-				"stroke-width" : 2,
-				"opacity" : 0.3,
+				"stroke" : "#FF8000",
+				"stroke-width" : 4,
+				"opacity" : 0.8,
 				"stroke-dasharray" : "-"
 			});
 		this.selectedNodes[node.name] = node;
