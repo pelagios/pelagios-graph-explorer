@@ -1,7 +1,7 @@
 // Graph-related code
 Pelagios.Graph = function(raphael) {	
 	this.graph = new Graph();
-    this.layout = new Layout.ForceDirected(this.graph, 800, 30, 0.3);
+    this.layout = new Layout.ForceDirected(this.graph, 800, 25, 0.3);
     this.raphael = raphael;
     
     // Keep track of parent->child relations
@@ -75,11 +75,21 @@ Pelagios.Graph.prototype.newNode = function(name, size, records, places,
     // See http://christopherj.us/javascript-click-and-double-click-on-same-element/
     var clickTimeout = null;
     var clickDelay = 200;
+    
+    var lastClick = null;
+    var maxClickTime = 500;
+    
     var self = this;
     
-    if (click)
+    if (click) {
+    	n.set.mousedown(function() {
+    		lastClick = new Date().getTime();
+    	});
+    	
     	n.set.click(function(event) { 
-    		if(clickTimeout){ return; }
+    		if (clickTimeout){ return; }
+    		
+    		if ((new Date().getTime() - lastClick) > maxClickTime) { return; } 
     		
     		clickTimeout = window.setTimeout(function(){
     			clickTimeout = null;  
@@ -87,7 +97,8 @@ Pelagios.Graph.prototype.newNode = function(name, size, records, places,
     			new click(event); 
     		}, clickDelay);
     	});
-
+    }
+    
     if (dblclick)
     	n.set.dblclick(function(event) {
     		
