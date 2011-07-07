@@ -1,7 +1,7 @@
 // Graph-related code
 Pelagios.Graph = function(raphael) {	
 	this.graph = new Graph();
-    this.layout = new Layout.ForceDirected(this.graph, 400, 20, 0.4);
+    this.layout = new Layout.ForceDirected(this.graph, 800, 30, 0.3);
     this.raphael = raphael;
     
     // Keep track of parent->child relations
@@ -178,13 +178,13 @@ Pelagios.Graph.prototype.removeChildNodes = function(parent) {
 Pelagios.Graph.prototype.handler = {
 
 	drag : function() {
-		this.graphNode.data.mass = 10000;
+		this.graphNode.data.mass = 100000;
 		this.ox = this.attr("cx");
 		this.oy = this.attr("cy");
 	},
 		
 	move : function(dx, dy) {
-		this.graphNode.data.mass = 10000;
+		this.graphNode.data.mass = 100000;
 		window.pGraph.raphael.pelagios.dataset(this.graphNode.set, this.ox + dx, this.oy + dy);
 		var pt = window.pGraph.fromScreen(new Vector(this.ox + dx, this.oy + dy));
 		window.pGraph.layout.point(this.graphNode).p = pt;
