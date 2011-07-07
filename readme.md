@@ -1,22 +1,22 @@
-# PELAGIOS Data Visualization Demonstrator
+# PELAGIOS Graph Explorer
 
-Welcome to the future home of the PELAGIOS Data Visualization Demonstrator!
+Welcome to the future home of the PELAGIOS Graph Explorer!
 
 Visit http://pelagios-project.blogspot.com for information about the
 PELAGIOS project.
 
-## What is the PELAGIOS Data Visualization Demonstrator?
+## What is the PELAGIOS Graph Explorer?
 
 todo... 
 
 ## License
 
-The PELAGIOS Data Visualization Demonstrator is licensed under the 
+The PELAGIOS Graph Explorer is licensed under the 
 [GNU General Public License v3.0] (http://www.gnu.org/licenses/gpl.html).
 
 ## Getting Started
 
-The PELAGIOS Data Visualization Demonstrator is built with [Gradle]
+The PELAGIOS Graph Explorer is built with [Gradle]
 (http://www.gradle.org). (Download and installation instructions for
 Gradle are [here] (http://www.gradle.org/installation.html)). To test
 and compile the project, run
@@ -65,9 +65,3 @@ http://atlantides.org/downloads/pleiades/dumps/
 Unzip them and place them in the /src/test/resources folder. Note: presently
 you also need to update the file names in the unit test source code. This
 is only a temporary issue, though.
-
-## Future Work
-
-Split this (now rather monolithic) demo up into (more re-usable) sub-projects.
-E.g. a visualization frontend, a graph backend (including dataset importers),
-and a Web API project.
