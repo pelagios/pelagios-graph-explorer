@@ -2,7 +2,9 @@ package org.pelagios.backend.graph.builder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.Node;
@@ -63,7 +65,7 @@ class DatasetImpl extends AbstractNodeImpl implements Dataset {
 	}
 
 	public List<Place> listPlaces(boolean includeSubsets) {
-		List<Place> places = new ArrayList<Place>(); 
+		Set<Place> places = new HashSet<Place>(); 
 		
 		for (DataRecord r : listRecords()) {
 			places.addAll(r.listPlaces());
@@ -75,7 +77,7 @@ class DatasetImpl extends AbstractNodeImpl implements Dataset {
 			}
 		}
 		
-		return places;
+		return new ArrayList<Place>(places);
 	}
 
 	public boolean isPlaceReferenced(Place place, boolean includeSubsets) {
