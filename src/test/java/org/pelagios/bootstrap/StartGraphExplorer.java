@@ -5,10 +5,10 @@ import org.mortbay.jetty.Server;
 import org.mortbay.jetty.bio.SocketConnector;
 import org.mortbay.jetty.webapp.WebAppContext;
 
-public class StartServer {
+public class StartGraphExplorer {
 
 	public static void main(String[] args) throws Exception {
-		new StartServer().start();
+		new StartGraphExplorer().start();
 	}
 	
 	public void start() {

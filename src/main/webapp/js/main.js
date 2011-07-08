@@ -118,11 +118,12 @@ window.onload = function () {
 	    	for (var i=0, ii=selected.length; i<ii; i++) {
 	    		url += "set=" + selected[i] + "&";
 	    	}
-	    	
+	    	/*
 	    	$.getJSON(url, function(data) {
 	    		alert(data.length + " shared places");
 	    	})
 	    	.error(function(data) { alert("Something went wrong: " + data.responseText); });
+	    	*/
     	}
     }
 }
