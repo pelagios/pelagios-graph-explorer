@@ -14,6 +14,17 @@ Raphael.fn.pelagios = {
 			
 			if (arg0.selection)
 				arg0.selection.attr({cx: arg1, cy: arg2});
+  
+			if (arg0.links) {
+				for (var i=0, ii=arg0.links.length; i<ii; i++) {
+					var x = arg0.links[i].to.set[0].attr("cx");
+					var y = arg0.links[i].to.set[0].attr("cy");
+					var path = "M" + arg1 + " " + arg2 +
+						"L" + x + " " + y;
+					arg0.links[i].line.attr({"path" : path});
+				}
+			}
+			
 			return;	
 		} else {
 			// arg0 -> name, arg1 -> size, arg2 -> records, arg3 -> places, arg4 -> fill, arg5 -> stroke

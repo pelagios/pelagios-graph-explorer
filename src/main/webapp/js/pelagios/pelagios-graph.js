@@ -27,6 +27,30 @@ Pelagios.Graph = function(raphael) {
   		  }
     );
     
+    this.linkNodes = function(from, to) {
+		var fromX = from.set[0].attr("cx");
+		var fromY = from.set[0].attr("cy");
+		var toX = to.set[0].attr("cx");
+		var toY = to.set[0].attr("cy");
+    	
+		var link = {
+			"from" : from,
+			"to" : to,
+			"line" : this.raphael.path(
+				"M" + fromX + " " + fromY + 
+				"L" + toX + " " + toY)
+			.attr({
+				"stroke" : "#FF8000",
+				"stroke-width" : 4,
+				"opacity" : 0.8,
+				"stroke-dasharray" : "-"
+			}).toBack()
+		}
+		
+		// Links are always attached to the source nodes!
+		from.set.links.push(link);
+    }
+    
     // This is ugly... but don't know how to get rid of
     // the global - it's needed in the move event handler
     window.pGraph = this;
@@ -63,7 +87,7 @@ Pelagios.Graph.prototype.newNode = function(name, size, records, places,
     n.opened = false;
     n.fill = fill;
     n.stroke = stroke
-    n.data.mass = size / 3;
+    n.data.mass = size / 10;
     
     n.set = this.raphael.pelagios.dataset(name, size, records, places, fill, stroke);
     n.set.drag(
@@ -147,7 +171,7 @@ Pelagios.Graph.prototype.newEdge = function(from, to, width) {
 		this.edges[from.name] = ed;
 	}
 	
-    var e = this.graph.newEdge(from, to, { length: 0 });
+    var e = this.graph.newEdge(from, to, { length: 0.2 });
     e.connection = this.raphael.pelagios.connection(from.set[0], to.set[0], "#000", width);
     ed.push(e);
     return e;
@@ -168,8 +192,36 @@ Pelagios.Graph.prototype.toggleSelect = function(node) {
 			});
 		this.selectedNodes[node.name] = node;
 	} else {
-		delete this.selectedNodes[node.name];
 		node.set.selection.remove();
+		if (node.set.links) {
+			for (var i=0, ii=node.set.links.length; i<ii; i++) {
+				node.set.links[i].line.remove();
+			}	
+		}
+		delete this.selectedNodes[node.name];
+	}
+	
+	// Recompute links
+	var allSelectedNodes = new Array();
+	for (var node in this.selectedNodes) {
+		allSelectedNodes.push(node);
+	}
+	
+	while (allSelectedNodes.length > 0) {
+		var src = this.selectedNodes[allSelectedNodes.pop()];
+		
+		if (src.set.links) {
+			for (var i=0, ii=src.set.links.length; i<ii; i++) {
+				src.set.links[i].line.remove();
+			}	
+		}
+		
+		src.set.links = new Array();
+		for (var i=0, ii=allSelectedNodes.length; i<ii; i++) {
+			this.linkNodes(
+					src,
+					this.selectedNodes[allSelectedNodes[i]]);	
+		}
 	}
 }
 
