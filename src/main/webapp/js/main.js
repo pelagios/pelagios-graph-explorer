@@ -7,6 +7,7 @@ window.onload = function () {
     var pGraph = new Pelagios.Graph(raphael);
     var pMap = new Pelagios.Map();
     var palette = new Pelagios.Palette();
+    var pAsync = new Pelagios.Async(pGraph, pMap);
 
     // Fetch datasets from server
     fetchDatasets();
@@ -40,7 +41,7 @@ window.onload = function () {
     		
     		// click
     		function(event) {
-    			computeOverlaps();
+    			pAsync.computeOverlaps();
     		}, 
     		
     		// dblclick
@@ -60,7 +61,7 @@ window.onload = function () {
     		
     		parent);
     	
-    	node.convexHull = fetchConvexHull(node);
+    	node.convexHull = pAsync.fetchConvexHull(node);
     	
     	if (parent)
     		pGraph.newEdge(parent, node, size / 2);
@@ -83,13 +84,27 @@ window.onload = function () {
     	
     	$.getJSON(url, function(data) {
     		// Init size scaling factor before adding first data set blobs
-    		if (!sFactor) {
-    			sFactor = 0;
-	    		for (var i=0, ii=data.length; i<ii; i++) {
-	    			if (data[i].records > sFactor)
-	    				sFactor = data[i].records;
+    		if (!parent) {
+	    		if (!sFactor) {
+	    			sFactor = 0;
+		    		for (var i=0, ii=data.length; i<ii; i++) {
+		    			if (data[i].records > sFactor)
+		    				sFactor = data[i].records;
+		    		}
+		    		sFactor = 20 / Math.sqrt(sFactor);
 	    		}
-	    		sFactor = 20 / Math.sqrt(sFactor);
+    		}
+    		
+    		// If there are no more subsets -> drill down
+    		if (data.length == 0) {
+    		    var raphael = Raphael("drilldown-panel", viewport.x, viewport.y);
+    		    var pDrilldown = new Pelagios.DrilldownPanel("drilldown-panel", raphael);
+    			pDrilldown.show();
+    			
+    			var p1 = pDrilldown.newPlace("Place 1");
+    			var p2 = pDrilldown.newPlace("Place 2");
+    			pDrilldown.newEdge(p1, p2);
+    			return;
     		}
     		
     		for (var i=0, ii=data.length; i<ii; i++) {
@@ -98,33 +113,6 @@ window.onload = function () {
     	})
     	.error(function() { parent.opened = false; alert("Error."); });
     }
-
-    function fetchConvexHull(node) {
-    	$.getJSON("datasets/" + node.name + "/places/convexhull", function(data) {
-    		pMap.addPolygon(node.name, data, node.stroke);
-    	})
-    	.error(function(data) { alert("Something went wrong: " + data.responseText); });	
-    }
     
-    function computeOverlaps() {
-    	// Selected nodes come in an associative array
-    	var selected = new Array();
-    	for (var node in pGraph.getSelected()) {
-    		selected.push(node);
-    	}
-    	
-    	if (selected.length > 1) {
-	    	var url = "places/intersect?";
-	    	for (var i=0, ii=selected.length; i<ii; i++) {
-	    		url += "set=" + selected[i] + "&";
-	    	}
-	    	/*
-	    	$.getJSON(url, function(data) {
-	    		alert(data.length + " shared places");
-	    	})
-	    	.error(function(data) { alert("Something went wrong: " + data.responseText); });
-	    	*/
-    	}
-    }
 }
 

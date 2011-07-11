@@ -89,6 +89,18 @@ Raphael.fn.pelagios = {
 				to: obj2
 			};
 		}
+	},
+	
+	placeLabel : function (arg0, arg1, arg2) {
+		if (arg1) {
+			// arg0 -> set, arg1 -> x, arg2 ->
+			arg0[0].attr({x: arg1, y: arg2});
+		} else {
+			// arg0 -> place name
+		    var s = this.set();
+		    s.push(this.text(this.width / 2, this.height / 2, arg0));
+		    return s;
+		}
 	}
 
 }

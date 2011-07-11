@@ -28,7 +28,8 @@ Pelagios.Map.prototype.addPolygon = function(name, coords, fill) {
 }
 
 Pelagios.Map.prototype.showPolygon = function(name) {
-	this.polygons[name].setMap(this.map);	
+	if (this.polygons[name])
+		this.polygons[name].setMap(this.map);	
 }
 
 Pelagios.Map.prototype.hidePolygon = function(name) {
