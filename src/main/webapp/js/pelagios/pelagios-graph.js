@@ -241,6 +241,12 @@ Pelagios.Graph.prototype.getSelected = function() {
 	return this.selectedNodes;
 }
 
+Pelagios.Graph.prototype.deselectAll = function() {
+	for (var sel in this.selectedNodes) {
+		this.toggleSelect(this.selectedNodes[sel]);
+	}
+}
+
 Pelagios.Graph.prototype.removeChildNodes = function(parent) {
 	// Remove outbound edges (SVG only - graph edges are handled by Springy)
 	var ed = this.edges[parent.name];

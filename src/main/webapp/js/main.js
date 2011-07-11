@@ -10,6 +10,11 @@ window.onload = function() {
 	// Init drawing canvas
 	var viewport = Pelagios.getViewport();
     raphael = Raphael("dataset-panel", viewport.x, viewport.y);
+    raphael.canvas.onclick = function(event){
+    	if (event.target.tagName == 'svg') {
+    		pGraph.deselectAll();
+    	}
+    };
     
     // Create Pelagios graph, map and palette objects
     var pGraph = new Pelagios.Graph(raphael);

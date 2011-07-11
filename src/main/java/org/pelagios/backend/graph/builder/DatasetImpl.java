@@ -50,6 +50,10 @@ class DatasetImpl extends AbstractNodeImpl implements Dataset {
 		return subsets;
 	}
 	
+	public boolean isSubsetOf(Dataset d) {
+		return (d.listSubsets().contains(this));
+	}
+	
 	public List<DataRecord> listRecords() {
 		List<DataRecord> records = new ArrayList<DataRecord>(); 
 		
@@ -92,6 +96,21 @@ class DatasetImpl extends AbstractNodeImpl implements Dataset {
 				filtered.add(p);
 		}
 		return filtered;
+	}
+	
+	@Override
+	public boolean equals(Object arg) {
+		if (!(arg instanceof DatasetImpl))
+			return false;
+		
+		// TODO names are a horrible way to identify datasets -> needs to be changed!
+		DatasetImpl other = (DatasetImpl) arg;
+		return getName().equals(other.getName());
+	}
+	
+	@Override
+	public int hashCode() {
+		return getName().hashCode();
 	}
 	
 	@Override

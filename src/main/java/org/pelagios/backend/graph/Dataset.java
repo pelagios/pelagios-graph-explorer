@@ -38,6 +38,14 @@ public interface Dataset {
 	public List<Dataset> listSubsets();
 	
 	/**
+	 * Checks whether this data set is a sub set of the
+	 * specified data set 
+	 * @param d the possible parent data set
+	 * @return true if this data set is a subset of d
+	 */
+	public boolean isSubsetOf(Dataset d);
+	
+	/**
 	 * Returns a list of all data records contained in this data set.
 	 * @return the list of data records;
 	 */

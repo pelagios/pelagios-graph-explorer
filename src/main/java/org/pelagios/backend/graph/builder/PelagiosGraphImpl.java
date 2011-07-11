@@ -255,13 +255,10 @@ class PelagiosGraphImpl implements PelagiosGraph {
 			PelagiosRelationships.RECORD, Direction.INCOMING,
 			PelagiosRelationships.RECORD, Direction.OUTGOING,
 			
-			PelagiosRelationships.DATASET, Direction.INCOMING,
-			PelagiosRelationships.DATASET, Direction.OUTGOING,
-			
 			PelagiosRelationships.IS_SUBSET_OF, Direction.INCOMING,
 			PelagiosRelationships.IS_SUBSET_OF, Direction.OUTGOING
 		);
-		PathFinder<Path> pFinder = GraphAlgoFactory.shortestPath(expander, 10);
+		PathFinder<Path> pFinder = GraphAlgoFactory.shortestPath(expander, 8);
 		
 		List<org.pelagios.backend.graph.Path> paths = new ArrayList<org.pelagios.backend.graph.Path>();
 		for (Path p : pFinder.findAllPaths(fromNode, toNode)) {

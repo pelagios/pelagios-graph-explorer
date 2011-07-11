@@ -64,15 +64,25 @@ public class PlacesController extends AbstractController {
 		try {
 			Place pFrom = graph.getPlace(new URI(from));
 			Place pTo = graph.getPlace(new URI(to));
-			System.out.println("Computing path from " + pFrom.getLabel() + " to " + pTo.getLabel());
 			
+			int ctr = 0;
+			Dataset highest = null;
 			for (org.pelagios.backend.graph.Path p : graph.findShortestPath(pFrom, pTo)) {
-				System.out.println("------------");
+				ctr++;
 				for (Object o : p.getEntities()) {
-					System.out.println(o);
+					if (o instanceof Dataset) {
+						Dataset d = (Dataset) o;
+						if (highest == null) {
+							highest = d;
+						} else if (highest.isSubsetOf(d)) {
+							highest = d;
+						}
+					}
 				}
-				System.out.println();
 			}
+
+			System.out.println("RESULTS: " + pFrom.getLabel() + " to " + pTo.getLabel());
+			System.out.println(ctr + " co-occurences in " + highest.getName());
 			
 			return Response.ok("").build();	
 		} catch (URISyntaxException e) {
