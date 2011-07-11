@@ -14,7 +14,13 @@ public class DataRecordBuilder {
 	
 	private List<URI> places = new ArrayList<URI>();
 	
+	public DataRecordBuilder() { }
+	
 	public DataRecordBuilder(URI dataURL) {
+		this.dataURL = dataURL;
+	}
+	
+	public void setDataURL(URI dataURL) {
 		this.dataURL = dataURL;
 	}
 	

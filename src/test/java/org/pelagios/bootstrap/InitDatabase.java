@@ -13,6 +13,7 @@ import org.pelagios.importer.nomisma.NomismaDatasetImporter;
 import org.pelagios.importer.perseus.PerseusImporter;
 import org.pelagios.importer.pleiades.PleiadesImporter;
 import org.pelagios.importer.ptolemymachine.PtolemyDatasetImporter;
+import org.pelagios.importer.spqr.SPQRImporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,6 +51,8 @@ public class InitDatabase {
 	private static final String PERSEUS_RICHMOND_TIMES_RDF = DATASETS_DIR + "perseus-richmond-times.rdf";
 	
 	private static final String GAP_N3 = DATASETS_DIR + "GAPtriples.n3";
+	
+	private static final String SPQR_DIR = DATASETS_DIR + "spqr/downloads";
 	
 	static {
 		// Look for Pleiades dump files
@@ -97,6 +100,7 @@ public class InitDatabase {
 		importNomisma(graph);
 		log.info("Done. (" + (System.currentTimeMillis() - taskStart) + " ms)");
 
+		/*
 		taskStart = System.currentTimeMillis();
 		log.info("Importing Google Ancient Places dataset");	
 		importGAP(graph);
@@ -107,12 +111,16 @@ public class InitDatabase {
 		importPtolemyMachine(graph);
 		log.info("Done. (" + (System.currentTimeMillis() - taskStart) + " ms)");
 		
-		/*
 		taskStart = System.currentTimeMillis();
 		log.info("Importing Perseus dataset");	
 		importPerseus(graph);
 		log.info("Done. (" + (System.currentTimeMillis() - taskStart) + " ms)");	
-		*/ 
+		*/
+		
+		taskStart = System.currentTimeMillis();
+		log.info("Importing SQPR dataset");	
+		importSPQR(graph);
+		log.info("Done. (" + (System.currentTimeMillis() - taskStart) + " ms)");		
 		
 		graph.shutdown();
 		log.info("Database initialized. Took " + 
@@ -150,6 +158,10 @@ public class InitDatabase {
 		perseusFiles.put("Perseus Renaissance", new File(PERSEUS_RENAISSANCE_RDF));
 		perseusFiles.put("Perseus Richmond Times", new File(PERSEUS_RICHMOND_TIMES_RDF));
 		new PerseusImporter(perseusFiles, graph);
+	}
+	
+	private static void importSPQR(PelagiosGraph graph) throws DatasetExistsException {
+		new SPQRImporter(new File(SPQR_DIR), graph);
 	}
 	
 	private static void delete(File file) {
