@@ -88,5 +88,10 @@ class PlaceImpl extends AbstractNodeImpl implements Place {
 	public int hashCode() {
 		return getURI().hashCode();
 	}
+	
+	@Override
+	public String toString() {
+		return "PLACE: " + getLabel() + " - " + getURI();
+	}
 
 }

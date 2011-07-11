@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 
 import org.pelagios.backend.graph.Dataset;
+import org.pelagios.backend.graph.Path;
 import org.pelagios.backend.graph.PelagiosGraph;
 import org.pelagios.backend.graph.Place;
 import org.pelagios.backend.graph.builder.DataRecordBuilder;
@@ -12,6 +13,7 @@ import org.pelagios.backend.graph.builder.PlaceBuilder;
 import org.pelagios.backend.graph.exception.DatasetExistsException;
 import org.pelagios.backend.graph.exception.DatasetNotFoundException;
 import org.pelagios.backend.graph.exception.PlaceExistsException;
+import org.pelagios.backend.graph.exception.PlaceNotFoundException;
 
 public class MockGraph implements PelagiosGraph {
 
@@ -69,6 +71,13 @@ public class MockGraph implements PelagiosGraph {
 		
 	}
 
+	public List<Path> findShortestPath(Place from, Place to)
+		throws PlaceNotFoundException {
+		
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	public List<Place> listSharedPlaces(List<Dataset> datasets) {
 		// TODO Auto-generated method stub
 		return null;

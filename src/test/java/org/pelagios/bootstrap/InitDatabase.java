@@ -102,13 +102,13 @@ public class InitDatabase {
 		log.info("Importing nomisma dataset");	
 		importNomisma(graph);
 		log.info("Done. (" + (System.currentTimeMillis() - taskStart) + " ms)");
-		
-		/*
+		*/
+	
 		taskStart = System.currentTimeMillis();
 		log.info("Importing Google Ancient Places dataset");	
 		importGAP(graph);
 		log.info("Done. (" + (System.currentTimeMillis() - taskStart) + " ms)");
-		*/
+		/*
 		taskStart = System.currentTimeMillis();
 		log.info("Importing Ptolemy Machine dataset");	
 		importPtolemyMachine(graph);

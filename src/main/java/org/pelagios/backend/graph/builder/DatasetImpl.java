@@ -94,4 +94,9 @@ class DatasetImpl extends AbstractNodeImpl implements Dataset {
 		return filtered;
 	}
 	
+	@Override
+	public String toString() {
+		return "DATASET: " + getName();
+	}
+	
 }

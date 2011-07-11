@@ -94,6 +94,21 @@ public interface PelagiosGraph {
 	public List<Place> listSharedPlaces(List<Dataset> datasets);
 	
 	/**
+	 * Performs a shortest path search between two places in the graph.
+	 * Note: unfortunately we're breaking the API a bit here, since we're
+	 * working with neo4j paths/nodes directly instead of Pelagios
+	 * domain objects. 
+	 * TODO needs revision!
+	 * 
+	 * @param from the starting place
+	 * @param to the destination place
+	 * @return the shortest path(s)
+	 * @throws PlaceNotFoundException if at least one of the places was not found
+	 * in the graph
+	 */
+	public List<Path> findShortestPath(Place from, Place to) throws PlaceNotFoundException;
+	
+	/**
 	 * Be kind. Always disconnect the graph DB before leaving.
 	 */
 	public void shutdown();

@@ -1,5 +1,7 @@
 package org.pelagios.rest;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +16,7 @@ import org.pelagios.backend.graph.Dataset;
 import org.pelagios.backend.graph.PelagiosGraph;
 import org.pelagios.backend.graph.Place;
 import org.pelagios.backend.graph.exception.DatasetNotFoundException;
+import org.pelagios.backend.graph.exception.PlaceNotFoundException;
 
 /**
  * This controller provides basic query operation on
@@ -47,8 +50,34 @@ public class PlacesController extends AbstractController {
 		}
 		
 		List<Place> sharedPlaces = graph.listSharedPlaces(datasets);	
-		System.out.println(toJSON(sharedPlaces));
 		return Response.ok(toJSON(sharedPlaces)).build();
+	}
+	
+	@GET
+	@Produces("application/json")
+	@Path("shortestpath")
+	public Response getShortestPaths(@QueryParam("from") String from, @QueryParam("to") String to)
+		throws PlaceNotFoundException {
+		
+		PelagiosGraph graph = Backend.getInstance();
+		
+		try {
+			Place pFrom = graph.getPlace(new URI(from));
+			Place pTo = graph.getPlace(new URI(to));
+			System.out.println("Computing path from " + pFrom.getLabel() + " to " + pTo.getLabel());
+			
+			for (org.pelagios.backend.graph.Path p : graph.findShortestPath(pFrom, pTo)) {
+				System.out.println("------------");
+				for (Object o : p.getEntities()) {
+					System.out.println(o);
+				}
+				System.out.println();
+			}
+			
+			return Response.ok("").build();	
+		} catch (URISyntaxException e) {
+			return Response.notAcceptable(null).build();
+		}
 	}
 
 }

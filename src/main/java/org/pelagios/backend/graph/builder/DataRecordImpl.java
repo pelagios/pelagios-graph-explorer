@@ -78,5 +78,10 @@ public class DataRecordImpl extends AbstractNodeImpl implements DataRecord {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public String toString() {
+		return "DATARECORD: " + getDataURL();
+	}
 
 }

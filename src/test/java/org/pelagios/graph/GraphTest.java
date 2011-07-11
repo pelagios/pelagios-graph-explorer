@@ -21,7 +21,7 @@ import org.pelagios.backend.graph.exception.PlaceNotFoundException;
 
 public class GraphTest {
 	
-	private static final String DATA_DIR = "c:/neo4j-data";
+	private static final String DATA_DIR = "c:/neo4j-unit-test";
 	
 	private void printDataset(Dataset dataset, int lvl) {
 		StringBuffer indent = new StringBuffer(" -");

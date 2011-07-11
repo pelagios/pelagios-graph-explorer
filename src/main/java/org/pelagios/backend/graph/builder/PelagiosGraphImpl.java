@@ -6,12 +6,20 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import org.neo4j.graphalgo.GraphAlgoFactory;
+import org.neo4j.graphalgo.PathFinder;
+import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.NotFoundException;
+import org.neo4j.graphdb.Path;
 import org.neo4j.graphdb.Relationship;
+import org.neo4j.graphdb.RelationshipExpander;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.index.Index;
 import org.neo4j.graphdb.index.IndexHits;
+import org.neo4j.kernel.Traversal;
+import org.pelagios.backend.graph.DataRecord;
 import org.pelagios.backend.graph.Dataset;
 import org.pelagios.backend.graph.PelagiosGraph;
 import org.pelagios.backend.graph.PelagiosRelationships;
@@ -224,6 +232,75 @@ class PelagiosGraphImpl implements PelagiosGraph {
 			sharedPlaces = datasets.get(i).filterReferenced(sharedPlaces, true);
 		}
 		return sharedPlaces;
+	}
+	
+	public List<org.pelagios.backend.graph.Path> findShortestPath(Place from, Place to) throws PlaceNotFoundException {
+		Node fromNode, toNode;
+		
+		Index<Node> idx = getPlaceIndex();
+		IndexHits<Node> hits = idx.get(Place.KEY_URI, from.getURI());
+		if (hits.size() == 0)
+			throw new PlaceNotFoundException(from.getURI());
+		fromNode = hits.next();
+		
+		hits = idx.get(Place.KEY_URI, to.getURI());
+		if (hits.size() == 0)
+			throw new PlaceNotFoundException(to.getURI());
+		toNode = hits.next();
+		
+		RelationshipExpander expander = Traversal.expanderForTypes(
+			PelagiosRelationships.REFERENCES, Direction.INCOMING,
+			PelagiosRelationships.REFERENCES, Direction.OUTGOING,
+			
+			PelagiosRelationships.RECORD, Direction.INCOMING,
+			PelagiosRelationships.RECORD, Direction.OUTGOING,
+			
+			PelagiosRelationships.DATASET, Direction.INCOMING,
+			PelagiosRelationships.DATASET, Direction.OUTGOING,
+			
+			PelagiosRelationships.IS_SUBSET_OF, Direction.INCOMING,
+			PelagiosRelationships.IS_SUBSET_OF, Direction.OUTGOING
+		);
+		PathFinder<Path> pFinder = GraphAlgoFactory.shortestPath(expander, 10);
+		
+		List<org.pelagios.backend.graph.Path> paths = new ArrayList<org.pelagios.backend.graph.Path>();
+		for (Path p : pFinder.findAllPaths(fromNode, toNode)) {
+			List<Object> nodes = new ArrayList<Object>();
+			for (Node n : p.nodes()) {
+				nodes.add(wrap(n));
+			}
+			paths.add(new org.pelagios.backend.graph.Path(nodes));
+		}
+		
+		return paths;
+	}
+	
+	private Object wrap(Node node) {
+		// TODO there must be a better way to do this
+		// e.g. by adding a "type" property to 
+		// every node and querying that
+		try {
+			node.getProperty(Place.KEY_LON);
+			return new PlaceImpl(node);
+		} catch (NotFoundException e) {
+			// 
+		}
+		
+		try {
+			node.getProperty(DataRecord.KEY_URI);
+			return new DataRecordImpl(node);
+		} catch (NotFoundException e) {
+			// 
+		}
+		
+		try {
+			node.getProperty(Dataset.KEY_NAME);
+			return new DatasetImpl(node);
+		} catch (NotFoundException e) {
+			// 
+		}
+		
+		return null;
 	}
 	
 	public void shutdown() {
