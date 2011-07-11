@@ -1,7 +1,15 @@
+var raphael;
+
+window.onresize = function(event) {
+	var viewport = Pelagios.getViewport();
+    raphael.setSize(viewport.x, viewport.y);
+	window.pGraph.renderer.graphChanged();
+}
+
 window.onload = function() {
 	// Init drawing canvas
 	var viewport = Pelagios.getViewport();
-    var raphael = Raphael("dataset-panel", viewport.x, viewport.y);
+    raphael = Raphael("dataset-panel", viewport.x, viewport.y);
     
     // Create Pelagios graph, map and palette objects
     var pGraph = new Pelagios.Graph(raphael);
