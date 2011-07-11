@@ -80,16 +80,19 @@ public class InitDatabase {
 		long initStart = System.currentTimeMillis();
 		
 		long taskStart = initStart;
+		/*
 		log.info("Dropping existing database (if any)");
 		delete(new File(NEO4J_DIR));
 		log.info("Done. (" + (System.currentTimeMillis() - taskStart) + " ms)");
 		
 		taskStart = System.currentTimeMillis();
+		*/
 		log.info("Initializing neo4j");		
 		PelagiosGraphBuilder graphBuilder = new PelagiosGraphBuilder(NEO4J_DIR);
 		PelagiosGraph graph = graphBuilder.build();		
 		log.info("Done. (" + (System.currentTimeMillis() - taskStart) + " ms)");
 
+		/*
 		taskStart = System.currentTimeMillis();
 		log.info("Importing Pleiades Gazetteer");		
 		importPleiades(graph);
@@ -99,13 +102,13 @@ public class InitDatabase {
 		log.info("Importing nomisma dataset");	
 		importNomisma(graph);
 		log.info("Done. (" + (System.currentTimeMillis() - taskStart) + " ms)");
-
+		
 		/*
 		taskStart = System.currentTimeMillis();
 		log.info("Importing Google Ancient Places dataset");	
 		importGAP(graph);
 		log.info("Done. (" + (System.currentTimeMillis() - taskStart) + " ms)");
-		
+		*/
 		taskStart = System.currentTimeMillis();
 		log.info("Importing Ptolemy Machine dataset");	
 		importPtolemyMachine(graph);
@@ -115,12 +118,13 @@ public class InitDatabase {
 		log.info("Importing Perseus dataset");	
 		importPerseus(graph);
 		log.info("Done. (" + (System.currentTimeMillis() - taskStart) + " ms)");	
-		*/
 		
+		/*
 		taskStart = System.currentTimeMillis();
 		log.info("Importing SQPR dataset");	
 		importSPQR(graph);
 		log.info("Done. (" + (System.currentTimeMillis() - taskStart) + " ms)");		
+		*/ 
 		
 		graph.shutdown();
 		log.info("Database initialized. Took " + 

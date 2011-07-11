@@ -97,7 +97,13 @@ window.onload = function() {
     		
     		// If there are no more subsets -> drill down
     		if (data.length == 0) {
-    			fetchDetails(parent);
+    			// fetchDetails(parent);
+    			return;
+    		}
+    		
+    		// If there are too many datasets to display -> alert
+    		if (data.length > 50) {
+    			alert("There are " + data.length + " sub-sets to this data set. Sorry, you'll have to wait until the detail/document view is implemented");
     			return;
     		}
     		

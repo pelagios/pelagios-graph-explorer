@@ -1,7 +1,8 @@
 // Graph-related code
 Pelagios.Graph = function(raphael) {	
 	this.graph = new Graph();
-    this.layout = new Layout.ForceDirected(this.graph, 800, 25, 0.3);
+	this.locus = this.graph.newNode();
+    this.layout = new Layout.ForceDirected(this.graph, 400, 50, 0.3);
     this.raphael = raphael;
     
     // Keep track of parent->child relations
@@ -18,12 +19,15 @@ Pelagios.Graph = function(raphael) {
   		  function clear() { },
   		  
   		  function drawEdge(edge, p1, p2) {
-  			  raphael.pelagios.connection(edge.connection);
+  			  if (edge.connection)
+  				  raphael.pelagios.connection(edge.connection);
   		  },
   		  
   		  function drawNode(node, pt) {
-  			  var xy = toScreen(pt, this.layout);
-  			  raphael.pelagios.dataset(node.set, xy.x, xy.y);
+  			  if (node.set) {
+	  			  var xy = toScreen(pt, this.layout);
+	  			  raphael.pelagios.dataset(node.set, xy.x, xy.y);
+  			  }
   		  }
     );
     
@@ -81,6 +85,8 @@ Pelagios.Graph.prototype.newNode = function(name, size, records, places,
 		fill, stroke, click, dblclick, mouseover, mouseout, parent) {
 	
     var n = this.graph.newNode();
+    this.graph.newEdge(n, this.locus, { length: 1 });
+    
     n.size = size;
     n.name = name;
     n.selected = false;
@@ -171,7 +177,7 @@ Pelagios.Graph.prototype.newEdge = function(from, to, width) {
 		this.edges[from.name] = ed;
 	}
 	
-    var e = this.graph.newEdge(from, to, { length: 0.2 });
+    var e = this.graph.newEdge(from, to, { length: .05 });
     e.connection = this.raphael.pelagios.connection(from.set[0], to.set[0], "#000", width);
     ed.push(e);
     return e;
