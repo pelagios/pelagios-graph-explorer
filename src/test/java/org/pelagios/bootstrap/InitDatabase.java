@@ -37,8 +37,8 @@ public class InitDatabase {
 	
 	private static final String DATASETS_DIR = "src/test/resources/datasets/";
 	
-	private static final String PLEIADES_LOCATIONS_CSV = "src/test/resources/pleiades-locations-20110627.csv";
-	private static final String PLEIADES_NAMES_CSV = "src/test/resources/pleiades-names-20110627.csv";
+	private static File PLEIADES_LOCATIONS_CSV = null;
+	private static File PLEIADES_NAMES_CSV = null;
 	
 	private static final String NOMISMA_RDF = DATASETS_DIR + "nomisma.org.rdf";
 	
@@ -47,6 +47,26 @@ public class InitDatabase {
 	private static final String PERSEUS_GRECO_ROMAN_RDF = DATASETS_DIR + "perseus-greco-roman.rdf";
 	private static final String PERSEUS_RENAISSANCE_RDF = DATASETS_DIR + "perseus-renaissance.rdf";
 	private static final String PERSEUS_RICHMOND_TIMES_RDF = DATASETS_DIR + "perseus-richmond-times.rdf";
+	
+	static {
+		// Look for Pleiades dump files
+		File resourcesDir = new File("src/test/resources");
+		for (File f : resourcesDir.listFiles()) {
+			if (f.getName().startsWith("pleiades-locations") &&
+				f.getName().endsWith(".csv")) {
+				
+				PLEIADES_LOCATIONS_CSV = f;
+			} else if (f.getName().startsWith("pleiades-names") &&
+				f.getName().endsWith(".csv")) {
+				
+				PLEIADES_NAMES_CSV = f;
+			}
+		}
+		
+		if ((PLEIADES_LOCATIONS_CSV == null) || (PLEIADES_NAMES_CSV == null)) {
+			throw new RuntimeException("Error: Pleiades dump files not found!");
+		}
+	}
 	
 	public static void main(String[] args) 
 		throws IOException, PlaceExistsException, DatasetExistsException {
@@ -94,8 +114,8 @@ public class InitDatabase {
 		
 		PleiadesImporter importer = new PleiadesImporter();
 		importer.importPleiadesDump(
-				new File(PLEIADES_LOCATIONS_CSV),
-				new File(PLEIADES_NAMES_CSV),
+				PLEIADES_LOCATIONS_CSV,
+				PLEIADES_NAMES_CSV,
 				graph);
 	}
 	

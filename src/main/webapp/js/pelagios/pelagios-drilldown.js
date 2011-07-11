@@ -10,7 +10,7 @@ Pelagios.DrilldownPanel = function(id, raphael) {
     		  function clear() { },
     		  
     		  function drawEdge(edge, p1, p2) {
-    			  
+      			  raphael.pelagios.connection(edge.connection);
     		  },
     		  
     		  function drawNode(node, pt) {
@@ -53,7 +53,7 @@ Pelagios.DrilldownPanel.prototype.show = function() {
 
 Pelagios.DrilldownPanel.prototype.newPlace = function(name) {
     var n = this.graph.newNode();
-    n.set = this.raphael.pelagios.placeLabel(name);
+    n.set = this.raphael.pelagios.placeLabel(name, "#ff3333", "#000000");
     n.set.drag(
         	this.handler.move,
         	this.handler.drag,
@@ -63,7 +63,7 @@ Pelagios.DrilldownPanel.prototype.newPlace = function(name) {
 
 Pelagios.DrilldownPanel.prototype.newEdge = function(from, to) {
     var e = this.graph.newEdge(from, to, { length: 0.2 });
-    e.connection = this.raphael.pelagios.connection(from.set[0], to.set[0], "#000", 1);
+    e.connection = this.raphael.pelagios.connection(from.set[1], to.set[1], "#000", 2);
     return e;
 }
 
@@ -84,9 +84,11 @@ Pelagios.DrilldownPanel.prototype.handler = {
 		},
 			
 		up : function() {
+			/*
 			this.animate({
 				"scale" : "1.0, 1.0",
 			}, 350, "bounce");
+			*/
 		}
 
 	}

@@ -61,7 +61,7 @@ Raphael.fn.pelagios = {
 
 	// Connection between two graph nodes, based on the Raphael 'graffle'
 	// demo at http://raphaeljs.com/graffle.html  
-	connection : function (obj1, obj2, line, width) {
+	connection : function(obj1, obj2, line, width) {
 		if (obj1.line && obj1.from && obj1.to) {
 			line = obj1;
 			obj1 = line.from;
@@ -91,16 +91,52 @@ Raphael.fn.pelagios = {
 		}
 	},
 	
-	placeLabel : function (arg0, arg1, arg2) {
-		if (arg1) {
-			// arg0 -> set, arg1 -> x, arg2 ->
+	placeLabel : function(arg0, arg1, arg2) {
+		if (typeof arg0[0] == 'object') {
+			// arg0 -> set, arg1 -> x, arg2 -> y
 			arg0[0].attr({x: arg1, y: arg2});
+			
+			var bbox = arg0[0].getBBox();
+			arg0[1].attr({x: arg1 - bbox.width / 2 - 8, y: arg2 - bbox.height / 2 - 4});
 		} else {
-			// arg0 -> place name
+			// arg0 -> place name, arg1 -> fill, arg2 -> stroke
 		    var s = this.set();
-		    s.push(this.text(this.width / 2, this.height / 2, arg0));
+		    
+		    var text = this.text(0, 0, arg0);
+		    var bbox = text.getBBox();
+		    s.push(text);
+		   
+		    s.push(this.rect(0, 0, bbox.width + 16, bbox.height + 8, 5).attr({
+		    		"stroke-width" : 2,
+		    		"fill" : arg1,
+		    		"stroke" : arg2
+		    	}).toBack());
 		    return s;
 		}
+	},
+	
+	datarecord : function() {
+		if (typeof arg0[0] == 'object') {
+			// arg0 -> set, arg1 -> x, arg2 -> y
+			arg0[0].attr({x: arg1, y: arg2});
+			
+			var bbox = arg0[0].getBBox();
+			arg0[1].attr({x: arg1 - bbox.width / 2 - 8, y: arg2 - bbox.height / 2 - 4});
+		} else {
+			// arg0 -> data record label, arg1 -> fill, arg2 -> stroke
+		    var s = this.set();
+		    
+		    var text = this.text(0, 0, arg0);
+		    var bbox = text.getBBox();
+		    s.push(text);
+		   
+		    s.push(this.rect(0, 0, bbox.width + 16, bbox.height + 8, 5).attr({
+		    		"stroke-width" : 2,
+		    		"fill" : arg1,
+		    		"stroke" : arg2
+		    	}).toBack());
+		    return s;
+		}		
 	}
 
 }

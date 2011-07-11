@@ -1,4 +1,4 @@
-window.onload = function () {
+window.onload = function() {
 	// Init drawing canvas
 	var viewport = Pelagios.getViewport();
     var raphael = Raphael("dataset-panel", viewport.x, viewport.y);
@@ -97,13 +97,7 @@ window.onload = function () {
     		
     		// If there are no more subsets -> drill down
     		if (data.length == 0) {
-    		    var raphael = Raphael("drilldown-panel", viewport.x, viewport.y);
-    		    var pDrilldown = new Pelagios.DrilldownPanel("drilldown-panel", raphael);
-    			pDrilldown.show();
-    			
-    			var p1 = pDrilldown.newPlace("Place 1");
-    			var p2 = pDrilldown.newPlace("Place 2");
-    			pDrilldown.newEdge(p1, p2);
+    			fetchDetails(parent);
     			return;
     		}
     		
@@ -112,6 +106,19 @@ window.onload = function () {
     		}
     	})
     	.error(function() { parent.opened = false; alert("Error."); });
+    }
+    
+    function fetchDetails(parent) {
+    	$.getJSON("datasets/" + parent.name + "/places", function(data) {
+    	    var raphael = Raphael("drilldown-panel", viewport.x, viewport.y);
+    	    var pDrilldown = new Pelagios.DrilldownPanel("drilldown-panel", raphael);
+    		pDrilldown.show();
+    		
+    		for (var i=0, ii=data.length; i<ii; i++) {
+	    		pDrilldown.newPlace(data[i].label);
+    		}
+    	})
+    	.error(function() { alert("Error."); });
     }
     
 }

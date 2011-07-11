@@ -121,19 +121,21 @@ class PerseusDatafileImporter extends AbstractDatasetImporter {
 	       hierarchy.add(s[i])
 	   }
 	   
-	   // Look for 'book', 'chapter', 'section', 'speech' and 'poem'
+	   // Look for 'book', 'chapter', 'section', 'speech', 'narrative' and 'poem'
        while (tokenizer.hasMoreTokens()) {
 		   String nextToken = tokenizer.nextToken()
 		   if (nextToken.startsWith('book=')) {
-			   hierarchy.add('Book ' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
+			   hierarchy.add(name + ':Book ' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
 		   } else if (nextToken.startsWith('chapter')) {
-		       hierarchy.add('Chapter ' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
+		       hierarchy.add(name + ':Chapter ' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
 		   } else if (nextToken.startsWith('section')) {
-		       hierarchy.add('Section ' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
+		       hierarchy.add(name + ':Section ' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
 		   } else if (nextToken.startsWith('speech')) {
-		       hierarchy.add('Speech ' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
-		   } else if (nextToken.startsWith('poem')) {
-		       hierarchy.add('Poem ' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
+		       hierarchy.add(name + ':Speech ' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
+		   } else if (nextToken.startsWith('narrative')) {
+		   	   hierarchy.add(name + ':Narrative' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
+           } else if (nextToken.startsWith('poem')) {
+		       hierarchy.add(name + ':Poem ' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
 		   }
 	   }
 	   	   

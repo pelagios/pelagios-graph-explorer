@@ -1,5 +1,6 @@
 package org.pelagios.importer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Hierarchy {
@@ -11,7 +12,13 @@ public class Hierarchy {
 	}
 	
 	public List<String> getLevels() {
-		return levels;
+		List<String> qNames = new ArrayList<String>();
+		StringBuffer sb = new StringBuffer();
+		for (String level : levels) {
+			qNames.add(sb.toString() + level);
+			sb.append(level + ":");
+		}
+		return qNames;
 	}
 	
 	@Override

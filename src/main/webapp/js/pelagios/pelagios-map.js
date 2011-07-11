@@ -33,5 +33,6 @@ Pelagios.Map.prototype.showPolygon = function(name) {
 }
 
 Pelagios.Map.prototype.hidePolygon = function(name) {
-	this.polygons[name].setMap(null);	
+	if (this.polygons[name])
+		this.polygons[name].setMap(null);	
 }
