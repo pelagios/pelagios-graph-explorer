@@ -8,6 +8,7 @@ import org.pelagios.backend.graph.PelagiosGraph;
 import org.pelagios.backend.graph.builder.PelagiosGraphBuilder;
 import org.pelagios.backend.graph.exception.DatasetExistsException;
 import org.pelagios.backend.graph.exception.PlaceExistsException;
+import org.pelagios.importer.gap.GAPImporter;
 import org.pelagios.importer.nomisma.NomismaDatasetImporter;
 import org.pelagios.importer.perseus.PerseusImporter;
 import org.pelagios.importer.pleiades.PleiadesImporter;
@@ -47,6 +48,8 @@ public class InitDatabase {
 	private static final String PERSEUS_GRECO_ROMAN_RDF = DATASETS_DIR + "perseus-greco-roman.rdf";
 	private static final String PERSEUS_RENAISSANCE_RDF = DATASETS_DIR + "perseus-renaissance.rdf";
 	private static final String PERSEUS_RICHMOND_TIMES_RDF = DATASETS_DIR + "perseus-richmond-times.rdf";
+	
+	private static final String GAP_N3 = DATASETS_DIR + "GAPtriples.n3";
 	
 	static {
 		// Look for Pleiades dump files
@@ -95,14 +98,21 @@ public class InitDatabase {
 		log.info("Done. (" + (System.currentTimeMillis() - taskStart) + " ms)");
 
 		taskStart = System.currentTimeMillis();
+		log.info("Importing Google Ancient Places dataset");	
+		importGAP(graph);
+		log.info("Done. (" + (System.currentTimeMillis() - taskStart) + " ms)");
+		
+		taskStart = System.currentTimeMillis();
 		log.info("Importing Ptolemy Machine dataset");	
 		importPtolemyMachine(graph);
 		log.info("Done. (" + (System.currentTimeMillis() - taskStart) + " ms)");
 		
+		/*
 		taskStart = System.currentTimeMillis();
 		log.info("Importing Perseus dataset");	
 		importPerseus(graph);
 		log.info("Done. (" + (System.currentTimeMillis() - taskStart) + " ms)");	
+		*/ 
 		
 		graph.shutdown();
 		log.info("Database initialized. Took " + 
@@ -121,6 +131,11 @@ public class InitDatabase {
 	
 	private static void importNomisma(PelagiosGraph graph) throws DatasetExistsException {
 		NomismaDatasetImporter importer = new NomismaDatasetImporter(new File(NOMISMA_RDF));
+		importer.importData(graph);
+	}
+	
+	private static void importGAP(PelagiosGraph graph) throws DatasetExistsException {
+		GAPImporter importer = new GAPImporter(new File(GAP_N3));
 		importer.importData(graph);
 	}
 	
