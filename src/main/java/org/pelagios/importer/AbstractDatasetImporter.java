@@ -59,15 +59,15 @@ public abstract class AbstractDatasetImporter {
 	 */
 	protected Logger log = LoggerFactory.getLogger(AbstractDatasetImporter.class);
 	
-	/**
-	 * The base constructor parses an RDF file to a Jena model
-	 * for further processing.
-	 * @param rdf the RDF file
-	 */
+	
 	public AbstractDatasetImporter(File rdf, DatasetBuilder rootNode) {
+		this(rdf, rootNode, "RDF/XML");
+	}
+
+	public AbstractDatasetImporter(File rdf, DatasetBuilder rootNode, String lang) {
 		InputStream is = FileManager.get().open(rdf.getAbsolutePath());
 		model = ModelFactory.createDefaultModel();
-		model.read(is, null);
+		model.read(is, null, lang);
 		
 		OAC_HASBODY = model.createProperty(OAC_NAMESPACE, "hasBody");
 		OAC_HASTARGET = model.createProperty(OAC_NAMESPACE, "hasTarget");

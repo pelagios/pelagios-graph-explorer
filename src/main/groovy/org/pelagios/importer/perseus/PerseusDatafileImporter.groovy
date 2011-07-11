@@ -106,6 +106,7 @@ class PerseusDatafileImporter extends AbstractDatasetImporter {
 	*/
    Hierarchy getHierarchy(String uri) {
 	   List<String> hierarchy = new ArrayList<String>()
+	   hierarchy.add(name);
 	   
 	   StringTokenizer tokenizer = new StringTokenizer(uri, ":")
 	   if (tokenizer.countTokens() < 8)
@@ -125,17 +126,17 @@ class PerseusDatafileImporter extends AbstractDatasetImporter {
        while (tokenizer.hasMoreTokens()) {
 		   String nextToken = tokenizer.nextToken()
 		   if (nextToken.startsWith('book=')) {
-			   hierarchy.add(name + ':Book ' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
+			   hierarchy.add('Book ' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
 		   } else if (nextToken.startsWith('chapter')) {
-		       hierarchy.add(name + ':Chapter ' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
+		       hierarchy.add('Chapter ' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
 		   } else if (nextToken.startsWith('section')) {
-		       hierarchy.add(name + ':Section ' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
+		       hierarchy.add('Section ' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
 		   } else if (nextToken.startsWith('speech')) {
-		       hierarchy.add(name + ':Speech ' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
+		       hierarchy.add('Speech ' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
 		   } else if (nextToken.startsWith('narrative')) {
-		   	   hierarchy.add(name + ':Narrative' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
+		   	   hierarchy.add('Narrative' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
            } else if (nextToken.startsWith('poem')) {
-		       hierarchy.add(name + ':Poem ' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
+		       hierarchy.add('Poem ' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
 		   }
 	   }
 	   	   
