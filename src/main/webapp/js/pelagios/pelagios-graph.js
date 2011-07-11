@@ -2,7 +2,7 @@
 Pelagios.Graph = function(raphael) {	
 	this.graph = new Graph();
 	this.locus = this.graph.newNode();
-    this.layout = new Layout.ForceDirected(this.graph, 400, 50, 0.3);
+    this.layout = new Layout.ForceDirected(this.graph, 400, 40, 0.3);
     this.raphael = raphael;
     
     // Keep track of parent->child relations
@@ -85,7 +85,7 @@ Pelagios.Graph.prototype.newNode = function(name, size, records, places,
 		fill, stroke, click, dblclick, mouseover, mouseout, parent) {
 	
     var n = this.graph.newNode();
-    this.graph.newEdge(n, this.locus, { length: 1 });
+    this.graph.newEdge(n, this.locus, { length: 0.5 });
     
     n.size = size;
     n.name = name;
