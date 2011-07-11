@@ -58,22 +58,26 @@ class GAPImporter extends AbstractDatasetImporter {
 			// 'Hierarchy' based on the target URI
 			Hierarchy h = getHierarchy(target)
 
-			// Create the record and store in memory - we'll batch-add 
-			// all records to the graph later for added performance
-			try {
-				List<DataRecordBuilder> records = allRecords.get(h)
-				if (records == null) {
-					records = new ArrayList<DataRecordBuilder>()
-					allRecords.put(h, records)
+			if (h != null) {
+				// Create the record and store in memory - we'll batch-add 
+				// all records to the graph later for added performance
+				try {
+					List<DataRecordBuilder> records = allRecords.get(h)
+					if (records == null) {
+						records = new ArrayList<DataRecordBuilder>()
+						allRecords.put(h, records)
+					}
+					DataRecordBuilder record =
+						new DataRecordBuilder(new URI(URLEncoder.encode(target, 'UTF-8')))
+					record.addPlaceReference(new URI(body))
+					records.add(record)
+				} catch (URISyntaxException e) {
+					// Only happens in case of data set errors - we have a 
+					// zero-tolerance policy for those kinds of things
+					throw new RuntimeException(e);
 				}
-				DataRecordBuilder record =
-					new DataRecordBuilder(new URI(URLEncoder.encode(target, 'UTF-8')))
-				record.addPlaceReference(new URI(body))
-				records.add(record)
-			} catch (URISyntaxException e) {
-				// Only happens in case of data set errors - we have a 
-				// zero-tolerance policy for those kinds of things
-				throw new RuntimeException(e);
+			} else {
+				log.warn('Could not build hierarchy for ' + target + ' - skipping')
 			}
 		}
 		
@@ -93,9 +97,22 @@ class GAPImporter extends AbstractDatasetImporter {
 		   idIdx += 3
 		   int toIdx = uri.indexOf('&', idIdx)
 		   hierarchy.add('GAP:' + uri.substring(idIdx, toIdx))
+
+	   
+		   int pgIdx = uri.indexOf('pg=')
+		   if (pgIdx > -1) {
+			   pgIdx += 3
+			   toIdx = uri.indexOf('&', pgIdx)
+			   if (toIdx > -1) {
+				   hierarchy.add('GAP:' + hierarchy.get(0) + ':' + uri.substring(pgIdx, toIdx))
+			   } else {
+			       hierarchy.add('GAP:' + hierarchy.get(0) + ':' + uri.substring(pgIdx))
+			   }
+			   return new Hierarchy(hierarchy)
+		   }
 	   }
-	     
-	   return new Hierarchy(hierarchy)
+	   
+	   return null;
    }
 
 }

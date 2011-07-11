@@ -117,7 +117,8 @@ class PerseusDatafileImporter extends AbstractDatasetImporter {
 		   tokenizer.nextToken()
 		   
 	   // E.g. '1999.01.0084'
-	   String[] s = tokenizer.nextToken().split("\\.")
+	   String prefix = tokenizer.nextToken();
+	   String[] s = prefix.split("\\.")
 	   for (int i=0; i<s.length; i++) {
 	       hierarchy.add(s[i])
 	   }
@@ -126,17 +127,17 @@ class PerseusDatafileImporter extends AbstractDatasetImporter {
        while (tokenizer.hasMoreTokens()) {
 		   String nextToken = tokenizer.nextToken()
 		   if (nextToken.startsWith('book=')) {
-			   hierarchy.add('Book ' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
+			   hierarchy.add(name +':' + prefix + ':Book ' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
 		   } else if (nextToken.startsWith('chapter')) {
-		       hierarchy.add('Chapter ' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
+		       hierarchy.add(name +':' + prefix + ':Chapter ' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
 		   } else if (nextToken.startsWith('section')) {
-		       hierarchy.add('Section ' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
+		       hierarchy.add(name +':' + prefix + ':Section ' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
 		   } else if (nextToken.startsWith('speech')) {
-		       hierarchy.add('Speech ' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
+		       hierarchy.add(name +':' + prefix + ':Speech ' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
 		   } else if (nextToken.startsWith('narrative')) {
-		   	   hierarchy.add('Narrative' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
+		   	   hierarchy.add(name +':' + prefix + ':Narrative' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
            } else if (nextToken.startsWith('poem')) {
-		       hierarchy.add('Poem ' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
+		       hierarchy.add(name +':' + prefix + ':Poem ' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
 		   }
 	   }
 	   	   
