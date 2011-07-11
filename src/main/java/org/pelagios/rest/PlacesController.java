@@ -3,7 +3,10 @@ package org.pelagios.rest;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -12,6 +15,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
 import org.pelagios.backend.Backend;
+import org.pelagios.backend.graph.DataRecord;
 import org.pelagios.backend.graph.Dataset;
 import org.pelagios.backend.graph.PelagiosGraph;
 import org.pelagios.backend.graph.Place;
@@ -80,14 +84,57 @@ public class PlacesController extends AbstractController {
 					}
 				}
 			}
+			
+			int occFrom = highest.countReferences(pFrom, true);
+			int occTo = highest.countReferences(pTo, true);
 
 			System.out.println("RESULTS: " + pFrom.getLabel() + " to " + pTo.getLabel());
-			System.out.println(ctr + " co-occurences in " + highest.getName());
+			System.out.println("Referenced " + occFrom + "/" + occTo + " in " + highest.getName());
 			
 			return Response.ok("").build();	
 		} catch (URISyntaxException e) {
 			return Response.notAcceptable(null).build();
 		}
+	}
+	
+	@GET
+	@Produces("application/json")
+	@Path("references")
+	public Response listReferences(@QueryParam("place") String place) throws
+		PlaceNotFoundException, URISyntaxException {
+		
+		
+		System.out.println(place);
+		
+		PelagiosGraph graph = Backend.getInstance();
+		Place p = graph.getPlace(new URI(place));
+		List<DataRecord> records = graph.listReferencesTo(p);
+		System.out.println(records.size() + " references total");
+		
+		Collection<Dataset> uniqueDatasets = new HashSet<Dataset>();
+		for (DataRecord r : records) {
+			uniqueDatasets.add(r.getParentDataset());
+		}
+		uniqueDatasets = collapse(uniqueDatasets, 5);
+		
+		System.out.println("in " + uniqueDatasets.size() + " data sets");
+		for (Dataset s : uniqueDatasets) {
+			System.out.println(s.getName());
+		}
+		
+		return Response.ok("").build();	
+	}
+	
+	private Collection<Dataset> collapse(Collection<Dataset> datasets, int limit) {
+		if (datasets.size() <= limit)
+			return datasets;
+		
+		Set<Dataset> collapsed = new HashSet<Dataset>();
+		for (Dataset s : datasets) {
+			collapsed.add(s.getParent());
+		}
+		
+		return collapse(collapsed, limit);
 	}
 
 }

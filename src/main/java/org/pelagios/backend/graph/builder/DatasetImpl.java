@@ -2,9 +2,9 @@ package org.pelagios.backend.graph.builder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.Node;
@@ -31,6 +31,16 @@ class DatasetImpl extends AbstractNodeImpl implements Dataset {
 
 	void setName(String name) {
 		set(Dataset.KEY_NAME, name);
+	}
+	
+	public Dataset getParent() {
+		Dataset parent = null;
+		
+		for (Relationship r : backingNode.getRelationships(Direction.OUTGOING, PelagiosRelationships.IS_SUBSET_OF)) {
+		    parent = new DatasetImpl(r.getEndNode());
+		}
+		
+		return parent;
 	}
 
 	public boolean hasSubsets() {
@@ -69,7 +79,16 @@ class DatasetImpl extends AbstractNodeImpl implements Dataset {
 	}
 
 	public List<Place> listPlaces(boolean includeSubsets) {
-		Set<Place> places = new HashSet<Place>(); 
+		return listPlaces(includeSubsets, true);
+	}
+	
+	private List<Place> listPlaces(boolean includeSubsets, boolean unique) {
+		Collection<Place> places;
+		if (unique) {
+			places = new HashSet<Place>();
+		} else {
+			places = new ArrayList<Place>();
+		}
 		
 		for (DataRecord r : listRecords()) {
 			places.addAll(r.listPlaces());
@@ -84,14 +103,14 @@ class DatasetImpl extends AbstractNodeImpl implements Dataset {
 		return new ArrayList<Place>(places);
 	}
 
-	public boolean isPlaceReferenced(Place place, boolean includeSubsets) {
+	public int countReferences(Place place, boolean includeSubsets) {
 		List<Place> filtered = filterReferenced(Arrays.asList(place), includeSubsets);
-		return filtered.size() != 0;
+		return filtered.size();
 	}
 
 	public List<Place> filterReferenced(List<Place> places, boolean includeSubsets) {
 		List<Place> filtered = new ArrayList<Place>();
-		for (Place p : listPlaces(includeSubsets)) {
+		for (Place p : listPlaces(includeSubsets, false)) {
 			if (places.contains(p))
 				filtered.add(p);
 		}

@@ -3,6 +3,7 @@ package org.pelagios.graph;
 import java.net.URI;
 import java.util.List;
 
+import org.pelagios.backend.graph.DataRecord;
 import org.pelagios.backend.graph.Dataset;
 import org.pelagios.backend.graph.Path;
 import org.pelagios.backend.graph.PelagiosGraph;
@@ -51,7 +52,7 @@ public class MockGraph implements PelagiosGraph {
 		
 	}
 
-	public Place getPlace(URI uri) {
+	public Place getPlace(URI uri) throws PlaceNotFoundException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -61,26 +62,26 @@ public class MockGraph implements PelagiosGraph {
 		return null;
 	}
 
-	public void shutdown() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void clear() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public List<Path> findShortestPath(Place from, Place to)
-		throws PlaceNotFoundException {
-		
+	public List<DataRecord> listReferencesTo(Place place)
+			throws PlaceNotFoundException {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	public List<Place> listSharedPlaces(List<Dataset> datasets) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public List<Path> findShortestPath(Place from, Place to)
+			throws PlaceNotFoundException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void shutdown() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -26,6 +26,13 @@ public interface Dataset {
 	public String getName();
 	
 	/**
+	 * Returns the parent data set of this set, or
+	 * <code>null</code> if it is a top-level data set.
+	 * @return the parent or <code>null</code>
+	 */
+	public Dataset getParent();
+	
+	/**
 	 * Checks wether this data set has any sub-sets attached to it.
 	 * @return true in case there are sub-sets
 	 */
@@ -65,16 +72,16 @@ public interface Dataset {
 	public List<Place> listPlaces(boolean includeSubsets);
 	
 	/**
-	 * Checks whether the specified place is referenced
+	 * Counts how often the specified place is referenced
 	 * in this data set. If <code>includeSubsets</code> is set
 	 * to true, the operation will also consider places contained
 	 * in sub-sets of this data set.
 	 * @param place the place
 	 * @param includeSubsets if <code>true</code>, places contained in
 	 * sub-sets of this data set will also be returned
-	 * @return true if the place is referenced in this data set
+	 * @return the number of times the place is referenced in the data set
 	 */
-	public boolean isPlaceReferenced(Place place, boolean includeSubsets);
+	public int countReferences(Place place, boolean includeSubsets);
 	
 	/**
 	 * Checks all places in the given list, and returns only those

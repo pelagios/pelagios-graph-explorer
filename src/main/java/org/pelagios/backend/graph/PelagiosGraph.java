@@ -85,6 +85,15 @@ public interface PelagiosGraph {
 	public Iterable<Place> listPlaces();
 	
 	/**
+	 * Returns all data records that reference the specified place. 
+	 * @param place the place
+	 * @return the data records
+	 * @throws PlaceNotFoundException if the place was not found in the graph
+	 */
+	public List<DataRecord> listReferencesTo(Place place)
+		throws PlaceNotFoundException;
+	
+	/**
 	 * Returns the list of shared places in the specified
 	 * data sets, i.e. all places which appear in each of
 	 * them.

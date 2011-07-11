@@ -218,6 +218,21 @@ class PelagiosGraphImpl implements PelagiosGraph {
 		};
 	}
 	
+	public List<DataRecord> listReferencesTo(Place place) throws PlaceNotFoundException {
+		Index<Node> index = getPlaceIndex();
+		IndexHits<Node> hits = index.get(Place.KEY_URI, place.getURI());
+		if (hits.size() == 0)
+			throw new PlaceNotFoundException(place.getURI());
+		
+		Node placeNode = hits.next();
+		List<DataRecord> records = new ArrayList<DataRecord>();
+		for (Relationship r : placeNode.getRelationships(PelagiosRelationships.REFERENCES)) {
+			records.add(new DataRecordImpl(r.getStartNode()));
+		}
+		
+		return records;
+	}
+	
 	public List<Place> listSharedPlaces(List<Dataset> datasets) {
 		if (datasets.size() == 0)
 			return new ArrayList<Place>();
