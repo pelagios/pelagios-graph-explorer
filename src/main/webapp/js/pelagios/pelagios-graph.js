@@ -2,7 +2,7 @@
 Pelagios.Graph = function(raphael) {	
 	this.graph = new Graph();
 	this.locus = this.graph.newNode();
-    this.layout = new Layout.ForceDirected(this.graph, 200, 50, 0.4);
+    this.layout = new Layout.ForceDirected(this.graph, 200, 30, 0.4);
     this.raphael = raphael;
     
     // Keep track of parent->child relations
