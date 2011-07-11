@@ -31,6 +31,9 @@ class SPQRImporter {
 	public SPQRImporter(File downloadDir, PelagiosGraph graph) {
 		List<DataRecordBuilder> records = new ArrayList<DataRecordBuilder>();
 		
+		
+		Set<URI> uniqueUris = new HashSet<URI>(); 
+		
 		DatasetBuilder rootNode = new DatasetBuilder("SQPR")
 		graph.addDataset(rootNode)
 		
@@ -49,6 +52,7 @@ class SPQRImporter {
 				record.setDataURL(a.getTarget())
 				if (a.getBody().toString().indexOf("pleiades") > -1) {
 					record.addPlaceReference(a.getBody())
+					uniqueUris.add(a.getBody());
 				}
 			}
 			
@@ -78,7 +82,11 @@ class SPQRImporter {
 		private URI get(Property p) {
 			RDFNode node = resource.getProperty(p).getObject();
 			try {
-				return new URI(node.toString());
+				String uri = node.toString()
+				if (uri.endsWith("/"))
+					uri = uri.substring(0, uri.length()  - 1)
+					
+				return new URI(uri);
 			} catch (URISyntaxException e) {
 				// This should never ever happen
 				throw new RuntimeException(e);

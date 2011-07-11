@@ -173,7 +173,7 @@ class PelagiosGraphImpl implements PelagiosGraph {
 		}			
 	}
 
-	public Place getPlace(URI uri) throws PlaceNotFoundException {
+	public Place getPlace(URI uri) throws PlaceNotFoundException {		
 		IndexHits<Node> hits = getPlaceIndex().get(Place.KEY_URI, uri);
 		
 		if (hits.size() == 0)
