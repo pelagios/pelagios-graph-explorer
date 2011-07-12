@@ -187,7 +187,15 @@ class PelagiosGraphImpl implements PelagiosGraph {
 		if (hits.size() == 0)
 			throw new PlaceNotFoundException(uri);
 		
-		return new PlaceImpl(hits.getSingle());
+		return new PlaceImpl(hits.next());
+	}
+	
+	public List<Place> searchPlaces(String prefix, int limit) {
+		List<Place> places = new ArrayList<Place>();
+		for (Node n : getPlaceIndex().query(Place.KEY_LABEL, prefix + "*")) {
+			places.add(new PlaceImpl(n));
+		}
+		return places;
 	}
 	
 	public Iterable<Place> listPlaces() {

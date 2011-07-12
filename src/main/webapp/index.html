@@ -29,6 +29,10 @@
 			show:"fade",
 			hide:"fade"
 		});
+		
+		$("#searchfield").autocomplete({
+			source: ["c++", "java", "php", "coldfusion", "javascript", "asp", "ruby"]
+		});
 	});
     </script>
   </head>
@@ -46,7 +50,7 @@
       
       <div id="search">
         <form>
-          <input class="searchfield"/>
+          <input id="searchfield" class="searchfield"/>
           <input class="button" type="submit" value="SEARCH"/>
         </form>
       </div>

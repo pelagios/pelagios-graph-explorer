@@ -30,6 +30,15 @@ import org.pelagios.backend.graph.exception.PlaceNotFoundException;
 @Path("/places")
 public class PlacesController extends AbstractController {
 	
+	@GET
+	@Produces("application/json")
+	@Path("/search")
+	public Response searchPlaces(@QueryParam("q") String q) {
+		PelagiosGraph graph = Backend.getInstance();
+		List<Place> hits = graph.searchPlaces(q, 15);
+		return Response.ok(toJSON(hits)).build();
+	}
+	
 	/**
 	 * The method returns the 'overlap' of the specified data sets
 	 * in terms of referenced places, i.e. a list of places that

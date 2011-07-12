@@ -56,6 +56,11 @@ public class MockGraph implements PelagiosGraph {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public List<Place> searchPlaces(String prefix, int limit) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	public Iterable<Place> listPlaces() {
 		// TODO Auto-generated method stub

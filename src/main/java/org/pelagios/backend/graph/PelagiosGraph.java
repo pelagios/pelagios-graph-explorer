@@ -79,6 +79,15 @@ public interface PelagiosGraph {
 	public Place getPlace(URI uri) throws PlaceNotFoundException;
 	
 	/**
+	 * Returns a list of places with a label starting with the
+	 * specified prefix (used for auto-completion search)
+	 * @param prefix the prefix
+	 * @param limit the maximum amount of hits to return
+	 * @return the places
+	 */
+	public List<Place> searchPlaces(String prefix, int limit);
+	
+	/**
 	 * Returns an iterator with all the places in the graph.
 	 * @return the places
 	 */
