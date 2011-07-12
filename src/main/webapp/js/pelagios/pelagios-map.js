@@ -8,6 +8,20 @@ Pelagios.Map = function() {
 	};
 	
 	this.map = new google.maps.Map(document.getElementById("map-panel"), options);
+	
+	/*
+	var noLabelStyle = [ { featureType: "administrative", elementType: "labels", stylers: [ { visibility: "off" } ] },{ featureType: "administrative.province", elementType: "all", stylers: [ { visibility: "off" } ] },{ featureType: "water", elementType: "labels", stylers: [ { visibility: "off" } ] },{ featureType: "road", elementType: "all", stylers: [ { visibility: "off" } ] },{ featureType: "poi", elementType: "all", stylers: [ { visibility: "off" } ] },{ featureType: "transit", elementType: "all", stylers: [ { visibility: "off" } ] },{ featureType: "administrative.locality", elementType: "all", stylers: [ { visibility: "off" } ] },{ featureType: "administrative.province", elementType: "all", stylers: [ { visibility: "off" } ] } ]
+	
+	var styledMapOptions = {
+		map: this.map,
+		name: "no-labels",
+	}
+
+	var noLabelsMapType = new google.maps.StyledMapType(noLabelStyle,styledMapOptions);
+	this.map.mapTypes.set('no-labels', noLabelsMapType);
+	this.map.setMapTypeId('no-labels');
+	*/ 
+	
 	this.polygons = new Array();
 	
 	var map = this;
