@@ -69,7 +69,7 @@ public class PlaceBuilder {
 		place.setLat(lat);
 		place.setURI(uri);
 		index.add(node, Place.KEY_URI, uri);
-		index.add(node, Place.KEY_LABEL, label);
+		index.add(node, Place.KEY_LABEL, label.toLowerCase());
 		return place;
 	}
 	
