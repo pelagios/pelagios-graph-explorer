@@ -1,37 +1,23 @@
-html, body {
+html, body { padding:0px; margin:0px; background-color:#fff; width:100%; height:100%; overflow:hidden; }
+
+#header { width:100%; height:35px; background-color:#2d2d2d; }
+#header h1 { padding:7px 10px; margin:0; color:#fff; font-family:Calibri, Verdana; font-size:16px; font-weight:normal; float:left; }
+#header .stats { color:#888; }
+#controls ul { padding:0; margin:0; }
+#controls li { display:inline; float:right; padding:7px 10px; font-family:Calibri, Verdana; font-size:16px; }
+#controls li a { text-decoration:none; color:#888; }
+#controls li a.hover { color:#888; }
+#controls li a.visited { color:#888; }
+
+#graph-canvas { width:100%; height:100%; padding:0; margin:0; absolute:relative; top:0px; }
+
+#dialog { width:640px; height:480px; }
+
+#map-panel {
+	width:100%;
+	height:100%;
 	padding:0px;
 	margin:0px;
-	background-color:#fff;
-	width:100%;
-	height:100%;
-	overflow:hidden;
-}
-
-#header {
-	width:100%;
-	height:35px;
-	background-color:#2d2d2d;
-}
-
-#header p {
-	padding:7px 10px;
-	margin:0;
-	color:#fff;
-	font-family:Calibri, Verdana;
-	font-size:16px;
-}
-
-#header .stats {
-	color:#888;
-}
-
-#dataset-panel {
-	width:100%;
-	height:100%;
-	padding:35px 0 0 0;
-	margin:0;
-	absolute:relative;
-	top:0px;
 }
 
 #drilldown-panel {
@@ -51,21 +37,3 @@ html, body {
 	transition: opacity .5s ease-in-out;
 }
 
-#map {
-	width:400px;
-	height:300px;
-}
-
-#map-panel {
-	// position:relative;
-	// top:-200%;
-	// float:right;
-	width:200px;
-	height:200px;
-	padding:0px;
-	margin:0px;
-	border-left:1px solid black;
-	border-bottom:1px solid black;
-	// visibility:hidden;
-	background-color:#ff0;
-}

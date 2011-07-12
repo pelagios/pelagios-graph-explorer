@@ -9,6 +9,30 @@ Pelagios.Map = function() {
 	
 	this.map = new google.maps.Map(document.getElementById("map-panel"), options);
 	this.polygons = new Array();
+	
+	var map = this;
+	$("#dialog").bind("dialogresize", function(event, ui) {
+		map.refresh();
+	});
+	$("#dialog").bind("dialogopen", function(event, ui) {
+		map.refresh();
+	});
+}
+
+Pelagios.Map.prototype.setVisible = function(visible) {
+	if (visible) {
+		$("#dialog").dialog("open");
+	} else {
+		$("#dialog").dialog("close");		
+	}
+}
+
+Pelagios.Map.prototype.isVisible = function() {
+	return $("#dialog").parents(".ui-dialog").is(":visible");
+}
+
+Pelagios.Map.prototype.refresh = function() {
+	google.maps.event.trigger(this.map, 'resize');
 }
 
 Pelagios.Map.prototype.addPolygon = function(name, coords, fill) {

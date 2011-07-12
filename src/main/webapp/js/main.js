@@ -9,17 +9,22 @@ window.onresize = function(event) {
 window.onload = function() {
 	// Init drawing canvas
 	var viewport = Pelagios.getViewport();
-    raphael = Raphael("dataset-panel", viewport.x, viewport.y);
+    raphael = Raphael("graph-canvas", viewport.x, viewport.y);
     raphael.canvas.onclick = function(event){
     	if (event.target.tagName == 'svg') {
     		pGraph.deselectAll();
     	}
     };
     
-    // Create Pelagios graph, map and palette objects
     var pGraph = new Pelagios.Graph(raphael);
+    
     var pMap = new Pelagios.Map();
+    document.getElementById("toggle-map").onclick = function() {
+    	pMap.setVisible(!pMap.isVisible())
+    };
+    
     var palette = new Pelagios.Palette();
+
     var pAsync = new Pelagios.Async(pGraph, pMap);
 
     // Fetch datasets from server
