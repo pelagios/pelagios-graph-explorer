@@ -16,10 +16,11 @@ class SPQRDownloader {
 		int ctr = 0;
 		new File(records).eachLine() { line ->
 			def text = new URL(spqrBaseUrl + line).text
-			new File(downloadDir, line).write(text, "UTF-8")
+			new File(downloadDir, line.replace('/', '_')).write(text, "UTF-8")
 			ctr++;
 		}
 		
 		println("downloaded ${ctr} files")
 	}
+	
 }
