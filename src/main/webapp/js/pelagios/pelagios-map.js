@@ -76,5 +76,9 @@ Pelagios.Map.prototype.hidePolygon = function(name) {
 }
 
 Pelagios.Map.prototype.addMarker = function(name, lat, lon) {
-	
+	var marker = new google.maps.Marker({
+		position: new google.maps.LatLng(lat, lon), 
+		map: this.map, 
+		title: name
+	});  
 }

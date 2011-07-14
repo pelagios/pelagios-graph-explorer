@@ -35,6 +35,7 @@ window.onload = function() {
 		source: function(term, callback) { pAsync.getAutoCompleteHint(term.term, callback); },
 		select: function(event, ui) {
 			pPersonalGraph.show();
+			pMap.addMarker(ui.item.label, ui.item.lat, ui.item.lon);
 			pAsync.fetchPlaceReferences(ui.item, pPersonalGraph);
 		}
 	});
