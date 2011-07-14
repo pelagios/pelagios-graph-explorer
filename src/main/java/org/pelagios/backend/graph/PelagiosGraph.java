@@ -22,7 +22,7 @@ public interface PelagiosGraph {
 	 * Returns all top-level data sets in the graph.
 	 * @return the top-level data sets
 	 */
-	public List<Dataset> listTopLevelDatasets();
+	public List<DatasetNode> listTopLevelDatasets();
 	
 	/**
 	 * Adds a top-level data set to the graph.
@@ -48,7 +48,7 @@ public interface PelagiosGraph {
 	 * @return the data set
 	 * @throws DatasetNotFoundException if the data set is not in the graph
 	 */
-	public Dataset getDataset(String name) throws DatasetNotFoundException;
+	public DatasetNode getDataset(String name) throws DatasetNotFoundException;
 	
 	/**
 	 * Adds a list of data records to the graph, belonging to the
@@ -76,7 +76,7 @@ public interface PelagiosGraph {
 	 * @return the place
 	 * @throws PlaceNotFoundException if the place is not in the graph
 	 */
-	public Place getPlace(URI uri) throws PlaceNotFoundException;
+	public PlaceNode getPlace(URI uri) throws PlaceNotFoundException;
 	
 	/**
 	 * Returns a list of places with a label starting with the
@@ -85,13 +85,13 @@ public interface PelagiosGraph {
 	 * @param limit the maximum amount of hits to return
 	 * @return the places
 	 */
-	public List<Place> searchPlaces(String prefix, int limit);
+	public List<PlaceNode> searchPlaces(String prefix, int limit);
 	
 	/**
 	 * Returns an iterator with all the places in the graph.
 	 * @return the places
 	 */
-	public Iterable<Place> listPlaces();
+	public Iterable<PlaceNode> listPlaces();
 	
 	/**
 	 * Returns all data records that reference the specified place. 
@@ -99,7 +99,7 @@ public interface PelagiosGraph {
 	 * @return the data records
 	 * @throws PlaceNotFoundException if the place was not found in the graph
 	 */
-	public List<DataRecord> listReferencesTo(Place place)
+	public List<AnnotationNode> listReferencesTo(PlaceNode place)
 		throws PlaceNotFoundException;
 	
 	/**
@@ -109,7 +109,7 @@ public interface PelagiosGraph {
 	 * @param datasets the data sets
 	 * @return the shared places
 	 */
-	public List<Place> listSharedPlaces(List<Dataset> datasets);
+	public List<PlaceNode> listSharedPlaces(List<DatasetNode> datasets);
 	
 	/**
 	 * Performs a shortest path search between two places in the graph.
@@ -124,7 +124,7 @@ public interface PelagiosGraph {
 	 * @throws PlaceNotFoundException if at least one of the places was not found
 	 * in the graph
 	 */
-	public List<Path> findShortestPath(Place from, Place to) throws PlaceNotFoundException;
+	public List<Path> findShortestPath(PlaceNode from, PlaceNode to) throws PlaceNotFoundException;
 	
 	/**
 	 * Be kind. Always disconnect the graph DB before leaving.

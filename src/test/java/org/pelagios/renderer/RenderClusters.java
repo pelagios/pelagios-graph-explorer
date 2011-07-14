@@ -18,7 +18,7 @@ import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 import org.pelagios.backend.graph.PelagiosGraph;
-import org.pelagios.backend.graph.Place;
+import org.pelagios.backend.graph.PlaceNode;
 import org.pelagios.backend.graph.builder.PelagiosGraphBuilder;
 import org.pelagios.rendering.ShapefileRenderer;
 import org.pelagios.rendering.clustering.Cluster;
@@ -76,8 +76,8 @@ public class RenderClusters {
 		PelagiosGraph graph = graphBuilder.build();
 
 		// TODO get all the places from the graph
-		List<Place> places = new ArrayList<Place>();
-		for (Place p : graph.listPlaces()) {
+		List<PlaceNode> places = new ArrayList<PlaceNode>();
+		for (PlaceNode p : graph.listPlaces()) {
 			places.add(p);
 		}
 		System.out.println(places.size() + " places");

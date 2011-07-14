@@ -1,8 +1,8 @@
 package org.pelagios.rest;
 
-import org.pelagios.backend.graph.DataRecord;
-import org.pelagios.backend.graph.Dataset;
-import org.pelagios.backend.graph.Place;
+import org.pelagios.backend.graph.AnnotationNode;
+import org.pelagios.backend.graph.DatasetNode;
+import org.pelagios.backend.graph.PlaceNode;
 import org.pelagios.rest.json.geo.GeometrySerializer;
 import org.pelagios.rest.json.graph.DataRecordSerializer;
 import org.pelagios.rest.json.graph.DatasetSerializer;
@@ -22,9 +22,9 @@ public class AbstractController {
 	
 	public AbstractController() {
 		gsonBuilder = new GsonBuilder();
-		gsonBuilder.registerTypeHierarchyAdapter(Dataset.class, new DatasetSerializer());
-		gsonBuilder.registerTypeHierarchyAdapter(DataRecord.class, new DataRecordSerializer());
-		gsonBuilder.registerTypeHierarchyAdapter(Place.class, new PlaceSerializer());
+		gsonBuilder.registerTypeHierarchyAdapter(DatasetNode.class, new DatasetSerializer());
+		gsonBuilder.registerTypeHierarchyAdapter(AnnotationNode.class, new DataRecordSerializer());
+		gsonBuilder.registerTypeHierarchyAdapter(PlaceNode.class, new PlaceSerializer());
 		gsonBuilder.registerTypeHierarchyAdapter(Geometry.class, new GeometrySerializer());
 	}
 	

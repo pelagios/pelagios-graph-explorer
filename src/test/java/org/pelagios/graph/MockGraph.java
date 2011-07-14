@@ -3,11 +3,11 @@ package org.pelagios.graph;
 import java.net.URI;
 import java.util.List;
 
-import org.pelagios.backend.graph.DataRecord;
-import org.pelagios.backend.graph.Dataset;
+import org.pelagios.backend.graph.AnnotationNode;
+import org.pelagios.backend.graph.DatasetNode;
 import org.pelagios.backend.graph.Path;
 import org.pelagios.backend.graph.PelagiosGraph;
-import org.pelagios.backend.graph.Place;
+import org.pelagios.backend.graph.PlaceNode;
 import org.pelagios.backend.graph.builder.DataRecordBuilder;
 import org.pelagios.backend.graph.builder.DatasetBuilder;
 import org.pelagios.backend.graph.builder.PlaceBuilder;
@@ -18,7 +18,7 @@ import org.pelagios.backend.graph.exception.PlaceNotFoundException;
 
 public class MockGraph implements PelagiosGraph {
 
-	public List<Dataset> listTopLevelDatasets() {
+	public List<DatasetNode> listTopLevelDatasets() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -35,7 +35,7 @@ public class MockGraph implements PelagiosGraph {
 		
 	}
 
-	public Dataset getDataset(String name) throws DatasetNotFoundException {
+	public DatasetNode getDataset(String name) throws DatasetNotFoundException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -52,33 +52,33 @@ public class MockGraph implements PelagiosGraph {
 		
 	}
 
-	public Place getPlace(URI uri) throws PlaceNotFoundException {
+	public PlaceNode getPlace(URI uri) throws PlaceNotFoundException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
-	public List<Place> searchPlaces(String prefix, int limit) {
+	public List<PlaceNode> searchPlaces(String prefix, int limit) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Iterable<Place> listPlaces() {
+	public Iterable<PlaceNode> listPlaces() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<DataRecord> listReferencesTo(Place place)
+	public List<AnnotationNode> listReferencesTo(PlaceNode place)
 			throws PlaceNotFoundException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<Place> listSharedPlaces(List<Dataset> datasets) {
+	public List<PlaceNode> listSharedPlaces(List<DatasetNode> datasets) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<Path> findShortestPath(Place from, Place to)
+	public List<Path> findShortestPath(PlaceNode from, PlaceNode to)
 			throws PlaceNotFoundException {
 		// TODO Auto-generated method stub
 		return null;

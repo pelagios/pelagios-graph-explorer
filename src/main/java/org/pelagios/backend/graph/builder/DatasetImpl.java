@@ -9,32 +9,32 @@ import java.util.List;
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
-import org.pelagios.backend.graph.DataRecord;
-import org.pelagios.backend.graph.Dataset;
+import org.pelagios.backend.graph.AnnotationNode;
+import org.pelagios.backend.graph.DatasetNode;
 import org.pelagios.backend.graph.PelagiosRelationships;
-import org.pelagios.backend.graph.Place;
+import org.pelagios.backend.graph.PlaceNode;
 
 /**
  * Implementation of the Dataset graph node type.
  * 
  * @author Rainer Simon
  */
-class DatasetImpl extends AbstractNodeImpl implements Dataset {
+class DatasetImpl extends AbstractNodeImpl implements DatasetNode {
 
 	DatasetImpl(Node backingNode) {
 		super(backingNode);
 	}
 	
 	public String getName() {
-		return getAsString(Dataset.KEY_NAME);
+		return getAsString(DatasetNode.KEY_NAME);
 	}
 
 	void setName(String name) {
-		set(Dataset.KEY_NAME, name);
+		set(DatasetNode.KEY_NAME, name);
 	}
 	
-	public Dataset getParent() {
-		Dataset parent = null;
+	public DatasetNode getParent() {
+		DatasetNode parent = null;
 		
 		for (Relationship r : backingNode.getRelationships(Direction.OUTGOING, PelagiosRelationships.IS_SUBSET_OF)) {
 		    parent = new DatasetImpl(r.getEndNode());
@@ -49,8 +49,8 @@ class DatasetImpl extends AbstractNodeImpl implements Dataset {
 		return rels.iterator().hasNext();
 	}
 
-	public List<Dataset> listSubsets() {
-		List<Dataset> subsets = new ArrayList<Dataset>();
+	public List<DatasetNode> listSubsets() {
+		List<DatasetNode> subsets = new ArrayList<DatasetNode>();
 		
 		for (Relationship r : backingNode.getRelationships(Direction.INCOMING, PelagiosRelationships.IS_SUBSET_OF)) {
 		    Node subsetNode = r.getStartNode();
@@ -60,57 +60,57 @@ class DatasetImpl extends AbstractNodeImpl implements Dataset {
 		return subsets;
 	}
 	
-	public boolean isSubsetOf(Dataset d) {
+	public boolean isSubsetOf(DatasetNode d) {
 		return (d.listSubsets().contains(this));
 	}
 	
-	public List<DataRecord> listRecords() {
-		List<DataRecord> records = new ArrayList<DataRecord>(); 
+	public List<AnnotationNode> listRecords() {
+		List<AnnotationNode> records = new ArrayList<AnnotationNode>(); 
 		
 		for (Relationship r : backingNode.getRelationships(PelagiosRelationships.RECORD)) {
 			records.add(new DataRecordImpl(r.getEndNode()));
 		}
 		
-		for (Dataset subset : listSubsets()) {
+		for (DatasetNode subset : listSubsets()) {
 			records.addAll(subset.listRecords());
 		}
 		
 		return records;
 	}
 
-	public List<Place> listPlaces(boolean includeSubsets) {
+	public List<PlaceNode> listPlaces(boolean includeSubsets) {
 		return listPlaces(includeSubsets, true);
 	}
 	
-	private List<Place> listPlaces(boolean includeSubsets, boolean unique) {
-		Collection<Place> places;
+	private List<PlaceNode> listPlaces(boolean includeSubsets, boolean unique) {
+		Collection<PlaceNode> places;
 		if (unique) {
-			places = new HashSet<Place>();
+			places = new HashSet<PlaceNode>();
 		} else {
-			places = new ArrayList<Place>();
+			places = new ArrayList<PlaceNode>();
 		}
 		
-		for (DataRecord r : listRecords()) {
+		for (AnnotationNode r : listRecords()) {
 			places.addAll(r.listPlaces());
 		}
 		
 		if (includeSubsets) {
-			for (Dataset subset : listSubsets()) {
+			for (DatasetNode subset : listSubsets()) {
 				places.addAll(subset.listPlaces(true));
 			}
 		}
 		
-		return new ArrayList<Place>(places);
+		return new ArrayList<PlaceNode>(places);
 	}
 
-	public int countReferences(Place place, boolean includeSubsets) {
-		List<Place> filtered = filterReferenced(Arrays.asList(place), includeSubsets);
+	public int countReferences(PlaceNode place, boolean includeSubsets) {
+		List<PlaceNode> filtered = filterReferenced(Arrays.asList(place), includeSubsets);
 		return filtered.size();
 	}
 
-	public List<Place> filterReferenced(List<Place> places, boolean includeSubsets) {
-		List<Place> filtered = new ArrayList<Place>();
-		for (Place p : listPlaces(includeSubsets, false)) {
+	public List<PlaceNode> filterReferenced(List<PlaceNode> places, boolean includeSubsets) {
+		List<PlaceNode> filtered = new ArrayList<PlaceNode>();
+		for (PlaceNode p : listPlaces(includeSubsets, false)) {
 			if (places.contains(p))
 				filtered.add(p);
 		}

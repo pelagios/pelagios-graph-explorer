@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.HashMap;
 
 import org.junit.Test;
-import org.pelagios.backend.graph.Dataset;
+import org.pelagios.backend.graph.DatasetNode;
 import org.pelagios.backend.graph.PelagiosGraph;
 import org.pelagios.backend.graph.builder.PelagiosGraphBuilder;
 import org.pelagios.backend.graph.exception.DatasetExistsException;
@@ -29,13 +29,13 @@ public class PerseusImporterTest {
 		
 		new PerseusImporter(perseusFiles, graph);
 		
-		Dataset perseus = graph.getDataset("Perseus");
-		for (Dataset child : perseus.listSubsets()) {
+		DatasetNode perseus = graph.getDataset("Perseus");
+		for (DatasetNode child : perseus.listSubsets()) {
 			printDataset(child, 0);
 		}
 	}
 	
-	private void printDataset(Dataset dataset, int lvl) {
+	private void printDataset(DatasetNode dataset, int lvl) {
 		StringBuffer indent = new StringBuffer(" -");
 		for (int i=0; i<lvl; i++) {
 			indent.append("-");
@@ -43,7 +43,7 @@ public class PerseusImporterTest {
 		
 		System.out.println(indent.toString() + dataset.getName());
 		if (dataset.hasSubsets()) {
-			for (Dataset subset : dataset.listSubsets()) {
+			for (DatasetNode subset : dataset.listSubsets()) {
 				printDataset(subset, lvl + 1);
 			}
 		}		

@@ -17,7 +17,7 @@ import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 import org.pelagios.backend.graph.PelagiosGraph;
-import org.pelagios.backend.graph.Place;
+import org.pelagios.backend.graph.PlaceNode;
 import org.pelagios.backend.graph.builder.PelagiosGraphBuilder;
 import org.pelagios.rendering.ShapefileRenderer;
 
@@ -80,7 +80,7 @@ public class RenderPlaces {
 
 		// Add places to the map image
 		int max = 1;
-		for (Place p : graph.listPlaces()) {
+		for (PlaceNode p : graph.listPlaces()) {
 			Point xy = transform(p.getLon(), p.getLat(), transform);
 			if (points.containsKey(xy)) {
 				Integer count = points.get(xy);

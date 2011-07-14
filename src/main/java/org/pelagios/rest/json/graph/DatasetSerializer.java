@@ -2,7 +2,7 @@ package org.pelagios.rest.json.graph;
 
 import java.lang.reflect.Type;
 
-import org.pelagios.backend.graph.Dataset;
+import org.pelagios.backend.graph.DatasetNode;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -15,13 +15,13 @@ import com.google.gson.JsonSerializer;
  * 
  * @author Rainer Simon
  */
-public class DatasetSerializer implements JsonSerializer<Dataset> {
+public class DatasetSerializer implements JsonSerializer<DatasetNode> {
 	
-	public JsonElement serialize(Dataset dataset, Type typeOfSrc, JsonSerializationContext context) {
+	public JsonElement serialize(DatasetNode dataset, Type typeOfSrc, JsonSerializationContext context) {
 		JsonObject json = new JsonObject();
-		json.add(Dataset.KEY_NAME, new JsonPrimitive(dataset.getName()));
-		json.add(Dataset.KEY_RECORDS, new JsonPrimitive(dataset.listRecords().size()));
-		json.add(Dataset.KEY_PLACES, new JsonPrimitive(dataset.listPlaces(true).size()));
+		json.add(DatasetNode.KEY_NAME, new JsonPrimitive(dataset.getName()));
+		json.add(DatasetNode.KEY_RECORDS, new JsonPrimitive(dataset.listRecords().size()));
+		json.add(DatasetNode.KEY_PLACES, new JsonPrimitive(dataset.listPlaces(true).size()));
 		return json;
 	}
   

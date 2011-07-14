@@ -8,9 +8,9 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.pelagios.backend.graph.Dataset;
+import org.pelagios.backend.graph.DatasetNode;
 import org.pelagios.backend.graph.PelagiosGraph;
-import org.pelagios.backend.graph.Place;
+import org.pelagios.backend.graph.PlaceNode;
 import org.pelagios.backend.graph.builder.DatasetBuilder;
 import org.pelagios.backend.graph.builder.PelagiosGraphBuilder;
 import org.pelagios.backend.graph.builder.PlaceBuilder;
@@ -23,7 +23,7 @@ public class GraphTest {
 	
 	private static final String DATA_DIR = "c:/neo4j-unit-test";
 	
-	private void printDataset(Dataset dataset, int lvl) {
+	private void printDataset(DatasetNode dataset, int lvl) {
 		StringBuffer indent = new StringBuffer(" -");
 		for (int i=0; i<lvl; i++) {
 			indent.append("-");
@@ -31,7 +31,7 @@ public class GraphTest {
 		
 		System.out.println(indent.toString() + dataset.getName());
 		if (dataset.hasSubsets()) {
-			for (Dataset subset : dataset.listSubsets()) {
+			for (DatasetNode subset : dataset.listSubsets()) {
 				printDataset(subset, lvl + 1);
 			}
 		}		
@@ -96,7 +96,7 @@ public class GraphTest {
 		PelagiosGraph graph = graphBuilder.build();
 		
 		System.out.println("Logging sample dataset graph:");
-		for (Dataset dataset : graph.listTopLevelDatasets()) {
+		for (DatasetNode dataset : graph.listTopLevelDatasets()) {
 			printDataset(dataset, 0);
 		}
 		graph.shutdown();
@@ -109,11 +109,11 @@ public class GraphTest {
 		PelagiosGraph graph = graphBuilder.build();
 		
 		// Query by ID
-		Place corsica = graph.getPlace(new URI("http://pleiades.stoa.org/places/991339"));
+		PlaceNode corsica = graph.getPlace(new URI("http://pleiades.stoa.org/places/991339"));
 		System.out.println("Query by URI: " + corsica.getLabel());
 		
 		// Query by listPlaces()
-		for (Place p : graph.listPlaces()) {
+		for (PlaceNode p : graph.listPlaces()) {
 			System.out.println("Query by listPlaces(): " + p.getLabel());
 		}		
 		graph.shutdown();

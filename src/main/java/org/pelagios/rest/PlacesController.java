@@ -13,10 +13,10 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
 import org.pelagios.backend.Backend;
-import org.pelagios.backend.graph.DataRecord;
-import org.pelagios.backend.graph.Dataset;
+import org.pelagios.backend.graph.AnnotationNode;
+import org.pelagios.backend.graph.DatasetNode;
 import org.pelagios.backend.graph.PelagiosGraph;
-import org.pelagios.backend.graph.Place;
+import org.pelagios.backend.graph.PlaceNode;
 import org.pelagios.backend.graph.exception.DatasetNotFoundException;
 import org.pelagios.backend.graph.exception.PlaceNotFoundException;
 import org.pelagios.rest.api.CoReference;
@@ -35,7 +35,7 @@ public class PlacesController extends AbstractController {
 	@Path("/search")
 	public Response searchPlaces(@QueryParam("q") String q) {
 		PelagiosGraph graph = Backend.getInstance();
-		List<Place> hits = graph.searchPlaces(q, 15);
+		List<PlaceNode> hits = graph.searchPlaces(q, 15);
 		return Response.ok(toJSON(hits)).build();
 	}
 	
@@ -57,12 +57,12 @@ public class PlacesController extends AbstractController {
 		
 		PelagiosGraph graph = Backend.getInstance();
 		
-		List<Dataset> datasets = new ArrayList<Dataset>();
+		List<DatasetNode> datasets = new ArrayList<DatasetNode>();
 		for (String s : sets) {
 			datasets.add(graph.getDataset(s));
 		}
 		
-		List<Place> sharedPlaces = graph.listSharedPlaces(datasets);	
+		List<PlaceNode> sharedPlaces = graph.listSharedPlaces(datasets);	
 		return Response.ok(toJSON(sharedPlaces)).build();
 	}
 	
@@ -73,16 +73,16 @@ public class PlacesController extends AbstractController {
 		throws PlaceNotFoundException, URISyntaxException {
 		
 		PelagiosGraph graph = Backend.getInstance();
-		Place pFrom = graph.getPlace(new URI(from));
-		Place pTo = graph.getPlace(new URI(to));
+		PlaceNode pFrom = graph.getPlace(new URI(from));
+		PlaceNode pTo = graph.getPlace(new URI(to));
 		
 		List<org.pelagios.backend.graph.Path> shortestPaths = graph.findShortestPath(pFrom, pTo);
 
-		Dataset highest = null;
+		DatasetNode highest = null;
 		for (org.pelagios.backend.graph.Path p : shortestPaths) {
 			for (Object o : p.getEntities()) {
-				if (o instanceof Dataset) {
-					Dataset d = (Dataset) o;
+				if (o instanceof DatasetNode) {
+					DatasetNode d = (DatasetNode) o;
 					if (highest == null) {
 						highest = d;
 					} else if (highest.isSubsetOf(d)) {
@@ -110,13 +110,13 @@ public class PlacesController extends AbstractController {
 		
 		// Get all references to this place from the graph
 		PelagiosGraph graph = Backend.getInstance();
-		Place p = graph.getPlace(new URI(place));
-		List<DataRecord> records = graph.listReferencesTo(p);
+		PlaceNode p = graph.getPlace(new URI(place));
+		List<AnnotationNode> records = graph.listReferencesTo(p);
 		
 		// Compile a table dataset<->no. of records
-		HashMap<Dataset, Integer> occurences = new HashMap<Dataset, Integer>();
-		for (DataRecord r : records) {		
-			Dataset parent = r.getParentDataset();
+		HashMap<DatasetNode, Integer> occurences = new HashMap<DatasetNode, Integer>();
+		for (AnnotationNode r : records) {		
+			DatasetNode parent = r.getParentDataset();
 			
 			Integer count = occurences.get(parent);
 			if (count == null) {
@@ -134,20 +134,20 @@ public class PlacesController extends AbstractController {
 		
 		// Wrap the results for JSON serialization
 		List<Occurence> occJson = new ArrayList<Occurence>();
-		for (Dataset s : occurences.keySet()) {
+		for (DatasetNode s : occurences.keySet()) {
 			occJson.add(new Occurence(s.getName(), occurences.get(s)));
 		}
 		
 		return Response.ok(toJSON(occJson)).build();	
 	}
 	
-	private HashMap<Dataset, Integer> collapse(HashMap<Dataset, Integer> datasets, int limit) {
+	private HashMap<DatasetNode, Integer> collapse(HashMap<DatasetNode, Integer> datasets, int limit) {
 		if (datasets.size() <= limit)
 			return datasets;
 		
-		HashMap<Dataset, Integer> collapsed = new HashMap<Dataset, Integer>();
-		for (Dataset s : datasets.keySet()) {
-			Dataset parent = s.getParent();
+		HashMap<DatasetNode, Integer> collapsed = new HashMap<DatasetNode, Integer>();
+		for (DatasetNode s : datasets.keySet()) {
+			DatasetNode parent = s.getParent();
 			if (parent == null) {
 				collapsed.put(s, datasets.get(s));
 				limit++;

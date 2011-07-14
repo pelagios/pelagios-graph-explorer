@@ -13,9 +13,9 @@ import javax.ws.rs.core.Response;
 
 import org.pelagios.backend.Backend;
 import org.pelagios.backend.geo.GeoUtils;
-import org.pelagios.backend.graph.Dataset;
+import org.pelagios.backend.graph.DatasetNode;
 import org.pelagios.backend.graph.PelagiosGraph;
-import org.pelagios.backend.graph.Place;
+import org.pelagios.backend.graph.PlaceNode;
 import org.pelagios.backend.graph.exception.DatasetNotFoundException;
 import org.pelagios.rest.api.Link;
 
@@ -40,16 +40,16 @@ public class DatasetController extends AbstractController {
 	@Path("/")
 	public Response listDatasets(@QueryParam("links") boolean links) {
 		PelagiosGraph graph = Backend.getInstance();
-		List<Dataset> datasets = graph.listTopLevelDatasets();
+		List<DatasetNode> datasets = graph.listTopLevelDatasets();
 		
 		if (links) {
 			// Compute link information
 			List<Link> l = new ArrayList<Link>();
 			for (int i=0; i<datasets.size(); i++) {
-				Dataset source = datasets.get(i);
+				DatasetNode source = datasets.get(i);
 				
 				for (int j=i + 1; j<datasets.size(); j++) {
-					Dataset target = datasets.get(j);
+					DatasetNode target = datasets.get(j);
 					l.add(new Link(
 							source.getName(),
 							target.getName(),
@@ -80,7 +80,7 @@ public class DatasetController extends AbstractController {
 	public Response getSubsets(@PathParam("superset") String superset) 
 		throws DatasetNotFoundException {
 		
-		List<Dataset> datasets = Backend.getInstance().getDataset(superset).listSubsets();	
+		List<DatasetNode> datasets = Backend.getInstance().getDataset(superset).listSubsets();	
 		return Response.ok(toJSON(datasets)).build();
 	}
 	
@@ -97,7 +97,7 @@ public class DatasetController extends AbstractController {
 	public Response getPlaces(@PathParam("dataset") String dataset)
 		throws DatasetNotFoundException {
 		
-		List<Place> places = Backend.getInstance().getDataset(dataset).listPlaces(true);
+		List<PlaceNode> places = Backend.getInstance().getDataset(dataset).listPlaces(true);
 		GeoUtils.computeConvexHull(places);
 		return Response.ok(toJSON(places)).build();
 	}
@@ -115,7 +115,7 @@ public class DatasetController extends AbstractController {
 	public Response getConvexHull(@PathParam("dataset") String dataset)
 		throws DatasetNotFoundException {
 		
-		List<Place> places = Backend.getInstance().getDataset(dataset).listPlaces(true);
+		List<PlaceNode> places = Backend.getInstance().getDataset(dataset).listPlaces(true);
 		return Response.ok(toJSON(GeoUtils.computeConvexHull(places))).build();
 	}
 

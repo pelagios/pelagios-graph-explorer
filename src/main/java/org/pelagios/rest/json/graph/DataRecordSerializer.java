@@ -2,7 +2,7 @@ package org.pelagios.rest.json.graph;
 
 import java.lang.reflect.Type;
 
-import org.pelagios.backend.graph.DataRecord;
+import org.pelagios.backend.graph.AnnotationNode;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -15,11 +15,11 @@ import com.google.gson.JsonSerializer;
  * 
  * @author Rainer Simon
  */
-public class DataRecordSerializer implements JsonSerializer<DataRecord> {
+public class DataRecordSerializer implements JsonSerializer<AnnotationNode> {
 	
-	public JsonElement serialize(DataRecord record, Type typeOfSrc, JsonSerializationContext context) {
+	public JsonElement serialize(AnnotationNode record, Type typeOfSrc, JsonSerializationContext context) {
 		JsonObject json = new JsonObject();
-		json.add(DataRecord.KEY_URI, new JsonPrimitive(record.getDataURL().toString()));
+		json.add(AnnotationNode.KEY_URI, new JsonPrimitive(record.getDataURL().toString()));
 		return json;
 	}
   

@@ -8,7 +8,7 @@ import java.util.List;
  * 
  * @author Rainer Simon
  */
-public interface DataRecord {
+public interface AnnotationNode {
 	
 	/**
 	 * String constants
@@ -25,14 +25,14 @@ public interface DataRecord {
 	 * Lists all places referred to in this data record 
 	 * @return the places
 	 */
-	public List<Place> listPlaces();
+	public List<PlaceNode> listPlaces();
 	
 	/**
 	 * Returns the (lowest-level) data (sub-)set 
 	 * this data record belongs to.
 	 * @return the parent data set
 	 */
-	public Dataset getParentDataset(); 
+	public DatasetNode getParentDataset(); 
 
 	/**
 	 * Returns the top-level data set this data
@@ -42,6 +42,6 @@ public interface DataRecord {
 	 * getParentDataset().
 	 * @return the root data set
 	 */
-	public Dataset getRootDataset();
+	public DatasetNode getRootDataset();
 	
 }

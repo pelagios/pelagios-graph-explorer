@@ -2,7 +2,7 @@ package org.pelagios.rest.json.graph;
 
 import java.lang.reflect.Type;
 
-import org.pelagios.backend.graph.Place;
+import org.pelagios.backend.graph.PlaceNode;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -15,14 +15,14 @@ import com.google.gson.JsonSerializer;
  * 
  * @author Rainer Simon
  */
-public class PlaceSerializer implements JsonSerializer<Place> {
+public class PlaceSerializer implements JsonSerializer<PlaceNode> {
 	
-	public JsonElement serialize(Place place, Type typeOfSrc, JsonSerializationContext context) {
+	public JsonElement serialize(PlaceNode place, Type typeOfSrc, JsonSerializationContext context) {
 		JsonObject json = new JsonObject();
-		json.add(Place.KEY_LABEL, new JsonPrimitive(place.getLabel()));
-		json.add(Place.KEY_LON, new JsonPrimitive(place.getLon()));
-		json.add(Place.KEY_LAT, new JsonPrimitive(place.getLat()));
-		json.add(Place.KEY_URI, new JsonPrimitive(place.getURI().toString()));
+		json.add(PlaceNode.KEY_LABEL, new JsonPrimitive(place.getLabel()));
+		json.add(PlaceNode.KEY_LON, new JsonPrimitive(place.getLon()));
+		json.add(PlaceNode.KEY_LAT, new JsonPrimitive(place.getLat()));
+		json.add(PlaceNode.KEY_URI, new JsonPrimitive(place.getURI().toString()));
 		return json;
 	}
   

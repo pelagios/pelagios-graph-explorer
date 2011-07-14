@@ -10,7 +10,7 @@ import java.util.List;
  * 
  * @author Rainer Simon
  */
-public interface Dataset {
+public interface DatasetNode {
 	
 	/**
 	 * String constants
@@ -30,7 +30,7 @@ public interface Dataset {
 	 * <code>null</code> if it is a top-level data set.
 	 * @return the parent or <code>null</code>
 	 */
-	public Dataset getParent();
+	public DatasetNode getParent();
 	
 	/**
 	 * Checks wether this data set has any sub-sets attached to it.
@@ -42,7 +42,7 @@ public interface Dataset {
 	 * Lists all sub sets of contained in this data set
 	 * @return the sub sets 
 	 */
-	public List<Dataset> listSubsets();
+	public List<DatasetNode> listSubsets();
 	
 	/**
 	 * Checks whether this data set is a sub set of the
@@ -50,13 +50,13 @@ public interface Dataset {
 	 * @param d the possible parent data set
 	 * @return true if this data set is a subset of d
 	 */
-	public boolean isSubsetOf(Dataset d);
+	public boolean isSubsetOf(DatasetNode d);
 	
 	/**
 	 * Returns a list of all data records contained in this data set.
 	 * @return the list of data records;
 	 */
-	public List<DataRecord> listRecords();
+	public List<AnnotationNode> listRecords();
 	
 
 	/**
@@ -69,7 +69,7 @@ public interface Dataset {
 	 * sub-sets of this data set will also be returned
 	 * @return the places
 	 */
-	public List<Place> listPlaces(boolean includeSubsets);
+	public List<PlaceNode> listPlaces(boolean includeSubsets);
 	
 	/**
 	 * Counts how often the specified place is referenced
@@ -81,7 +81,7 @@ public interface Dataset {
 	 * sub-sets of this data set will also be returned
 	 * @return the number of times the place is referenced in the data set
 	 */
-	public int countReferences(Place place, boolean includeSubsets);
+	public int countReferences(PlaceNode place, boolean includeSubsets);
 	
 	/**
 	 * Checks all places in the given list, and returns only those
@@ -95,6 +95,6 @@ public interface Dataset {
 	 * @return those places from the list which are also referenced 
 	 * in this data set
 	 */
-	public List<Place> filterReferenced(List<Place> places, boolean includeSubsets);
+	public List<PlaceNode> filterReferenced(List<PlaceNode> places, boolean includeSubsets);
 		
 }

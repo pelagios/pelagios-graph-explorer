@@ -8,7 +8,7 @@ import java.util.List;
  * 
  * @author Rainer Simon
  */
-public interface Place {
+public interface PlaceNode {
 	
 	/**
 	 * String constants
@@ -46,6 +46,6 @@ public interface Place {
 	 * Returns a list of all data records that reference this place.
 	 * @return the data records
 	 */
-	public List<DataRecord> listDataRecords();
+	public List<AnnotationNode> listDataRecords();
 	
 }

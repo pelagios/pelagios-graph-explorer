@@ -3,7 +3,7 @@ package org.pelagios.importer.ptolemymachine;
 import java.io.File;
 
 import org.junit.Test;
-import org.pelagios.backend.graph.Dataset;
+import org.pelagios.backend.graph.DatasetNode;
 import org.pelagios.backend.graph.PelagiosGraph;
 import org.pelagios.backend.graph.builder.PelagiosGraphBuilder;
 import org.pelagios.backend.graph.exception.DatasetExistsException;
@@ -22,7 +22,7 @@ public class PtolemyDatasetImporterTest {
 	 */
 	private static final String RDF_FILE = "src/test/resources/datasets/ptolemy-oac.rdf";
 		
-	private void printDataset(Dataset dataset, int lvl) {
+	private void printDataset(DatasetNode dataset, int lvl) {
 		StringBuffer indent = new StringBuffer(" -");
 		for (int i=0; i<lvl; i++) {
 			indent.append("-");
@@ -30,7 +30,7 @@ public class PtolemyDatasetImporterTest {
 		
 		System.out.println(indent.toString() + dataset.getName());
 		if (dataset.hasSubsets()) {
-			for (Dataset subset : dataset.listSubsets()) {
+			for (DatasetNode subset : dataset.listSubsets()) {
 				printDataset(subset, lvl + 1);
 			}
 		}		
@@ -54,7 +54,7 @@ public class PtolemyDatasetImporterTest {
 		PelagiosGraphBuilder graphBuilder = new PelagiosGraphBuilder(DATA_DIR);
 		PelagiosGraph graph = graphBuilder.build();
 		System.out.println("Logging sample dataset graph:");
-		for (Dataset dataset : graph.listTopLevelDatasets()) {
+		for (DatasetNode dataset : graph.listTopLevelDatasets()) {
 			printDataset(dataset, 0);
 		}
 		graph.shutdown();

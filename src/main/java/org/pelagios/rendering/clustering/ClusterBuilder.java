@@ -3,20 +3,20 @@ package org.pelagios.rendering.clustering;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.pelagios.backend.graph.Place;
+import org.pelagios.backend.graph.PlaceNode;
 
 public class ClusterBuilder {
 	
-	private List<Place> places;
+	private List<PlaceNode> places;
 	
-	public ClusterBuilder(List<Place> places) {
+	public ClusterBuilder(List<PlaceNode> places) {
 		this.places = places;
 	}
 	
 	public List<Cluster> build(int threshold) {
 		List<Cluster> clusters = new ArrayList<Cluster>();
 		
-		for (Place p : places) {
+		for (PlaceNode p : places) {
 			boolean added = false;
 			for (Cluster c : clusters) {
 				if (distance(p, c) <= threshold) {
@@ -36,7 +36,7 @@ public class ClusterBuilder {
 		return clusters;
 	}
 
-	private double distance(Place p, Cluster c) {
+	private double distance(PlaceNode p, Cluster c) {
 		double dLon = p.getLon() - c.getLon();
 		double dLat = p.getLat() - c.getLat();
 		

@@ -5,15 +5,15 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 import org.neo4j.graphdb.Node;
-import org.pelagios.backend.graph.DataRecord;
-import org.pelagios.backend.graph.Place;
+import org.pelagios.backend.graph.AnnotationNode;
+import org.pelagios.backend.graph.PlaceNode;
 
 /**
  * Implementation of the Pelagios Place graph node type.
  *  
  * @author Rainer Simon
  */
-class PlaceImpl extends AbstractNodeImpl implements Place {
+class PlaceImpl extends AbstractNodeImpl implements PlaceNode {
 	
 	/**
 	 * We'll also keep the URI in memory. Otherwise
@@ -26,33 +26,33 @@ class PlaceImpl extends AbstractNodeImpl implements Place {
 	}
 
 	public String getLabel() {
-		return getAsString(Place.KEY_LABEL);
+		return getAsString(PlaceNode.KEY_LABEL);
 	}
 
 	public void setLabel(String label) {
-		set(Place.KEY_LABEL, label);
+		set(PlaceNode.KEY_LABEL, label);
 	}
 
 	public double getLon() {
-		return getAsDouble(Place.KEY_LON);
+		return getAsDouble(PlaceNode.KEY_LON);
 	}
 
 	public void setLon(double lon) {
-		set(Place.KEY_LON, Double.toString(lon));
+		set(PlaceNode.KEY_LON, Double.toString(lon));
 	}
 
 	public double getLat() {
-		return getAsDouble(Place.KEY_LAT);
+		return getAsDouble(PlaceNode.KEY_LAT);
 	}
 
 	public void setLat(double lat) {
-		set(Place.KEY_LAT, Double.toString(lat));
+		set(PlaceNode.KEY_LAT, Double.toString(lat));
 	}
 
 	public URI getURI() {
 		try {
 			if (memCachedURI == null)
-				memCachedURI = new URI(getAsString(Place.KEY_URI));
+				memCachedURI = new URI(getAsString(PlaceNode.KEY_URI));
 			
 			return memCachedURI;
 		} catch (URISyntaxException e) {
@@ -62,10 +62,10 @@ class PlaceImpl extends AbstractNodeImpl implements Place {
 
 	public void setURI(URI uri) {
 		memCachedURI = null;
-		set(Place.KEY_URI, uri.toString());
+		set(PlaceNode.KEY_URI, uri.toString());
 	}
 
-	public List<DataRecord> listDataRecords() {
+	public List<AnnotationNode> listDataRecords() {
 		// TODO Auto-generated method stub
 		return null;
 	}

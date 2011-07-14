@@ -6,7 +6,7 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.index.Index;
 import org.neo4j.graphdb.index.IndexHits;
-import org.pelagios.backend.graph.Place;
+import org.pelagios.backend.graph.PlaceNode;
 import org.pelagios.backend.graph.exception.PlaceExistsException;
 
 public class PlaceBuilder {
@@ -58,7 +58,7 @@ public class PlaceBuilder {
 		throws PlaceExistsException {
 		
 		// Check uniqueness
-		IndexHits<Node> hits = index.get(Place.KEY_URI, uri);
+		IndexHits<Node> hits = index.get(PlaceNode.KEY_URI, uri);
 		if (hits.size() > 0)
 			throw new PlaceExistsException(label);
 		
@@ -68,8 +68,8 @@ public class PlaceBuilder {
 		place.setLon(lon);
 		place.setLat(lat);
 		place.setURI(uri);
-		index.add(node, Place.KEY_URI, uri);
-		index.add(node, Place.KEY_LABEL, label.toLowerCase());
+		index.add(node, PlaceNode.KEY_URI, uri);
+		index.add(node, PlaceNode.KEY_LABEL, label.toLowerCase());
 		return place;
 	}
 	
