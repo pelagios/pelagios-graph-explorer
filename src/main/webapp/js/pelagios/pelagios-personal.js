@@ -6,6 +6,12 @@ Pelagios.PersonalGraph = function(id, raphael) {
 	this.graph = new Graph();
     this.layout = new Layout.ForceDirected(this.graph, 800, 25, 0.3);
     
+    this.pAsync = new Pelagios.Async();
+    
+    // Keep track of places and datasets in the graph
+    this.places = new Array();
+    this.datasets = new Array();
+    
 	var toScreen = this.toScreen;
     this.renderer = new Renderer(10, this.layout,
 	  function clear() { },
@@ -55,9 +61,10 @@ Pelagios.PersonalGraph.prototype.show = function() {
 	document.getElementById(this.id).style.opacity = 1;
 }
 
-Pelagios.PersonalGraph.prototype.newPlace = function(name) {
+Pelagios.PersonalGraph.prototype.newPlace = function(place) {
     var n = this.graph.newNode();
-    n.set = this.raphael.pelagios.placeLabel(name, "#ff3333", "#000000");
+    n.set = this.raphael.pelagios.placeLabel(place.label, "#ff3333", "#000000");
+    n.place = place;
 
     // Seems kind of recursive... but we need that in
     // the move handler, which only has access to the
@@ -72,6 +79,38 @@ Pelagios.PersonalGraph.prototype.newPlace = function(name) {
         	this.handler.drag,
         	this.handler.up);
     
+    // Find paths between places
+    for (var i=0, ii=this.places.length; i<ii; i++) {
+        this.pAsync.findShortestPath(n, this.places[i]);    	
+    }
+    
+    this.places.push(n);
+    return n;
+}
+
+Pelagios.PersonalGraph.prototype.newDataset = function(label) {
+	var n;
+	if (this.datasets[label]) {
+		n = this.datasets[label];
+	} else {
+	    n = this.graph.newNode();
+	    n.set = this.raphael.pelagios.datasetLabel(label, "#7777ff", "#000000");
+	
+	    // Seems kind of recursive... but we need that in
+	    // the move handler, which only has access to the
+	    // individual elements inside the set, not the original
+	    // set or graph node.
+	    for (var i=0, ii=n.set.length; i<ii; i++) {
+	        n.set[i].graphNode = n;    	
+	    }
+	    
+	    n.set.drag(
+	        	this.handler.move,
+	        	this.handler.drag,
+	        	this.handler.up);
+	        
+	    this.datasets[label] = n;
+	}
     return n;
 }
 

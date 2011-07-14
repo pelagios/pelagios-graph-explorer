@@ -19,14 +19,29 @@ Pelagios.Async.prototype.fetchConvexHull = function(node) {
 }
 
 Pelagios.Async.prototype.fetchPlaceReferences = function(place, personalGraph) {
-	var pNode = personalGraph.newPlace(place.label);
+	var pNode = personalGraph.newPlace(place);
 	$.getJSON("places/references?place=" + encodeURI(place.uri), function(data) {
 		for (var i=0, ii=data.length; i<ii; i++) {
-			var dNode = personalGraph.newPlace(data[i].dataset);
+			var dNode = personalGraph.newDataset(data[i].dataset);
 			personalGraph.newEdge(pNode, dNode, data[i].references);
 		}
 	})
 	.error(function(data) { alert("Something went wrong: " + data.responseText); });
+}
+
+Pelagios.Async.prototype.findShortestPath = function(from, to, personalGraph) {	
+	var pGraph = personalGraph;
+	$.getJSON("places/shortestpath?from=" + encodeURI(from.place.uri) + 
+		"&to=" + encodeURI(to.place.uri), function(data) {
+
+		var lastNode = from;
+		for (var i=0, ii=data.length; i<ii; i++) {
+			lastNode = pGraph.newDataset(data[i]);
+			pGraph.newEdge(lastNode, data[i], data[i].src);
+		}
+		pGraph.newEdge(lastNode, to, data[data.length - 1].dest);
+	})
+	.error(function(data) { alert("Something went wrong: " + data.responseText); });	
 }
 
 Pelagios.Async.prototype.computeOverlaps = function() {

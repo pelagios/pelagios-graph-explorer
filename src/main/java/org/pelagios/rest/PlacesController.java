@@ -19,6 +19,7 @@ import org.pelagios.backend.graph.PelagiosGraph;
 import org.pelagios.backend.graph.Place;
 import org.pelagios.backend.graph.exception.DatasetNotFoundException;
 import org.pelagios.backend.graph.exception.PlaceNotFoundException;
+import org.pelagios.rest.api.CoReference;
 import org.pelagios.rest.api.Occurence;
 
 /**
@@ -69,40 +70,36 @@ public class PlacesController extends AbstractController {
 	@Produces("application/json")
 	@Path("shortestpath")
 	public Response getShortestPaths(@QueryParam("from") String from, @QueryParam("to") String to)
-		throws PlaceNotFoundException {
+		throws PlaceNotFoundException, URISyntaxException {
 		
 		PelagiosGraph graph = Backend.getInstance();
+		Place pFrom = graph.getPlace(new URI(from));
+		Place pTo = graph.getPlace(new URI(to));
 		
-		try {
-			Place pFrom = graph.getPlace(new URI(from));
-			Place pTo = graph.getPlace(new URI(to));
-			
-			int ctr = 0;
-			Dataset highest = null;
-			for (org.pelagios.backend.graph.Path p : graph.findShortestPath(pFrom, pTo)) {
-				ctr++;
-				for (Object o : p.getEntities()) {
-					if (o instanceof Dataset) {
-						Dataset d = (Dataset) o;
-						if (highest == null) {
-							highest = d;
-						} else if (highest.isSubsetOf(d)) {
-							highest = d;
-						}
+		List<org.pelagios.backend.graph.Path> shortestPaths = graph.findShortestPath(pFrom, pTo);
+
+		Dataset highest = null;
+		for (org.pelagios.backend.graph.Path p : shortestPaths) {
+			for (Object o : p.getEntities()) {
+				if (o instanceof Dataset) {
+					Dataset d = (Dataset) o;
+					if (highest == null) {
+						highest = d;
+					} else if (highest.isSubsetOf(d)) {
+						highest = d;
 					}
 				}
 			}
-			
-			int occFrom = highest.countReferences(pFrom, true);
-			int occTo = highest.countReferences(pTo, true);
-
-			System.out.println("RESULTS: " + pFrom.getLabel() + " to " + pTo.getLabel());
-			System.out.println("Referenced " + occFrom + "/" + occTo + " in " + highest.getName());
-			
-			return Response.ok("").build();	
-		} catch (URISyntaxException e) {
-			return Response.notAcceptable(null).build();
 		}
+		
+		List<CoReference> coreferencePaths = new ArrayList<CoReference>();
+		CoReference coref = new CoReference(
+				highest.getName(), 
+				highest.countReferences(pFrom, true),
+				highest.countReferences(pTo, true));
+		coreferencePaths.add(coref);
+		
+		return Response.ok(toJSON(coreferencePaths)).build();	
 	}
 	
 	@GET
