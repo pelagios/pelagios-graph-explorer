@@ -115,7 +115,7 @@ Raphael.fn.pelagios = {
 		}
 	},
 	
-	datarecord : function() {
+	datasetLabel : function(arg0, arg1, arg2) {
 		if (typeof arg0[0] == 'object') {
 			// arg0 -> set, arg1 -> x, arg2 -> y
 			arg0[0].attr({x: arg1, y: arg2});
