@@ -1,4 +1,4 @@
-package org.pelagios.importer.pleiades.names;
+package org.pelagios.pleiades.importer.names;
 
 /**
  * The data contained in one line of the 'pleiades-names'

@@ -1,11 +1,12 @@
-package org.pelagios.importer.pleiades.locations;
+package org.pelagios.pleiades.importer.locations;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 
-import org.pelagios.importer.pleiades.PleiadesCSVParser;
+import org.pelagios.api.GeoJSONGeometry;
+import org.pelagios.pleiades.importer.PleiadesCSVParser;
 
 import au.com.bytecode.opencsv.CSVReader;
 
@@ -18,7 +19,7 @@ public class LocationParser extends PleiadesCSVParser {
 		CSVReader reader = new CSVReader(new FileReader(csv), ',', '\"', 1);
 		
 		GsonBuilder builder = new GsonBuilder();
-		builder.registerTypeAdapter(Geometry.class, new GeometryDeserializer());
+		builder.registerTypeAdapter(GeoJSONGeometry.class, new GeometryDeserializer());
 		Gson gson = builder.create();
 		
 		HashMap<String, LocationRecord> locations = new HashMap<String, LocationRecord>();
@@ -41,7 +42,7 @@ public class LocationParser extends PleiadesCSVParser {
 		   	    		lr.setPid(nextLine[7]);
 		   	    		lr.setCreators(nextLine[1]);
 		   	    		lr.setDescription(nextLine[2]);		   	    		
-		   	    		lr.setGeometry(gson.fromJson(nextLine[3], Geometry.class));
+		   	    		lr.setGeoJSON(gson.fromJson(nextLine[3], GeoJSONGeometry.class));
 		   	    		
 		   	    		if (locations.containsKey(lr.getPid()))
 		   	    			nonUniques++;

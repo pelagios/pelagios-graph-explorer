@@ -2,20 +2,26 @@ package org.pelagios.bootstrap;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
+import org.pelagios.api.Place;
 import org.pelagios.backend.graph.PelagiosGraph;
 import org.pelagios.backend.graph.builder.PelagiosGraphBuilder;
+import org.pelagios.backend.graph.builder.PlaceBuilder;
 import org.pelagios.backend.graph.exception.DatasetExistsException;
 import org.pelagios.backend.graph.exception.PlaceExistsException;
 import org.pelagios.importer.gap.GAPImporter;
 import org.pelagios.importer.nomisma.NomismaDatasetImporter;
 import org.pelagios.importer.perseus.PerseusImporter;
-import org.pelagios.importer.pleiades.PleiadesImporter;
 import org.pelagios.importer.ptolemymachine.PtolemyDatasetImporter;
 import org.pelagios.importer.spqr.SPQRImporter;
+import org.pelagios.pleiades.importer.PleiadesImporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.vividsolutions.jts.geom.Coordinate;
 
 /**
  * Utility class that (re)initializes the graph database
@@ -129,10 +135,20 @@ public class InitDatabase {
 		throws IOException, PlaceExistsException {
 		
 		PleiadesImporter importer = new PleiadesImporter();
-		importer.importPleiadesDump(
+		List<Place> places = importer.importPleiadesDump(
 				PLEIADES_LOCATIONS_CSV,
-				PLEIADES_NAMES_CSV,
-				graph);
+				PLEIADES_NAMES_CSV);
+		
+		List<PlaceBuilder> builders = new ArrayList<PlaceBuilder>();
+		for (Place p : places) {
+			Coordinate centroid = p.getGeoJSON().getGeometry().getCentroid().getCoordinate();
+			builders.add(new PlaceBuilder(
+				p.getLabel(),
+				centroid.x,
+				centroid.y,
+				p.getUri()
+			)); 
+		}
 	}
 	
 	private static void importNomisma(PelagiosGraph graph) throws DatasetExistsException {

@@ -1,12 +1,11 @@
-package org.pelagios.importer.pleiades.names;
+package org.pelagios.pleiades.importer.names;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 
-import org.pelagios.importer.pleiades.PleiadesCSVParser;
-
+import org.pelagios.pleiades.importer.PleiadesCSVParser;
 
 import au.com.bytecode.opencsv.CSVReader;
 

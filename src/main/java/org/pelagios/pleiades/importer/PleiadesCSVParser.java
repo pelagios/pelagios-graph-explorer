@@ -1,13 +1,12 @@
-package org.pelagios.importer.pleiades;
+package org.pelagios.pleiades.importer;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 public abstract class PleiadesCSVParser {
 	
 	protected static final String JSON_NULL = "null";
 	
-	protected Logger log = LoggerFactory.getLogger(PleiadesCSVParser.class);
+	protected Logger log = Logger.getLogger(PleiadesCSVParser.class);
 
 	protected String logLine(String[] line) {
 		StringBuffer sb = new StringBuffer();

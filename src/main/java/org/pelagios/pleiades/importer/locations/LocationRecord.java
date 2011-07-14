@@ -1,7 +1,8 @@
-package org.pelagios.importer.pleiades.locations;
+package org.pelagios.pleiades.importer.locations;
 
 import java.util.Date;
 
+import org.pelagios.api.GeoJSONGeometry;
 
 /**
  * The data contained in one line of the 'pleiades-locations' 
@@ -19,7 +20,7 @@ public class LocationRecord {
 	
 	private String description;
 	
-	private Geometry geometry;
+	private GeoJSONGeometry geoJson;
 
 	public void setPid(String pid) {
 		this.pid = pid;
@@ -53,12 +54,12 @@ public class LocationRecord {
 		return description;
 	}
 
-	public void setGeometry(Geometry geometry) {
-		this.geometry = geometry;
+	public void setGeoJSON(GeoJSONGeometry geometry) {
+		this.geoJson = geometry;
 	}
 
-	public Geometry getGeometry() {
-		return geometry;
+	public GeoJSONGeometry getGeoJSON() {
+		return geoJson;
 	}
 
 }
