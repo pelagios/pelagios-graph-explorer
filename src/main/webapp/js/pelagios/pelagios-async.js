@@ -30,27 +30,17 @@ Pelagios.Async.prototype.fetchPlaceReferences = function(place, personalGraph) {
 }
 
 Pelagios.Async.prototype.findShortestPath = function(from, to, personalGraph) {	
-<<<<<<< HEAD
-=======
-	var pGraph = personalGraph;
->>>>>>> 588206ca517b0ae172efe2856ec028ccab8a32c2
 	$.getJSON("places/shortestpath?from=" + encodeURI(from.place.uri) + 
 		"&to=" + encodeURI(to.place.uri), function(data) {
 
 		var lastNode = from;
 		for (var i=0, ii=data.length; i<ii; i++) {
-<<<<<<< HEAD
+
 			newNode = personalGraph.newDataset(data[i].dataset);
 			personalGraph.newEdge(lastNode, newNode, data[i].src);
 			lastNode = newNode;
 		}
 		personalGraph.newEdge(lastNode, to, data[data.length - 1].dest);
-=======
-			lastNode = pGraph.newDataset(data[i]);
-			pGraph.newEdge(lastNode, data[i], data[i].src);
-		}
-		pGraph.newEdge(lastNode, to, data[data.length - 1].dest);
->>>>>>> 588206ca517b0ae172efe2856ec028ccab8a32c2
 	})
 	.error(function(data) { alert("Something went wrong: " + data.responseText); });	
 }
