@@ -4,6 +4,12 @@ Pelagios.Async = function(pGraph, pMap) {
 	this.pMap = pMap;
 }
 
+Pelagios.Async.prototype.getAutoCompleteHint = function(term, callback) {
+	$.getJSON("places/search?q=" + term, function(data) {
+		callback(data);
+	});
+}
+
 Pelagios.Async.prototype.fetchConvexHull = function(node) {
 	var pMap = this.pMap;
 	$.getJSON("datasets/" + node.name + "/places/convexhull", function(data) {

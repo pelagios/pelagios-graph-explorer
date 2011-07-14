@@ -192,9 +192,12 @@ class PelagiosGraphImpl implements PelagiosGraph {
 	
 	public List<Place> searchPlaces(String prefix, int limit) {
 		List<Place> places = new ArrayList<Place>();
-		System.out.println(prefix + "*");
-		for (Node n : getPlaceIndex().query(Place.KEY_LABEL, prefix + "*")) {
-			places.add(new PlaceImpl(n));
+		if (prefix.length() > 2) {
+			for (Node n : getPlaceIndex().query(Place.KEY_LABEL, prefix.toLowerCase() + "*")) {
+				places.add(new PlaceImpl(n));
+				if (places.size() > limit)
+					break;
+			}
 		}
 		return places;
 	}

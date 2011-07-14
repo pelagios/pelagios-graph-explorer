@@ -26,7 +26,11 @@ window.onload = function() {
     var palette = new Pelagios.Palette();
 
     var pAsync = new Pelagios.Async(pGraph, pMap);
-
+	$("#searchfield").autocomplete({
+		source: function(term, callback) { pAsync.getAutoCompleteHint(term.term, callback); },
+		select: function(event, ui) { alert(ui.item.uri); }
+	});
+    
     // Fetch datasets from server
     fetchDatasets();
     
