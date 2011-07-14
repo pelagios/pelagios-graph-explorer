@@ -118,7 +118,7 @@ public class PlacesController extends AbstractController {
 		
 		// Compile a table dataset<->no. of records
 		HashMap<Dataset, Integer> occurences = new HashMap<Dataset, Integer>();
-		for (DataRecord r : records) {
+		for (DataRecord r : records) {		
 			Dataset parent = r.getParentDataset();
 			
 			Integer count = occurences.get(parent);
@@ -130,10 +130,10 @@ public class PlacesController extends AbstractController {
 			
 			occurences.put(parent, count);
 		}
-
+		
 		// The fun part - collapse the table from bottom-level datasets
 		// upwards to end up at a reasonable number of total sets
-		occurences = collapse(occurences, 5);
+		occurences = collapse(occurences, 12);
 		
 		// Wrap the results for JSON serialization
 		List<Occurence> occJson = new ArrayList<Occurence>();
@@ -151,15 +151,19 @@ public class PlacesController extends AbstractController {
 		HashMap<Dataset, Integer> collapsed = new HashMap<Dataset, Integer>();
 		for (Dataset s : datasets.keySet()) {
 			Dataset parent = s.getParent();
-			
-			Integer count = collapsed.get(parent);
-			if (count == null) {
-				count = datasets.get(s);
-			} else {
-				count = Integer.valueOf(count.intValue() + datasets.get(s).intValue());
+			if (parent == null) {
+				collapsed.put(s, datasets.get(s));
+				limit++;
+			} else {	
+				Integer count = collapsed.get(parent);
+				if (count == null) {
+					count = datasets.get(s);
+				} else {
+					count = Integer.valueOf(count.intValue() + datasets.get(s).intValue());
+				}
+					
+				collapsed.put(parent, count);
 			}
-				
-			collapsed.put(parent, count);
 		}
 		
 		return collapse(collapsed, limit);

@@ -74,3 +74,7 @@ Pelagios.Map.prototype.hidePolygon = function(name) {
 	if (this.polygons[name])
 		this.polygons[name].setMap(null);	
 }
+
+Pelagios.Map.prototype.addMarker = function(name, lat, lon) {
+	
+}

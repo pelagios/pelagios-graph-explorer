@@ -4,6 +4,7 @@ window.onresize = function(event) {
 	var viewport = Pelagios.getViewport();
     raphael.setSize(viewport.x, viewport.y);
 	window.pGraph.renderer.graphChanged();
+	window.personalGraph.renderer.graphChanged();
 }
 
 window.onload = function() {
@@ -32,7 +33,9 @@ window.onload = function() {
     var pAsync = new Pelagios.Async(pGraph, pMap);
 	$("#searchfield").autocomplete({
 		source: function(term, callback) { pAsync.getAutoCompleteHint(term.term, callback); },
-		select: function(event, ui) { 
+		select: function(event, ui) {
+			pPersonalGraph.show();
+			pMap.setVisible(true);
 			pAsync.fetchPlaceReferences(ui.item, pPersonalGraph);
 		}
 	});

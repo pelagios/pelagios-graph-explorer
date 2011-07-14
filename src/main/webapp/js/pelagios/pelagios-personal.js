@@ -75,9 +75,9 @@ Pelagios.PersonalGraph.prototype.newPlace = function(name) {
     return n;
 }
 
-Pelagios.PersonalGraph.prototype.newEdge = function(from, to) {
-    var e = this.graph.newEdge(from, to, { length: 0.2 });
-    e.connection = this.raphael.pelagios.connection(from.set[1], to.set[1], "#000", 2);
+Pelagios.PersonalGraph.prototype.newEdge = function(from, to, size) {
+    var e = this.graph.newEdge(from, to, { length: 1 });
+    e.connection = this.raphael.pelagios.connection(from.set[1], to.set[1], "#000", size);
     return e;
 }
 
