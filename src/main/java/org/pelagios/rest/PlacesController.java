@@ -3,10 +3,8 @@ package org.pelagios.rest;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -21,6 +19,7 @@ import org.pelagios.backend.graph.PelagiosGraph;
 import org.pelagios.backend.graph.Place;
 import org.pelagios.backend.graph.exception.DatasetNotFoundException;
 import org.pelagios.backend.graph.exception.PlaceNotFoundException;
+import org.pelagios.rest.api.Occurence;
 
 /**
  * This controller provides basic query operation on
@@ -112,35 +111,55 @@ public class PlacesController extends AbstractController {
 	public Response listReferences(@QueryParam("place") String place) throws
 		PlaceNotFoundException, URISyntaxException {
 		
-		
-		System.out.println(place);
-		
+		// Get all references to this place from the graph
 		PelagiosGraph graph = Backend.getInstance();
 		Place p = graph.getPlace(new URI(place));
 		List<DataRecord> records = graph.listReferencesTo(p);
-		System.out.println(records.size() + " references total");
 		
-		Collection<Dataset> uniqueDatasets = new HashSet<Dataset>();
+		// Compile a table dataset<->no. of records
+		HashMap<Dataset, Integer> occurences = new HashMap<Dataset, Integer>();
 		for (DataRecord r : records) {
-			uniqueDatasets.add(r.getParentDataset());
+			Dataset parent = r.getParentDataset();
+			
+			Integer count = occurences.get(parent);
+			if (count == null) {
+				count = new Integer(1);
+			} else {
+				count = Integer.valueOf(count.intValue() + 1);
+			}
+			
+			occurences.put(parent, count);
 		}
-		uniqueDatasets = collapse(uniqueDatasets, 5);
+
+		// The fun part - collapse the table from bottom-level datasets
+		// upwards to end up at a reasonable number of total sets
+		occurences = collapse(occurences, 5);
 		
-		System.out.println("in " + uniqueDatasets.size() + " data sets");
-		for (Dataset s : uniqueDatasets) {
-			System.out.println(s.getName());
+		// Wrap the results for JSON serialization
+		List<Occurence> occJson = new ArrayList<Occurence>();
+		for (Dataset s : occurences.keySet()) {
+			occJson.add(new Occurence(s.getName(), occurences.get(s)));
 		}
 		
-		return Response.ok("").build();	
+		return Response.ok(toJSON(occJson)).build();	
 	}
 	
-	private Collection<Dataset> collapse(Collection<Dataset> datasets, int limit) {
+	private HashMap<Dataset, Integer> collapse(HashMap<Dataset, Integer> datasets, int limit) {
 		if (datasets.size() <= limit)
 			return datasets;
 		
-		Set<Dataset> collapsed = new HashSet<Dataset>();
-		for (Dataset s : datasets) {
-			collapsed.add(s.getParent());
+		HashMap<Dataset, Integer> collapsed = new HashMap<Dataset, Integer>();
+		for (Dataset s : datasets.keySet()) {
+			Dataset parent = s.getParent();
+			
+			Integer count = collapsed.get(parent);
+			if (count == null) {
+				count = datasets.get(s);
+			} else {
+				count = Integer.valueOf(count.intValue() + datasets.get(s).intValue());
+			}
+				
+			collapsed.put(parent, count);
 		}
 		
 		return collapse(collapsed, limit);

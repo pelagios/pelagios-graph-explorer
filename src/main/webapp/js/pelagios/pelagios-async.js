@@ -18,6 +18,13 @@ Pelagios.Async.prototype.fetchConvexHull = function(node) {
 	.error(function(data) { alert("Something went wrong: " + data.responseText); });	
 }
 
+Pelagios.Async.prototype.fetchPlaceReferences = function(place, personalGraph) {
+	$.getJSON("places/references?place=" + encodeURI(place.uri), function(data) {
+		// 
+	})
+	.error(function(data) { alert("Something went wrong: " + data.responseText); });	
+}
+
 Pelagios.Async.prototype.computeOverlaps = function() {
 	// Selected nodes come in an associative array
 	var selected = new Array();

@@ -18,6 +18,10 @@ window.onload = function() {
     
     var pGraph = new Pelagios.Graph(raphael);
     
+    var pPersonalGraph = new Pelagios.PersonalGraph(
+    		"personal-graph", 
+    		Raphael("personal-graph", viewport.x, viewport.y));
+    
     var pMap = new Pelagios.Map();
     document.getElementById("toggle-map").onclick = function() {
     	pMap.setVisible(!pMap.isVisible())
@@ -28,7 +32,9 @@ window.onload = function() {
     var pAsync = new Pelagios.Async(pGraph, pMap);
 	$("#searchfield").autocomplete({
 		source: function(term, callback) { pAsync.getAutoCompleteHint(term.term, callback); },
-		select: function(event, ui) { alert(ui.item.uri); }
+		select: function(event, ui) { 
+			pAsync.fetchPlaceReferences(ui.item, pPersonalGraph);
+		}
 	});
     
     // Fetch datasets from server
