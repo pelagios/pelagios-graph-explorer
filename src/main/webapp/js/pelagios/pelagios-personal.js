@@ -81,7 +81,11 @@ Pelagios.PersonalGraph.prototype.newPlace = function(place) {
     
     // Find paths between places
     for (var i=0, ii=this.places.length; i<ii; i++) {
+<<<<<<< HEAD
         this.pAsync.findShortestPath(n, this.places[i], this);    	
+=======
+        this.pAsync.findShortestPath(n, this.places[i]);    	
+>>>>>>> 588206ca517b0ae172efe2856ec028ccab8a32c2
     }
     
     this.places.push(n);
