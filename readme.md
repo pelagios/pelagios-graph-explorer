@@ -9,7 +9,7 @@ PELAGIOS project.
 
 todo... 
 
-![PELAGIOS Graph Explorer - Dev Screenshot](http://dl.dropbox.com/u/6192626/graph-explorer.jpg)
+![PELAGIOS Graph Explorer - Dev Screenshot](http://dl.dropbox.com/u/6192626/graph-explorer-updated.jpg)
 
 ## License
 
