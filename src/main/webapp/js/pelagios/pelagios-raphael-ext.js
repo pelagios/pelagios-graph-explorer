@@ -100,18 +100,17 @@ Raphael.fn.pelagios = {
 			var bbox = arg0[0].getBBox();
 			arg0[1].attr({x: arg1 - bbox.width / 2 - 8, y: arg2 - bbox.height / 2 - 4});
 		} else {
-			// arg0 -> place name, arg1 -> fill, arg2 -> stroke
+			// arg0 -> place name
 		    var s = this.set();
 		    
-		    var text = this.text(0, 0, arg0);
+		    var text = this.text(0, 0, arg0).attr({"fill":"#fff"});
 		    var bbox = text.getBBox();
 		    s.push(text);
 		   
 		    s.push(this.rect(0, 0, bbox.width + 16, bbox.height + 8, 5).attr({
 		    		"stroke-width" : 2,
-		    		"fill" : arg1,
-		    		"stroke" : "#fff",
-		    		"opacity" : 0
+		    		"fill" : "#a2a2a2",
+		    		"stroke" : "#777"
 		    	}).toBack());
 		    return s;
 		}
@@ -130,9 +129,21 @@ Raphael.fn.pelagios = {
 				"stroke" : arg2, 
 				"stroke-width" : 2}));
 		    
-		    var text = this.text(0, 0, arg0);
+		    var text = this.text(0, 0, arg0).attr({"opacity":0});
 		    var bbox = text.getBBox();
 		    s.push(text);
+		    
+			s[0].mouseover(function(event) {
+			    s[1].animate({
+			    	"opacity" : 1,
+			    }, 200);
+			});
+			s[0].mouseout(function (event) {
+			    s[1].animate({
+			    	"opacity" : 0,
+			    }, 200);
+			});
+		    		    
 		    return s;
 		}		
 	}

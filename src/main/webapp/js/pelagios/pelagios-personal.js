@@ -76,7 +76,7 @@ Pelagios.PersonalGraph.prototype.show = function() {
 
 Pelagios.PersonalGraph.prototype.newPlace = function(place) {
     var n = this.graph.newNode();
-    n.set = this.raphael.pelagios.placeLabel(place.label, "#ff3333", "#000000");
+    n.set = this.raphael.pelagios.placeLabel(place.label);
     n.place = place;
 
     // Seems kind of recursive... but we need that in
