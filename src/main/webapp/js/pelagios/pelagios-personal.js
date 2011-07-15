@@ -12,12 +12,19 @@ Pelagios.PersonalGraph = function(id, raphael, palette) {
     // Keep track of places and datasets in the graph
     this.places = new Array();
     this.datasets = new Array();
+    this.maxEdgeWeight = 1;
     
+    var maxEdgeWeight = function() { return this.maxEdgeWeight; }
 	var toScreen = this.toScreen;
     this.renderer = new Renderer(10, this.layout,
 	  function clear() { },
 	  
 	  function drawEdge(edge, p1, p2) {
+		  var sizeNorm = 20 * edge.connection.size / maxEdgeWeight;
+		  if (sizeNorm < 2)
+			  sizeNorm = 2;
+		  
+		  edge.connection.line.attr({"stroke-width" : sizeNorm });
 		  raphael.pelagios.connection(edge.connection);
 	  },
 	  
@@ -121,8 +128,14 @@ Pelagios.PersonalGraph.prototype.newDataset = function(label, rootLabel) {
 }
 
 Pelagios.PersonalGraph.prototype.newEdge = function(from, to, size) {
+	if (size > this.maxEdgeWeight)
+		this.maxEdgeWeight = size;
+	
+	var sizeNorm = 20 * size / this.maxEdgeWeight;
+	
     var e = this.graph.newEdge(from, to, { length: 1 });
-    e.connection = this.raphael.pelagios.connection(from.set[1], to.set[1], "#000", size);
+    e.connection = this.raphael.pelagios.connection(from.set[1], to.set[1], "#000", sizeNorm);
+    e.connection.size = size;
     return e;
 }
 

@@ -62,6 +62,7 @@ Raphael.fn.pelagios = {
 	// Connection between two graph nodes, based on the Raphael 'graffle'
 	// demo at http://raphaeljs.com/graffle.html  
 	connection : function(obj1, obj2, line, width) {
+		var maxEdgeWeigth;
 		if (obj1.line && obj1.from && obj1.to) {
 			line = obj1;
 			obj1 = line.from;
