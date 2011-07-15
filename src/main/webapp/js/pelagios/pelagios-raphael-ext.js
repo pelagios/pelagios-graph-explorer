@@ -110,7 +110,8 @@ Raphael.fn.pelagios = {
 		    s.push(this.rect(0, 0, bbox.width + 16, bbox.height + 8, 5).attr({
 		    		"stroke-width" : 2,
 		    		"fill" : arg1,
-		    		"stroke" : arg2
+		    		"stroke" : "#fff",
+		    		"opacity" : 0
 		    	}).toBack());
 		    return s;
 		}
@@ -119,23 +120,19 @@ Raphael.fn.pelagios = {
 	datasetLabel : function(arg0, arg1, arg2) {
 		if (typeof arg0[0] == 'object') {
 			// arg0 -> set, arg1 -> x, arg2 -> y
-			arg0[0].attr({x: arg1, y: arg2});
-			
-			var bbox = arg0[0].getBBox();
-			arg0[1].attr({x: arg1 - bbox.width / 2 - 8, y: arg2 - bbox.height / 2 - 4});
+			arg0[0].attr({cx:arg1, cy:arg2});
+			arg0[1].attr({x:arg1, y:(arg2 + 18)});
 		} else {
 			// arg0 -> data record label, arg1 -> fill, arg2 -> stroke
 		    var s = this.set();
+		    s.push(this.ellipse(this.width / 2, this.height / 2, 8, 8).attr({
+				"fill" : arg1, 
+				"stroke" : arg2, 
+				"stroke-width" : 2}));
 		    
 		    var text = this.text(0, 0, arg0);
 		    var bbox = text.getBBox();
 		    s.push(text);
-		   
-		    s.push(this.rect(0, 0, bbox.width + 16, bbox.height + 8, 5).attr({
-		    		"stroke-width" : 2,
-		    		"fill" : arg1,
-		    		"stroke" : arg2
-		    	}).toBack());
 		    return s;
 		}		
 	}

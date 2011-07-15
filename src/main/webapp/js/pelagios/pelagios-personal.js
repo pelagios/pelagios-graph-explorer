@@ -21,8 +21,8 @@ Pelagios.PersonalGraph = function(id, raphael, palette) {
 	  
 	  function drawEdge(edge, p1, p2) {
 		  var sizeNorm = 20 * edge.connection.size / maxEdgeWeight;
-		  if (sizeNorm < 2)
-			  sizeNorm = 2;
+		  if (sizeNorm < 3)
+			  sizeNorm = 3;
 		  
 		  edge.connection.line.attr({"stroke-width" : sizeNorm });
 		  raphael.pelagios.connection(edge.connection);
@@ -30,7 +30,12 @@ Pelagios.PersonalGraph = function(id, raphael, palette) {
 	  
 	  function drawNode(node, pt) {
 		  var xy = toScreen(pt, this.layout);
-		  raphael.pelagios.placeLabel(node.set, xy.x, xy.y);
+		  
+		  if (node.place) {
+			  raphael.pelagios.placeLabel(node.set, xy.x, xy.y);
+		  } else {
+			  raphael.pelagios.datasetLabel(node.set, xy.x, xy.y);
+		  }
 	  });
 	
     // This is ugly... but don't know how to get rid of
@@ -117,7 +122,7 @@ Pelagios.PersonalGraph.prototype.newDataset = function(label, rootLabel) {
 	        n.set[i].graphNode = n;    	
 	    }
 	    
-	    n.set.drag(
+	    n.set[0].drag(
 	        	this.handler.move,
 	        	this.handler.drag,
 	        	this.handler.up);
@@ -134,7 +139,7 @@ Pelagios.PersonalGraph.prototype.newEdge = function(from, to, size) {
 	var sizeNorm = 20 * size / this.maxEdgeWeight;
 	
     var e = this.graph.newEdge(from, to, { length: 1 });
-    e.connection = this.raphael.pelagios.connection(from.set[1], to.set[1], "#000", sizeNorm);
+    e.connection = this.raphael.pelagios.connection(from.set[0], to.set[0], "#000", sizeNorm);
     e.connection.size = size;
     return e;
 }
@@ -142,12 +147,21 @@ Pelagios.PersonalGraph.prototype.newEdge = function(from, to, size) {
 Pelagios.PersonalGraph.prototype.handler = {
 
 	drag : function() {
-		this.ox = this.attr("x");
-		this.oy = this.attr("y");
+		if (this.graphNode.place) {
+			this.ox = this.attr("x");
+			this.oy = this.attr("y");
+		} else {
+			this.ox = this.attr("cx");
+			this.oy = this.attr("cy");			
+		}
 	},
 		
 	move : function(dx, dy) {
-		window.personalGraph.raphael.pelagios.placeLabel(this.graphNode.set, this.ox + dx, this.oy + dy);
+		if (this.graphNode.place) {
+			window.personalGraph.raphael.pelagios.placeLabel(this.graphNode.set, this.ox + dx, this.oy + dy);
+		} else {
+			window.personalGraph.raphael.pelagios.datasetLabel(this.graphNode.set, this.ox + dx, this.oy + dy);			
+		}
 		var pt = window.personalGraph.fromScreen(new Vector(this.ox + dx, this.oy + dy));
 		window.personalGraph.layout.point(this.graphNode).p = pt;
 		window.personalGraph.renderer.start();
