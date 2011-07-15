@@ -5,8 +5,7 @@ import org.pelagios.backend.graph.builder.PelagiosGraphBuilder;
 
 public class Backend {
 	
-	// TODO make configurable (via servlet context param)
-	private static final String DATA_DIR = "c:/neo4j-data";
+	private static final String DATA_DIR = Config.getInstance().getNeo4jDirectory();
 	
 	private static PelagiosGraph instance = null;
 	
