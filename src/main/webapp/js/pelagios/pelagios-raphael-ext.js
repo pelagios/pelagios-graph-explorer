@@ -21,7 +21,7 @@ Raphael.fn.pelagios = {
 					var y = arg0.links[i].to.set[0].attr("cy");
 					var path = "M" + arg1 + " " + arg2 +
 						"L" + x + " " + y;
-					arg0.links[i].line.attr({"path" : path});
+					arg0.links[i].line.attr({"path":path});
 				}
 			}
 			

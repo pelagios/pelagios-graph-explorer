@@ -21,6 +21,7 @@ import org.pelagios.backend.graph.exception.DatasetNotFoundException;
 import org.pelagios.backend.graph.exception.PlaceNotFoundException;
 import org.pelagios.rest.api.CoReference;
 import org.pelagios.rest.api.Occurence;
+import org.pelagios.rest.api.Overlap;
 
 /**
  * This controller provides basic query operation on
@@ -39,31 +40,31 @@ public class PlacesController extends AbstractController {
 		return Response.ok(toJSON(hits)).build();
 	}
 	
-	/**
-	 * The method returns the 'overlap' of the specified data sets
-	 * in terms of referenced places, i.e. a list of places that
-	 * are referenced in all data sets.
-	 * @param sets the data sets
-	 * @return the place-wise intersection i.e. the places referenced
-	 * in all of the data sets
-	 * @throws DatasetNotFoundException if (at least) one of the data sets
-	 * is not in the graph 
-	 */
+	// TODO complete this methdo!
 	@GET
 	@Produces("application/json")
-	@Path("/intersect")
-	public Response getSharedPlaces(@QueryParam("set") List<String> sets)
+	@Path("/intersect/convexhull")
+	public Response getSharedPlacesConvexHull(@QueryParam("set") List<String> sets)
 		throws DatasetNotFoundException {
-		
+			
 		PelagiosGraph graph = Backend.getInstance();
-		
 		List<DatasetNode> datasets = new ArrayList<DatasetNode>();
 		for (String s : sets) {
 			datasets.add(graph.getDataset(s));
 		}
 		
-		List<PlaceNode> sharedPlaces = graph.listSharedPlaces(datasets);	
-		return Response.ok(toJSON(sharedPlaces)).build();
+		List<PlaceNode> commonPlaces = graph.listSharedPlaces(datasets);
+		if (sets.size() == 2) {
+			Overlap o = new Overlap(
+					sets.get(0),
+					sets.get(1),
+					commonPlaces.size(),
+					toConvexHull(commonPlaces));
+			
+			return Response.ok(toJSON(o)).build();
+		} else {
+			return Response.ok("").build();
+		}
 	}
 	
 	@GET

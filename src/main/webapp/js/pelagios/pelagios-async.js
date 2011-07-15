@@ -49,20 +49,32 @@ Pelagios.Async.prototype.computeOverlaps = function() {
 	// Selected nodes come in an associative array
 	var selected = new Array();
 	for (var node in this.pGraph.getSelected()) {
-		selected.push(node);
+		selected.push(this.pGraph.selectedNodes[node]);
 	}
 	
-	if (selected.length > 1) {
-    	var url = "places/intersect?";
-    	for (var i=0, ii=selected.length; i<ii; i++) {
-    		url += "set=" + selected[i] + "&";
-    	}
-    	/*
-    	$.getJSON(url, function(data) {
-    		alert(data.length + " shared places");
+	// Compute pairwise overlaps
+	while (selected.length > 1) {
+		var srcNode = selected.pop();
+		
+		for (var i=0, ii=selected.length; i<ii; i++) {	
+	    	var pMap = this.pMap;
+	    	var pGraph = this.pGraph;
+	    	var destNode = selected[i];
+	    	fetchOverlap(srcNode, selected[i], this.pGraph, this.pMap);
+		}
+	}
+	
+	function fetchOverlap(srcNode, destNode, pGraph, pMap) {
+    	var url = "places/intersect/convexhull?set=" +
+			srcNode.name + "&set=" + destNode.name;
+    	
+    	$.getJSON(url, function(data) {	    	
+    		pGraph.setLinkWeight(srcNode, destNode, data.commonPlaces);
+    		
+    		// pMap.addPolygon(srcNode.name + " to " + destNode.name, data.footprint);
+    		// pMap.showPolygon("overlap");
     	})
-    	.error(function(data) { alert("Something went wrong: " + data.responseText); });
-    	*/
+    	.error(function(data) { alert("Something went wrong: " + data.responseText); });			
 	}
 }
 

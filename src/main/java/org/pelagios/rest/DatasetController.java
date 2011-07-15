@@ -1,14 +1,11 @@
 package org.pelagios.rest;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
 import org.pelagios.backend.Backend;
@@ -16,13 +13,8 @@ import org.pelagios.backend.graph.DatasetNode;
 import org.pelagios.backend.graph.PelagiosGraph;
 import org.pelagios.backend.graph.PlaceNode;
 import org.pelagios.backend.graph.exception.DatasetNotFoundException;
-import org.pelagios.rest.api.Link;
 
-import com.google.gson.JsonObject;
-import com.vividsolutions.jts.algorithm.ConvexHull;
-import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
 
 /**
  * This controller exposes data about PELAGIOS data sets
@@ -41,32 +33,9 @@ public class DatasetController extends AbstractController {
 	@GET
 	@Produces("application/json")
 	@Path("/")
-	public Response listDatasets(@QueryParam("links") boolean links) {
+	public Response listDatasets() {
 		PelagiosGraph graph = Backend.getInstance();
 		List<DatasetNode> datasets = graph.listTopLevelDatasets();
-		
-		if (links) {
-			// Compute link information
-			List<Link> l = new ArrayList<Link>();
-			for (int i=0; i<datasets.size(); i++) {
-				DatasetNode source = datasets.get(i);
-				
-				for (int j=i + 1; j<datasets.size(); j++) {
-					DatasetNode target = datasets.get(j);
-					l.add(new Link(
-							source.getName(),
-							target.getName(),
-							graph.listSharedPlaces(Arrays.asList(source, target)).size()
-					));
-				}
-			}
-			
-			JsonObject json = new JsonObject();
-			json.add("datasets", toJSONTree(datasets));
-			json.add("links", toJSONTree(l));
-			return Response.ok(json.toString()).build();
-		}
-		
 		return Response.ok(toJSON(datasets)).build();
 	}
 	
@@ -125,15 +94,10 @@ public class DatasetController extends AbstractController {
 	public Response getConvexHull(@PathParam("dataset") String dataset)
 		throws DatasetNotFoundException {
 		
-		List<Coordinate> coordinates = new ArrayList<Coordinate>();
-		for (PlaceNode p : Backend.getInstance().getDataset(dataset).listPlaces(true)) {
-			coordinates.addAll(
-					Arrays.asList(p.getGeoJSONGeometry().getGeometry().getCoordinates()));
-		}
-		ConvexHull cv = new ConvexHull(coordinates.toArray(new Coordinate[coordinates.size()]),
-				new GeometryFactory());
+		PelagiosGraph graph = Backend.getInstance();
+		Geometry cv = toConvexHull(graph.getDataset(dataset).listPlaces(true));
 		
-		return Response.ok(toJSON(cv.getConvexHull())).build();
+		return Response.ok(toJSON(cv)).build();
 	}
 
 }
