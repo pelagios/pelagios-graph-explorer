@@ -34,7 +34,7 @@ class SPQRImporter {
 		
 		Set<URI> uniqueUris = new HashSet<URI>(); 
 		
-		DatasetBuilder rootNode = new DatasetBuilder("SQPR")
+		DatasetBuilder rootNode = new DatasetBuilder("SPQR")
 		graph.addDataset(rootNode)
 		
 		downloadDir.eachFile { file ->

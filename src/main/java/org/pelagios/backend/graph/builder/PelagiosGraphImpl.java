@@ -304,7 +304,7 @@ class PelagiosGraphImpl implements PelagiosGraph {
 		// e.g. by adding a "type" property to 
 		// every node and querying that
 		try {
-			node.getProperty(PlaceNode.KEY_LON);
+			node.getProperty(PlaceNode.KEY_GEOMETRY);
 			return new PlaceImpl(node);
 		} catch (NotFoundException e) {
 			// 

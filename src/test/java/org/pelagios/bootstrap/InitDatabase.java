@@ -21,8 +21,6 @@ import org.pelagios.pleiades.importer.PleiadesImporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.vividsolutions.jts.geom.Coordinate;
-
 /**
  * Utility class that (re)initializes the graph database
  * with Pelagios data from scratch. Note: existing contents
@@ -122,10 +120,10 @@ public class InitDatabase {
 		log.info("Done. (" + (System.currentTimeMillis() - taskStart) + " ms)");	
 		
 		taskStart = System.currentTimeMillis();
-		log.info("Importing SQPR dataset");	
+		log.info("Importing SPQR dataset");	
 		importSPQR(graph);
-		log.info("Done. (" + (System.currentTimeMillis() - taskStart) + " ms)");		
-		
+		log.info("Done. (" + (System.currentTimeMillis() - taskStart) + " ms)");
+
 		graph.shutdown();
 		log.info("Database initialized. Took " + 
 				(System.currentTimeMillis() - initStart)/1000 + " seconds.");
@@ -141,14 +139,14 @@ public class InitDatabase {
 		
 		List<PlaceBuilder> builders = new ArrayList<PlaceBuilder>();
 		for (Place p : places) {
-			Coordinate centroid = p.getGeoJSON().getGeometry().getCentroid().getCoordinate();
 			builders.add(new PlaceBuilder(
 				p.getLabel(),
-				centroid.x,
-				centroid.y,
-				p.getUri()
+				p.getUri(),
+				p.getGeoJSON()
 			)); 
 		}
+		
+		graph.addPlaces(builders);
 	}
 	
 	private static void importNomisma(PelagiosGraph graph) throws DatasetExistsException {

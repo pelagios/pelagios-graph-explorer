@@ -8,6 +8,7 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.pelagios.api.GeoJSONGeometry;
 import org.pelagios.backend.graph.DatasetNode;
 import org.pelagios.backend.graph.PelagiosGraph;
 import org.pelagios.backend.graph.PlaceNode;
@@ -66,7 +67,10 @@ public class GraphTest {
 		
 		// Create a place
 		System.out.print("Creating sample place... ");
-		PlaceBuilder corsica = new PlaceBuilder("Corsica", 5, 40, new URI("http://pleiades.stoa.org/places/991339"));
+		PlaceBuilder corsica = new PlaceBuilder(
+				"Corsica",
+				new URI("http://pleiades.stoa.org/places/991339"),
+				GeoJSONGeometry.fromString("{ \"coordinates\":[26.108246000000001,35.208534999999998] }"));
 		try {
 			graph.addPlaces(Arrays.asList(corsica));
 			System.out.println("done.");

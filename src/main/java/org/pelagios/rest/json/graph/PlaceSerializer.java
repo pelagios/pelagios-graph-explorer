@@ -6,6 +6,7 @@ import org.pelagios.backend.graph.PlaceNode;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
@@ -20,9 +21,8 @@ public class PlaceSerializer implements JsonSerializer<PlaceNode> {
 	public JsonElement serialize(PlaceNode place, Type typeOfSrc, JsonSerializationContext context) {
 		JsonObject json = new JsonObject();
 		json.add(PlaceNode.KEY_LABEL, new JsonPrimitive(place.getLabel()));
-		json.add(PlaceNode.KEY_LON, new JsonPrimitive(place.getLon()));
-		json.add(PlaceNode.KEY_LAT, new JsonPrimitive(place.getLat()));
 		json.add(PlaceNode.KEY_URI, new JsonPrimitive(place.getURI().toString()));
+		json.add(PlaceNode.KEY_GEOMETRY, new JsonParser().parse(place.getGeoJSONGeometry().toString()));
 		return json;
 	}
   

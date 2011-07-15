@@ -5,8 +5,12 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 import org.neo4j.graphdb.Node;
+import org.pelagios.api.GeoJSONGeometry;
 import org.pelagios.backend.graph.AnnotationNode;
 import org.pelagios.backend.graph.PlaceNode;
+import org.pelagios.pleiades.importer.locations.GeometryDeserializer;
+
+import com.google.gson.JsonParser;
 
 /**
  * Implementation of the Pelagios Place graph node type.
@@ -16,10 +20,12 @@ import org.pelagios.backend.graph.PlaceNode;
 class PlaceImpl extends AbstractNodeImpl implements PlaceNode {
 	
 	/**
-	 * We'll also keep the URI in memory. Otherwise
-	 * each .equals will result in a DB transaction
+	 * We'll also keep some properties in memory. Otherwise
+	 * each access to them will result in a DB transaction
 	 */
 	private URI memCachedURI = null;
+	
+	private GeoJSONGeometry memCachedGeoJson = null;
 	
 	PlaceImpl(Node backingNode) {
 		super(backingNode);
@@ -31,22 +37,6 @@ class PlaceImpl extends AbstractNodeImpl implements PlaceNode {
 
 	public void setLabel(String label) {
 		set(PlaceNode.KEY_LABEL, label);
-	}
-
-	public double getLon() {
-		return getAsDouble(PlaceNode.KEY_LON);
-	}
-
-	public void setLon(double lon) {
-		set(PlaceNode.KEY_LON, Double.toString(lon));
-	}
-
-	public double getLat() {
-		return getAsDouble(PlaceNode.KEY_LAT);
-	}
-
-	public void setLat(double lat) {
-		set(PlaceNode.KEY_LAT, Double.toString(lat));
 	}
 
 	public URI getURI() {
@@ -63,6 +53,21 @@ class PlaceImpl extends AbstractNodeImpl implements PlaceNode {
 	public void setURI(URI uri) {
 		memCachedURI = null;
 		set(PlaceNode.KEY_URI, uri.toString());
+	}
+	
+	public GeoJSONGeometry getGeoJSONGeometry() {
+		if (memCachedGeoJson == null) {
+			GeometryDeserializer ds = new GeometryDeserializer();
+			memCachedGeoJson =
+				ds.deserialize(new JsonParser()
+					.parse(getAsString(KEY_GEOMETRY)), null, null);
+		}
+		
+		return memCachedGeoJson;
+	}
+	
+	public void setGeometry(GeoJSONGeometry geometry) {
+		set(KEY_GEOMETRY, geometry.toString());
 	}
 
 	public List<AnnotationNode> listDataRecords() {

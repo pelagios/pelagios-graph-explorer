@@ -12,7 +12,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
 import org.pelagios.backend.Backend;
-import org.pelagios.backend.geo.GeoUtils;
 import org.pelagios.backend.graph.DatasetNode;
 import org.pelagios.backend.graph.PelagiosGraph;
 import org.pelagios.backend.graph.PlaceNode;
@@ -20,6 +19,7 @@ import org.pelagios.backend.graph.exception.DatasetNotFoundException;
 import org.pelagios.rest.api.Link;
 
 import com.google.gson.JsonObject;
+import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * This controller exposes data about PELAGIOS data sets
@@ -97,9 +97,16 @@ public class DatasetController extends AbstractController {
 	public Response getPlaces(@PathParam("dataset") String dataset)
 		throws DatasetNotFoundException {
 		
-		List<PlaceNode> places = Backend.getInstance().getDataset(dataset).listPlaces(true);
-		GeoUtils.computeConvexHull(places);
-		return Response.ok(toJSON(places)).build();
+		Geometry footprint = null;
+		for (PlaceNode p : Backend.getInstance().getDataset(dataset).listPlaces(true)) {
+			if (footprint == null) {
+				footprint = p.getGeoJSONGeometry().getGeometry();
+			} else {
+				footprint.union(p.getGeoJSONGeometry().getGeometry());
+			}
+		}
+		
+		return Response.ok(toJSON(footprint)).build();
 	}
 	
 	/**
@@ -115,8 +122,16 @@ public class DatasetController extends AbstractController {
 	public Response getConvexHull(@PathParam("dataset") String dataset)
 		throws DatasetNotFoundException {
 		
-		List<PlaceNode> places = Backend.getInstance().getDataset(dataset).listPlaces(true);
-		return Response.ok(toJSON(GeoUtils.computeConvexHull(places))).build();
+		Geometry footprint = null;
+		for (PlaceNode p : Backend.getInstance().getDataset(dataset).listPlaces(true)) {
+			if (footprint == null) {
+				footprint = p.getGeoJSONGeometry().getGeometry();
+			} else {
+				footprint.union(p.getGeoJSONGeometry().getGeometry());
+			}
+		}
+		
+		return Response.ok(toJSON(footprint)).build();
 	}
 
 }

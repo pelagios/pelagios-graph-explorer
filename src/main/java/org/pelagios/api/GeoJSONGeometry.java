@@ -1,7 +1,9 @@
 package org.pelagios.api;
 
 import org.apache.log4j.Logger;
+import org.pelagios.pleiades.importer.locations.GeometryDeserializer;
 
+import com.google.gson.JsonParser;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.LineString;
@@ -115,6 +117,12 @@ public class GeoJSONGeometry {
 	
 	public int hashCode() {
 		return (relation.name() + geometry.toText()).hashCode();
+	}
+	
+	// TODO revise the API. Find a better solution for JSON<->Object translations
+	public static GeoJSONGeometry fromString(String json) {
+		GeometryDeserializer ds = new GeometryDeserializer();
+		return ds.deserialize(new JsonParser().parse(json), null, null);
 	}
 	
 }

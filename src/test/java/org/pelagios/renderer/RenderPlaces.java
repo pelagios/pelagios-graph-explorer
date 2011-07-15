@@ -21,6 +21,8 @@ import org.pelagios.backend.graph.PlaceNode;
 import org.pelagios.backend.graph.builder.PelagiosGraphBuilder;
 import org.pelagios.rendering.ShapefileRenderer;
 
+import com.vividsolutions.jts.geom.Coordinate;
+
 /**
  * A utility class that renders the places contained in
  * the Pelagios graph to an image. Points that cover more
@@ -81,7 +83,10 @@ public class RenderPlaces {
 		// Add places to the map image
 		int max = 1;
 		for (PlaceNode p : graph.listPlaces()) {
-			Point xy = transform(p.getLon(), p.getLat(), transform);
+			Coordinate centroid = p.getGeoJSONGeometry()
+				.getGeometry().getCentroid().getCoordinate();
+			
+			Point xy = transform(centroid.x, centroid.y, transform);
 			if (points.containsKey(xy)) {
 				Integer count = points.get(xy);
 				count++;

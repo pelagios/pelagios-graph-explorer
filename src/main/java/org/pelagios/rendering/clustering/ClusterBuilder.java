@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.pelagios.backend.graph.PlaceNode;
 
+import com.vividsolutions.jts.geom.Coordinate;
+
 public class ClusterBuilder {
 	
 	private List<PlaceNode> places;
@@ -37,8 +39,11 @@ public class ClusterBuilder {
 	}
 
 	private double distance(PlaceNode p, Cluster c) {
-		double dLon = p.getLon() - c.getLon();
-		double dLat = p.getLat() - c.getLat();
+		Coordinate centroid = p.getGeoJSONGeometry()
+			.getGeometry().getCentroid().getCoordinate();
+		
+		double dLon = centroid.x - c.getLon();
+		double dLat = centroid.y - c.getLat();
 		
 		return Math.pow(dLon, 2) + Math.pow(dLat, 2);
 	}
