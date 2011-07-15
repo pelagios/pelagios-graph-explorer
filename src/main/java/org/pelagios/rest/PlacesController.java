@@ -135,7 +135,7 @@ public class PlacesController extends AbstractController {
 		// Wrap the results for JSON serialization
 		List<Occurence> occJson = new ArrayList<Occurence>();
 		for (DatasetNode s : occurences.keySet()) {
-			occJson.add(new Occurence(s.getName(), occurences.get(s)));
+			occJson.add(new Occurence(s.getName(), s.getRoot().getName(), occurences.get(s)));
 		}
 		
 		return Response.ok(toJSON(occJson)).build();	

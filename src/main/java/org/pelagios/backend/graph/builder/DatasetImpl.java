@@ -42,6 +42,18 @@ class DatasetImpl extends AbstractNodeImpl implements DatasetNode {
 		
 		return parent;
 	}
+	
+	public DatasetNode getRoot() {
+		return findRoot(this);
+	}
+	
+	private DatasetNode findRoot(DatasetNode dataset) {
+		DatasetNode parent = dataset.getParent();
+		if (parent == null)
+			return dataset;
+		
+		return findRoot(parent);
+	}
 
 	public boolean hasSubsets() {
 		Iterable<Relationship> rels = backingNode

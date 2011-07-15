@@ -4,10 +4,13 @@ public class Occurence {
 	
 	String dataset;
 	
+	String rootdataset;
+	
 	int references;
 	
-	public Occurence(String dataset, int numberOfOccurences) {
+	public Occurence(String dataset, String rootdataset, int numberOfOccurences) {
 		this.dataset = dataset;
+		this.rootdataset = rootdataset;
 		this.references = numberOfOccurences;
 	}
 

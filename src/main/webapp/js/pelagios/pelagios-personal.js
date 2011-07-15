@@ -1,7 +1,8 @@
 // Code related to a place's 'personal graph'
-Pelagios.PersonalGraph = function(id, raphael) {
+Pelagios.PersonalGraph = function(id, raphael, palette) {
 	this.id = id;	
 	this.raphael = raphael;
+	this.palette = palette;
 	
 	this.graph = new Graph();
     this.layout = new Layout.ForceDirected(this.graph, 800, 25, 0.3);
@@ -88,13 +89,18 @@ Pelagios.PersonalGraph.prototype.newPlace = function(place) {
     return n;
 }
 
-Pelagios.PersonalGraph.prototype.newDataset = function(label) {
+Pelagios.PersonalGraph.prototype.newDataset = function(label, rootLabel) {
 	var n;
 	if (this.datasets[label]) {
 		n = this.datasets[label];
 	} else {
+	    var fill = this.palette.getColor(rootLabel);
+	    
 	    n = this.graph.newNode();
-	    n.set = this.raphael.pelagios.datasetLabel(label, "#7777ff", "#000000");
+	    n.set = this.raphael.pelagios.datasetLabel(
+	    		label,
+	    		fill,
+	    		this.palette.darker(fill));
 	
 	    // Seems kind of recursive... but we need that in
 	    // the move handler, which only has access to the

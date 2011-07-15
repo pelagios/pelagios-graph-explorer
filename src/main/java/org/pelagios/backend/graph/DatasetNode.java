@@ -33,6 +33,13 @@ public interface DatasetNode {
 	public DatasetNode getParent();
 	
 	/**
+	 * Returns the root data set of this set. Will return
+	 * itself, in case this is a top-level data set.
+	 * @return the root node of this data set
+	 */
+	public DatasetNode getRoot();
+	
+	/**
 	 * Checks wether this data set has any sub-sets attached to it.
 	 * @return true in case there are sub-sets
 	 */

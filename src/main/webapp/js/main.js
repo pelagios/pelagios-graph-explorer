@@ -17,18 +17,19 @@ window.onload = function() {
     	}
     };
     
+    var palette = new Pelagios.Palette();
+    
     var pGraph = new Pelagios.Graph(raphael);
     
     var pPersonalGraph = new Pelagios.PersonalGraph(
     		"personal-graph", 
-    		Raphael("personal-graph", viewport.x, viewport.y));
+    		Raphael("personal-graph", viewport.x, viewport.y),
+    		palette);
     
     var pMap = new Pelagios.Map();
     document.getElementById("toggle-map").onclick = function() {
     	pMap.setVisible(!pMap.isVisible())
     };
-    
-    var palette = new Pelagios.Palette();
 
     var pAsync = new Pelagios.Async(pGraph, pMap);
 	$("#searchfield").autocomplete({
