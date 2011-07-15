@@ -92,7 +92,7 @@ window.onload = function() {
     		
     		parent);
     	
-    	node.convexHull = pAsync.fetchConvexHull(node);
+    	pAsync.fetchConvexHull(node);
     	
     	if (parent)
     		pGraph.newEdge(parent, node, size / 2);

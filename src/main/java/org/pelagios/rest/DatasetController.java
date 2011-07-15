@@ -19,7 +19,10 @@ import org.pelagios.backend.graph.exception.DatasetNotFoundException;
 import org.pelagios.rest.api.Link;
 
 import com.google.gson.JsonObject;
+import com.vividsolutions.jts.algorithm.ConvexHull;
+import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
 
 /**
  * This controller exposes data about PELAGIOS data sets
@@ -122,16 +125,15 @@ public class DatasetController extends AbstractController {
 	public Response getConvexHull(@PathParam("dataset") String dataset)
 		throws DatasetNotFoundException {
 		
-		Geometry footprint = null;
+		List<Coordinate> coordinates = new ArrayList<Coordinate>();
 		for (PlaceNode p : Backend.getInstance().getDataset(dataset).listPlaces(true)) {
-			if (footprint == null) {
-				footprint = p.getGeoJSONGeometry().getGeometry();
-			} else {
-				footprint.union(p.getGeoJSONGeometry().getGeometry());
-			}
+			coordinates.addAll(
+					Arrays.asList(p.getGeoJSONGeometry().getGeometry().getCoordinates()));
 		}
+		ConvexHull cv = new ConvexHull(coordinates.toArray(new Coordinate[coordinates.size()]),
+				new GeometryFactory());
 		
-		return Response.ok(toJSON(footprint)).build();
+		return Response.ok(toJSON(cv.getConvexHull())).build();
 	}
 
 }

@@ -83,7 +83,7 @@ Pelagios.Map.prototype.addMarker = function(name, lat, lon) {
 	});  
 }
 
-Pelagios.Map.prototype.addGeoJSON = function(json) {
+Pelagios.Map.prototype.addGeoJSON = function(name, json) {
 	var options = {
 		"strokeColor": "#FF7800",
 		"strokeOpacity": 1,
@@ -93,5 +93,6 @@ Pelagios.Map.prototype.addGeoJSON = function(json) {
 	};
 	
 	var geom = new GeoJSON(json, options);
+	alert(geom);
 	geom.setMap(this.map);	
 }
