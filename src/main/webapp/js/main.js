@@ -60,7 +60,7 @@ window.onload = function() {
     		fill = parent.fill;
     		stroke = parent.stroke;
     	} else {
-    		fill = palette.next();
+    		fill = palette.getColor(dataset.name);
     		stroke = palette.darker(fill);
     	}
     		
