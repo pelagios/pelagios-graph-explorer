@@ -3,22 +3,21 @@ package org.pelagios.graph;
 import java.net.URI;
 import java.util.List;
 
-import org.pelagios.backend.graph.AnnotationNode;
-import org.pelagios.backend.graph.DatasetNode;
-import org.pelagios.backend.graph.Path;
-import org.pelagios.backend.graph.PelagiosGraph;
-import org.pelagios.backend.graph.PlaceNode;
-import org.pelagios.backend.graph.builder.DataRecordBuilder;
-import org.pelagios.backend.graph.builder.DatasetBuilder;
-import org.pelagios.backend.graph.builder.PlaceBuilder;
-import org.pelagios.backend.graph.exception.DatasetExistsException;
-import org.pelagios.backend.graph.exception.DatasetNotFoundException;
-import org.pelagios.backend.graph.exception.PlaceExistsException;
-import org.pelagios.backend.graph.exception.PlaceNotFoundException;
+import org.pelagios.graph.builder.GeoAnnotationBuilder;
+import org.pelagios.graph.builder.DatasetBuilder;
+import org.pelagios.graph.builder.PelagiosGraphImpl;
+import org.pelagios.graph.builder.PlaceBuilder;
+import org.pelagios.graph.exceptions.DatasetExistsException;
+import org.pelagios.graph.exceptions.DatasetNotFoundException;
+import org.pelagios.graph.exceptions.PlaceExistsException;
+import org.pelagios.graph.exceptions.PlaceNotFoundException;
+import org.pelagios.graph.nodes.Dataset;
+import org.pelagios.graph.nodes.GeoAnnotation;
+import org.pelagios.graph.nodes.Place;
 
-public class MockGraph implements PelagiosGraph {
+public class MockGraph implements PelagiosGraphImpl {
 
-	public List<DatasetNode> listTopLevelDatasets() {
+	public List<Dataset> listTopLevelDatasets() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -35,12 +34,12 @@ public class MockGraph implements PelagiosGraph {
 		
 	}
 
-	public DatasetNode getDataset(String name) throws DatasetNotFoundException {
+	public Dataset getDataset(String name) throws DatasetNotFoundException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public void addDataRecords(List<DataRecordBuilder> records,
+	public void addDataRecords(List<GeoAnnotationBuilder> records,
 			DatasetBuilder parent) throws DatasetNotFoundException {
 		// TODO Auto-generated method stub
 		
@@ -52,33 +51,33 @@ public class MockGraph implements PelagiosGraph {
 		
 	}
 
-	public PlaceNode getPlace(URI uri) throws PlaceNotFoundException {
+	public Place getPlace(URI uri) throws PlaceNotFoundException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
-	public List<PlaceNode> searchPlaces(String prefix, int limit) {
+	public List<Place> searchPlaces(String prefix, int limit) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Iterable<PlaceNode> listPlaces() {
+	public Iterable<Place> listPlaces() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<AnnotationNode> listReferencesTo(PlaceNode place)
+	public List<GeoAnnotation> listReferencesTo(Place place)
 			throws PlaceNotFoundException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<PlaceNode> listSharedPlaces(List<DatasetNode> datasets) {
+	public List<Place> listSharedPlaces(List<Dataset> datasets) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<Path> findShortestPath(PlaceNode from, PlaceNode to)
+	public List<Path> findShortestPath(Place from, Place to)
 			throws PlaceNotFoundException {
 		// TODO Auto-generated method stub
 		return null;

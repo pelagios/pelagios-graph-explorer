@@ -1,11 +1,11 @@
 package org.pelagios.importer.gap
 
-import org.pelagios.backend.graph.PelagiosGraph;
-import org.pelagios.backend.graph.builder.DataRecordBuilder;
-import org.pelagios.backend.graph.builder.DatasetBuilder;
-import org.pelagios.backend.graph.exception.DatasetExistsException;
-import org.pelagios.importer.AbstractDatasetImporter;
-import org.pelagios.importer.Hierarchy;
+import org.pelagios.graph.builder.GeoAnnotationBuilder;
+import org.pelagios.graph.builder.DatasetBuilder;
+import org.pelagios.graph.builder.PelagiosGraphImpl;
+import org.pelagios.graph.exceptions.DatasetExistsException;
+import org.pelagios.graph.importer.AbstractDatasetImporter;
+import org.pelagios.graph.importer.Hierarchy;
 
 import com.hp.hpl.jena.rdf.model.Resource
 
@@ -42,11 +42,11 @@ class GAPImporter extends AbstractDatasetImporter {
 	 * @throws PlaceNotFoundException 
 	 */
 	@Override
-	public void importData(PelagiosGraph graph) throws DatasetExistsException {
+	public void importData(PelagiosGraphImpl graph) throws DatasetExistsException {
 		graph.addDataset(rootNode)
 		
-		HashMap<Hierarchy, List<DataRecordBuilder>> allRecords = 
-			new HashMap<Hierarchy, List<DataRecordBuilder>>()
+		HashMap<Hierarchy, List<GeoAnnotationBuilder>> allRecords = 
+			new HashMap<Hierarchy, List<GeoAnnotationBuilder>>()
 		
 		for (Resource oac : listOACAnnotations()) {			
 			// Target = data record URN
@@ -62,13 +62,13 @@ class GAPImporter extends AbstractDatasetImporter {
 				// Create the record and store in memory - we'll batch-add 
 				// all records to the graph later for added performance
 				try {
-					List<DataRecordBuilder> records = allRecords.get(h)
+					List<GeoAnnotationBuilder> records = allRecords.get(h)
 					if (records == null) {
-						records = new ArrayList<DataRecordBuilder>()
+						records = new ArrayList<GeoAnnotationBuilder>()
 						allRecords.put(h, records)
 					}
-					DataRecordBuilder record =
-						new DataRecordBuilder(new URI(URLEncoder.encode(target, 'UTF-8')))
+					GeoAnnotationBuilder record =
+						new GeoAnnotationBuilder(new URI(URLEncoder.encode(target, 'UTF-8')))
 					record.addPlaceReference(new URI(body))
 					records.add(record)
 				} catch (URISyntaxException e) {

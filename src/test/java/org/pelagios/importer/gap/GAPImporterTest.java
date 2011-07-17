@@ -4,9 +4,9 @@ import java.io.File;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.pelagios.backend.graph.exception.DatasetExistsException;
 import org.pelagios.graph.MockGraph;
-import org.pelagios.importer.Hierarchy;
+import org.pelagios.graph.exceptions.DatasetExistsException;
+import org.pelagios.graph.importer.Hierarchy;
 
 public class GAPImporterTest {
 	

@@ -15,12 +15,12 @@ import com.hp.hpl.jena.rdf.model.ResIterator;
 import com.hp.hpl.jena.rdf.model.Resource
 
 import org.apache.log4j.Logger
-import org.pelagios.backend.graph.PelagiosGraph;
-import org.pelagios.backend.graph.builder.DataRecordBuilder
-import org.pelagios.backend.graph.builder.DatasetBuilder
-import org.pelagios.backend.graph.exception.DatasetExistsException;
-import org.pelagios.importer.AbstractDatasetImporter;
-import org.pelagios.importer.Hierarchy
+import org.pelagios.graph.builder.GeoAnnotationBuilder;
+import org.pelagios.graph.builder.DatasetBuilder;
+import org.pelagios.graph.builder.PelagiosGraphImpl;
+import org.pelagios.graph.exceptions.DatasetExistsException;
+import org.pelagios.graph.importer.AbstractDatasetImporter;
+import org.pelagios.graph.importer.Hierarchy;
 
 class SPQRImporter {
 	
@@ -28,8 +28,8 @@ class SPQRImporter {
 	
 	private Logger log = Logger.getLogger(SPQRImporter.class)
 	
-	public SPQRImporter(File downloadDir, PelagiosGraph graph) {
-		List<DataRecordBuilder> records = new ArrayList<DataRecordBuilder>();
+	public SPQRImporter(File downloadDir, PelagiosGraphImpl graph) {
+		List<GeoAnnotationBuilder> records = new ArrayList<GeoAnnotationBuilder>();
 		
 		
 		Set<URI> uniqueUris = new HashSet<URI>(); 
@@ -45,7 +45,7 @@ class SPQRImporter {
 				.listResourcesWithProperty(model.createProperty(OAC_NAMESPACE, "hasBody"))
 				.toList()
 				
-			DataRecordBuilder record = new DataRecordBuilder()
+			GeoAnnotationBuilder record = new GeoAnnotationBuilder()
 			
 			for (Resource r : annotations) {
 				PelagiosAnnotation a = new PelagiosAnnotation(r)

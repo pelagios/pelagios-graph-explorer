@@ -1,7 +1,7 @@
 package org.pelagios.importer.perseus
 
-import org.pelagios.backend.graph.PelagiosGraph;
-import org.pelagios.backend.graph.builder.DatasetBuilder;
+import org.pelagios.graph.builder.DatasetBuilder;
+import org.pelagios.graph.builder.PelagiosGraphImpl;
 
 /**
  * Importer for a collection of Perseus data sets.
@@ -10,7 +10,7 @@ import org.pelagios.backend.graph.builder.DatasetBuilder;
  */
 class PerseusImporter {
 	
-	public PerseusImporter(HashMap<String, File> dataFiles, PelagiosGraph graph) {
+	public PerseusImporter(HashMap<String, File> dataFiles, PelagiosGraphImpl graph) {
 		DatasetBuilder rootNode = new DatasetBuilder("Perseus")
 		graph.addDataset(rootNode) 
 		

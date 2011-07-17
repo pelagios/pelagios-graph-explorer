@@ -9,22 +9,22 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.pelagios.api.GeoJSONGeometry;
-import org.pelagios.backend.graph.DatasetNode;
-import org.pelagios.backend.graph.PelagiosGraph;
-import org.pelagios.backend.graph.PlaceNode;
-import org.pelagios.backend.graph.builder.DatasetBuilder;
-import org.pelagios.backend.graph.builder.PelagiosGraphBuilder;
-import org.pelagios.backend.graph.builder.PlaceBuilder;
-import org.pelagios.backend.graph.exception.DatasetExistsException;
-import org.pelagios.backend.graph.exception.DatasetNotFoundException;
-import org.pelagios.backend.graph.exception.PlaceExistsException;
-import org.pelagios.backend.graph.exception.PlaceNotFoundException;
+import org.pelagios.graph.builder.DatasetBuilder;
+import org.pelagios.graph.builder.PelagiosGraphImpl;
+import org.pelagios.graph.builder.PelagiosGraphBuilder;
+import org.pelagios.graph.builder.PlaceBuilder;
+import org.pelagios.graph.exceptions.DatasetExistsException;
+import org.pelagios.graph.exceptions.DatasetNotFoundException;
+import org.pelagios.graph.exceptions.PlaceExistsException;
+import org.pelagios.graph.exceptions.PlaceNotFoundException;
+import org.pelagios.graph.nodes.Dataset;
+import org.pelagios.graph.nodes.Place;
 
 public class GraphTest {
 	
 	private static final String DATA_DIR = "c:/neo4j-unit-test";
 	
-	private void printDataset(DatasetNode dataset, int lvl) {
+	private void printDataset(Dataset dataset, int lvl) {
 		StringBuffer indent = new StringBuffer(" -");
 		for (int i=0; i<lvl; i++) {
 			indent.append("-");
@@ -32,7 +32,7 @@ public class GraphTest {
 		
 		System.out.println(indent.toString() + dataset.getName());
 		if (dataset.hasSubsets()) {
-			for (DatasetNode subset : dataset.listSubsets()) {
+			for (Dataset subset : dataset.listSubsets()) {
 				printDataset(subset, lvl + 1);
 			}
 		}		
@@ -44,7 +44,7 @@ public class GraphTest {
 		
 		// Get the Pelagios graph instance
 		PelagiosGraphBuilder graphBuilder = new PelagiosGraphBuilder(DATA_DIR);
-		PelagiosGraph graph = graphBuilder.build();
+		PelagiosGraphImpl graph = graphBuilder.build();
 		
 		// Create a few datasets
 		System.out.print("Creating sample datasets... ");
@@ -97,10 +97,10 @@ public class GraphTest {
 	public void testDatasets() {
 		// TODO don't just print out, verify with assertions!
 		PelagiosGraphBuilder graphBuilder = new PelagiosGraphBuilder(DATA_DIR);
-		PelagiosGraph graph = graphBuilder.build();
+		PelagiosGraphImpl graph = graphBuilder.build();
 		
 		System.out.println("Logging sample dataset graph:");
-		for (DatasetNode dataset : graph.listTopLevelDatasets()) {
+		for (Dataset dataset : graph.listTopLevelDatasets()) {
 			printDataset(dataset, 0);
 		}
 		graph.shutdown();
@@ -110,14 +110,14 @@ public class GraphTest {
 	public void testPlaces() throws URISyntaxException, PlaceNotFoundException {
 		// TODO don't just print out, verify with assertions!
 		PelagiosGraphBuilder graphBuilder = new PelagiosGraphBuilder(DATA_DIR);
-		PelagiosGraph graph = graphBuilder.build();
+		PelagiosGraphImpl graph = graphBuilder.build();
 		
 		// Query by ID
-		PlaceNode corsica = graph.getPlace(new URI("http://pleiades.stoa.org/places/991339"));
+		Place corsica = graph.getPlace(new URI("http://pleiades.stoa.org/places/991339"));
 		System.out.println("Query by URI: " + corsica.getLabel());
 		
 		// Query by listPlaces()
-		for (PlaceNode p : graph.listPlaces()) {
+		for (Place p : graph.listPlaces()) {
 			System.out.println("Query by listPlaces(): " + p.getLabel());
 		}		
 		graph.shutdown();
@@ -126,7 +126,7 @@ public class GraphTest {
 	@AfterClass
 	public static void shutdown() {
 		PelagiosGraphBuilder graphBuilder = new PelagiosGraphBuilder(DATA_DIR);
-		PelagiosGraph graph = graphBuilder.build();
+		PelagiosGraphImpl graph = graphBuilder.build();
 		graph.shutdown();
 	}
 

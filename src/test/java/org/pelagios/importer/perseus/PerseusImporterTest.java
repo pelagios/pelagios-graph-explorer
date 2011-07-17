@@ -4,11 +4,11 @@ import java.io.File;
 import java.util.HashMap;
 
 import org.junit.Test;
-import org.pelagios.backend.graph.DatasetNode;
-import org.pelagios.backend.graph.PelagiosGraph;
-import org.pelagios.backend.graph.builder.PelagiosGraphBuilder;
-import org.pelagios.backend.graph.exception.DatasetExistsException;
-import org.pelagios.backend.graph.exception.DatasetNotFoundException;
+import org.pelagios.graph.builder.PelagiosGraphImpl;
+import org.pelagios.graph.builder.PelagiosGraphBuilder;
+import org.pelagios.graph.exceptions.DatasetExistsException;
+import org.pelagios.graph.exceptions.DatasetNotFoundException;
+import org.pelagios.graph.nodes.Dataset;
 
 public class PerseusImporterTest {
 	
@@ -22,20 +22,20 @@ public class PerseusImporterTest {
 	@Test
 	public void testPerseusImport() throws DatasetExistsException, DatasetNotFoundException {
 		PelagiosGraphBuilder graphBuilder = new PelagiosGraphBuilder(NEO4J_DIR);
-		PelagiosGraph graph = graphBuilder.build();		
+		PelagiosGraphImpl graph = graphBuilder.build();		
 		
 		HashMap<String, File> perseusFiles = new HashMap<String, File>();
 		perseusFiles.put("Perseus Greco-Roman", new File(RDF_FILE));
 		
 		new PerseusImporter(perseusFiles, graph);
 		
-		DatasetNode perseus = graph.getDataset("Perseus");
-		for (DatasetNode child : perseus.listSubsets()) {
+		Dataset perseus = graph.getDataset("Perseus");
+		for (Dataset child : perseus.listSubsets()) {
 			printDataset(child, 0);
 		}
 	}
 	
-	private void printDataset(DatasetNode dataset, int lvl) {
+	private void printDataset(Dataset dataset, int lvl) {
 		StringBuffer indent = new StringBuffer(" -");
 		for (int i=0; i<lvl; i++) {
 			indent.append("-");
@@ -43,7 +43,7 @@ public class PerseusImporterTest {
 		
 		System.out.println(indent.toString() + dataset.getName());
 		if (dataset.hasSubsets()) {
-			for (DatasetNode subset : dataset.listSubsets()) {
+			for (Dataset subset : dataset.listSubsets()) {
 				printDataset(subset, lvl + 1);
 			}
 		}		

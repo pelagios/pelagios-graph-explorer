@@ -6,12 +6,12 @@ import java.net.URISyntaxException
 import java.util.ArrayList
 import java.util.List
 
-import org.pelagios.backend.graph.PelagiosGraph;
-import org.pelagios.backend.graph.builder.DataRecordBuilder;
-import org.pelagios.backend.graph.builder.DatasetBuilder;
-import org.pelagios.backend.graph.exception.DatasetExistsException;
-import org.pelagios.backend.graph.exception.DatasetNotFoundException;
-import org.pelagios.importer.AbstractDatasetImporter;
+import org.pelagios.graph.builder.GeoAnnotationBuilder;
+import org.pelagios.graph.builder.DatasetBuilder;
+import org.pelagios.graph.builder.PelagiosGraphImpl;
+import org.pelagios.graph.exceptions.DatasetExistsException;
+import org.pelagios.graph.exceptions.DatasetNotFoundException;
+import org.pelagios.graph.importer.AbstractDatasetImporter;
 
 import com.hp.hpl.jena.rdf.model.Resource
 
@@ -27,12 +27,12 @@ public class NomismaDatasetImporter extends AbstractDatasetImporter {
 	}
 
 	@Override
-	public void importData(PelagiosGraph graph) throws DatasetExistsException {
+	public void importData(PelagiosGraphImpl graph) throws DatasetExistsException {
 		graph.addDataset(rootNode)
 		
-		List<DataRecordBuilder> records = new ArrayList<DataRecordBuilder>()
+		List<GeoAnnotationBuilder> records = new ArrayList<GeoAnnotationBuilder>()
 		for (Resource oac : listOACAnnotations()) {
-			DataRecordBuilder record = new DataRecordBuilder(
+			GeoAnnotationBuilder record = new GeoAnnotationBuilder(
 					new URI(oac.getProperty(OAC_HASTARGET).getObject().toString()))
 			record.addPlaceReference(
 					new URI(oac.getProperty(OAC_HASBODY).getObject().toString()))

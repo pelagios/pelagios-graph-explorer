@@ -9,8 +9,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.pelagios.api.GeoJSONGeometry;
 import org.pelagios.api.Place;
-import org.pelagios.pleiades.importer.PleiadesImporter;
-import org.pelagios.pleiades.importer.locations.GeometryDeserializer;
+import org.pelagios.graph.importer.pleiades.PleiadesImporter;
+import org.pelagios.graph.importer.pleiades.locations.GeometryDeserializer;
 
 import com.google.gson.JsonParser;
 

@@ -16,9 +16,9 @@ import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
-import org.pelagios.backend.graph.PelagiosGraph;
-import org.pelagios.backend.graph.PlaceNode;
-import org.pelagios.backend.graph.builder.PelagiosGraphBuilder;
+import org.pelagios.graph.builder.PelagiosGraphImpl;
+import org.pelagios.graph.builder.PelagiosGraphBuilder;
+import org.pelagios.graph.nodes.Place;
 import org.pelagios.rendering.ShapefileRenderer;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -78,11 +78,11 @@ public class RenderPlaces {
 		
 		// Get a handle on the Pelagios Graph
 		PelagiosGraphBuilder graphBuilder = new PelagiosGraphBuilder(DATA_DIR);
-		PelagiosGraph graph = graphBuilder.build();
+		PelagiosGraphImpl graph = graphBuilder.build();
 
 		// Add places to the map image
 		int max = 1;
-		for (PlaceNode p : graph.listPlaces()) {
+		for (Place p : graph.listPlaces()) {
 			Coordinate centroid = p.getGeoJSONGeometry()
 				.getGeometry().getCentroid().getCoordinate();
 			
