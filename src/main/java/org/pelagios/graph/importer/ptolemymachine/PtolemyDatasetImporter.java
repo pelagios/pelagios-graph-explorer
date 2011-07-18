@@ -8,9 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.pelagios.graph.PelagiosGraph;
 import org.pelagios.graph.builder.GeoAnnotationBuilder;
 import org.pelagios.graph.builder.DatasetBuilder;
-import org.pelagios.graph.builder.PelagiosGraphImpl;
 import org.pelagios.graph.exceptions.DatasetExistsException;
 import org.pelagios.graph.importer.AbstractDatasetImporter;
 import org.pelagios.graph.importer.Hierarchy;
@@ -70,7 +70,7 @@ public class PtolemyDatasetImporter extends AbstractDatasetImporter {
 	 * @throws PlaceNotFoundException 
 	 */
 	@Override
-	public void importData(PelagiosGraphImpl graph) throws DatasetExistsException {
+	public void importData(PelagiosGraph graph) throws DatasetExistsException {
 		// Start by creating the root node
 		graph.addDataset(rootNode);
 		

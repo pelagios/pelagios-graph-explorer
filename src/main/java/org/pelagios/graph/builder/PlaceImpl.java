@@ -6,11 +6,10 @@ import java.util.List;
 
 import org.neo4j.graphdb.Node;
 import org.pelagios.graph.PelagiosGraphNode;
-import org.pelagios.graph.importer.pleiades.locations.GeometryDeserializer;
 import org.pelagios.graph.nodes.GeoAnnotation;
 import org.pelagios.graph.nodes.Place;
+import org.pelagios.io.geojson.GeoJSONParser;
 
-import com.google.gson.JsonParser;
 import com.vividsolutions.jts.geom.Geometry;
 
 /**
@@ -58,10 +57,8 @@ class PlaceImpl extends PelagiosGraphNode implements Place {
 	
 	public Geometry getGeometry() {
 		if (memCachedGeometry == null) {
-			GeometryDeserializer ds = new GeometryDeserializer();
-			memCachedGeometry =
-				ds.deserialize(new JsonParser()
-					.parse(getAsString(KEY_GEOMETRY)), null, null);
+			GeoJSONParser parser = new GeoJSONParser();
+			memCachedGeometry = parser.parse(getAsString(Place.KEY_GEOMETRY));
 		}
 		
 		return memCachedGeometry;
