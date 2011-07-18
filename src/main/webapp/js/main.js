@@ -84,7 +84,10 @@ window.onload = function() {
     		function() { pMap.showPolygon(dataset.name) },
     		
     		// mouseout
-    		function() { pMap.hidePolygon(dataset.name) },
+    		function() {
+    			if (!pGraph.isSelected(dataset.name))
+    				pMap.hidePolygon(dataset.name) 
+    		},
     		
     		parent);
     	

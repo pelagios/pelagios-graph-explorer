@@ -187,6 +187,10 @@ Pelagios.Graph.prototype.removeChildNodes = function(parent) {
 	}
 }
 
+Pelagios.Graph.prototype.isSelected = function(name) {
+	return this.selectionManager.isSelected(name);
+}
+
 Pelagios.Graph.prototype.deselectAll = function() {
 	this.selectionManager.deselectAll();
 }

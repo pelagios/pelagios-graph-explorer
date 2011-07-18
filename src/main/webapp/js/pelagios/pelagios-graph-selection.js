@@ -14,6 +14,13 @@ Pelagios.SelectionManager = function(raphael, map, async) {
 	}
 }
 
+Pelagios.SelectionManager.prototype.isSelected = function(name) {
+	if (this.selectedNodes[name]) {
+		return true;
+	}
+	return false;
+}
+
 Pelagios.SelectionManager.prototype.toggleSelect = function(node) {
 	node.selected = !node.selected;
 	if (node.selected) {
@@ -29,6 +36,9 @@ Pelagios.SelectionManager.prototype.toggleSelect = function(node) {
 				"stroke-dasharray" : "-"
 			});
 		
+		// Show on map
+		this.map.showPolygon(node.name);
+		
 		// Fetch link data for this node
 		this.fetchLinkData(node);
 		
@@ -37,6 +47,9 @@ Pelagios.SelectionManager.prototype.toggleSelect = function(node) {
 	} else {		
 		// Remove highlight on screen
 		node.set.selection.remove();
+		
+		// Remove from map
+		this.map.hidePolygon(node.name);
 		
 		// Remove links connections on screen
 		var links = this.getLinksFor(node);

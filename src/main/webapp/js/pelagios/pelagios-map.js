@@ -22,7 +22,11 @@ Pelagios.Map = function() {
 	this.map.setMapTypeId('no-labels');
 	*/ 
 	
+	// All polygons
 	this.polygons = new Array();
+	
+	// Just those which are currently shown on the map
+	this.shown = new Array();
 	
 	var map = this;
 	$("#dialog").bind("dialogresize", function(event, ui) {
@@ -36,6 +40,9 @@ Pelagios.Map = function() {
 Pelagios.Map.prototype.setVisible = function(visible) {
 	if (visible) {
 		$("#dialog").dialog("open");
+		for (var p in this.shown) {
+			this.showPolygon(p);
+		}
 	} else {
 		$("#dialog").dialog("close");		
 	}
@@ -66,13 +73,17 @@ Pelagios.Map.prototype.addPolygon = function(name, coords, fill) {
 }
 
 Pelagios.Map.prototype.showPolygon = function(name) {
-	if (this.polygons[name])
-		this.polygons[name].setMap(this.map);	
+	if (this.polygons[name]) {
+		this.shown[name] = name;
+		this.polygons[name].setMap(this.map);
+	}
 }
 
 Pelagios.Map.prototype.hidePolygon = function(name) {
-	if (this.polygons[name])
-		this.polygons[name].setMap(null);	
+	if (this.polygons[name]) {
+		delete this.shown[name];
+		this.polygons[name].setMap(null);
+	}
 }
 
 Pelagios.Map.prototype.addMarker = function(name, lat, lon) {
