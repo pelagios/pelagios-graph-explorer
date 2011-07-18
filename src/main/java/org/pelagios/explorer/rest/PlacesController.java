@@ -39,31 +39,27 @@ public class PlacesController extends AbstractController {
 		return Response.ok(toJSON(hits)).build();
 	}
 	
-	// TODO complete this methdo!
 	@GET
 	@Produces("application/json")
-	@Path("/intersect/convexhull")
-	public Response getSharedPlacesConvexHull(@QueryParam("set") List<String> sets)
+	@Path("/intersect")
+	public Response getSharedPlaces(@QueryParam("set1") String set1, @QueryParam("set2") String set2)
 		throws DatasetNotFoundException {
 			
 		PelagiosGraph graph = PelagiosGraph.getInstance();
 		List<Dataset> datasets = new ArrayList<Dataset>();
-		for (String s : sets) {
-			datasets.add(graph.getDataset(s));
-		}
+		datasets.add(graph.getDataset(set1));
+		datasets.add(graph.getDataset(set2));
 		
+		// Note the internal graph API actually supports intersections between
+		// arbitrary numbers of datasets - but we'll limit it to 2 for the
+		// external REST API
 		List<Place> commonPlaces = graph.listSharedPlaces(datasets);
-		if (sets.size() == 2) {
-			Overlap o = new Overlap(
-					sets.get(0),
-					sets.get(1),
-					commonPlaces.size(),
-					toConvexHull(commonPlaces));
-			
-			return Response.ok(toJSON(o)).build();
-		} else {
-			return Response.ok("").build();
-		}
+		Overlap o = new Overlap(
+				set1, set2,
+				commonPlaces.size(),
+				toConvexHull(commonPlaces));
+		
+		return Response.ok(toJSON(o)).build();
 	}
 	
 	@GET

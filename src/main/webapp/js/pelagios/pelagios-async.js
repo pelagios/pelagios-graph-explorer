@@ -46,8 +46,8 @@ Pelagios.Async.prototype.findShortestPath = function(from, to, personalGraph) {
 }
 
 Pelagios.Async.prototype.computeOverlap = function(srcNode, destNode, selectionManager) {
-	var url = "places/intersect/convexhull?set=" +
-		srcNode.name + "&set=" + destNode.name;
+	var url = "places/intersect?set1=" +
+		srcNode.name + "&set2=" + destNode.name;
 	
 	$.getJSON(url, function(data) {
 		selectionManager.setLink(srcNode, destNode, data);
