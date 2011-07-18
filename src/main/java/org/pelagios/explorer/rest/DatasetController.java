@@ -8,7 +8,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
-import org.pelagios.explorer.Backend;
 import org.pelagios.graph.PelagiosGraph;
 import org.pelagios.graph.exceptions.DatasetNotFoundException;
 import org.pelagios.graph.nodes.Dataset;
@@ -34,7 +33,7 @@ public class DatasetController extends AbstractController {
 	@Produces("application/json")
 	@Path("/")
 	public Response listDatasets() {
-		PelagiosGraph graph = Backend.getInstance();
+		PelagiosGraph graph = PelagiosGraph.getInstance();
 		List<Dataset> datasets = graph.listTopLevelDatasets();
 		return Response.ok(toJSON(datasets)).build();
 	}
@@ -52,7 +51,7 @@ public class DatasetController extends AbstractController {
 	public Response getSubsets(@PathParam("superset") String superset) 
 		throws DatasetNotFoundException {
 		
-		List<Dataset> datasets = Backend.getInstance().getDataset(superset).listSubsets();	
+		List<Dataset> datasets = PelagiosGraph.getInstance().getDataset(superset).listSubsets();	
 		return Response.ok(toJSON(datasets)).build();
 	}
 	
@@ -70,11 +69,11 @@ public class DatasetController extends AbstractController {
 		throws DatasetNotFoundException {
 		
 		Geometry footprint = null;
-		for (Place p : Backend.getInstance().getDataset(dataset).listPlaces(true)) {
+		for (Place p : PelagiosGraph.getInstance().getDataset(dataset).listPlaces(true)) {
 			if (footprint == null) {
-				footprint = p.getGeoJSONGeometry().getGeometry();
+				footprint = p.getGeometry();
 			} else {
-				footprint.union(p.getGeoJSONGeometry().getGeometry());
+				footprint.union(p.getGeometry());
 			}
 		}
 		
@@ -94,7 +93,7 @@ public class DatasetController extends AbstractController {
 	public Response getConvexHull(@PathParam("dataset") String dataset)
 		throws DatasetNotFoundException {
 		
-		PelagiosGraphImpl graph = Backend.getInstance();
+		PelagiosGraph graph = PelagiosGraph.getInstance();
 		Geometry cv = toConvexHull(graph.getDataset(dataset).listPlaces(true));
 		
 		return Response.ok(toJSON(cv)).build();

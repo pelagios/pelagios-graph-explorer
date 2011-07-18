@@ -29,7 +29,7 @@ public class GeoJSONParser {
 		return parse(new JsonParser().parse(json).getAsJsonObject());
 	}
 	
-	public Geometry parse(JsonObject json) {		
+	public Geometry parse(JsonObject json) {	
 		GeometryType type = 
 			GeometryType.valueOf(json.get(TYPE).getAsString().toUpperCase());
 

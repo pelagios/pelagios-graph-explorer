@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.pelagios.graph.builder.GeoAnnotationBuilder;
 import org.pelagios.graph.builder.DatasetBuilder;
-import org.pelagios.graph.builder.PelagiosGraphImpl;
 import org.pelagios.graph.builder.PlaceBuilder;
 import org.pelagios.graph.exceptions.DatasetExistsException;
 import org.pelagios.graph.exceptions.DatasetNotFoundException;
@@ -15,7 +14,7 @@ import org.pelagios.graph.nodes.Dataset;
 import org.pelagios.graph.nodes.GeoAnnotation;
 import org.pelagios.graph.nodes.Place;
 
-public class MockGraph implements PelagiosGraphImpl {
+public class MockGraph extends PelagiosGraph {
 
 	public List<Dataset> listTopLevelDatasets() {
 		// TODO Auto-generated method stub

@@ -1,4 +1,4 @@
-package org.pelagios.pleiades;
+package org.pelagios.graph.importer.pleiades;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,12 +7,10 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.pelagios.api.GeoJSONGeometry;
-import org.pelagios.api.Place;
+import org.pelagios.graph.builder.PlaceBuilder;
 import org.pelagios.graph.importer.pleiades.PleiadesImporter;
-import org.pelagios.graph.importer.pleiades.locations.GeometryDeserializer;
-
-import com.google.gson.JsonParser;
+import org.pelagios.io.geojson.GeoJSONParser;
+import org.pelagios.io.geojson.GeoJSONSerializer;
 
 public class PleiadesTest {
 	
@@ -21,7 +19,7 @@ public class PleiadesTest {
 	
 	private static final String PLEIADES_BASE_URL = "http://pleiades.stoa.org/places/";
 	
-	private static List<Place> places;
+	private static List<PlaceBuilder> places;
 	
 	private static HashMap<String, String> randomSamples = new HashMap<String, String>();
 	
@@ -64,11 +62,11 @@ public class PleiadesTest {
 		places = importer.importPleiadesDump(LOCATIONS_CSV, NAMES_CSV);
 		Assert.assertTrue(places.size() > 0); 
 		
-		for (Place p : places) {
-			Assert.assertTrue(p.getUri().toString().startsWith(PLEIADES_BASE_URL));
+		for (PlaceBuilder p : places) {			
+			Assert.assertTrue(p.getURI().toString().startsWith(PLEIADES_BASE_URL));
 			Assert.assertNotNull(p.getLabel());
 			Assert.assertTrue(p.getLabel().length() > 0);
-			Assert.assertNotNull(p.getGeoJSON());
+			Assert.assertNotNull(p.getGeometry());
 		}
 		System.out.println("Pleiades import complete.");
 	}
@@ -76,14 +74,14 @@ public class PleiadesTest {
 	@Test
 	public void testJsonSerializer() {		
 		System.out.print("Testing JSON (de)serialization");
-		JsonParser parser = new JsonParser();
-		GeometryDeserializer ds = new GeometryDeserializer();
-		for (Place p : places) {
-			GeoJSONGeometry before = p.getGeoJSON();
-			GeoJSONGeometry after = ds.deserialize(
-					parser.parse(before.toString()),
-					null, null);
-			Assert.assertEquals(before, after);
+		
+		GeoJSONSerializer serializer = new GeoJSONSerializer();
+		GeoJSONParser parser = new GeoJSONParser();
+		
+		for (PlaceBuilder p : places) {
+			String before = serializer.toString(p.getGeometry());
+			String after = serializer.toString(parser.parse(before));
+			Assert.assertEquals(before.toString(), after.toString());
 		}
 		System.out.println(" - ok.");
 	}

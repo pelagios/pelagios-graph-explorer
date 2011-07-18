@@ -99,6 +99,8 @@ public abstract class PelagiosGraph {
 	 */
 	public abstract Place getPlace(URI uri) throws PlaceNotFoundException;
 	
+	public abstract List<Place> searchPlaces(String prefix, int limit);
+	
 	/**
 	 * Returns an iterator with all the places in the graph.
 	 * @return the places

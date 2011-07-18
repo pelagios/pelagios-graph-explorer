@@ -12,7 +12,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
-import org.pelagios.explorer.Backend;
 import org.pelagios.explorer.rest.api.CoReference;
 import org.pelagios.explorer.rest.api.Occurence;
 import org.pelagios.explorer.rest.api.Overlap;
@@ -35,7 +34,7 @@ public class PlacesController extends AbstractController {
 	@Produces("application/json")
 	@Path("/search")
 	public Response searchPlaces(@QueryParam("q") String q) {
-		PelagiosGraph graph = Backend.getInstance();
+		PelagiosGraph graph = PelagiosGraph.getInstance();
 		List<Place> hits = graph.searchPlaces(q, 15);
 		return Response.ok(toJSON(hits)).build();
 	}
@@ -47,7 +46,7 @@ public class PlacesController extends AbstractController {
 	public Response getSharedPlacesConvexHull(@QueryParam("set") List<String> sets)
 		throws DatasetNotFoundException {
 			
-		PelagiosGraphImpl graph = Backend.getInstance();
+		PelagiosGraph graph = PelagiosGraph.getInstance();
 		List<Dataset> datasets = new ArrayList<Dataset>();
 		for (String s : sets) {
 			datasets.add(graph.getDataset(s));
@@ -73,7 +72,7 @@ public class PlacesController extends AbstractController {
 	public Response getShortestPaths(@QueryParam("from") String from, @QueryParam("to") String to)
 		throws PlaceNotFoundException, URISyntaxException {
 		
-		PelagiosGraphImpl graph = Backend.getInstance();
+		PelagiosGraph graph = PelagiosGraph.getInstance();
 		Place pFrom = graph.getPlace(new URI(from));
 		Place pTo = graph.getPlace(new URI(to));
 		
@@ -110,7 +109,7 @@ public class PlacesController extends AbstractController {
 		PlaceNotFoundException, URISyntaxException {
 		
 		// Get all references to this place from the graph
-		PelagiosGraphImpl graph = Backend.getInstance();
+		PelagiosGraph graph = PelagiosGraph.getInstance();
 		Place p = graph.getPlace(new URI(place));
 		List<GeoAnnotation> records = graph.listReferencesTo(p);
 		

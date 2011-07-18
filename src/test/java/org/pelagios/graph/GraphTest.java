@@ -8,9 +8,7 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.pelagios.api.GeoJSONGeometry;
 import org.pelagios.graph.builder.DatasetBuilder;
-import org.pelagios.graph.builder.PelagiosGraphImpl;
 import org.pelagios.graph.builder.PelagiosGraphBuilder;
 import org.pelagios.graph.builder.PlaceBuilder;
 import org.pelagios.graph.exceptions.DatasetExistsException;
@@ -19,6 +17,7 @@ import org.pelagios.graph.exceptions.PlaceExistsException;
 import org.pelagios.graph.exceptions.PlaceNotFoundException;
 import org.pelagios.graph.nodes.Dataset;
 import org.pelagios.graph.nodes.Place;
+import org.pelagios.io.geojson.GeoJSONParser;
 
 public class GraphTest {
 	
@@ -44,7 +43,7 @@ public class GraphTest {
 		
 		// Get the Pelagios graph instance
 		PelagiosGraphBuilder graphBuilder = new PelagiosGraphBuilder(DATA_DIR);
-		PelagiosGraphImpl graph = graphBuilder.build();
+		PelagiosGraph graph = graphBuilder.build();
 		
 		// Create a few datasets
 		System.out.print("Creating sample datasets... ");
@@ -70,7 +69,7 @@ public class GraphTest {
 		PlaceBuilder corsica = new PlaceBuilder(
 				"Corsica",
 				new URI("http://pleiades.stoa.org/places/991339"),
-				GeoJSONGeometry.fromString("{ \"coordinates\":[26.108246000000001,35.208534999999998] }"));
+				new GeoJSONParser().parse("{ \"type\": \"Point\", \"coordinates\":[26.108246000000001,35.208534999999998] }"));
 		try {
 			graph.addPlaces(Arrays.asList(corsica));
 			System.out.println("done.");
@@ -97,7 +96,7 @@ public class GraphTest {
 	public void testDatasets() {
 		// TODO don't just print out, verify with assertions!
 		PelagiosGraphBuilder graphBuilder = new PelagiosGraphBuilder(DATA_DIR);
-		PelagiosGraphImpl graph = graphBuilder.build();
+		PelagiosGraph graph = graphBuilder.build();
 		
 		System.out.println("Logging sample dataset graph:");
 		for (Dataset dataset : graph.listTopLevelDatasets()) {
@@ -110,7 +109,7 @@ public class GraphTest {
 	public void testPlaces() throws URISyntaxException, PlaceNotFoundException {
 		// TODO don't just print out, verify with assertions!
 		PelagiosGraphBuilder graphBuilder = new PelagiosGraphBuilder(DATA_DIR);
-		PelagiosGraphImpl graph = graphBuilder.build();
+		PelagiosGraph graph = graphBuilder.build();
 		
 		// Query by ID
 		Place corsica = graph.getPlace(new URI("http://pleiades.stoa.org/places/991339"));
@@ -126,7 +125,7 @@ public class GraphTest {
 	@AfterClass
 	public static void shutdown() {
 		PelagiosGraphBuilder graphBuilder = new PelagiosGraphBuilder(DATA_DIR);
-		PelagiosGraphImpl graph = graphBuilder.build();
+		PelagiosGraph graph = graphBuilder.build();
 		graph.shutdown();
 	}
 

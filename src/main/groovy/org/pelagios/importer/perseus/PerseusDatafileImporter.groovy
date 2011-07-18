@@ -1,5 +1,6 @@
 package org.pelagios.importer.perseus
 
+import org.pelagios.graph.PelagiosGraph;
 import org.pelagios.graph.builder.GeoAnnotationBuilder;
 import org.pelagios.graph.builder.DatasetBuilder;
 import org.pelagios.graph.builder.PelagiosGraphImpl;
@@ -51,7 +52,7 @@ class PerseusDatafileImporter extends AbstractDatasetImporter {
 	 * @throws PlaceNotFoundException 
 	 */
 	@Override
-	public void importData(PelagiosGraphImpl graph) throws DatasetExistsException {
+	public void importData(PelagiosGraph graph) throws DatasetExistsException {
 		// Start by creating the collection root node and making this
 		// the root of this dataset
 		DatasetBuilder newRoot = new DatasetBuilder(name)

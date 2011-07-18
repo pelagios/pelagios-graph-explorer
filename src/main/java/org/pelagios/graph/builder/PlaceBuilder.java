@@ -34,6 +34,18 @@ public class PlaceBuilder {
 		this.geometry = geometry;
 	}
 	
+	public String getLabel() {
+		return label;
+	}
+	
+	public URI getURI() {
+		return uri;
+	}
+	
+	public Geometry getGeometry() {
+		return geometry;
+	}
+	
 	public PlaceImpl build(GraphDatabaseService graphDb, Index<Node> index)
 		throws PlaceExistsException {
 		

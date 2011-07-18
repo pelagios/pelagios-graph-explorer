@@ -1,5 +1,6 @@
 package org.pelagios.importer.gap
 
+import org.pelagios.graph.PelagiosGraph;
 import org.pelagios.graph.builder.GeoAnnotationBuilder;
 import org.pelagios.graph.builder.DatasetBuilder;
 import org.pelagios.graph.builder.PelagiosGraphImpl;
@@ -42,7 +43,7 @@ class GAPImporter extends AbstractDatasetImporter {
 	 * @throws PlaceNotFoundException 
 	 */
 	@Override
-	public void importData(PelagiosGraphImpl graph) throws DatasetExistsException {
+	public void importData(PelagiosGraph graph) throws DatasetExistsException {
 		graph.addDataset(rootNode)
 		
 		HashMap<Hierarchy, List<GeoAnnotationBuilder>> allRecords = 

@@ -3,7 +3,7 @@ package org.pelagios.importer.ptolemymachine;
 import java.io.File;
 
 import org.junit.Test;
-import org.pelagios.graph.builder.PelagiosGraphImpl;
+import org.pelagios.graph.PelagiosGraph;
 import org.pelagios.graph.builder.PelagiosGraphBuilder;
 import org.pelagios.graph.exceptions.DatasetExistsException;
 import org.pelagios.graph.exceptions.PlaceNotFoundException;
@@ -42,7 +42,7 @@ public class PtolemyDatasetImporterTest {
 		
 		// Run the import
 		PelagiosGraphBuilder graphBuilder = new PelagiosGraphBuilder(DATA_DIR);
-		PelagiosGraphImpl graph = graphBuilder.build();
+		PelagiosGraph graph = graphBuilder.build();
 		importer.importData(graph);
 		
 		graph.shutdown();
@@ -52,7 +52,7 @@ public class PtolemyDatasetImporterTest {
 	public void testDatasets() {
 		// TODO don't just print out, verify with assertions!
 		PelagiosGraphBuilder graphBuilder = new PelagiosGraphBuilder(DATA_DIR);
-		PelagiosGraphImpl graph = graphBuilder.build();
+		PelagiosGraph graph = graphBuilder.build();
 		System.out.println("Logging sample dataset graph:");
 		for (Dataset dataset : graph.listTopLevelDatasets()) {
 			printDataset(dataset, 0);

@@ -6,6 +6,7 @@ import java.net.URISyntaxException
 import java.util.ArrayList
 import java.util.List
 
+import org.pelagios.graph.PelagiosGraph;
 import org.pelagios.graph.builder.GeoAnnotationBuilder;
 import org.pelagios.graph.builder.DatasetBuilder;
 import org.pelagios.graph.builder.PelagiosGraphImpl;
@@ -27,7 +28,7 @@ public class NomismaDatasetImporter extends AbstractDatasetImporter {
 	}
 
 	@Override
-	public void importData(PelagiosGraphImpl graph) throws DatasetExistsException {
+	public void importData(PelagiosGraph graph) throws DatasetExistsException {
 		graph.addDataset(rootNode)
 		
 		List<GeoAnnotationBuilder> records = new ArrayList<GeoAnnotationBuilder>()

@@ -15,9 +15,9 @@ import com.hp.hpl.jena.rdf.model.ResIterator;
 import com.hp.hpl.jena.rdf.model.Resource
 
 import org.apache.log4j.Logger
+import org.pelagios.graph.PelagiosGraph;
 import org.pelagios.graph.builder.GeoAnnotationBuilder;
 import org.pelagios.graph.builder.DatasetBuilder;
-import org.pelagios.graph.builder.PelagiosGraphImpl;
 import org.pelagios.graph.exceptions.DatasetExistsException;
 import org.pelagios.graph.importer.AbstractDatasetImporter;
 import org.pelagios.graph.importer.Hierarchy;
@@ -28,7 +28,7 @@ class SPQRImporter {
 	
 	private Logger log = Logger.getLogger(SPQRImporter.class)
 	
-	public SPQRImporter(File downloadDir, PelagiosGraphImpl graph) {
+	public SPQRImporter(File downloadDir, PelagiosGraph graph) {
 		List<GeoAnnotationBuilder> records = new ArrayList<GeoAnnotationBuilder>();
 		
 		

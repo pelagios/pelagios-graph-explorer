@@ -2,12 +2,10 @@ package org.pelagios.bootstrap;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.pelagios.api.Place;
-import org.pelagios.graph.builder.PelagiosGraphImpl;
+import org.pelagios.graph.PelagiosGraph;
 import org.pelagios.graph.builder.PelagiosGraphBuilder;
 import org.pelagios.graph.builder.PlaceBuilder;
 import org.pelagios.graph.exceptions.DatasetExistsException;
@@ -91,7 +89,7 @@ public class InitDatabase {
 		taskStart = System.currentTimeMillis();
 		log.info("Initializing neo4j");		
 		PelagiosGraphBuilder graphBuilder = new PelagiosGraphBuilder(NEO4J_DIR);
-		PelagiosGraphImpl graph = graphBuilder.build();		
+		PelagiosGraph graph = graphBuilder.build();		
 		log.info("Done. (" + (System.currentTimeMillis() - taskStart) + " ms)");
 
 		taskStart = System.currentTimeMillis();
@@ -129,42 +127,33 @@ public class InitDatabase {
 				(System.currentTimeMillis() - initStart)/1000 + " seconds.");
 	}
 	
-	private static void importPleiades(PelagiosGraphImpl graph)
+	private static void importPleiades(PelagiosGraph graph)
 		throws IOException, PlaceExistsException {
 		
 		PleiadesImporter importer = new PleiadesImporter();
-		List<Place> places = importer.importPleiadesDump(
+		List<PlaceBuilder> places = importer.importPleiadesDump(
 				PLEIADES_LOCATIONS_CSV,
 				PLEIADES_NAMES_CSV);
 		
-		List<PlaceBuilder> builders = new ArrayList<PlaceBuilder>();
-		for (Place p : places) {
-			builders.add(new PlaceBuilder(
-				p.getLabel(),
-				p.getUri(),
-				p.getGeoJSON()
-			)); 
-		}
-		
-		graph.addPlaces(builders);
+		graph.addPlaces(places);
 	}
 	
-	private static void importNomisma(PelagiosGraphImpl graph) throws DatasetExistsException {
+	private static void importNomisma(PelagiosGraph graph) throws DatasetExistsException {
 		NomismaDatasetImporter importer = new NomismaDatasetImporter(new File(NOMISMA_RDF));
 		importer.importData(graph);
 	}
 	
-	private static void importGAP(PelagiosGraphImpl graph) throws DatasetExistsException {
+	private static void importGAP(PelagiosGraph graph) throws DatasetExistsException {
 		GAPImporter importer = new GAPImporter(new File(GAP_N3));
 		importer.importData(graph);
 	}
 	
-	private static void importPtolemyMachine(PelagiosGraphImpl graph) throws DatasetExistsException {
+	private static void importPtolemyMachine(PelagiosGraph graph) throws DatasetExistsException {
 		PtolemyDatasetImporter importer = new PtolemyDatasetImporter(new File(PTOLEMY_MACHINE_RDF));
 		importer.importData(graph);
 	}
 	
-	private static void importPerseus(PelagiosGraphImpl graph) throws DatasetExistsException {
+	private static void importPerseus(PelagiosGraph graph) throws DatasetExistsException {
 		HashMap<String, File> perseusFiles = new HashMap<String, File>();
 		perseusFiles.put("Perseus Greco-Roman", new File(PERSEUS_GRECO_ROMAN_RDF));
 		perseusFiles.put("Perseus Renaissance", new File(PERSEUS_RENAISSANCE_RDF));
@@ -172,7 +161,7 @@ public class InitDatabase {
 		new PerseusImporter(perseusFiles, graph);
 	}
 	
-	private static void importSPQR(PelagiosGraphImpl graph) throws DatasetExistsException {
+	private static void importSPQR(PelagiosGraph graph) throws DatasetExistsException {
 		new SPQRImporter(new File(SPQR_DIR), graph);
 	}
 	
