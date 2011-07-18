@@ -16,7 +16,7 @@ import org.pelagios.explorer.Backend;
 import org.pelagios.explorer.rest.api.CoReference;
 import org.pelagios.explorer.rest.api.Occurence;
 import org.pelagios.explorer.rest.api.Overlap;
-import org.pelagios.graph.builder.PelagiosGraphImpl;
+import org.pelagios.graph.PelagiosGraph;
 import org.pelagios.graph.exceptions.DatasetNotFoundException;
 import org.pelagios.graph.exceptions.PlaceNotFoundException;
 import org.pelagios.graph.nodes.Dataset;
@@ -35,7 +35,7 @@ public class PlacesController extends AbstractController {
 	@Produces("application/json")
 	@Path("/search")
 	public Response searchPlaces(@QueryParam("q") String q) {
-		PelagiosGraphImpl graph = Backend.getInstance();
+		PelagiosGraph graph = Backend.getInstance();
 		List<Place> hits = graph.searchPlaces(q, 15);
 		return Response.ok(toJSON(hits)).build();
 	}

@@ -16,7 +16,7 @@ import org.pelagios.graph.PelagiosRelationships;
  * 
  * @author Rainer Simon
  */
-class PelagiosGraphBuilder {
+public class PelagiosGraphBuilder {
 	
 	private String directory;
 	

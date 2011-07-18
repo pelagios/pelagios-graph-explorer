@@ -3,8 +3,10 @@ package org.pelagios.graph;
 import java.net.URI;
 import java.util.List;
 
+import org.pelagios.explorer.Config;
 import org.pelagios.graph.builder.DatasetBuilder;
 import org.pelagios.graph.builder.GeoAnnotationBuilder;
+import org.pelagios.graph.builder.PelagiosGraphBuilder;
 import org.pelagios.graph.builder.PlaceBuilder;
 import org.pelagios.graph.exceptions.DatasetExistsException;
 import org.pelagios.graph.exceptions.DatasetNotFoundException;
@@ -21,12 +23,20 @@ import org.pelagios.graph.nodes.Place;
  */
 public abstract class PelagiosGraph {
 	
+	private static PelagiosGraph instance = null;
+	
 	/**
 	 * TODO implement this!
 	 * @return
 	 */
 	public static PelagiosGraph getInstance() {
-		return null;
+		if (instance == null) {
+			PelagiosGraphBuilder builder = 
+				new PelagiosGraphBuilder(Config.getInstance().getNeo4jDirectory());
+			instance = builder.build();
+		}
+			
+		return instance;
 	}
 	
 	/**

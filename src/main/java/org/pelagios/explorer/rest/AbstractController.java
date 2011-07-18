@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.pelagios.explorer.rest.json.GeoAnnotationSerializer;
-import org.pelagios.explorer.rest.json.DatasetSerializer;
-import org.pelagios.explorer.rest.json.GeometrySerializer;
-import org.pelagios.explorer.rest.json.PlaceSerializer;
+import org.pelagios.explorer.rest.api.serializer.DatasetSerializer;
+import org.pelagios.explorer.rest.api.serializer.GeoAnnotationSerializer;
+import org.pelagios.explorer.rest.api.serializer.GeometrySerializer;
+import org.pelagios.explorer.rest.api.serializer.PlaceSerializer;
 import org.pelagios.graph.nodes.Dataset;
 import org.pelagios.graph.nodes.GeoAnnotation;
 import org.pelagios.graph.nodes.Place;
