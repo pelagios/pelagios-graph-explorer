@@ -1,4 +1,4 @@
-package org.pelagios.importer.gap;
+package org.pelagios.graph.importer.gap;
 
 import java.io.File;
 

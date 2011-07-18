@@ -1,4 +1,4 @@
-package org.pelagios.importer.perseus;
+package org.pelagios.graph.importer.perseus;
 
 import java.io.File;
 import java.util.HashMap;

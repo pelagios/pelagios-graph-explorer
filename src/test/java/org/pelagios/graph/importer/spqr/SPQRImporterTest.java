@@ -1,4 +1,4 @@
-package org.pelagios.importer.sqpr;
+package org.pelagios.graph.importer.spqr;
 
 import org.junit.Test;
 

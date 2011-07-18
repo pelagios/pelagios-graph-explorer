@@ -1,4 +1,4 @@
-package org.pelagios.importer.ptolemymachine;
+package org.pelagios.graph.importer.ptolemymachine;
 
 import java.io.File;
 
