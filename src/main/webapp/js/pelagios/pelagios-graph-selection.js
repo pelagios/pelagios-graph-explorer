@@ -51,7 +51,7 @@ Pelagios.SelectionManager.prototype.toggleSelect = function(node) {
 		// Remove from map
 		this.map.hidePolygon(node.name);
 		
-		// Remove links connections on screen
+		// Remove links on screen
 		var links = this.getLinksFor(node);
 		for (var i=0, ii=links.length; i<ii; i++) {
 			links[i].line.remove();
@@ -60,6 +60,18 @@ Pelagios.SelectionManager.prototype.toggleSelect = function(node) {
 		
 		// Remove from 'selectedNodes' array
 		delete this.selectedNodes[node.name];
+		
+		// Re-normalize
+		this.maxOverlapWeight = 0;
+		var allLinks = this.getAllLinks();
+		for (var i=0, ii=allLinks.length; i<ii; i++) {
+			if (allLinks[i].weight > this.maxOverlapWeight)
+				this.maxOverlapWeight = allLinks[i].weight;
+		}
+		
+		alert(this.maxOverlapWeight);
+		
+		this.normalizeLineWidths();
 	}
 }
 
@@ -110,7 +122,8 @@ Pelagios.SelectionManager.prototype.getAllLinks = function() {
 		var linksForN = this.selectedNodes[n].set.links;
 		if (linksForN) {
 			for (var i=0, ii=linksForN.length; i<ii; i++) {
-				allLinks.push(linksForN[i]);
+				if (this.selectedNodes[linksForN[i].to.name])
+					allLinks.push(linksForN[i]);
 			}
 		}
 	}
@@ -128,7 +141,7 @@ Pelagios.SelectionManager.prototype.setLink = function(arg0, arg1, arg2) {
 		// arg0 -> srcNode, arg1 -> destNode, arg2 -> link	
 		if (arg2.commonPlaces > this.maxOverlapWeight) {
 			this.maxOverlapWeight = arg2.commonPlaces;
-			this.normalizeLinkWeights();
+			this.normalizeLineWidths();
 		}
 		
 		var fromX = arg0.set[0].attr("cx");
@@ -181,7 +194,7 @@ Pelagios.SelectionManager.prototype.setLink = function(arg0, arg1, arg2) {
 	}
 }
 
-Pelagios.SelectionManager.prototype.normalizeLinkWeights = function() {
+Pelagios.SelectionManager.prototype.normalizeLineWidths = function() {
 	var allLinks = this.getAllLinks();	
 	for (var i=0, ii=allLinks.length; i<ii; i++) {
 		this.setLink(allLinks[i]);
