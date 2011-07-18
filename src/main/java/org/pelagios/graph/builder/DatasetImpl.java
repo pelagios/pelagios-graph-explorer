@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.Node;
@@ -122,12 +123,12 @@ class DatasetImpl extends PelagiosGraphNode implements Dataset {
 	}
 
 	public List<Place> filterReferenced(List<Place> places, boolean includeSubsets) {
-		List<Place> filtered = new ArrayList<Place>();
+		Set<Place> filtered = new HashSet<Place>();
 		for (Place p : listPlaces(includeSubsets, false)) {
 			if (places.contains(p))
 				filtered.add(p);
 		}
-		return filtered;
+		return new ArrayList<Place>(filtered);
 	}
 	
 	@Override

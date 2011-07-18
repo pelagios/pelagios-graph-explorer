@@ -42,7 +42,7 @@ Pelagios.Tooltip.prototype.hide = function() {
 }
 
 Pelagios.Tooltip.prototype.remove = function() {
-	document.body.removeChild(this.div);
+	// document.body.removeChild(this.div);
 }
 
 Pelagios.Palette = function() {

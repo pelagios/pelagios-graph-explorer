@@ -3,6 +3,7 @@ package org.pelagios.graph.builder;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
@@ -255,7 +256,10 @@ class PelagiosGraphImpl extends PelagiosGraph {
 
 		// TODO this can be further improved by sorting the
 		// datasets by number of places!
-		List<Place> sharedPlaces = datasets.get(0).listPlaces(true);
+		List<Place> sharedPlaces = new ArrayList<Place>(
+			new HashSet<Place>(datasets.get(0).listPlaces(true))
+		);
+		
 		for (int i=1; i<datasets.size(); i++) {
 			sharedPlaces = datasets.get(i).filterReferenced(sharedPlaces, true);
 		}
