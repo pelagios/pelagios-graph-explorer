@@ -1,6 +1,7 @@
 // An attempt to clean up the selection code mess in the dataset graph
-Pelagios.SelectionManager = function(raphael, async) {
+Pelagios.SelectionManager = function(raphael, map, async) {
 	this.raphael = raphael;
+	this.map = map;
 	this.async = async;
 	this.selectedNodes = new Array();
 	this.maxOverlapWeight = 0;
@@ -108,11 +109,11 @@ Pelagios.SelectionManager.prototype.fetchLinkData = function(node) {
 	}
 }
 
-Pelagios.SelectionManager.prototype.setLinkWeight = function(arg0, arg1, arg2) {
-	if (arg1) {
-		// arg0 -> srcNode, arg1 -> destNode, arg2 -> weight	
-		if (arg2 > this.maxOverlapWeight) {
-			this.maxOverlapWeight = arg2;
+Pelagios.SelectionManager.prototype.setLink = function(arg0, arg1, arg2) {
+	if (arg1) {		
+		// arg0 -> srcNode, arg1 -> destNode, arg2 -> link	
+		if (arg2.commonPlaces > this.maxOverlapWeight) {
+			this.maxOverlapWeight = arg2.commonPlaces;
 			this.normalizeLinkWeights();
 		}
 		
@@ -129,18 +130,30 @@ Pelagios.SelectionManager.prototype.setLinkWeight = function(arg0, arg1, arg2) {
 				"L" + toX + " " + toY)
 			.attr({
 				"stroke" : "#FF8000",
-				"stroke-width" : this.getWidthFromWeigth(arg2),
+				"stroke-width" : this.getWidthFromWeigth(arg2.commonPlaces),
 				"opacity" : 0.8,
 				"stroke-dasharray" : "-"
 			}).toBack(),
-			"weight" : arg2
+			"weight" : arg2.commonPlaces
 		}
+		
+		// Add mouseover information to link line
+		var map = this.map;
+		link.line.mouseover(function(event) {
+			map.showPolygon(arg0.name + "-" + arg1.name);
+		});
+		link.line.mouseout(function (event) {
+			map.hidePolygon(arg0.name + "-" + arg1.name);
+		});
 		
 		// Links are always attached to the source nodes!
 		if (!arg0.set.links)
 			arg0.set.links = new Array();
 		
 		arg0.set.links.push(link);
+		
+		// Add to map
+		map.addPolygon(arg0.name + "-" + arg1.name, arg2.footprint, "#FF8000");
 	} else {
 		// arg0 -> line
 		arg0.line.animate({ "stroke-width" : this.getWidthFromWeigth(arg0.weight) }, 500);
@@ -150,7 +163,7 @@ Pelagios.SelectionManager.prototype.setLinkWeight = function(arg0, arg1, arg2) {
 Pelagios.SelectionManager.prototype.normalizeLinkWeights = function() {
 	var allLinks = this.getAllLinks();	
 	for (var i=0, ii=allLinks.length; i<ii; i++) {
-		this.setLinkWeight(allLinks[i]);
+		this.setLink(allLinks[i]);
 	}
 }
 
