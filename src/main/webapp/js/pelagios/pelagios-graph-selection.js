@@ -69,8 +69,6 @@ Pelagios.SelectionManager.prototype.toggleSelect = function(node) {
 				this.maxOverlapWeight = allLinks[i].weight;
 		}
 		
-		alert(this.maxOverlapWeight);
-		
 		this.normalizeLineWidths();
 	}
 }
