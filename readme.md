@@ -7,9 +7,14 @@ PELAGIOS project.
 
 ## What is the PELAGIOS Graph Explorer?
 
-todo... 
+The __PELAGIOS Graph Explorer__ is an interactive demo for exploring how the data
+contributed by the [PELAGIOS project partners] (http://pelagios-project.blogspot.com/)
+is related through place. 
 
-![PELAGIOS Graph Explorer - Dev Screenshot](http://dl.dropbox.com/u/6192626/graph-explorer-updated.jpg)
+A more detailed outline will follow soon. In the meantime, you can find our publicly
+accessible development server at
+
+http://pelagios.dme.ait.ac.at/graph-explorer
 
 ## License
 
