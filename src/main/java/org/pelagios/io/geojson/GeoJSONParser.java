@@ -6,6 +6,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
@@ -23,6 +24,10 @@ public class GeoJSONParser {
 	private GeometryFactory geomFactory = new GeometryFactory();
 	
 	private Logger log = Logger.getLogger(GeoJSONParser.class);
+	
+	public Geometry parse(String json) {
+		return parse(new JsonParser().parse(json).getAsJsonObject());
+	}
 	
 	public Geometry parse(JsonObject json) {		
 		GeometryType type = 
