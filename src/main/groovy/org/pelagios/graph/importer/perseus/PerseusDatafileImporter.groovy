@@ -1,4 +1,4 @@
-package org.pelagios.importer.perseus
+package org.pelagios.graph.importer.perseus
 
 import org.pelagios.graph.PelagiosGraph;
 import org.pelagios.graph.builder.GeoAnnotationBuilder;

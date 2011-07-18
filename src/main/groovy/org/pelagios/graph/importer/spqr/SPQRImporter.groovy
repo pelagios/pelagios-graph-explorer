@@ -1,4 +1,4 @@
-package org.pelagios.importer.spqr
+package org.pelagios.graph.importer.spqr
 
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
 

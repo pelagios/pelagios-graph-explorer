@@ -5,6 +5,7 @@ import java.io.File;
 import org.junit.Test;
 import org.pelagios.graph.MockGraph;
 import org.pelagios.graph.exceptions.DatasetExistsException;
+import org.pelagios.graph.importer.nomisma.NomismaDatasetImporter;
 
 public class NomismaDatasetImporterTest {
 	

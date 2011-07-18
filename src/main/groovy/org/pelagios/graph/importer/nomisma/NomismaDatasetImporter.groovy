@@ -1,4 +1,4 @@
-package org.pelagios.importer.nomisma
+package org.pelagios.graph.importer.nomisma
 
 import java.io.File
 import java.net.URI

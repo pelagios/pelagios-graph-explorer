@@ -8,6 +8,7 @@ import org.pelagios.graph.PelagiosGraph;
 import org.pelagios.graph.builder.PelagiosGraphBuilder;
 import org.pelagios.graph.exceptions.DatasetExistsException;
 import org.pelagios.graph.exceptions.DatasetNotFoundException;
+import org.pelagios.graph.importer.perseus.PerseusImporter;
 import org.pelagios.graph.nodes.Dataset;
 
 public class PerseusImporterTest {

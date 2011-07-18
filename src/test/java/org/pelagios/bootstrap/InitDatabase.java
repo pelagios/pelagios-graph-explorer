@@ -10,12 +10,12 @@ import org.pelagios.graph.builder.PelagiosGraphBuilder;
 import org.pelagios.graph.builder.PlaceBuilder;
 import org.pelagios.graph.exceptions.DatasetExistsException;
 import org.pelagios.graph.exceptions.PlaceExistsException;
+import org.pelagios.graph.importer.gap.GAPImporter;
+import org.pelagios.graph.importer.nomisma.NomismaDatasetImporter;
+import org.pelagios.graph.importer.perseus.PerseusImporter;
 import org.pelagios.graph.importer.pleiades.PleiadesImporter;
 import org.pelagios.graph.importer.ptolemymachine.PtolemyDatasetImporter;
-import org.pelagios.importer.gap.GAPImporter;
-import org.pelagios.importer.nomisma.NomismaDatasetImporter;
-import org.pelagios.importer.perseus.PerseusImporter;
-import org.pelagios.importer.spqr.SPQRImporter;
+import org.pelagios.graph.importer.spqr.SPQRImporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

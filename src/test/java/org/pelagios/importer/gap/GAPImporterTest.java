@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.pelagios.graph.MockGraph;
 import org.pelagios.graph.exceptions.DatasetExistsException;
 import org.pelagios.graph.importer.Hierarchy;
+import org.pelagios.graph.importer.gap.GAPImporter;
 
 public class GAPImporterTest {
 	

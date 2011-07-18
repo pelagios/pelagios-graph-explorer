@@ -1,4 +1,4 @@
-package org.pelagios.importer.spqr
+package org.pelagios.graph.importer.spqr
 
 /**
  * A simple downloader for fetching data records from the SQPR site.
