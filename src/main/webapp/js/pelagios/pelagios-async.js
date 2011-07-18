@@ -45,6 +45,7 @@ Pelagios.Async.prototype.findShortestPath = function(from, to, personalGraph) {
 	.error(function(data) { alert("Something went wrong: " + data.responseText); });	
 }
 
+/*
 Pelagios.Async.prototype.computeOverlaps = function() {
 	// Selected nodes come in an associative array
 	var selected = new Array();
@@ -77,4 +78,17 @@ Pelagios.Async.prototype.computeOverlaps = function() {
     	.error(function(data) { alert("Something went wrong: " + data.responseText); });			
 	}
 }
+*/
 
+Pelagios.Async.prototype.computeOverlap = function(srcNode, destNode, selectionManager) {
+	var url = "places/intersect/convexhull?set=" +
+		srcNode.name + "&set=" + destNode.name;
+	
+	$.getJSON(url, function(data) {
+		selectionManager.setLinkWeight(srcNode, destNode, data.commonPlaces);
+		
+		// pMap.addPolygon(srcNode.name + " to " + destNode.name, data.footprint);
+		// pMap.showPolygon("overlap");
+	})
+	.error(function(data) { alert("Something went wrong: " + data.responseText); });			
+}

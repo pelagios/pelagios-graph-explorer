@@ -71,11 +71,6 @@ window.onload = function() {
     		size, dataset.records, dataset.places,
     		fill, stroke,
     		
-    		// click
-    		function(event) {
-    			pAsync.computeOverlaps();
-    		}, 
-    		
     		// dblclick
     		function(node) {
     			if (node.opened) {

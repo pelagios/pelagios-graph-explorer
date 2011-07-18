@@ -11,9 +11,8 @@ Pelagios.Graph = function(raphael) {
     // Keep track of node->outbound edges relations
     this.edges = new Array();
     
-    // Keep track of selected nodes
-    this.selectedNodes = new Array();
-    this.maxOverlapWeight = 0;
+    this.selectionManager 
+    	= new Pelagios.SelectionManager(this.raphael, new Pelagios.Async());
     
 	var toScreen = this.toScreen;
     this.renderer = new Renderer(10, this.layout,
@@ -31,34 +30,6 @@ Pelagios.Graph = function(raphael) {
   			  }
   		  }
     );
-    
-    this.linkNodes = function(from, to, weight) {
-		var fromX = from.set[0].attr("cx");
-		var fromY = from.set[0].attr("cy");
-		var toX = to.set[0].attr("cx");
-		var toY = to.set[0].attr("cy");
-    	
-		var link = {
-			"from" : from,
-			"to" : to,
-			"line" : this.raphael.path(
-				"M" + fromX + " " + fromY + 
-				"L" + toX + " " + toY)
-			.attr({
-				"stroke" : "#FF8000",
-				"stroke-width" : 0,
-				"opacity" : 0.8,
-				"stroke-dasharray" : "-"
-			}).toBack(),
-			"weight" : weight
-		}
-		
-		// Links are always attached to the source nodes!
-		if (!from.set.links)
-			from.set.links = new Array();
-		
-		from.set.links.push(link);
-    }
     
     // This is ugly... but don't know how to get rid of
     // the global - it's needed in the move event handler
@@ -87,7 +58,7 @@ Pelagios.Graph.prototype.fromScreen = function(s) {
 }
 
 Pelagios.Graph.prototype.newNode = function(name, size, records, places, 
-		fill, stroke, click, dblclick, mouseover, mouseout, parent) {
+		fill, stroke, dblclick, mouseover, mouseout, parent) {
 	
     var n = this.graph.newNode();
     this.graph.newEdge(n, this.locus, { length: 0.2 });
@@ -114,26 +85,22 @@ Pelagios.Graph.prototype.newNode = function(name, size, records, places,
     var lastClick = null;
     var maxClickTime = 300;
     
-    var self = this;
+    var selectionManager = this.selectionManager;
     
-    if (click) {
-    	n.set.mousedown(function() {
-    		lastClick = new Date().getTime();
-    	});
-    	
-    	n.set.click(function(event) { 
-    		if (clickTimeout){ return; }
-    		
-    		if ((new Date().getTime() - lastClick) > maxClickTime) { return; } 
-    		
-    		clickTimeout = window.setTimeout(function(){
-    			clickTimeout = null;  
-    			self.toggleSelect(n);
-    			if (n.selected)
-    				new click(event); 
-    		}, clickDelay);
-    	});
-    }
+	n.set.mousedown(function() {
+		lastClick = new Date().getTime();
+	});
+	
+	n.set.click(function(event) { 
+		if (clickTimeout){ return; }
+		
+		if ((new Date().getTime() - lastClick) > maxClickTime) { return; } 
+		
+		clickTimeout = window.setTimeout(function(){
+			clickTimeout = null;  
+			selectionManager.toggleSelect(n);
+		}, clickDelay);
+	});
     
     if (dblclick)
     	n.set.dblclick(function(event) {
@@ -189,148 +156,13 @@ Pelagios.Graph.prototype.newEdge = function(from, to, width) {
     return e;
 }
 
-Pelagios.Graph.prototype.toggleSelect = function(node) {
-	node.selected = !node.selected;
-	if (node.selected) {
-		var cx = node.set[0].attr("cx");
-		var cy = node.set[0].attr("cy");
-		var size = node.set.size + 8;
-		node.set.selection = this.raphael.ellipse(cx, cy, size, size)
-			.attr({
-				"stroke" : "#FF8000",
-				"stroke-width" : 4,
-				"opacity" : 0.8,
-				"stroke-dasharray" : "-"
-			});
-		this.selectedNodes[node.name] = node;
-	} else {		
-		node.set.selection.remove();
-		
-		var links = this.findLinks(node);
-		for (var i=0, ii=links.length; i<ii; i++) {
-			links[i].line.remove;
-		}
-		// if (node.set.links) {
-			//for (var i=0, ii=node.set.links.length; i<ii; i++) {
-				//node.set.links[i].line.remove();
-			//}	
-		// }
-		delete this.selectedNodes[node.name];
-	}
-	
-	/* Recompute links
-	var allSelectedNodes = new Array();
-	for (var node in this.selectedNodes) {
-		allSelectedNodes.push(node);
-	}
-	
-	while (allSelectedNodes.length > 0) {
-		var src = this.selectedNodes[allSelectedNodes.pop()];
-
-		if (src.set.links) {
-			for (var i=0, ii=src.set.links.length; i<ii; i++) {
-				src.set.links[i].line.remove();
-			}	
-		}
-		
-		src.set.links = new Array();
-		for (var i=0, ii=allSelectedNodes.length; i<ii; i++) {
-			this.linkNodes(
-					src,
-					this.selectedNodes[allSelectedNodes[i]],
-					0);	
-		}
-	}
-	*/
-}
-
 Pelagios.Graph.prototype.getChildNodes = function(parent) {
 	if (this.children[parent.name])
 		return this.children[parent.name];
 	return new Array();
 }
 
-Pelagios.Graph.prototype.getSelected = function() {
-	return this.selectedNodes;
-}
-
-Pelagios.Graph.prototype.findLinks = function(node) {
-	if (!this.selectedNodes[node.name])
-		return;
-	
-	var allLinks = new Array();
-	
-	// Outbound links
-	var outbound = node.set.links;
-	for (var i=0, ii=outbound.length; i<ii; i++) {
-		allLinks.push(outbound[i]);
-	}
-	
-	// Inbound links
-	var otherNodes = new Array()
-	for (var n in this.selectedNodes) {
-		if (n != node.name)
-			otherNodes.push(this.selectedNodes[n]);
-	}
-	
-	for (var i=0, ii=otherNodes.length; i<ii; i++) {
-		if (otherNodes[i].links) {
-			for (var j=0, jj=otherNodes[i].links.length; j<jj; j++) {
-				if (otherNodes[i].links[j].to == node) {
-					allLinks.push(otherNodes[i].links[j]);
-				}	
-			}
-		}
-	}
-	
-	return allLinks;
-}
-
-Pelagios.Graph.prototype.deselectAll = function() {
-	for (var sel in this.selectedNodes) {
-		this.toggleSelect(this.selectedNodes[sel]);
-	}
-}
-
-Pelagios.Graph.prototype.setLinkWeight = function(srcNode, destNode, width) {
-	if (width > this.maxOverlapWeight) {
-		this.maxOverlapWeight = width;
-		this.recomputeLinkWeights();
-	}
-	
-	var srcLinks = srcNode.set.links;
-	var destLinks = destNode.set.links;
-	var link = null;
-	
-	if (srcLinks) {
-		for (var i=0, ii=srcLinks.length; i<ii; i++) {
-			if ((srcLinks[i].from == srcNode) && (srcLinks[i].to == destNode)) {
-				link = srcLinks[i];
-				break;
-			}
-		}
-	}
-	
-	if ((link == null) && (destLinks)) {
-		for (var i=0, ii=destLinks.length; i<ii; i++) {
-			if ((destLinks[i].from == srcNode) && (destLinks[i].to == destNode)) {
-				link = destLinks[i];
-				break;
-			}
-		}		
-	}
-	
-	if (link) {
-		link.weight = width;
-		var strokeWidth = 12 * link.weight / this.maxOverlapWeight;
-		if (strokeWidth < 2)
-			strokeWidth = 2;
-		link.line.attr({ "stroke-width" : strokeWidth });
-	} else {
-		this.linkNodes(srcNode, destNode, width);
-	}
-}
-
+/*
 Pelagios.Graph.prototype.recomputeLinkWeights = function() {
 	var allSelectedNodes = new Array();
 	for (var node in this.selectedNodes) {
@@ -351,6 +183,7 @@ Pelagios.Graph.prototype.recomputeLinkWeights = function() {
 		}
 	}
 }
+*/
 
 Pelagios.Graph.prototype.removeChildNodes = function(parent) {
 	// Remove outbound edges (SVG only - graph edges are handled by Springy)
