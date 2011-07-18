@@ -2,10 +2,13 @@ TODO...
 
 - Document the REST API
 - Document the graph model (in an extra readme? in the PelagiosRelationships?)
-- Clean up the org.pelagios.geo package (especially the JTS vs Pelagios-Geometry mess)
 - Clean up the unit tests (overall cleanup + mock objects)
 - Scala unit tests?
-- See whether it's possible/useful to port a few things to Groovy and/or Scala to reduce LoC
 - Add HTTP scripts for harvesting Ptolemy Machine place data (Groovy?)
-- Clean up the JavaScript mess (possibly include Closure Compiler in build)
-- Add licence and 3rd party credits 
+- Review and clean up the JavaScript code (possibly include Closure Compiler in build)
+- Add 3rd party JavaScript licences + credits 
+- Bug: NullPointer situation when a dataset node is closed which has selected subnodes
+- Detail view!
+- Map synchronization in detail view
+- Back button in detail view to return to dataset view...
+- Allow searches to be passed via the URL query string
