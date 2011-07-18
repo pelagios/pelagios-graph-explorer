@@ -46,11 +46,13 @@ Pelagios.Async.prototype.findShortestPath = function(from, to, personalGraph) {
 }
 
 Pelagios.Async.prototype.computeOverlap = function(srcNode, destNode, selectionManager) {
+	Pelagios.Loadmask.getInstance().show();
 	var url = "places/intersect?set1=" +
 		srcNode.name + "&set2=" + destNode.name;
 	
 	$.getJSON(url, function(data) {
 		selectionManager.setLink(srcNode, destNode, data);
+		Pelagios.Loadmask.getInstance().hide();
 	})
 	.error(function(data) { alert("Something went wrong: " + data.responseText); });			
 }

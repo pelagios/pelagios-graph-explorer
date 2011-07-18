@@ -22,6 +22,41 @@ Pelagios.getViewport = function() {
 	 return new Vector(w, h);
 }
 
+Pelagios.Loadmask = function() {
+	this.div = document.createElement("div");
+	this.div.style.position = "absolute";
+	this.div.style.top = 0;
+	this.div.style.right = 0;
+	// this.div.style.width = "100%";
+	// this.div.style.height = "100%";
+	// this.div.style.backgroundColor = "#fff";
+	// this.div.style.opacity = 0.5;
+	this.div.style.visibility = "visible";
+	this.div.innerHTML = "<img class=\"ajax-loader\" src=\"img/ajax-loader.gif\"/>";
+	document.body.appendChild(this.div);
+	this.ctr = 0;
+}
+
+Pelagios.Loadmask.instance = null;
+
+Pelagios.Loadmask.getInstance = function() {
+	if (Pelagios.Loadmask.instance == null) {
+		Pelagios.Loadmask.instance = new Pelagios.Loadmask();
+	}
+	return Pelagios.Loadmask.instance;
+}
+ 
+Pelagios.Loadmask.prototype.show = function() {
+	this.ctr++;
+	this.div.style.visibility = "visible";
+}
+
+Pelagios.Loadmask.prototype.hide = function() {
+	this.ctr--;
+	if (this.ctr == 0)
+		this.div.style.visibility = "hidden";
+}
+
 Pelagios.Tooltip = function(text, x, y) {
 	this.div = document.createElement("div");
 	this.div.innerHTML = text;
