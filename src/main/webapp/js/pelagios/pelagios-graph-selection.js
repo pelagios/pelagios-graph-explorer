@@ -4,12 +4,19 @@ Pelagios.SelectionManager = function(raphael, async) {
 	this.async = async;
 	this.selectedNodes = new Array();
 	this.maxOverlapWeight = 0;
+	
+	this.getWidthFromWeigth = function(weight) {
+		var w = 12 * weight / this.maxOverlapWeight;
+		if (w < 2)
+			w = 2;
+		return w;
+	}
 }
 
 Pelagios.SelectionManager.prototype.toggleSelect = function(node) {
 	node.selected = !node.selected;
 	if (node.selected) {
-		// Hightlight node on screen
+		// Highlight node on screen
 		var cx = node.set[0].attr("cx");
 		var cy = node.set[0].attr("cy");
 		var size = node.set.size + 8;
@@ -33,7 +40,7 @@ Pelagios.SelectionManager.prototype.toggleSelect = function(node) {
 		// Remove links connections on screen
 		var links = this.getLinksFor(node);
 		for (var i=0, ii=links.length; i<ii; i++) {
-			links[i].line.remove;
+			links[i].line.remove();
 		}
 		
 		// Remove from 'selectedNodes' array
@@ -55,8 +62,10 @@ Pelagios.SelectionManager.prototype.getLinksFor = function(node) {
 	
 	// Outbound links
 	var outbound = node.set.links;
-	for (var i=0, ii=outbound.length; i<ii; i++) {
-		allLinks.push(outbound[i]);
+	if (outbound) {
+		for (var i=0, ii=outbound.length; i<ii; i++) {
+			allLinks.push(outbound[i]);
+		}
 	}
 	
 	// Inbound links
@@ -67,10 +76,10 @@ Pelagios.SelectionManager.prototype.getLinksFor = function(node) {
 	}
 	
 	for (var i=0, ii=otherNodes.length; i<ii; i++) {
-		if (otherNodes[i].links) {
-			for (var j=0, jj=otherNodes[i].links.length; j<jj; j++) {
-				if (otherNodes[i].links[j].to == node) {
-					allLinks.push(otherNodes[i].links[j]);
+		if (otherNodes[i].set.links) {
+			for (var j=0, jj=otherNodes[i].set.links.length; j<jj; j++) {
+				if (otherNodes[i].set.links[j].to == node) {
+					allLinks.push(otherNodes[i].set.links[j]);
 				}	
 			}
 		}
@@ -79,8 +88,18 @@ Pelagios.SelectionManager.prototype.getLinksFor = function(node) {
 	return allLinks;
 }
 
-Pelagios.SelectionManager.prototype.getLink = function(srcNode, destNode) {
-	
+Pelagios.SelectionManager.prototype.getAllLinks = function() {
+	var allLinks = new Array();
+	for (var n in this.selectedNodes) {
+		// All links originating from this node
+		var linksForN = this.selectedNodes[n].set.links;
+		if (linksForN) {
+			for (var i=0, ii=linksForN.length; i<ii; i++) {
+				allLinks.push(linksForN[i]);
+			}
+		}
+	}
+	return allLinks;
 }
 
 Pelagios.SelectionManager.prototype.fetchLinkData = function(node) {
@@ -89,73 +108,49 @@ Pelagios.SelectionManager.prototype.fetchLinkData = function(node) {
 	}
 }
 
-Pelagios.SelectionManager.prototype.setLinkWeight = function(srcNode, destNode, weight) {
-	if (weight > this.maxOverlapWeight) {
-		this.maxOverlapWeight = weight;
-		this.normalizeLinkWeights();
-	}
-	
-	var link = this.getLink(srcNode, destNode);
-	if (link) {
-		// Link already on screen - change line width
-		link.weight = weight;
-		var strokeWidth = 12 * link.weight / this.maxOverlapWeight;
-		if (strokeWidth < 2)
-			strokeWidth = 2;
-		link.line.attr({ "stroke-width" : strokeWidth });
-	} else {
-		// New link - draw
-		var fromX = srcNode.set[0].attr("cx");
-		var fromY = srcNode.set[0].attr("cy");
-		var toX = destNode.set[0].attr("cx");
-		var toY = destNode.set[0].attr("cy");
+Pelagios.SelectionManager.prototype.setLinkWeight = function(arg0, arg1, arg2) {
+	if (arg1) {
+		// arg0 -> srcNode, arg1 -> destNode, arg2 -> weight	
+		if (arg2 > this.maxOverlapWeight) {
+			this.maxOverlapWeight = arg2;
+			this.normalizeLinkWeights();
+		}
 		
-		link = {
-			"from" : srcNode,
-			"to" : destNode,
+		var fromX = arg0.set[0].attr("cx");
+		var fromY = arg0.set[0].attr("cy");
+		var toX = arg1.set[0].attr("cx");
+		var toY = arg1.set[0].attr("cy");
+		
+		var link = {
+			"from" : arg0,
+			"to" : arg1,
 			"line" : this.raphael.path(
 				"M" + fromX + " " + fromY + 
 				"L" + toX + " " + toY)
 			.attr({
 				"stroke" : "#FF8000",
-				"stroke-width" : 12 * weight / this.maxOverlapWeight,
+				"stroke-width" : this.getWidthFromWeigth(arg2),
 				"opacity" : 0.8,
 				"stroke-dasharray" : "-"
 			}).toBack(),
-			"weight" : weight
+			"weight" : arg2
 		}
 		
 		// Links are always attached to the source nodes!
-		if (!srcNode.set.links)
-			srcNode.set.links = new Array();
+		if (!arg0.set.links)
+			arg0.set.links = new Array();
 		
-		srcNode.set.links.push(link);
-	}	
+		arg0.set.links.push(link);
+	} else {
+		// arg0 -> line
+		arg0.line.animate({ "stroke-width" : this.getWidthFromWeigth(arg0.weight) }, 500);
+	}
 }
 
 Pelagios.SelectionManager.prototype.normalizeLinkWeights = function() {
-	/*
-	var srcLinks = srcNode.set.links;
-	var destLinks = destNode.set.links;
-	var link = null;
-	
-	if (srcLinks) {
-		for (var i=0, ii=srcLinks.length; i<ii; i++) {
-			if ((srcLinks[i].from == srcNode) && (srcLinks[i].to == destNode)) {
-				link = srcLinks[i];
-				break;
-			}
-		}
+	var allLinks = this.getAllLinks();	
+	for (var i=0, ii=allLinks.length; i<ii; i++) {
+		this.setLinkWeight(allLinks[i]);
 	}
-	
-	if ((link == null) && (destLinks)) {
-		for (var i=0, ii=destLinks.length; i<ii; i++) {
-			if ((destLinks[i].from == srcNode) && (destLinks[i].to == destNode)) {
-				link = destLinks[i];
-				break;
-			}
-		}		
-	}
-	 */
 }
 

@@ -162,29 +162,6 @@ Pelagios.Graph.prototype.getChildNodes = function(parent) {
 	return new Array();
 }
 
-/*
-Pelagios.Graph.prototype.recomputeLinkWeights = function() {
-	var allSelectedNodes = new Array();
-	for (var node in this.selectedNodes) {
-		allSelectedNodes.push(node);
-	}
-	
-	while (allSelectedNodes.length > 0) {
-		var src = this.selectedNodes[allSelectedNodes.pop()];
-		
-		if (src.set.links) {
-			for (var i=0, ii=src.set.links.length; i<ii; i++) {
-				var link = src.set.links[i];
-				var strokeWidth = 12 * link.weight / this.maxOverlapWeight;
-				if (strokeWidth < 2)
-					strokeWidth = 2;
-				link.line.attr({ "stroke-width" :  strokeWidth });
-			}	
-		}
-	}
-}
-*/
-
 Pelagios.Graph.prototype.removeChildNodes = function(parent) {
 	// Remove outbound edges (SVG only - graph edges are handled by Springy)
 	var ed = this.edges[parent.name];
@@ -208,6 +185,10 @@ Pelagios.Graph.prototype.removeChildNodes = function(parent) {
 		delete this.children[parent.name];
 		parent.opened = false;
 	}
+}
+
+Pelagios.Graph.prototype.deselectAll = function() {
+	this.selectionManager.deselectAll();
 }
 
 Pelagios.Graph.prototype.handler = {
