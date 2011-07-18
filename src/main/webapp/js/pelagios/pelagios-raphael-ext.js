@@ -43,7 +43,7 @@ Raphael.fn.pelagios = {
 			    	"scale" : "1.3, 1.3",
 			    }, 350, "bounce");
 			    
-			    s.push(raphael.text(this.attr("cx"), this.attr("cy") + s.size + 24, arg2 + " Records"));
+			    s.push(raphael.text(this.attr("cx"), this.attr("cy") + s.size + 24, arg2 + " Geoannotations"));
 			    s.push(raphael.text(this.attr("cx"), this.attr("cy") + s.size + 38, arg3 + " Places"));
 			});
 			s[0].mouseout(function (event) {

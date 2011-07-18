@@ -22,6 +22,29 @@ Pelagios.getViewport = function() {
 	 return new Vector(w, h);
 }
 
+Pelagios.Tooltip = function(text, x, y) {
+	this.div = document.createElement("div");
+	this.div.innerHTML = text;
+	this.div.setAttribute("class", "pelagios-tooltip");
+	this.div.style.position = "absolute";
+	this.hide();
+	document.body.appendChild(this.div);
+}
+
+Pelagios.Tooltip.prototype.show = function(x, y) {
+	this.div.style.left = x + 15;
+	this.div.style.top = y + 5;
+	this.div.style.visibility = "visible";
+}
+
+Pelagios.Tooltip.prototype.hide = function() {
+	this.div.style.visibility = "hidden";
+}
+
+Pelagios.Tooltip.prototype.remove = function() {
+	document.body.removeChild(this.div);
+}
+
 Pelagios.Palette = function() {
 	this.bright = ["#9c9ede", "#cedb9c", "#e7cb94", "#e7969c", "#de9ed6"];
 	

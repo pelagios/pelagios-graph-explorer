@@ -42,6 +42,7 @@ Pelagios.SelectionManager.prototype.toggleSelect = function(node) {
 		var links = this.getLinksFor(node);
 		for (var i=0, ii=links.length; i<ii; i++) {
 			links[i].line.remove();
+			links[i].tooltip.remove();
 		}
 		
 		// Remove from 'selectedNodes' array
@@ -134,15 +135,22 @@ Pelagios.SelectionManager.prototype.setLink = function(arg0, arg1, arg2) {
 				"opacity" : 0.8,
 				"stroke-dasharray" : "-"
 			}).toBack(),
+			"tooltip" : new Pelagios.Tooltip(
+					arg2.commonPlaces + " places in common",
+					(fromX + toX) / 2,
+					(fromY + toY) / 2),
 			"weight" : arg2.commonPlaces
 		}
 		
 		// Add mouseover information to link line
-		var map = this.map;
+		var map = this.map;		
 		link.line.mouseover(function(event) {
+			link.tooltip.show(event.clientX, event.clientY);
 			map.showPolygon(arg0.name + "-" + arg1.name);
 		});
+		
 		link.line.mouseout(function (event) {
+			link.tooltip.hide();
 			map.hidePolygon(arg0.name + "-" + arg1.name);
 		});
 		
