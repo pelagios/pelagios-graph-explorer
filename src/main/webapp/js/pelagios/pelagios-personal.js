@@ -13,13 +13,21 @@ Pelagios.PersonalGraph = function(id, raphael, palette) {
     this.places = new Array();
     this.datasets = new Array();
     this.edges = new Array();
-    this.maxEdgeWeight = 1;
+    this.maxEdgeWeight = 0;
+    this.maxDatasetSize = 0;
     
 	this.getWidthFromWeight = function(weight) {
 		var w = 12 * weight / this.maxEdgeWeight;
 		if (w < 2)
 			w = 2;
 		return w;
+	}
+	
+	this.getRadiusFromSize= function(size) {
+		var r = 45 * size / this.maxDatasetSize;
+		if (r < 5)
+			r = 5;
+		return r;
 	}
     
 	var toScreen = this.toScreen;
@@ -103,17 +111,25 @@ Pelagios.PersonalGraph.prototype.newPlace = function(place) {
     return n;
 }
 
-Pelagios.PersonalGraph.prototype.newDataset = function(label, rootLabel) {
+Pelagios.PersonalGraph.prototype.newDataset = function(datasetLabel, datasetSize, rootLabel) {
 	var n;
-	if (this.datasets[label]) {
-		n = this.datasets[label];
+	if (this.datasets[datasetLabel]) {
+		n = this.datasets[datasetLabel];
+		var r = this.getRadiusFromSize(n.size);
+		n.set[0].animate({rx:r, ry:r}, 1000);
 	} else {
+		if (datasetSize > this.maxDatasetSize) {
+			this.maxDatasetSize = datasetSize;
+			this.normalizeDatasetSizes();
+		}
+		
 	    var fill = this.palette.getColor(rootLabel);
 	    
 	    n = this.graph.newNode();
-	    n.name = label;
+	    n.name = datasetLabel;
+	    n.size = datasetSize;
 	    n.set = this.raphael.pelagios.datasetLabel(
-	    		label,
+	    		datasetLabel,
 	    		fill,
 	    		this.palette.darker(fill));
 	
@@ -130,7 +146,7 @@ Pelagios.PersonalGraph.prototype.newDataset = function(label, rootLabel) {
 	        	this.handler.drag,
 	        	this.handler.up);
 	        
-	    this.datasets[label] = n;
+	    this.datasets[datasetLabel] = n;
 	}
     return n;
 }
@@ -172,6 +188,12 @@ Pelagios.PersonalGraph.prototype.setEdge = function(arg0, arg1, arg2) {
 Pelagios.PersonalGraph.prototype.normalizeLineWidths = function() {
 	for (var e in this.edges) {
 		this.setEdge(this.edges[e]);
+	}
+}
+
+Pelagios.PersonalGraph.prototype.normalizeDatasetSizes = function() {
+	for (var d in this.datasets) {
+		this.newDataset(d);
 	}
 }
 

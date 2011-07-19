@@ -11,7 +11,9 @@ import org.neo4j.graphdb.Node;
 public abstract class PelagiosGraphNode {
 	
 	public enum NodeType {
-		DATASET, GEOANNOTATION, PLACE
+		DATASET { public String toString() { return "Dataset"; } },
+		GEOANNOTATION { public String toString() { return "GeoAnnotation"; } }, 
+		PLACE { public String toString() { return "Place"; } }
 	}
 	
 	protected Node backingNode;

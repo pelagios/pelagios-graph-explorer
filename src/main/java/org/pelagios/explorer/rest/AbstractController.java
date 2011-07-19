@@ -7,7 +7,9 @@ import java.util.List;
 import org.pelagios.explorer.rest.api.serializer.DatasetSerializer;
 import org.pelagios.explorer.rest.api.serializer.GeoAnnotationSerializer;
 import org.pelagios.explorer.rest.api.serializer.GeometrySerializer;
+import org.pelagios.explorer.rest.api.serializer.PathSerializer;
 import org.pelagios.explorer.rest.api.serializer.PlaceSerializer;
+import org.pelagios.graph.Path;
 import org.pelagios.graph.nodes.Dataset;
 import org.pelagios.graph.nodes.GeoAnnotation;
 import org.pelagios.graph.nodes.Place;
@@ -33,6 +35,7 @@ public class AbstractController {
 		gsonBuilder.registerTypeHierarchyAdapter(GeoAnnotation.class, new GeoAnnotationSerializer());
 		gsonBuilder.registerTypeHierarchyAdapter(Place.class, new PlaceSerializer());
 		gsonBuilder.registerTypeHierarchyAdapter(Geometry.class, new GeometrySerializer());
+		gsonBuilder.registerTypeHierarchyAdapter(Path.class, new PathSerializer());
 	}
 	
 	protected String toJSON(Object object) {

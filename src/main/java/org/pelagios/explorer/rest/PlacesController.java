@@ -4,17 +4,18 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.ws.rs.GET;
-import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
-import org.pelagios.explorer.rest.api.CoReference;
 import org.pelagios.explorer.rest.api.Occurences;
 import org.pelagios.explorer.rest.api.Overlap;
+import org.pelagios.graph.Path;
 import org.pelagios.graph.PelagiosGraph;
 import org.pelagios.graph.exceptions.DatasetNotFoundException;
 import org.pelagios.graph.exceptions.PlaceNotFoundException;
@@ -27,12 +28,12 @@ import org.pelagios.graph.nodes.Place;
  * the places stored in the PELAGIOS graph.
  * @author Rainer Simon
  */
-@Path("/places")
+@javax.ws.rs.Path("/places")
 public class PlacesController extends AbstractController {
 	
 	@GET
 	@Produces("application/json")
-	@Path("/search")
+	@javax.ws.rs.Path("/search")
 	public Response searchPlaces(@QueryParam("q") String q) {
 		PelagiosGraph graph = PelagiosGraph.getInstance();
 		List<Place> hits = graph.searchPlaces(q, 15);
@@ -41,7 +42,7 @@ public class PlacesController extends AbstractController {
 	
 	@GET
 	@Produces("application/json")
-	@Path("/intersect")
+	@javax.ws.rs.Path("/intersect")
 	public Response getSharedPlaces(@QueryParam("set1") String set1, @QueryParam("set2") String set2)
 		throws DatasetNotFoundException {
 			
@@ -64,43 +65,32 @@ public class PlacesController extends AbstractController {
 	
 	@GET
 	@Produces("application/json")
-	@Path("shortestpath")
+	@javax.ws.rs.Path("shortestpaths")
 	public Response getShortestPaths(@QueryParam("from") String from, @QueryParam("to") String to)
 		throws PlaceNotFoundException, URISyntaxException {
 		
 		PelagiosGraph graph = PelagiosGraph.getInstance();
 		Place pFrom = graph.getPlace(new URI(from));
 		Place pTo = graph.getPlace(new URI(to));
+		Set<Path> shortestPaths = graph.findShortestPaths(pFrom, pTo);
 		
-		List<org.pelagios.graph.Path> shortestPaths = graph.findShortestPath(pFrom, pTo);
-
-		Dataset highest = null;
-		for (org.pelagios.graph.Path p : shortestPaths) {
-			for (Object o : p.getEntities()) {
-				if (o instanceof Dataset) {
-					Dataset d = (Dataset) o;
-					if (highest == null) {
-						highest = d;
-					} else if (highest.isSubsetOf(d)) {
-						highest = d;
-					}
-				}
+		// Collapse the paths in case they are more than 12
+		// (but limit to three rounds, to avoid endless loops!)
+		int ctr = 0;
+		while (shortestPaths.size() > 12 || ctr < 3) {
+			for (Path p : shortestPaths) {
+				p.shrink();
 			}
+			shortestPaths = new HashSet<Path>(shortestPaths);
+			ctr++;
 		}
 		
-		List<CoReference> coreferencePaths = new ArrayList<CoReference>();
-		CoReference coref = new CoReference(
-				highest.getName(), 
-				highest.countReferences(pFrom, true),
-				highest.countReferences(pTo, true));
-		coreferencePaths.add(coref);
-		
-		return Response.ok(toJSON(coreferencePaths)).build();	
+		return Response.ok(toJSON(shortestPaths)).build();	
 	}
 	
 	@GET
 	@Produces("application/json")
-	@Path("occurences")
+	@javax.ws.rs.Path("occurences")
 	public Response listOccurences(@QueryParam("place") String place) throws
 		PlaceNotFoundException, URISyntaxException {
 		

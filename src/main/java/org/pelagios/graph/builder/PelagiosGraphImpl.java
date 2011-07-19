@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.neo4j.graphalgo.GraphAlgoFactory;
 import org.neo4j.graphalgo.PathFinder;
@@ -22,6 +23,7 @@ import org.neo4j.graphdb.index.IndexHits;
 import org.neo4j.kernel.Traversal;
 import org.pelagios.graph.PelagiosGraph;
 import org.pelagios.graph.PelagiosGraphNode;
+import org.pelagios.graph.PelagiosGraphNode.NodeType;
 import org.pelagios.graph.PelagiosRelationships;
 import org.pelagios.graph.exceptions.DatasetExistsException;
 import org.pelagios.graph.exceptions.DatasetNotFoundException;
@@ -266,9 +268,11 @@ class PelagiosGraphImpl extends PelagiosGraph {
 		return sharedPlaces;
 	}
 	
-	public List<org.pelagios.graph.Path> findShortestPath(Place from, Place to) throws PlaceNotFoundException {
-		Node fromNode, toNode;
+	public Set<org.pelagios.graph.Path> findShortestPaths(Place from, Place to)
+		throws PlaceNotFoundException {
 		
+		Node fromNode, toNode;
+
 		Index<Node> idx = getPlaceIndex();
 		IndexHits<Node> hits = idx.get(Place.KEY_URI, from.getURI());
 		if (hits.size() == 0)
@@ -292,11 +296,13 @@ class PelagiosGraphImpl extends PelagiosGraph {
 		);
 		PathFinder<Path> pFinder = GraphAlgoFactory.shortestPath(expander, 8);
 		
-		List<org.pelagios.graph.Path> paths = new ArrayList<org.pelagios.graph.Path>();
+		Set<org.pelagios.graph.Path> paths = new HashSet<org.pelagios.graph.Path>();
 		for (Path p : pFinder.findAllPaths(fromNode, toNode)) {
 			List<PelagiosGraphNode> nodes = new ArrayList<PelagiosGraphNode>();
 			for (Node n : p.nodes()) {
-				nodes.add(wrap(n));
+				PelagiosGraphNode gNode = wrap(n);
+				if (gNode.getType() != NodeType.GEOANNOTATION)
+					nodes.add(gNode);
 			}
 			paths.add(new org.pelagios.graph.Path(nodes));
 		}

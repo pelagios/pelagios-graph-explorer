@@ -82,7 +82,7 @@ class GeoAnnotationImpl extends PelagiosGraphNode implements GeoAnnotation {
 	
 	@Override
 	public String toString() {
-		return "DATARECORD: " + getDataURL();
+		return "GEOANNOTATION: " + getDataURL();
 	}
 
 	@Override

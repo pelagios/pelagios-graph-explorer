@@ -3,10 +3,14 @@ package org.pelagios.explorer.rest.api;
 import com.vividsolutions.jts.geom.Geometry;
 
 /**
- * A simple class that wraps the information required for
- * drawing a link between two data set nodes in the GUI.
+ * This API domain object describes the overlap (in terms of
+ * places, not area!) between two data sets. 
+ * 
+ * TODO the internal API allows computation of overlaps between
+ * arbitrary numbers of data sets. We should also extend this
+ * to this API domain object eventually!
+ * 
  * @author Rainer Simon
- *
  */
 public class Overlap {
 	

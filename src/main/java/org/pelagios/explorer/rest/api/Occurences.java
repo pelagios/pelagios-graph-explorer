@@ -12,7 +12,7 @@ public class Occurences {
 	/**
 	 * The place URI
 	 */
-	String placeURI;
+	String place;
 	
 	/**
 	 * The data set
@@ -36,8 +36,8 @@ public class Occurences {
 	 */
 	int occurences;
 	
-	public Occurences(String placeURI, String dataset, int datasetSize, String rootDataset, int occurences) {
-		this.placeURI = placeURI;
+	public Occurences(String place, String dataset, int datasetSize, String rootDataset, int occurences) {
+		this.place = place;
 		this.dataset = dataset;
 		this.datasetSize = datasetSize;
 		this.rootDataset = rootDataset;

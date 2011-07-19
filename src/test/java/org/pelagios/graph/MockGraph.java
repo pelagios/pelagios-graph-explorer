@@ -2,6 +2,7 @@ package org.pelagios.graph;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Set;
 
 import org.pelagios.graph.builder.GeoAnnotationBuilder;
 import org.pelagios.graph.builder.DatasetBuilder;
@@ -76,7 +77,7 @@ public class MockGraph extends PelagiosGraph {
 		return null;
 	}
 
-	public List<Path> findShortestPath(Place from, Place to)
+	public Set<Path> findShortestPaths(Place from, Place to)
 			throws PlaceNotFoundException {
 		// TODO Auto-generated method stub
 		return null;

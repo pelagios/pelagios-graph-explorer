@@ -2,6 +2,7 @@ package org.pelagios.graph;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Set;
 
 import org.pelagios.explorer.Config;
 import org.pelagios.graph.builder.DatasetBuilder;
@@ -138,7 +139,7 @@ public abstract class PelagiosGraph {
 	 * @throws PlaceNotFoundException if at least one of the places was not found
 	 * in the graph
 	 */
-	public abstract List<Path> findShortestPath(Place from, Place to) throws PlaceNotFoundException;
+	public abstract Set<Path> findShortestPaths(Place from, Place to) throws PlaceNotFoundException;
 	
 	/**
 	 * Be kind. Always disconnect the graph DB before leaving.
