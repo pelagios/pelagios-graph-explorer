@@ -47,7 +47,7 @@ Pelagios.Async.prototype.findShortestPaths = function(from, to, personalGraph) {
 				lastNode = newNode;
 			}
 	
-			personalGraph.setEdge(lastNode, to, data[j].end.annotations);
+			personalGraph.setEdge(to, lastNode, data[j].end.annotations);
 		}
 		Pelagios.Loadmask.getInstance().hide();
 	})
