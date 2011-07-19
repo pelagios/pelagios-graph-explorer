@@ -179,8 +179,7 @@ Pelagios.Graph.prototype.removeChildNodes = function(parent) {
 			
 			// Remove selection, if any
 			if (ch[i].selected)
-				this.toggleSelect(ch[i]);
-			delete this.selectedNodes[ch[i].name];
+				this.selectionManager.toggleSelect(ch[i]);
 		}
 		delete this.children[parent.name];
 		parent.opened = false;
