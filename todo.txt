@@ -3,12 +3,10 @@ TODO...
 - Document the REST API
 - Document the graph model (in an extra readme? in the PelagiosRelationships?)
 - Clean up the unit tests (overall cleanup + mock objects)
-- Scala unit tests?
-- Add HTTP scripts for harvesting Ptolemy Machine place data (Groovy?)
+- Add HTTP scripts for harvesting Ptolemy Machine place data 
 - Review and clean up the JavaScript code (possibly include Closure Compiler in build)
 - Add 3rd party JavaScript licences + credits 
-- Bug: NullPointer situation when a dataset node is closed which has selected subnodes
-- Detail view!
+- Correct depiction of hierarchy in personal view!
 - Map synchronization in detail view
 - Back button in detail view to return to dataset view...
 - Allow searches to be passed via the URL query string
