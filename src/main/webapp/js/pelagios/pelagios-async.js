@@ -20,9 +20,9 @@ Pelagios.Async.prototype.fetchConvexHull = function(node) {
 
 Pelagios.Async.prototype.fetchPlaceReferences = function(place, personalGraph) {
 	var pNode = personalGraph.newPlace(place);
-	$.getJSON("places/references?place=" + encodeURI(place.uri), function(data) {
+	$.getJSON("places/occurences?place=" + encodeURI(place.uri), function(data) {
 		for (var i=0, ii=data.length; i<ii; i++) {
-			var dNode = personalGraph.newDataset(data[i].dataset, data[i].rootdataset);
+			var dNode = personalGraph.newDataset(data[i].dataset, data[i].rootDataset);
 			personalGraph.setEdge(pNode, dNode, data[i].references);
 		}
 	})

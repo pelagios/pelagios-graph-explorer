@@ -13,7 +13,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
 import org.pelagios.explorer.rest.api.CoReference;
-import org.pelagios.explorer.rest.api.Occurence;
+import org.pelagios.explorer.rest.api.Occurences;
 import org.pelagios.explorer.rest.api.Overlap;
 import org.pelagios.graph.PelagiosGraph;
 import org.pelagios.graph.exceptions.DatasetNotFoundException;
@@ -100,8 +100,8 @@ public class PlacesController extends AbstractController {
 	
 	@GET
 	@Produces("application/json")
-	@Path("references")
-	public Response listReferences(@QueryParam("place") String place) throws
+	@Path("occurences")
+	public Response listOccurences(@QueryParam("place") String place) throws
 		PlaceNotFoundException, URISyntaxException {
 		
 		// Get all references to this place from the graph
@@ -129,9 +129,15 @@ public class PlacesController extends AbstractController {
 		occurences = collapse(occurences, 12);
 		
 		// Wrap the results for JSON serialization
-		List<Occurence> occJson = new ArrayList<Occurence>();
+		List<Occurences> occJson = new ArrayList<Occurences>();
 		for (Dataset s : occurences.keySet()) {
-			occJson.add(new Occurence(s.getName(), s.getRoot().getName(), occurences.get(s)));
+			occJson.add(new Occurences(
+					p.getURI().toString(),
+					s.getName(),
+					s.listRecords().size(),
+					s.getRoot().getName(), 
+					occurences.get(s))
+			);
 		}
 		
 		return Response.ok(toJSON(occJson)).build();	
