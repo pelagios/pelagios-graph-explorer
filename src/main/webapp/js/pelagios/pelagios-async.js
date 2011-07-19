@@ -23,7 +23,7 @@ Pelagios.Async.prototype.fetchPlaceReferences = function(place, personalGraph) {
 	$.getJSON("places/references?place=" + encodeURI(place.uri), function(data) {
 		for (var i=0, ii=data.length; i<ii; i++) {
 			var dNode = personalGraph.newDataset(data[i].dataset, data[i].rootdataset);
-			personalGraph.newEdge(pNode, dNode, data[i].references);
+			personalGraph.setEdge(pNode, dNode, data[i].references);
 		}
 	})
 	.error(function(data) { alert("Something went wrong: " + data.responseText); });

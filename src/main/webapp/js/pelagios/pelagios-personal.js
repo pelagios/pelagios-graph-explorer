@@ -9,22 +9,24 @@ Pelagios.PersonalGraph = function(id, raphael, palette) {
     
     this.pAsync = new Pelagios.Async();
     
-    // Keep track of places and datasets in the graph
+    // Keep track of places, datasets and edges in the graph
     this.places = new Array();
     this.datasets = new Array();
+    this.edges = new Array();
     this.maxEdgeWeight = 1;
     
-    var maxEdgeWeight = function() { return this.maxEdgeWeight; }
+	this.getWidthFromWeight = function(weight) {
+		var w = 12 * weight / this.maxEdgeWeight;
+		if (w < 2)
+			w = 2;
+		return w;
+	}
+    
 	var toScreen = this.toScreen;
     this.renderer = new Renderer(10, this.layout,
 	  function clear() { },
 	  
 	  function drawEdge(edge, p1, p2) {
-		  var sizeNorm = 20 * edge.connection.size / maxEdgeWeight;
-		  if (sizeNorm < 3)
-			  sizeNorm = 3;
-		  
-		  edge.connection.line.attr({"stroke-width" : sizeNorm });
 		  raphael.pelagios.connection(edge.connection);
 	  },
 	  
@@ -132,16 +134,32 @@ Pelagios.PersonalGraph.prototype.newDataset = function(label, rootLabel) {
     return n;
 }
 
-Pelagios.PersonalGraph.prototype.newEdge = function(from, to, size) {
-	if (size > this.maxEdgeWeight)
-		this.maxEdgeWeight = size;
-	
-	var sizeNorm = 20 * size / this.maxEdgeWeight;
-	
-    var e = this.graph.newEdge(from, to, { length: 1 });
-    e.connection = this.raphael.pelagios.connection(from.set[0], to.set[0], "#000", sizeNorm);
-    e.connection.size = size;
-    return e;
+Pelagios.PersonalGraph.prototype.setEdge = function(arg0, arg1, arg2) {
+	if (arg1) {
+		// arg0 -> from, arg1 -> to, arg2 -> weight
+		if (arg2 > this.maxEdgeWeight) {
+			this.maxEdgeWeight = arg2;
+			this.normalizeLineWidths();
+		}
+		
+		var sizeNorm = this.getWidthFromWeight(arg2);
+		
+	    var e = this.graph.newEdge(arg0, arg1, { length: 1 });
+	    e.connection = this.raphael.pelagios.connection(arg0.set[0], arg1.set[0], "#000", sizeNorm);
+	    e.connection.weight = arg2;
+	    this.edges.push(e);
+	    return e;		
+	} else {
+		// arg0 -> edge
+		arg0.connection.line
+			.animate({ "stroke-width" : this.getWidthFromWeight(arg0.connection.weight) }, 500);
+	}
+}
+
+Pelagios.PersonalGraph.prototype.normalizeLineWidths = function() {
+	for (var e in this.edges) {
+		this.setEdge(this.edges[e]);
+	}
 }
 
 Pelagios.PersonalGraph.prototype.handler = {
