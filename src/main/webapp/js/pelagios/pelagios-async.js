@@ -29,17 +29,23 @@ Pelagios.Async.prototype.fetchPlaceReferences = function(place, personalGraph) {
 	.error(function(data) { alert("Something went wrong: " + data.responseText); });
 }
 
-Pelagios.Async.prototype.findShortestPath = function(from, to, personalGraph) {	
+Pelagios.Async.prototype.findShortestPaths = function(from, to, personalGraph) {	
 	$.getJSON("places/shortestpaths?from=" + encodeURI(from.place.uri) + 
 		"&to=" + encodeURI(to.place.uri), function(data) {
 
-		var lastNode = from;
-		for (var i=0, ii=data.length; i<ii; i++) {
-			newNode = personalGraph.newDataset(data[i].dataset);
-			personalGraph.setEdge(lastNode, newNode, data[i].src);
-			lastNode = newNode;
+		for (var j=0, jj=data.length; j<jj; j++) {
+			var lastNode = from;
+			var lastWeight = data[j].start.annotations;
+			for (var i=0, ii=data[j].via.length; i<ii; i++) {
+				var dset = data[j].via[i];
+				newNode = personalGraph.newDataset(dset.dataset, dset.datasetSize, dset.rootDataset);
+				personalGraph.setEdge(lastNode, newNode, lastWeight);
+				lastWeight = 1;
+				lastNode = newNode;
+			}
+	
+			personalGraph.setEdge(lastNode, to, data[j].end.annotations);
 		}
-		personalGraph.setEdge(lastNode, to, data[data.length - 1].dest);
 	})
 	.error(function(data) { alert("Something went wrong: " + data.responseText); });	
 }

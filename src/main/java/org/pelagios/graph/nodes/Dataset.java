@@ -66,7 +66,7 @@ public interface Dataset {
 	 * Returns a list of all data records contained in this data set.
 	 * @return the list of data records;
 	 */
-	public List<GeoAnnotation> listRecords();
+	public List<GeoAnnotation> listRecords(boolean includeSubsets);
 	
 
 	/**

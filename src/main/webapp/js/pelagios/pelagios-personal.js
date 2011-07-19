@@ -85,29 +85,34 @@ Pelagios.PersonalGraph.prototype.show = function() {
 }
 
 Pelagios.PersonalGraph.prototype.newPlace = function(place) {
-    var n = this.graph.newNode();
-    n.set = this.raphael.pelagios.placeLabel(place.label);
-    n.place = place;
-
-    // Seems kind of recursive... but we need that in
-    // the move handler, which only has access to the
-    // individual elements inside the set, not the original
-    // set or graph node.
-    for (var i=0, ii=n.set.length; i<ii; i++) {
-        n.set[i].graphNode = n;    	
-    }
-    
-    n.set.drag(
-        	this.handler.move,
-        	this.handler.drag,
-        	this.handler.up);
-    
-    // Find paths between places
-    for (var i=0, ii=this.places.length; i<ii; i++) {
-        this.pAsync.findShortestPath(n, this.places[i], this);    	
-    }
-    
-    this.places.push(n);
+	var n;
+	if (this.places[place]) {
+		n = this.places[place];
+	} else {
+	    n = this.graph.newNode();
+	    n.set = this.raphael.pelagios.placeLabel(place.label);
+	    n.place = place;
+	
+	    // Seems kind of recursive... but we need that in
+	    // the move handler, which only has access to the
+	    // individual elements inside the set, not the original
+	    // set or graph node.
+	    for (var i=0, ii=n.set.length; i<ii; i++) {
+	        n.set[i].graphNode = n;    	
+	    }
+	    
+	    n.set.drag(
+	        	this.handler.move,
+	        	this.handler.drag,
+	        	this.handler.up);
+	    
+	    // Find paths between places
+	    for (var i=0, ii=this.places.length; i<ii; i++) {
+	        this.pAsync.findShortestPaths(n, this.places[i], this);    	
+	    }
+	    
+	    this.places.push(n);
+	}
     return n;
 }
 
@@ -151,9 +156,26 @@ Pelagios.PersonalGraph.prototype.newDataset = function(datasetLabel, datasetSize
     return n;
 }
 
-Pelagios.PersonalGraph.prototype.setEdge = function(arg0, arg1, arg2) {
+Pelagios.PersonalGraph.prototype.edgeExists = function(from, to) {
+	for (var i=0, ii=this.edges.length; i<ii; i++) {
+		var e = this.edges[i];
+		if (e.from == from && e.to == to)
+			return e;
+		
+		if (e.to == from && e.from == to)
+			return e;
+	}
+	
+	return false;
+}
+
+Pelagios.PersonalGraph.prototype.setEdge = function(arg0, arg1, arg2) {	
 	if (arg1) {
 		// arg0 -> from, arg1 -> to, arg2 -> weight
+		var exists = this.edgeExists(arg0, arg1); 
+		if (exists)
+			return exists;
+		
 		if (arg2 > this.maxEdgeWeight) {
 			this.maxEdgeWeight = arg2;
 			this.normalizeLineWidths();
@@ -164,6 +186,8 @@ Pelagios.PersonalGraph.prototype.setEdge = function(arg0, arg1, arg2) {
 	    var e = this.graph.newEdge(arg0, arg1, { length: 1 });
 	    e.connection = this.raphael.pelagios.connection(arg0.set[0], arg1.set[0], "#000", sizeNorm);
 	    e.connection.weight = arg2;
+	    e.from = arg0;
+	    e.to = arg1;
 		e.connection.tooltip = new Pelagios.Tooltip(arg2 + " occurences in " + arg1.name);
 	    
 	    e.connection.line.mouseover(function(event) {
@@ -177,11 +201,12 @@ Pelagios.PersonalGraph.prototype.setEdge = function(arg0, arg1, arg2) {
 		});
 	    
 	    this.edges.push(e);
-	    return e;		
+	    return e;
 	} else {
 		// arg0 -> edge
 		arg0.connection.line
 			.animate({ "stroke-width" : this.getWidthFromWeight(arg0.connection.weight) }, 500);
+		return arg0;
 	}
 }
 

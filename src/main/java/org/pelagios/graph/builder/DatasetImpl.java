@@ -77,15 +77,17 @@ class DatasetImpl extends PelagiosGraphNode implements Dataset {
 		return (d.listSubsets().contains(this));
 	}
 	
-	public List<GeoAnnotation> listRecords() {
+	public List<GeoAnnotation> listRecords(boolean includeSubsets) {
 		List<GeoAnnotation> records = new ArrayList<GeoAnnotation>(); 
 		
 		for (Relationship r : backingNode.getRelationships(PelagiosRelationships.RECORD)) {
 			records.add(new GeoAnnotationImpl(r.getEndNode()));
 		}
 		
-		for (Dataset subset : listSubsets()) {
-			records.addAll(subset.listRecords());
+		if (includeSubsets) {
+			for (Dataset subset : listSubsets()) {
+				records.addAll(subset.listRecords(true));
+			}
 		}
 		
 		return records;
@@ -103,14 +105,8 @@ class DatasetImpl extends PelagiosGraphNode implements Dataset {
 			places = new ArrayList<Place>();
 		}
 		
-		for (GeoAnnotation r : listRecords()) {
+		for (GeoAnnotation r : listRecords(includeSubsets)) {
 			places.addAll(r.listPlaces());
-		}
-		
-		if (includeSubsets) {
-			for (Dataset subset : listSubsets()) {
-				places.addAll(subset.listPlaces(true));
-			}
 		}
 		
 		return new ArrayList<Place>(places);

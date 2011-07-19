@@ -84,6 +84,7 @@ public class PlacesController extends AbstractController {
 			loopCount++;
 		}
 		
+		System.out.println(toJSON(shortestPaths));
 		return Response.ok(toJSON(shortestPaths)).build();	
 	}
 	
@@ -112,7 +113,7 @@ public class PlacesController extends AbstractController {
 			
 			occurences.put(parent, count);
 		}
-		
+
 		// The fun part - collapse the table from bottom-level datasets
 		// upwards to end up at a reasonable number of total sets
 		occurences = collapse(occurences, 12);
@@ -123,7 +124,7 @@ public class PlacesController extends AbstractController {
 			occJson.add(new Occurences(
 					p.getURI().toString(),
 					s.getName(),
-					s.listRecords().size(),
+					s.listRecords(true).size(),
 					s.getRoot().getName(), 
 					occurences.get(s))
 			);
