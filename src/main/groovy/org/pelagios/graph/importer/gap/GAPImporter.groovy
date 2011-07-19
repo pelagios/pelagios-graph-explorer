@@ -103,7 +103,7 @@ class GAPImporter extends AbstractDatasetImporter {
 		   int pgIdx = uri.indexOf('pg=')
 		   if (pgIdx > -1) {
 			   pgIdx += 3
-			   toIdx = uri.indexOf('&', pgIdx)
+			   toIdx = uri.indexOf('#', pgIdx)
 			   if (toIdx > -1) {
 				   hierarchy.add('GAP:' + hierarchy.get(0) + ':' + uri.substring(pgIdx, toIdx))
 			   } else {
