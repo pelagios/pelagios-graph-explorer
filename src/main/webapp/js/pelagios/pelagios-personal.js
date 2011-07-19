@@ -111,6 +111,7 @@ Pelagios.PersonalGraph.prototype.newDataset = function(label, rootLabel) {
 	    var fill = this.palette.getColor(rootLabel);
 	    
 	    n = this.graph.newNode();
+	    n.name = label;
 	    n.set = this.raphael.pelagios.datasetLabel(
 	    		label,
 	    		fill,
@@ -147,6 +148,18 @@ Pelagios.PersonalGraph.prototype.setEdge = function(arg0, arg1, arg2) {
 	    var e = this.graph.newEdge(arg0, arg1, { length: 1 });
 	    e.connection = this.raphael.pelagios.connection(arg0.set[0], arg1.set[0], "#000", sizeNorm);
 	    e.connection.weight = arg2;
+		e.connection.tooltip = new Pelagios.Tooltip(arg2 + " occurences in " + arg1.name);
+	    
+	    e.connection.line.mouseover(function(event) {
+	    	e.connection.tooltip.show(event.clientX, event.clientY);
+			// map.showPolygon(arg0.name + "-" + arg1.name);
+		});
+		
+	    e.connection.line.mouseout(function (event) {
+	    	e.connection.tooltip.hide();
+			// map.hidePolygon(arg0.name + "-" + arg1.name);
+		});
+	    
 	    this.edges.push(e);
 	    return e;		
 	} else {
