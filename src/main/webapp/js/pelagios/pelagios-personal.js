@@ -24,7 +24,7 @@ Pelagios.PersonalGraph = function(id, raphael, palette) {
 	}
 	
 	this.getRadiusFromSize= function(size) {
-		var r = 45 * size / this.maxDatasetSize;
+		var r = 25 * size / this.maxDatasetSize;
 		if (r < 5)
 			r = 5;
 		return r;
@@ -121,7 +121,7 @@ Pelagios.PersonalGraph.prototype.newDataset = function(datasetLabel, datasetSize
 	if (this.datasets[datasetLabel]) {
 		n = this.datasets[datasetLabel];
 		var r = this.getRadiusFromSize(n.size);
-		n.set[0].animate({rx:r, ry:r}, 1000);
+		n.set[0].animate({rx:r, ry:r}, 500);
 	} else {
 		if (datasetSize > this.maxDatasetSize) {
 			this.maxDatasetSize = datasetSize;
@@ -134,9 +134,12 @@ Pelagios.PersonalGraph.prototype.newDataset = function(datasetLabel, datasetSize
 	    n.name = datasetLabel;
 	    n.size = datasetSize;
 	    n.set = this.raphael.pelagios.datasetLabel(
-	    		datasetLabel,
+	    		datasetLabel + "\n" + datasetSize + " Geoannotations",
 	    		fill,
 	    		this.palette.darker(fill));
+	    
+		var r = this.getRadiusFromSize(datasetSize);
+	    n.set[0].attr({rx:r, ry:r});
 	
 	    // Seems kind of recursive... but we need that in
 	    // the move handler, which only has access to the

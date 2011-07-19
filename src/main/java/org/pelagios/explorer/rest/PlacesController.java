@@ -84,7 +84,6 @@ public class PlacesController extends AbstractController {
 			loopCount++;
 		}
 		
-		System.out.println(toJSON(shortestPaths));
 		return Response.ok(toJSON(shortestPaths)).build();	
 	}
 	
