@@ -1,7 +1,6 @@
 package org.pelagios.graph.builder;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -118,8 +117,13 @@ class DatasetImpl extends PelagiosGraphNode implements Dataset {
 	}
 
 	public int countReferences(Place place, boolean includeSubsets) {
-		List<Place> filtered = filterReferenced(Arrays.asList(place), includeSubsets);
-		return filtered.size();
+		// A quick hack...
+		int ctr = 0;
+		for (Place p : listPlaces(includeSubsets, false)) {
+			if (p.equals(place))
+				ctr++;
+		}
+		return ctr;	
 	}
 
 	public List<Place> filterReferenced(List<Place> places, boolean includeSubsets) {

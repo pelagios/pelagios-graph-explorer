@@ -35,7 +35,6 @@ Pelagios.Async.prototype.findShortestPath = function(from, to, personalGraph) {
 
 		var lastNode = from;
 		for (var i=0, ii=data.length; i<ii; i++) {
-
 			newNode = personalGraph.newDataset(data[i].dataset);
 			personalGraph.setEdge(lastNode, newNode, data[i].src);
 			lastNode = newNode;

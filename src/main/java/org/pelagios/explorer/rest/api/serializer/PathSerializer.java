@@ -17,26 +17,47 @@ import com.google.gson.JsonSerializer;
 
 public class PathSerializer implements JsonSerializer<Path> {
 
-	private static final String KEY_FROM = "from";
-	private static final String KEY_TO = "to";
+	private static final String KEY_START = "start";
+	private static final String KEY_END = "end";
 	private static final String KEY_VIA = "via";
+	
+	private static final String KEY_PLACE = "place";
+	private static final String KEY_ANNOTATIONS = "annotations";
+	
+	private static final String KEY_DATASET = "dataset";
+	private static final String KEY_DATASET_SIZE = "datasetSize";
+	private static final String KEY_ROOT_DATASET = "rootDataset";
 	
 	public JsonElement serialize(Path path, Type typeOfSrc,
 			JsonSerializationContext context) {
 
-		List<PelagiosGraphNode> nodes = path.getNodes();  
-		
+		List<PelagiosGraphNode> nodes = path.getNodes();
 		JsonObject json = new JsonObject();
-		json.add(KEY_FROM,
-			new JsonPrimitive(((Place) nodes.get(0)).getURI().toString()));
-		json.add(KEY_TO,
-			new JsonPrimitive(((Place) nodes.get(nodes.size()-1)).getURI().toString()));
-
+		
+		// Start
+		Place pStart = (Place) nodes.get(0);
+		Dataset firstHop = (Dataset) nodes.get(1);
+		JsonObject start = new JsonObject();
+		start.add(KEY_PLACE, new JsonPrimitive(pStart.getURI().toString()));
+		start.add(KEY_ANNOTATIONS, new JsonPrimitive(firstHop.countReferences(pStart, true))); 
+		json.add(KEY_START, start);
+		
+		// End
+		Place pEnd = (Place) nodes.get(nodes.size()-1);
+		Dataset lastHop = (Dataset) nodes.get(nodes.size() - 2);
+		JsonObject end = new JsonObject();
+		end.add(KEY_PLACE, new JsonPrimitive(pEnd.getURI().toString()));
+		end.add(KEY_ANNOTATIONS, new JsonPrimitive(lastHop.countReferences(pEnd, true))); 
+		json.add(KEY_END, end);
+		
+		// Hops
 		JsonArray via = new JsonArray();
 		for (int i=1; i<nodes.size() - 1; i++) {
+			Dataset d = (Dataset) nodes.get(i);
 			JsonObject hop = new JsonObject();
-			hop.add(nodes.get(i).getType().toString(), 
-				new JsonPrimitive(((Dataset) nodes.get(i)).getName()));
+			hop.add(KEY_DATASET, new JsonPrimitive(d.getName()));
+			hop.add(KEY_DATASET_SIZE, new JsonPrimitive(d.listRecords().size()));
+			hop.add(KEY_ROOT_DATASET, new JsonPrimitive(d.getRoot().getName()));
 			via.add(hop);
 		}
 		json.add(KEY_VIA, via);

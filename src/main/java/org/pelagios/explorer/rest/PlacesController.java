@@ -74,15 +74,14 @@ public class PlacesController extends AbstractController {
 		Place pTo = graph.getPlace(new URI(to));
 		Set<Path> shortestPaths = graph.findShortestPaths(pFrom, pTo);
 		
-		// Collapse the paths in case they are more than 12
-		// (but limit to three rounds, to avoid endless loops!)
-		int ctr = 0;
-		while (shortestPaths.size() > 12 || ctr < 3) {
+		// Fold the paths to a maximum of 12
+		int loopCount = 0;
+		while (shortestPaths.size() > 12 && loopCount < 3) {
 			for (Path p : shortestPaths) {
-				p.shrink();
+				p.fold();
 			}
 			shortestPaths = new HashSet<Path>(shortestPaths);
-			ctr++;
+			loopCount++;
 		}
 		
 		return Response.ok(toJSON(shortestPaths)).build();	

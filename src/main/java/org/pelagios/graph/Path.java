@@ -1,12 +1,16 @@
 package org.pelagios.graph;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import org.pelagios.graph.PelagiosGraphNode.NodeType;
 import org.pelagios.graph.nodes.Dataset;
 import org.pelagios.graph.nodes.Place;
 
 public class Path {
+	
+	private static final int MAX_FOLD_LOOP_COUNT = 3;
 	
 	private List<PelagiosGraphNode> nodes;
 	
@@ -18,7 +22,7 @@ public class Path {
 		return nodes;
 	}
 	
-	public Path shrink() {
+	public Path fold() {
 		if (nodes.size() < 5)
 			return this;
 		
@@ -64,6 +68,39 @@ public class Path {
 			}
 		}
 		return sb.toString().hashCode();
+	}
+	
+	public static HashMap<Path, Integer> foldPaths(Set<Path> paths, int maxSize) {
+		HashMap<Path, Integer> foldedPaths = new HashMap<Path, Integer>();
+		for (Path p : paths) {
+			foldedPaths.put(p, Integer.valueOf(1));
+		}
+		
+		return foldPaths(foldedPaths, maxSize, 0);		
+	}
+	
+	private static HashMap<Path, Integer> foldPaths(HashMap<Path, Integer> paths,
+			int maxSize, int loopCount) {
+
+		if (paths.size() <= maxSize)
+			return paths;
+		
+		if (loopCount > MAX_FOLD_LOOP_COUNT)
+			return paths;
+		
+		HashMap<Path, Integer> foldedPaths = new HashMap<Path, Integer>();
+		for (Path p : paths.keySet()) {
+			int foldCount = paths.get(p).intValue();
+			p.fold();
+			
+			if (foldedPaths.containsKey(p)) {
+				foldCount += foldedPaths.get(p).intValue();
+			}
+			
+			foldedPaths.put(p, Integer.valueOf(foldCount));
+		}
+		
+		return foldPaths(foldedPaths, maxSize, loopCount++);
 	}
 
 }
