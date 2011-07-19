@@ -19,17 +19,20 @@ Pelagios.Async.prototype.fetchConvexHull = function(node) {
 }
 
 Pelagios.Async.prototype.fetchPlaceReferences = function(place, personalGraph) {
+	Pelagios.Loadmask.getInstance().show();
 	var pNode = personalGraph.newPlace(place);
 	$.getJSON("places/occurences?place=" + encodeURI(place.uri), function(data) {
 		for (var i=0, ii=data.length; i<ii; i++) {
 			var dNode = personalGraph.newDataset(data[i].dataset, data[i].datasetSize, data[i].rootDataset);
 			personalGraph.setEdge(pNode, dNode, data[i].occurences);
 		}
+		Pelagios.Loadmask.getInstance().hide();
 	})
 	.error(function(data) { alert("Something went wrong: " + data.responseText); });
 }
 
-Pelagios.Async.prototype.findShortestPaths = function(from, to, personalGraph) {	
+Pelagios.Async.prototype.findShortestPaths = function(from, to, personalGraph) {
+	Pelagios.Loadmask.getInstance().show();
 	$.getJSON("places/shortestpaths?from=" + encodeURI(from.place.uri) + 
 		"&to=" + encodeURI(to.place.uri), function(data) {
 
@@ -46,6 +49,7 @@ Pelagios.Async.prototype.findShortestPaths = function(from, to, personalGraph) {
 	
 			personalGraph.setEdge(lastNode, to, data[j].end.annotations);
 		}
+		Pelagios.Loadmask.getInstance().hide();
 	})
 	.error(function(data) { alert("Something went wrong: " + data.responseText); });	
 }

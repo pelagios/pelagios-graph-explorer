@@ -24,13 +24,6 @@ Pelagios.getViewport = function() {
 
 Pelagios.Loadmask = function() {
 	this.div = document.createElement("div");
-	this.div.style.position = "absolute";
-	this.div.style.top = 0;
-	this.div.style.right = 0;
-	// this.div.style.width = "100%";
-	// this.div.style.height = "100%";
-	// this.div.style.backgroundColor = "#fff";
-	// this.div.style.opacity = 0.5;
 	this.div.style.visibility = "visible";
 	this.div.innerHTML = "<img class=\"ajax-loader\" src=\"img/ajax-loader.gif\"/>";
 	document.body.appendChild(this.div);
