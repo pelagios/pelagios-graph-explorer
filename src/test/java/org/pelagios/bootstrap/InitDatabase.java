@@ -39,7 +39,7 @@ public class InitDatabase {
 	
 	private static final String NEO4J_DIR = "c:/neo4j-data";
 	
-	private static final String DATASETS_DIR = "src/test/resources/datasets/";
+	private static final String DATASETS_DIR = "data/datasets/";
 	
 	private static File PLEIADES_LOCATIONS_CSV = null;
 	private static File PLEIADES_NAMES_CSV = null;
@@ -58,7 +58,7 @@ public class InitDatabase {
 	
 	static {
 		// Look for Pleiades dump files
-		File resourcesDir = new File("src/test/resources");
+		File resourcesDir = new File("data");
 		for (File f : resourcesDir.listFiles()) {
 			if (f.getName().startsWith("pleiades-locations") &&
 				f.getName().endsWith(".csv")) {
