@@ -28,6 +28,9 @@ window.onload = function() {
     		"personal-graph", 
     		Raphael("personal-graph", viewport.x, viewport.y),
     		pMap);
+	$("#back-button").click(function(){
+		pPersonalGraph.hide();
+	});
 
     var pAsync = new Pelagios.Async(pGraph, pMap);
 	$("#searchfield").autocomplete({
@@ -37,6 +40,9 @@ window.onload = function() {
 			pMap.addGeoJSON(ui.item.label, ui.item.geometry);
 			pAsync.fetchPlaceReferences(ui.item, pPersonalGraph, pMap);
 		}
+	});
+	$("#searchfield").focus(function() {
+		$(this).val(''); return false;
 	});
     
     // Fetch datasets from server

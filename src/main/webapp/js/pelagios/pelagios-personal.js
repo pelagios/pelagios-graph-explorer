@@ -75,12 +75,11 @@ Pelagios.PersonalGraph.prototype.fromScreen = function(s) {
 }
 
 Pelagios.PersonalGraph.prototype.hide = function() {
-	document.getElementById(this.id).style.visibility = "hidden";
+	setTimeout(function(){ this.clear() }.bind(this), 1000);
 	document.getElementById(this.id).style.opacity = 0;
 }
 
 Pelagios.PersonalGraph.prototype.show = function() {
-	document.getElementById(this.id).style.visibility = "visible";
 	document.getElementById(this.id).style.opacity = 1;
 }
 
@@ -192,14 +191,11 @@ Pelagios.PersonalGraph.prototype.findEdgesFor = function(dataset) {
 	var dsEdges = new Array();
 	for (var e in this.edges) {
 		var edge = this.edges[e];
-		
 		if ((edge.to == dataset) || (edge.from == dataset)) {
 			dsEdges.push(edge);	
 		}
 	}
-	
 	return dsEdges;
-	
 }
 
 Pelagios.PersonalGraph.prototype.purgeGraph = function() {
@@ -299,6 +295,29 @@ Pelagios.PersonalGraph.prototype.normalizeDatasetSizes = function() {
 	for (var d in this.datasets) {
 		this.newDataset(d);
 	}
+}
+
+Pelagios.PersonalGraph.prototype.clear = function() {
+    this.maxDatasetSize = 0;
+    this.maxEdgeWeight = 0;
+    
+	for (var d in this.datasets) {
+		var dataset = this.datasets[d];			
+		var edges = this.findEdgesFor(dataset);
+		
+		for (var i=0, ii=edges.length; i<ii; i++) {
+			edges[i].connection.line.remove();
+			delete this.edges[edges[i].from.name];
+		}
+		this.graph.removeNode(dataset);
+		dataset.set.remove();
+		delete this.datasets[dataset.name];
+	}
+	
+	for (var i=0, ii=this.places.length; i<ii; i++) {
+		this.places[i].set.remove();
+	}
+	this.places.length = 0;
 }
 
 Pelagios.PersonalGraph.prototype.handler = {
