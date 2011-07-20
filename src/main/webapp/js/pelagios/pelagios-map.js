@@ -9,6 +9,14 @@ Pelagios.Map = function() {
 	
 	this.map = new google.maps.Map(document.getElementById("map-panel"), options);
 	
+	this.hilightStyle = {
+		strokeColor: "#ff0000",
+		strokeOpacity: 0.9,
+		strokeWeight: 2,
+		fillColor: "#ff0000",
+		fillOpacity: 0.4
+	} 
+	
 	/*
 	var noLabelStyle = [ { featureType: "administrative", elementType: "labels", stylers: [ { visibility: "off" } ] },{ featureType: "administrative.province", elementType: "all", stylers: [ { visibility: "off" } ] },{ featureType: "water", elementType: "labels", stylers: [ { visibility: "off" } ] },{ featureType: "road", elementType: "all", stylers: [ { visibility: "off" } ] },{ featureType: "poi", elementType: "all", stylers: [ { visibility: "off" } ] },{ featureType: "transit", elementType: "all", stylers: [ { visibility: "off" } ] },{ featureType: "administrative.locality", elementType: "all", stylers: [ { visibility: "off" } ] },{ featureType: "administrative.province", elementType: "all", stylers: [ { visibility: "off" } ] } ]
 	
@@ -24,6 +32,9 @@ Pelagios.Map = function() {
 	
 	// All polygons
 	this.polygons = new Array();
+	
+	// All GeoJSON features
+	this.features = new Array();
 	
 	// Just those which are currently shown on the map
 	this.shown = new Array();
@@ -62,14 +73,16 @@ Pelagios.Map.prototype.addPolygon = function(name, coords, fill) {
 		gCoords.push(new google.maps.LatLng(coords[i][1], coords[i][0]));
 	}
 	
-	this.polygons[name] = new google.maps.Polygon({
+	var pOptions = {
 		paths: gCoords,
 		strokeColor: fill,
 		strokeOpacity: 0.8,
 		strokeWeight: 1,
 		fillColor: fill,
 		fillOpacity: 0.5
-	});
+	} 
+	
+	this.polygons[name] = new google.maps.Polygon(pOptions);
 }
 
 Pelagios.Map.prototype.showPolygon = function(name) {
@@ -94,7 +107,7 @@ Pelagios.Map.prototype.addMarker = function(name, lat, lon) {
 	});  
 }
 
-Pelagios.Map.prototype.addGeoJSON = function(json) {
+Pelagios.Map.prototype.addGeoJSON = function(name, json) {
 	var options = {
 		"strokeColor": "#FF7800",
 		"strokeOpacity": 1,
@@ -104,5 +117,19 @@ Pelagios.Map.prototype.addGeoJSON = function(json) {
 	};
 	
 	var geom = new GeoJSON(json, options);
+	geom.options = options;
 	geom.setMap(this.map);	
+	
+	this.features[name] = geom;
+}
+
+Pelagios.Map.prototype.setHighlight = function(name, highlighted) {
+	var geom = this.features[name];
+	if (geom) {
+		if (highlighted) {
+			geom.setOptions(this.hilightStyle);
+		} else {
+			geom.setOptions(geom.options);
+		}
+	}
 }

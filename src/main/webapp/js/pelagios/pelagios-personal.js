@@ -101,6 +101,14 @@ Pelagios.PersonalGraph.prototype.newPlace = function(place) {
 	        n.set[i].graphNode = n;    	
 	    }
 	    
+	    var map = this.map;
+		n.set[0].mouseover(function(event) {
+			map.setHighlight(place.label, true);
+		});
+		n.set[0].mouseout(function (event) {
+			map.setHighlight(place.label, false);			
+		});
+	    
 	    n.set.drag(
 	        	this.handler.move,
 	        	this.handler.drag,
