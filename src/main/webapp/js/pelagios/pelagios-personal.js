@@ -74,12 +74,22 @@ Pelagios.PersonalGraph.prototype.fromScreen = function(s) {
     return new Vector(px, py);
 }
 
+Pelagios.PersonalGraph.prototype.graphChanged = function() {
+	var viewport = Pelagios.getViewport();
+    this.raphael.setSize(viewport.x, viewport.y);
+	this.renderer.graphChanged();
+}
+
 Pelagios.PersonalGraph.prototype.hide = function() {
-	setTimeout(function(){ this.clear() }.bind(this), 1000);
+	setTimeout(function(){ 
+		this.clear();
+		document.getElementById(this.id).style.visibility = "hidden";
+	}.bind(this), 500);
 	document.getElementById(this.id).style.opacity = 0;
 }
 
 Pelagios.PersonalGraph.prototype.show = function() {
+	document.getElementById(this.id).style.visibility = "visible";
 	document.getElementById(this.id).style.opacity = 1;
 }
 

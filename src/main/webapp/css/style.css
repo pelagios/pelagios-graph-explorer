@@ -45,6 +45,7 @@ html, body { padding:0px; margin:0px; background-color:#fff; width:100%; height:
 	height:100%;
 	padding:0px;
 	margin:0px;
+	visibility:hidden;
 	opacity:0;
 	background-color:#fff;
 	-webkit-transition: opacity .5s ease-in-out;

@@ -4,7 +4,7 @@ window.onresize = function(event) {
 	var viewport = Pelagios.getViewport();
     raphael.setSize(viewport.x, viewport.y);
 	window.pGraph.renderer.graphChanged();
-	window.personalGraph.renderer.graphChanged();
+	window.personalGraph.graphChanged();
 }
 
 window.onload = function() {
