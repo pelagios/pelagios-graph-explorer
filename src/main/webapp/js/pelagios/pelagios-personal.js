@@ -3,9 +3,10 @@ Pelagios.PersonalGraph = function(id, raphael, map) {
 	this.id = id;	
 	this.raphael = raphael;
 	this.map = map;
+	this.locus = null;
 	
 	this.graph = new Graph();
-    this.layout = new Layout.ForceDirected(this.graph, 800, 25, 0.3);
+    this.layout = new Layout.ForceDirected(this.graph, 400, 30, 0.3);
     
     this.pAsync = new Pelagios.Async();
     
@@ -35,7 +36,8 @@ Pelagios.PersonalGraph = function(id, raphael, map) {
 	  function clear() { },
 	  
 	  function drawEdge(edge, p1, p2) {
-		  raphael.pelagios.connection(edge.connection);
+		  if (edge.connection)
+			  raphael.pelagios.connection(edge.connection);
 	  },
 	  
 	  function drawNode(node, pt) {
@@ -99,9 +101,15 @@ Pelagios.PersonalGraph.prototype.newPlace = function(place) {
 		n = this.places[place];
 	} else {
 	    n = this.graph.newNode();
+	    
 	    n.set = this.raphael.pelagios.placeLabel(place.label);
 	    n.place = place;
 	    n.name = place.label;
+	    n.data.mass = 0.8;
+	    
+	    for (var i=0, ii=this.places.length; i<ii; i++) {
+	    	this.graph.newEdge(n, this.places[i], { length: 2.5 });
+	    }
 	
 	    // Seems kind of recursive... but we need that in
 	    // the move handler, which only has access to the
