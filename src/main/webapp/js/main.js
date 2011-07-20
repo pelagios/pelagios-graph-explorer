@@ -17,8 +17,6 @@ window.onload = function() {
     	}
     };
     
-    var palette = new Pelagios.Palette();
-    
     var pMap = new Pelagios.Map();
     document.getElementById("toggle-map").onclick = function() {
     	pMap.setVisible(!pMap.isVisible())
@@ -29,7 +27,7 @@ window.onload = function() {
     var pPersonalGraph = new Pelagios.PersonalGraph(
     		"personal-graph", 
     		Raphael("personal-graph", viewport.x, viewport.y),
-    		palette);
+    		pMap);
 
     var pAsync = new Pelagios.Async(pGraph, pMap);
 	$("#searchfield").autocomplete({
@@ -37,7 +35,7 @@ window.onload = function() {
 		select: function(event, ui) {
 			pPersonalGraph.show();
 			pMap.addGeoJSON(ui.item.geometry);
-			pAsync.fetchPlaceReferences(ui.item, pPersonalGraph);
+			pAsync.fetchPlaceReferences(ui.item, pPersonalGraph, pMap);
 		}
 	});
     
@@ -61,8 +59,8 @@ window.onload = function() {
     		fill = parent.fill;
     		stroke = parent.stroke;
     	} else {
-    		fill = palette.getColor(dataset.name);
-    		stroke = palette.darker(fill);
+    		fill = Pelagios.Palette.getInstance().getColor(dataset.name);
+    		stroke = Pelagios.Palette.getInstance().darker(fill);
     	}
     		
     	

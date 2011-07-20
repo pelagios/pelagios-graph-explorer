@@ -18,13 +18,18 @@ Pelagios.Async.prototype.fetchConvexHull = function(node) {
 	.error(function(data) { alert("Something went wrong: " + data.responseText); });	
 }
 
-Pelagios.Async.prototype.fetchPlaceReferences = function(place, personalGraph) {
+Pelagios.Async.prototype.fetchPlaceReferences = function(place, personalGraph, map) {
 	Pelagios.Loadmask.getInstance().show();
 	var pNode = personalGraph.newPlace(place);
 	$.getJSON("places/occurences?place=" + encodeURI(place.uri), function(data) {
 		for (var i=0, ii=data.length; i<ii; i++) {
-			var dNode = personalGraph.newDataset(data[i].dataset, data[i].datasetSize, data[i].rootDataset);
-			personalGraph.setEdge(pNode, dNode, data[i].occurences);
+			var di = data[i];
+			var dNode = personalGraph.newDataset(di.dataset, di.datasetSize, di.rootDataset);
+			personalGraph.setEdge(pNode, dNode, di.occurences);
+			
+			var palette = Pelagios.Palette.getInstance();
+			map.addPolygon(di.dataset, di.datasetFootprint,
+					palette.darker(palette.getColor(di.rootDataset)));
 		}
 		Pelagios.Loadmask.getInstance().hide();
 	})

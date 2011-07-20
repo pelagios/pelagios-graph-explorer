@@ -132,17 +132,6 @@ Raphael.fn.pelagios = {
 		    var text = this.text(0, 0, arg0).attr({"opacity":0});
 		    var bbox = text.getBBox();
 		    s.push(text);
-		    
-			s[0].mouseover(function(event) {
-			    s[1].animate({
-			    	"opacity" : 1,
-			    }, 200);
-			});
-			s[0].mouseout(function (event) {
-			    s[1].animate({
-			    	"opacity" : 0,
-			    }, 200);
-			});
 		    		    
 		    return s;
 		}		

@@ -124,6 +124,7 @@ public class PlacesController extends AbstractController {
 					p.getURI().toString(),
 					s.getName(),
 					s.listRecords(true).size(),
+					toConvexHull(s.listPlaces(true)),
 					s.getRoot().getName(), 
 					occurences.get(s))
 			);

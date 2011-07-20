@@ -3,6 +3,7 @@
 // Namespace declarations
 Pelagios = {};
 
+// Utility function for querying current viewport size
 Pelagios.getViewport = function() {
 	 var w, h;
 	 
@@ -22,6 +23,7 @@ Pelagios.getViewport = function() {
 	 return new Vector(w, h);
 }
 
+// AJAX load spinner singleton
 Pelagios.Loadmask = function() {
 	this.div = document.createElement("div");
 	this.div.style.visibility = "visible";
@@ -50,6 +52,7 @@ Pelagios.Loadmask.prototype.hide = function() {
 		this.div.style.visibility = "hidden";
 }
 
+// A small CSS-stylable mouseover tooltip
 Pelagios.Tooltip = function(text, x, y) {
 	this.div = document.createElement("div");
 	this.div.innerHTML = text;
@@ -73,6 +76,7 @@ Pelagios.Tooltip.prototype.remove = function() {
 	// document.body.removeChild(this.div);
 }
 
+// The color palette singleton
 Pelagios.Palette = function() {
 	this.bright = ["#9c9ede", "#cedb9c", "#e7cb94", "#e7969c", "#de9ed6"];
 	
@@ -86,6 +90,15 @@ Pelagios.Palette = function() {
 	this.colors = new Array();
 
     this.counter = -1;
+}
+
+Pelagios.Palette.instance = null;
+
+Pelagios.Palette.getInstance = function() {
+	if (Pelagios.Palette.instance == null) {
+		Pelagios.Palette.instance = new Pelagios.Palette();
+	}
+	return Pelagios.Palette.instance;
 }
 
 Pelagios.Palette.prototype.getColor = function(name) {

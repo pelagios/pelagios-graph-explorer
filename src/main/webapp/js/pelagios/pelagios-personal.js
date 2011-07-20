@@ -1,8 +1,8 @@
 // Code related to a place's 'personal graph'
-Pelagios.PersonalGraph = function(id, raphael, palette) {
+Pelagios.PersonalGraph = function(id, raphael, map) {
 	this.id = id;	
 	this.raphael = raphael;
-	this.palette = palette;
+	this.map = map;
 	
 	this.graph = new Graph();
     this.layout = new Layout.ForceDirected(this.graph, 800, 25, 0.3);
@@ -128,7 +128,7 @@ Pelagios.PersonalGraph.prototype.newDataset = function(datasetLabel, datasetSize
 			this.normalizeDatasetSizes();
 		}
 		
-	    var fill = this.palette.getColor(rootLabel);
+	    var fill = Pelagios.Palette.getInstance().getColor(rootLabel);
 	    
 	    n = this.graph.newNode();
 	    n.name = datasetLabel;
@@ -136,10 +136,24 @@ Pelagios.PersonalGraph.prototype.newDataset = function(datasetLabel, datasetSize
 	    n.set = this.raphael.pelagios.datasetLabel(
 	    		datasetLabel + "\n" + datasetSize + " Geoannotations",
 	    		fill,
-	    		this.palette.darker(fill));
+	    		Pelagios.Palette.getInstance().darker(fill));
 	    
 		var r = this.getRadiusFromSize(datasetSize);
 	    n.set[0].attr({rx:r, ry:r});
+	    
+	    var map = this.map;
+		n.set[0].mouseover(function(event) {
+		    n.set[1].animate({
+		    	"opacity" : 1,
+		    }, 200);
+		    map.showPolygon(datasetLabel);
+		});
+		n.set[0].mouseout(function (event) {
+		    n.set[1].animate({
+		    	"opacity" : 0,
+		    }, 200);
+		    map.hidePolygon(datasetLabel);
+		});
 	
 	    // Seems kind of recursive... but we need that in
 	    // the move handler, which only has access to the
