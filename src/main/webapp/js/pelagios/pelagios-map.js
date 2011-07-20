@@ -133,3 +133,10 @@ Pelagios.Map.prototype.setHighlight = function(name, highlighted) {
 		}
 	}
 }
+
+Pelagios.Map.prototype.zoomTo = function(name) {
+	var geom = this.features[name];
+	if (geom) {
+		this.map.fitBounds(geom.getBounds());
+	}
+}

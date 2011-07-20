@@ -103,14 +103,15 @@ Raphael.fn.pelagios = {
 			// arg0 -> place name
 		    var s = this.set();
 		    
-		    var text = this.text(0, 0, arg0).attr({"fill":"#fff"});
+		    var text = this.text(0, 0, arg0).attr({"fill":"#fff", "cursor":"pointer"});
 		    var bbox = text.getBBox();
 		    s.push(text);
 		   
 		    s.push(this.rect(0, 0, bbox.width + 16, bbox.height + 8, 5).attr({
 		    		"stroke-width" : 2,
 		    		"fill" : "#a2a2a2",
-		    		"stroke" : "#777"
+		    		"stroke" : "#777",
+		    		"cursor" : "pointer"
 		    	}).toBack());
 		    return s;
 		}

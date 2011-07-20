@@ -108,6 +108,9 @@ Pelagios.PersonalGraph.prototype.newPlace = function(place) {
 		n.set[0].mouseout(function (event) {
 			map.setHighlight(place.label, false);			
 		});
+		n.set[0].click(function (event) {
+			map.zoomTo(place.label);			
+		});
 	    
 	    n.set.drag(
 	        	this.handler.move,
