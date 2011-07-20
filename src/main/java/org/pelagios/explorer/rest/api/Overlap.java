@@ -1,5 +1,9 @@
 package org.pelagios.explorer.rest.api;
 
+import java.util.List;
+
+import org.pelagios.graph.nodes.Place;
+
 import com.vividsolutions.jts.geom.Geometry;
 
 /**
@@ -27,14 +31,14 @@ public class Overlap {
 	/**
 	 * The number of places shared among the linked data sets
 	 */
-	int commonPlaces;
+	List<Place> commonPlaces;
 	
 	/**
 	 * The geographical area covered by the overlap
 	 */
 	Geometry footprint;
 	
-	public Overlap(String srcSet, String destSet, int commonPlaces, Geometry footprint) {
+	public Overlap(String srcSet, String destSet, List<Place> commonPlaces, Geometry footprint) {
 		this.srcSet = srcSet;
 		this.destSet = destSet;
 		this.commonPlaces = commonPlaces;

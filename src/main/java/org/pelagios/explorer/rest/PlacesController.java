@@ -57,7 +57,7 @@ public class PlacesController extends AbstractController {
 		List<Place> commonPlaces = graph.listSharedPlaces(datasets);
 		Overlap o = new Overlap(
 				set1, set2,
-				commonPlaces.size(),
+				commonPlaces,
 				toConvexHull(commonPlaces));
 		
 		return Response.ok(toJSON(o)).build();

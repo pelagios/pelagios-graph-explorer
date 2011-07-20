@@ -9,6 +9,7 @@ import org.pelagios.graph.PelagiosGraphNode;
 import org.pelagios.graph.nodes.GeoAnnotation;
 import org.pelagios.graph.nodes.Place;
 import org.pelagios.io.geojson.GeoJSONParser;
+import org.pelagios.io.geojson.GeoJSONSerializer;
 
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -65,7 +66,7 @@ class PlaceImpl extends PelagiosGraphNode implements Place {
 	}
 	
 	public void setGeometry(Geometry geometry) {
-		set(KEY_GEOMETRY, geometry.toString());
+		set(KEY_GEOMETRY, new GeoJSONSerializer().toString(geometry));
 	}
 
 	public List<GeoAnnotation> listDataRecords() {

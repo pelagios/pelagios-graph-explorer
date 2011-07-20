@@ -136,7 +136,7 @@ Pelagios.SelectionManager.prototype.fetchLinkData = function(node) {
 
 Pelagios.SelectionManager.prototype.setLink = function(arg0, arg1, arg2) {
 	if (arg1) {		
-		// arg0 -> srcNode, arg1 -> destNode, arg2 -> link	
+		// arg0 -> srcNode, arg1 -> destNode, arg2 -> data	
 		if (arg2.commonPlaces > this.maxOverlapWeight) {
 			this.maxOverlapWeight = arg2.commonPlaces;
 			this.normalizeLineWidths();
@@ -155,7 +155,7 @@ Pelagios.SelectionManager.prototype.setLink = function(arg0, arg1, arg2) {
 				"L" + toX + " " + toY)
 			.attr({
 				"stroke" : "#FF8000",
-				"stroke-width" : this.getWidthFromWeigth(arg2.commonPlaces),
+				"stroke-width" : this.getWidthFromWeigth(arg2.commonPlaces.length),
 				"opacity" : 0.8,
 				"stroke-dasharray" : "-"
 			}).toBack(),
@@ -176,6 +176,10 @@ Pelagios.SelectionManager.prototype.setLink = function(arg0, arg1, arg2) {
 		link.line.mouseout(function (event) {
 			link.tooltip.hide();
 			map.hidePolygon(arg0.name + "-" + arg1.name);
+		});
+		
+		link.line.click(function (event) {
+			// alert('open map with common places');
 		});
 		
 		// Links are always attached to the source nodes!
