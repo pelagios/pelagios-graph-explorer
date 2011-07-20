@@ -31,6 +31,7 @@ Pelagios.Async.prototype.fetchPlaceReferences = function(place, personalGraph, m
 			map.addPolygon(di.dataset, di.datasetFootprint,
 					palette.darker(palette.getColor(di.rootDataset)));
 		}
+		personalGraph.purgeGraph();
 		Pelagios.Loadmask.getInstance().hide();
 	})
 	.error(function(data) { alert("Something went wrong: " + data.responseText); });
@@ -54,6 +55,7 @@ Pelagios.Async.prototype.findShortestPaths = function(from, to, personalGraph) {
 	
 			personalGraph.setEdge(to, lastNode, data[j].end.annotations);
 		}
+
 		Pelagios.Loadmask.getInstance().hide();
 	})
 	.error(function(data) { alert("Something went wrong: " + data.responseText); });	

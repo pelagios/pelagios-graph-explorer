@@ -92,6 +92,7 @@ Pelagios.PersonalGraph.prototype.newPlace = function(place) {
 	    n = this.graph.newNode();
 	    n.set = this.raphael.pelagios.placeLabel(place.label);
 	    n.place = place;
+	    n.name = place.label;
 	
 	    // Seems kind of recursive... but we need that in
 	    // the move handler, which only has access to the
@@ -181,19 +182,66 @@ Pelagios.PersonalGraph.prototype.newDataset = function(datasetLabel, datasetSize
 	        	this.handler.move,
 	        	this.handler.drag,
 	        	this.handler.up);
-	        
+
 	    this.datasets[datasetLabel] = n;
 	}
     return n;
 }
 
-Pelagios.PersonalGraph.prototype.edgeExists = function(from, to) {
-	for (var i=0, ii=this.edges.length; i<ii; i++) {
-		var e = this.edges[i];
-		if (e.from == from && e.to == to)
-			return e;
+Pelagios.PersonalGraph.prototype.findEdgesFor = function(dataset) {
+	var dsEdges = new Array();
+	for (var e in this.edges) {
+		var edge = this.edges[e];
 		
-		if (e.to == from && e.from == to)
+		if ((edge.to == dataset) || (edge.from == dataset)) {
+			dsEdges.push(edge);	
+		}
+	}
+	
+	return dsEdges;
+	
+}
+
+Pelagios.PersonalGraph.prototype.purgeGraph = function() {
+	if (this.places.length > 1) {
+		var maxDatasetSize = 0;
+		var maxEdgeWeight = 0;
+		
+		for (var d in this.datasets) {
+			var dataset = this.datasets[d];			
+			var edges = this.findEdgesFor(dataset);
+	
+			if (edges.length < 2) { 
+				delete this.edges[edges[0].from.name];
+				edges[0].connection.line.remove();
+				dataset.set.remove();
+				this.graph.removeNode(dataset);
+				delete this.datasets[dataset.name];
+			} else {
+				if (dataset.size > maxDatasetSize)
+					maxDatasetSize = dataset.size;
+				
+				for (var i=0, ii=edges.length; i<ii; i++) {
+					if (edges[i].connection.weight > maxEdgeWeight)
+						maxEdgeWeight = edges[i].connection.weight;
+				}
+			}
+		}
+		
+	    this.maxDatasetSize = maxDatasetSize;
+	    this.maxEdgeWeight = maxEdgeWeight;
+		this.normalizeLineWidths();
+		this.normalizeDatasetSizes();
+	}
+}
+
+Pelagios.PersonalGraph.prototype.edgeExists = function(from, to) {
+	for (var e in this.edges) {
+		var edge = this.edges[e];
+		if (edge.from == from && edge.to == to)
+			return edge;
+		
+		if (edge.to == from && edge.from == to)
 			return e;
 	}
 	
@@ -231,7 +279,7 @@ Pelagios.PersonalGraph.prototype.setEdge = function(arg0, arg1, arg2) {
 			// map.hidePolygon(arg0.name + "-" + arg1.name);
 		});
 	    
-	    this.edges.push(e);
+	    this.edges[e.from.name + "-" + e.to.name] = e;
 	    return e;
 	} else {
 		// arg0 -> edge
