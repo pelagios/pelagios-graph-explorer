@@ -165,6 +165,9 @@ Pelagios.PersonalGraph.prototype.newDataset = function(datasetLabel, datasetSize
 		    }, 200);
 		    map.hidePolygon(datasetLabel);
 		});
+		n.set[0].click(function (event) {
+			map.zoomTo(datasetLabel);			
+		});
 	
 	    // Seems kind of recursive... but we need that in
 	    // the move handler, which only has access to the

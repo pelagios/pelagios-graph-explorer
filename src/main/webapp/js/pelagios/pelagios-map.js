@@ -118,6 +118,7 @@ Pelagios.Map.prototype.addGeoJSON = function(name, json) {
 	
 	var geom = new GeoJSON(json, options);
 	geom.options = options;
+	geom.tooltip = new Pelagios.Tooltip(name);
 	geom.setMap(this.map);	
 	
 	this.features[name] = geom;
@@ -136,6 +137,9 @@ Pelagios.Map.prototype.setHighlight = function(name, highlighted) {
 
 Pelagios.Map.prototype.zoomTo = function(name) {
 	var geom = this.features[name];
+	if (!geom)
+		geom = this.polygons[name]; 
+		
 	if (geom) {
 		this.map.fitBounds(geom.getBounds());
 	}
