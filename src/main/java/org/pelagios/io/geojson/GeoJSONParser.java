@@ -42,7 +42,7 @@ public class GeoJSONParser {
 		}
 		
 		// Can never happen -> if type is neither Point, LineString nor 
-		// Polygonm the valueOf() operation will throw an IllegalArgument
+		// Polygon the valueOf() operation will throw an IllegalArgument
 		// runtime exception
 		return null;
 	}
