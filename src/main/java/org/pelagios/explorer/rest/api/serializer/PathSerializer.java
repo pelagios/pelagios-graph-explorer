@@ -59,7 +59,7 @@ public class PathSerializer implements JsonSerializer<Path> {
 			Dataset d = (Dataset) nodes.get(i);
 			JsonObject hop = new JsonObject();
 			hop.add(KEY_DATASET, new JsonPrimitive(d.getName()));
-			hop.add(KEY_DATASET_SIZE, new JsonPrimitive(d.listRecords(true).size()));
+			hop.add(KEY_DATASET_SIZE, new JsonPrimitive(d.listGeoAnnotations(true).size()));
 			hop.add(KEY_ROOT_DATASET, new JsonPrimitive(d.getRoot().getName()));
 			via.add(hop);
 		}

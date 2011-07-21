@@ -134,7 +134,7 @@ public class PlacesController extends AbstractController {
 			occJson.add(new Occurences(
 					p.getURI().toString(),
 					s.getName(),
-					s.listRecords(true).size(),
+					s.listGeoAnnotations(true).size(),
 					toConvexHull(s.listPlaces(true)),
 					s.getRoot().getName(), 
 					occurences.get(s))

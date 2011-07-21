@@ -14,3 +14,7 @@ Pelagios.DataPanel.prototype.setVisible = function(visible) {
 Pelagios.DataPanel.prototype.isVisible = function() {
 	return $("#data-panel").parents(".ui-dialog").is(":visible");
 }
+
+Pelagios.DataPanel.prototype.setGeoAnnotations(annotations) {
+	
+}

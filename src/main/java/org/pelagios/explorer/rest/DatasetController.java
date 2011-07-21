@@ -88,6 +88,27 @@ public class DatasetController extends AbstractController {
 		return Response.ok(toJSON(footprint)).build();
 	}
 	
+	@GET
+	@Produces("application/json")
+	@Path("/{dataset}/annotations")
+	public Response getGeoAnnotations(@PathParam("dataset") String dataset)
+		throws DatasetNotFoundException {
+		
+		PelagiosGraph.getInstance().getDataset(dataset).listGeoAnnotations(true);
+		
+		/*
+		for (Place p : PelagiosGraph.getInstance().getDataset(dataset).listPlaces(true)) {
+			if (footprint == null) {
+				footprint = p.getGeometry();
+			} else {
+				footprint.union(p.getGeometry());
+			}
+		}
+		*/
+		
+		return Response.ok("").build();
+	}
+	
 	/**
 	 * Returns the convex hull of the places referenced in the specified data set 
 	 * (including its subsets).
