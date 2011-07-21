@@ -89,8 +89,6 @@ Pelagios.Map.prototype.refresh = function() {
 
 Pelagios.Map.prototype.zoomTo = function(name) {
 	var geom = this.features[name];
-	if (!geom)
-		geom = this.polygons[name]; 
 		
 	if (geom) {
 		this.map.fitBounds(geom.getBounds());
