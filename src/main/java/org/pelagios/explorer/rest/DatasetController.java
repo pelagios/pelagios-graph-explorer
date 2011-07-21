@@ -11,6 +11,7 @@ import javax.ws.rs.core.Response;
 import org.pelagios.graph.PelagiosGraph;
 import org.pelagios.graph.exceptions.DatasetNotFoundException;
 import org.pelagios.graph.nodes.Dataset;
+import org.pelagios.graph.nodes.GeoAnnotation;
 import org.pelagios.graph.nodes.Place;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -94,19 +95,10 @@ public class DatasetController extends AbstractController {
 	public Response getGeoAnnotations(@PathParam("dataset") String dataset)
 		throws DatasetNotFoundException {
 		
-		PelagiosGraph.getInstance().getDataset(dataset).listGeoAnnotations(true);
-		
-		/*
-		for (Place p : PelagiosGraph.getInstance().getDataset(dataset).listPlaces(true)) {
-			if (footprint == null) {
-				footprint = p.getGeometry();
-			} else {
-				footprint.union(p.getGeometry());
-			}
-		}
-		*/
-		
-		return Response.ok("").build();
+		List<GeoAnnotation> annotations = 
+			PelagiosGraph.getInstance().getDataset(dataset).listGeoAnnotations(true);
+	
+		return Response.ok(toJSON(annotations)).build();
 	}
 	
 	/**
