@@ -7,7 +7,7 @@ files("src")
 
 repositories {
 	mavenCentral()
-	mavenRepo urls: 'http://download.osgeo.org/webdav/geotools'
+	// mavenRepo urls: 'http://download.osgeo.org/webdav/geotools'
 	mavenRepo urls: 'http://repository.jboss.org/nexus/content/groups/public/'
 }
 
@@ -21,9 +21,7 @@ dependencies {
 	providedCompile group: 'javax.servlet', name: 'servlet-api', version: '2.5'
 	compile group: 'com.hp.hpl.jena', name: 'jena', version: '2.6.4'
 	compile group: 'org.neo4j', name: 'neo4j', version: '1.4.M03'
-	compile group: 'org.geotools', name: 'gt-main', version: '2.7.2' 
-	compile group: 'org.geotools', name: 'gt-render', version: '2.7.2' 
-	compile group: 'org.geotools', name: 'gt-shapefile', version: '2.7.2'
+	compile group: 'com.vividsolutions', name: 'jts', version: '1.11' 
 	compile group: 'org.jboss.resteasy', name: 'resteasy-jaxrs', version: '2.2.1.GA'
 	compile group: 'com.google.code.gson', name:'gson', version:'1.7.1'
 	compile group: 'net.sf.opencsv', name: 'opencsv', version: '2.1'
