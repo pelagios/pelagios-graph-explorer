@@ -90,12 +90,12 @@ window.onload = function() {
     		},
     		
     		// mouseover
-    		function() { pMap.showPolygon(dataset.name) },
+    		function() { pMap.showFeature(dataset.name) },
     		
     		// mouseout
     		function() {
     			if (!pGraph.isSelected(dataset.name))
-    				pMap.hidePolygon(dataset.name) 
+    				pMap.hideFeature(dataset.name) 
     		},
     		
     		parent);

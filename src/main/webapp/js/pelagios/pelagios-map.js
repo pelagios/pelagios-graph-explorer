@@ -17,26 +17,10 @@ Pelagios.Map = function() {
 		fillOpacity: 0.4
 	} 
 	
-	/*
-	var noLabelStyle = [ { featureType: "administrative", elementType: "labels", stylers: [ { visibility: "off" } ] },{ featureType: "administrative.province", elementType: "all", stylers: [ { visibility: "off" } ] },{ featureType: "water", elementType: "labels", stylers: [ { visibility: "off" } ] },{ featureType: "road", elementType: "all", stylers: [ { visibility: "off" } ] },{ featureType: "poi", elementType: "all", stylers: [ { visibility: "off" } ] },{ featureType: "transit", elementType: "all", stylers: [ { visibility: "off" } ] },{ featureType: "administrative.locality", elementType: "all", stylers: [ { visibility: "off" } ] },{ featureType: "administrative.province", elementType: "all", stylers: [ { visibility: "off" } ] } ]
-	
-	var styledMapOptions = {
-		map: this.map,
-		name: "no-labels",
-	}
-
-	var noLabelsMapType = new google.maps.StyledMapType(noLabelStyle,styledMapOptions);
-	this.map.mapTypes.set('no-labels', noLabelsMapType);
-	this.map.setMapTypeId('no-labels');
-	*/ 
-	
-	// All polygons
-	this.polygons = new Array();
-	
-	// All GeoJSON features
+	// All features (markers and polygons)
 	this.features = new Array();
 	
-	// Just those which are currently shown on the map
+	// Just those features which are currently shown on the map
 	this.shown = new Array();
 	
 	var map = this;
@@ -51,8 +35,8 @@ Pelagios.Map = function() {
 Pelagios.Map.prototype.setVisible = function(visible) {
 	if (visible) {
 		$("#dialog").dialog("open");
-		for (var p in this.shown) {
-			this.showPolygon(p);
+		for (var f in this.shown) {
+			this.showFeature(f);
 		}
 	} else {
 		$("#dialog").dialog("close");		
@@ -65,6 +49,36 @@ Pelagios.Map.prototype.isVisible = function() {
 
 Pelagios.Map.prototype.refresh = function() {
 	google.maps.event.trigger(this.map, 'resize');
+}
+
+Pelagios.Map.prototype.zoomTo = function(name) {
+	var geom = this.features[name];
+	if (!geom)
+		geom = this.polygons[name]; 
+		
+	if (geom) {
+		this.map.fitBounds(geom.getBounds());
+	}
+}
+
+Pelagios.Map.prototype.clear = function() {
+	for (var f in this.features) {
+		this.hideFeature(f);
+	}
+}
+
+Pelagios.Map.prototype.showFeature = function(name) {
+	if (this.features[name]) {
+		this.shown[name] = name;
+		this.features[name].setMap(this.map);
+	}
+}
+
+Pelagios.Map.prototype.hideFeature = function(name) {
+	if (this.features[name]) {
+		delete this.shown[name];
+		this.features[name].setMap(null);
+	}
 }
 
 Pelagios.Map.prototype.addPolygon = function(name, coords, fill) {
@@ -82,29 +96,15 @@ Pelagios.Map.prototype.addPolygon = function(name, coords, fill) {
 		fillOpacity: 0.5
 	} 
 	
-	this.polygons[name] = new google.maps.Polygon(pOptions);
-}
-
-Pelagios.Map.prototype.showPolygon = function(name) {
-	if (this.polygons[name]) {
-		this.shown[name] = name;
-		this.polygons[name].setMap(this.map);
-	}
-}
-
-Pelagios.Map.prototype.hidePolygon = function(name) {
-	if (this.polygons[name]) {
-		delete this.shown[name];
-		this.polygons[name].setMap(null);
-	}
+	this.features[name] = new google.maps.Polygon(pOptions);
 }
 
 Pelagios.Map.prototype.addMarker = function(name, lat, lon) {
 	var marker = new google.maps.Marker({
 		position: new google.maps.LatLng(lat, lon), 
-		map: this.map, 
 		title: name
-	});  
+	});
+	this.feature[name] = marker
 }
 
 Pelagios.Map.prototype.addGeoJSON = function(name, json) {
@@ -119,12 +119,10 @@ Pelagios.Map.prototype.addGeoJSON = function(name, json) {
 	var geom = new GeoJSON(json, options);
 	geom.options = options;
 	geom.tooltip = new Pelagios.Tooltip(name);
-	geom.setMap(this.map);	
-	
 	this.features[name] = geom;
 }
 
-Pelagios.Map.prototype.setHighlight = function(name, highlighted) {
+Pelagios.Map.prototype.highlight = function(name, highlighted) {
 	var geom = this.features[name];
 	if (geom) {
 		if (highlighted) {
@@ -132,15 +130,5 @@ Pelagios.Map.prototype.setHighlight = function(name, highlighted) {
 		} else {
 			geom.setOptions(geom.options);
 		}
-	}
-}
-
-Pelagios.Map.prototype.zoomTo = function(name) {
-	var geom = this.features[name];
-	if (!geom)
-		geom = this.polygons[name]; 
-		
-	if (geom) {
-		this.map.fitBounds(geom.getBounds());
 	}
 }

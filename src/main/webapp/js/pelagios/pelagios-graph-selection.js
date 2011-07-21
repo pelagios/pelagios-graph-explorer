@@ -37,7 +37,7 @@ Pelagios.SelectionManager.prototype.toggleSelect = function(node) {
 			});
 		
 		// Show on map
-		this.map.showPolygon(node.name);
+		this.map.showFeature(node.name);
 		
 		// Fetch link data for this node
 		this.fetchLinkData(node);
@@ -49,7 +49,7 @@ Pelagios.SelectionManager.prototype.toggleSelect = function(node) {
 		node.set.selection.remove();
 		
 		// Remove from map
-		this.map.hidePolygon(node.name);
+		this.map.hideFeature(node.name);
 		
 		// Remove links on screen
 		var links = this.getLinksFor(node);
@@ -170,12 +170,12 @@ Pelagios.SelectionManager.prototype.setLink = function(arg0, arg1, arg2) {
 		var map = this.map;		
 		link.line.mouseover(function(event) {
 			link.tooltip.show(event.clientX, event.clientY);
-			map.showPolygon(arg0.name + "-" + arg1.name);
+			map.showFeature(arg0.name + "-" + arg1.name);
 		});
 		
 		link.line.mouseout(function (event) {
 			link.tooltip.hide();
-			map.hidePolygon(arg0.name + "-" + arg1.name);
+			map.hideFeature(arg0.name + "-" + arg1.name);
 		});
 		
 		link.line.click(function (event) {

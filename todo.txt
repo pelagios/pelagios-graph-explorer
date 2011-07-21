@@ -2,6 +2,7 @@ TODO...
 
 - Data View!
 - Map/Graph synchronization is still very incomplete in both views
+- Add some basic stats (total datasets, total GeoAnnotations, total places,...) to the title bar
 - Documentation for the REST API
 - Documentation for the internal graph model
 - Add 3rd party JavaScript licences + credits 
