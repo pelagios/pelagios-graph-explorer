@@ -1,12 +1,11 @@
 TODO...
 
+- Data View!
+- Map/Graph synchronization is still very incomplete in both views
 - Documentation for the REST API
 - Documentation for the internal graph model
-- Personal graph needs some layout tweaking (datasets should stay closer to places)
 - Add 3rd party JavaScript licences + credits 
 - Add sample data
-- Back button in detail view to return to dataset view...
-- Allow searches to be passed via the URL query string
 - Clean up the unit tests 
 - Add HTTP scripts for harvesting Ptolemy Machine place data 
 - JavaScript "graph" and "personal graph"
