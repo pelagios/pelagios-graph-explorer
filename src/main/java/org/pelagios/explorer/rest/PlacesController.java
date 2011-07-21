@@ -34,9 +34,9 @@ public class PlacesController extends AbstractController {
 	/**
 	 * Log message String constants
 	 */
-	private static final String LOG_INTERSECT = "Intersection ";
-	private static final String LOG_SHORTESTPATH = "Shortest path ";
-	private static final String LOG_OCCURENCES = "Occurences ";
+	private static final String LOG_INTERSECT = " Intersection ";
+	private static final String LOG_SHORTESTPATH = " Shortest path ";
+	private static final String LOG_OCCURENCES = " Occurences ";
 	
 	@GET
 	@Produces("application/json")
@@ -53,7 +53,7 @@ public class PlacesController extends AbstractController {
 	public Response getSharedPlaces(@QueryParam("set1") String set1, @QueryParam("set2") String set2)
 		throws DatasetNotFoundException {
 			
-		log.info(LOG_INTERSECT + set1 + _ + set2 + _ + request.getRemoteAddr());
+		log.info(request.getRemoteAddr() + LOG_INTERSECT + set1 + _ + set2);
 		PelagiosGraph graph = PelagiosGraph.getInstance();
 		List<Dataset> datasets = new ArrayList<Dataset>();
 		datasets.add(graph.getDataset(set1));
@@ -77,7 +77,7 @@ public class PlacesController extends AbstractController {
 	public Response getShortestPaths(@QueryParam("from") String from, @QueryParam("to") String to)
 		throws PlaceNotFoundException, URISyntaxException {
 		
-		log.info(LOG_SHORTESTPATH + from + _ + to + _ + request.getRemoteAddr());
+		log.info(request.getRemoteAddr() + LOG_SHORTESTPATH + from + _ + to);
 		PelagiosGraph graph = PelagiosGraph.getInstance();
 		Place pFrom = graph.getPlace(new URI(from));
 		Place pTo = graph.getPlace(new URI(to));
@@ -102,7 +102,7 @@ public class PlacesController extends AbstractController {
 	public Response listOccurences(@QueryParam("place") String place) throws
 		PlaceNotFoundException, URISyntaxException {
 		
-		log.info(LOG_OCCURENCES + place + _ + request.getRemoteAddr());
+		log.info(request.getRemoteAddr() + LOG_OCCURENCES + place);
 		
 		// Get all references to this place from the graph
 		PelagiosGraph graph = PelagiosGraph.getInstance();

@@ -27,8 +27,8 @@ public class DatasetController extends AbstractController {
 	/**
 	 * Log message String constants
 	 */
-	private static final String LOG_TOP_LEVEL_LIST = "Listing top level datasets ";
-	private static final String LOG_SUBSETS = "Listing subsets to ";	
+	private static final String LOG_TOP_LEVEL_LIST = " Listing top level datasets ";
+	private static final String LOG_SUBSETS = " Listing subsets to ";	
 	
 	/**
 	 * Returns a list of all top-level data sets stored in the
@@ -39,7 +39,7 @@ public class DatasetController extends AbstractController {
 	@Produces("application/json")
 	@Path("/")
 	public Response listDatasets() {
-		log.info(LOG_TOP_LEVEL_LIST + _ + request.getRemoteAddr());
+		log.info(request.getRemoteAddr() + LOG_TOP_LEVEL_LIST);
 		PelagiosGraph graph = PelagiosGraph.getInstance();
 		List<Dataset> datasets = graph.listTopLevelDatasets();
 		return Response.ok(toJSON(datasets)).build();
@@ -58,7 +58,7 @@ public class DatasetController extends AbstractController {
 	public Response getSubsets(@PathParam("superset") String superset) 
 		throws DatasetNotFoundException {
 		
-		log.info(LOG_SUBSETS + superset + _ + request.getRemoteAddr());
+		log.info(request.getRemoteAddr() + LOG_SUBSETS + superset);
 		List<Dataset> datasets = PelagiosGraph.getInstance().getDataset(superset).listSubsets();	
 		return Response.ok(toJSON(datasets)).build();
 	}
