@@ -177,13 +177,13 @@ Pelagios.PersonalGraph.prototype.newDataset = function(datasetLabel, datasetSize
 		    n.set[1].animate({
 		    	"opacity" : 1,
 		    }, 200);
-		    map.showPolygon(datasetLabel);
+		    map.showFeature(datasetLabel);
 		});
 		n.set[0].mouseout(function (event) {
 		    n.set[1].animate({
 		    	"opacity" : 0,
 		    }, 200);
-		    map.hidePolygon(datasetLabel);
+		    map.hideFeature(datasetLabel);
 		});
 		n.set[0].click(function (event) {
 			map.zoomTo(datasetLabel);			
