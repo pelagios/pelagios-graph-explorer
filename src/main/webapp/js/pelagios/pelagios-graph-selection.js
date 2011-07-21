@@ -137,8 +137,8 @@ Pelagios.SelectionManager.prototype.fetchLinkData = function(node) {
 Pelagios.SelectionManager.prototype.setLink = function(arg0, arg1, arg2) {
 	if (arg1) {		
 		// arg0 -> srcNode, arg1 -> destNode, arg2 -> data	
-		if (arg2.commonPlaces > this.maxOverlapWeight) {
-			this.maxOverlapWeight = arg2.commonPlaces;
+		if (arg2.commonPlaces.length > this.maxOverlapWeight) {
+			this.maxOverlapWeight = arg2.commonPlaces.length;
 			this.normalizeLineWidths();
 		}
 		
@@ -160,10 +160,10 @@ Pelagios.SelectionManager.prototype.setLink = function(arg0, arg1, arg2) {
 				"stroke-dasharray" : "-"
 			}).toBack(),
 			"tooltip" : new Pelagios.Tooltip(
-					arg2.commonPlaces + " places in common",
+					arg2.commonPlaces.length + " places in common",
 					(fromX + toX) / 2,
 					(fromY + toY) / 2),
-			"weight" : arg2.commonPlaces
+			"weight" : arg2.commonPlaces.length
 		}
 		
 		// Add mouseover information to link line
