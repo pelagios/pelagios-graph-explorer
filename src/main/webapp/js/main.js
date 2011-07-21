@@ -7,7 +7,7 @@ window.onresize = function(event) {
 	window.personalGraph.graphChanged();
 }
 
-window.onload = function() {
+window.onload = function() {	
 	// Init drawing canvas
 	var viewport = Pelagios.getViewport();
     raphael = Raphael("graph-canvas", viewport.x, viewport.y);
@@ -44,6 +44,11 @@ window.onload = function() {
 	$("#searchfield").focus(function() {
 		$(this).val(''); return false;
 	});
+	
+	// Check if there are query params (and switch to embed mode if so)
+	var search = Pelagios.Embed.getQueryParameter('search');
+	if (search)
+		Pelagios.Embed.searchPlaces(search, pAsync, pPersonalGraph, pMap);
     
     // Fetch datasets from server
     fetchDatasets();
