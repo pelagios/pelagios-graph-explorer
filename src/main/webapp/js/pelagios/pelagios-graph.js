@@ -1,5 +1,5 @@
 // Graph-related code
-Pelagios.Graph = function(raphael, map) {	
+Pelagios.Graph = function(raphael, map, dataview) {	
 	this.graph = new Graph();
 	this.locus = this.graph.newNode();
     this.layout = new Layout.ForceDirected(this.graph, 200, 30, 0.4);
@@ -12,7 +12,7 @@ Pelagios.Graph = function(raphael, map) {
     this.edges = new Array();
     
     this.selectionManager 
-    	= new Pelagios.SelectionManager(this.raphael, map, new Pelagios.Async());
+    	= new Pelagios.SelectionManager(this.raphael, map, new Pelagios.Async(null, null, dataview));
     
 	var toScreen = this.toScreen;
     this.renderer = new Renderer(10, this.layout,
@@ -66,6 +66,7 @@ Pelagios.Graph.prototype.newNode = function(name, size, records, places,
     n.size = size;
     n.name = name;
     n.selected = false;
+    n.records = records;
     n.opened = false;
     n.fill = fill;
     n.stroke = stroke

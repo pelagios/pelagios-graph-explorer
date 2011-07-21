@@ -39,6 +39,9 @@ Pelagios.SelectionManager.prototype.toggleSelect = function(node) {
 		// Show on map
 		this.map.showFeature(node.name);
 		
+		// Show in data view
+		this.async.fetchGeoAnnotations(node);
+		
 		// Fetch link data for this node
 		this.fetchLinkData(node);
 		

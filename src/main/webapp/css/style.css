@@ -68,16 +68,18 @@ html, body { padding:0px; margin:0px; background-color:#fff; width:100%; height:
 	cursor:pointer; 
 }
 
-#data-panel-records {
-	width:40%;
-	height:100%;	
-	float:left;
+#data-panel {
+	padding:5px 10px;
 	overflow-y:scroll;
 }
 
-#data-panel-map {
-	width:60%;
-	height:100%;
-	float:right;
+#data-panel-records {
+	width:100%;
+	height:100%;	
+	font-size:12px;
 }
 
+#data-panel-records p {
+	margin:0px;
+	padding:5px 0px;
+}

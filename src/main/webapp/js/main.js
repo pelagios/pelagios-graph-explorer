@@ -22,12 +22,12 @@ window.onload = function() {
     	pMap.setVisible(!pMap.isVisible())
     };
     
-    var pDataPanel = new Pelagios.DataPanel();
+    var pDataview = new Pelagios.DataPanel();
     document.getElementById("toggle-dataview").onclick = function() {
-    	pDataPanel.setVisible(!pDataPanel.isVisible())
+    	pDataview.setVisible(!pDataview.isVisible())
     };    
     
-    var pGraph = new Pelagios.Graph(raphael, pMap);
+    var pGraph = new Pelagios.Graph(raphael, pMap, pDataview);
     
     var pPersonalGraph = new Pelagios.PersonalGraph(
     		"personal-graph", 
@@ -37,7 +37,7 @@ window.onload = function() {
 		pPersonalGraph.hide();
 	});
 
-    var pAsync = new Pelagios.Async(pGraph, pMap);
+    var pAsync = new Pelagios.Async(pGraph, pMap, pDataview);
 	$("#searchfield").autocomplete({
 		source: function(term, callback) { pAsync.getAutoCompleteHint(term.term, callback); },
 		select: function(event, ui) {

@@ -1,7 +1,8 @@
 // Client-side code related to the server API calls
-Pelagios.Async = function(pGraph, pMap) {
+Pelagios.Async = function(pGraph, pMap, pDataview) {
 	this.pGraph = pGraph;
 	this.pMap = pMap;
+	this.pDataview = pDataview;
 }
 
 Pelagios.Async.prototype.getAutoCompleteHint = function(term, callback) {
@@ -71,4 +72,16 @@ Pelagios.Async.prototype.computeOverlap = function(srcNode, destNode, selectionM
 		Pelagios.Loadmask.getInstance().hide();
 	})
 	.error(function(data) { alert("Something went wrong: " + data.responseText); });			
+}
+
+Pelagios.Async.prototype.fetchGeoAnnotations = function(node) {
+	if (node.records > 500) {
+		
+	} else {
+		var pDataview = this.pDataview;
+		$.getJSON("datasets/" + node.name + "/annotations", function(data) {
+			pDataview.setGeoAnnotations(data);
+		})
+		.error(function(data) { alert("Something went wrong: " + data.responseText); });
+	}
 }
