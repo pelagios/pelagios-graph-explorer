@@ -23,13 +23,49 @@ Pelagios.Map = function() {
 	// Just those features which are currently shown on the map
 	this.shown = new Array();
 	
-	var map = this;
+	var self = this;
 	$("#dialog").bind("dialogresize", function(event, ui) {
-		map.refresh();
+		self.refresh();
 	});
 	$("#dialog").bind("dialogopen", function(event, ui) {
-		map.refresh();
+		self.refresh();
 	});
+	
+	var map = this.map;
+	this.addTooltip = function(name, feature) {
+		google.maps.event.addListener(feature, 'mouseover', function(event) {
+			var xy = Pelagios.Map.fromLatLngToXY(map, event.latLng);
+			feature.tooltip = new Pelagios.Tooltip(name);
+			feature.tooltip.show(xy.x, xy.y);
+		});
+		
+		google.maps.event.addListener(feature, 'mouseout', function(event) {
+			var xy = map.getProjection().fromLatLngToPoint(event.latLng);
+			feature.tooltip.hide(); 
+		});
+	}
+}
+
+Pelagios.Map.getWindowPosition = function() {
+	var top = document.getElementById('dialog').parentNode.style.top;
+	top = top.substring(0, top.length - 2);
+	
+	var left = document.getElementById('dialog').parentNode.style.left;
+	left = left.substring(0, left.length - 2);	
+	
+	return {x:parseInt(left), y:parseInt(top)};
+}
+
+Pelagios.Map.fromLatLngToXY = function(map, latLng) {
+	var topRight = map.getProjection().fromLatLngToPoint(map.getBounds().getNorthEast());
+	var bottomLeft = map.getProjection().fromLatLngToPoint(map.getBounds().getSouthWest());
+	var scale = Math.pow(2, map.getZoom());
+	var worldPoint = map.getProjection().fromLatLngToPoint(latLng);
+	
+	var pos = Pelagios.Map.getWindowPosition();
+	return new google.maps.Point(
+		(worldPoint.x - bottomLeft.x) * scale + pos.x,
+		(worldPoint.y - topRight.y) * scale + pos.y);
 }
 
 Pelagios.Map.prototype.setVisible = function(visible) {
@@ -118,7 +154,7 @@ Pelagios.Map.prototype.addGeoJSON = function(name, json) {
 	
 	var geom = new GeoJSON(json, options);
 	geom.options = options;
-	geom.tooltip = new Pelagios.Tooltip(name);
+	this.addTooltip(name, geom);
 	this.features[name] = geom;
 }
 

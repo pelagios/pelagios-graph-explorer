@@ -14,6 +14,7 @@
     
     <script type="text/javascript" src="js/pelagios/pelagios-core.js"></script>
     <script type="text/javascript" src="js/pelagios/pelagios-map.js"></script>
+    <script type="text/javascript" src="js/pelagios/pelagios-map-tooltip.js"></script>
     <script type="text/javascript" src="js/pelagios/pelagios-graph.js"></script>
     <script type="text/javascript" src="js/pelagios/pelagios-graph-selection.js"></script>
     <script type="text/javascript" src="js/pelagios/pelagios-async.js"></script>
@@ -24,13 +25,15 @@
     
     <script>
 	$(function() {
+		var viewport = Pelagios.getViewport();
 		$("#dialog").dialog({
 			autoOpen:false,
 			width:600,
 			height:350,
 			resizable:true,
 			show:"fade",
-			hide:"fade"
+			hide:"fade",
+			position:[viewport.x / 2 - 300, viewport.y / 2 - 175]
 		});
 	});
     </script>

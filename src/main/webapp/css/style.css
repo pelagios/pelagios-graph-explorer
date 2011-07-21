@@ -21,7 +21,7 @@ html, body { padding:0px; margin:0px; background-color:#fff; width:100%; height:
 	font-family:Calibri, Verdana;
 	font-size:14px;
 	background-color:#fff;
-	z-index:1000;
+	z-index:9999999;
 }
 
 .ajax-loader {
