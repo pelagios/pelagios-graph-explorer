@@ -88,9 +88,11 @@ Pelagios.PersonalGraph.prototype.hide = function() {
 		document.getElementById(this.id).style.visibility = "hidden";
 	}.bind(this), 500);
 	document.getElementById(this.id).style.opacity = 0;
+	this.map.clear();
 }
 
 Pelagios.PersonalGraph.prototype.show = function() {
+	this.map.clear();
 	document.getElementById(this.id).style.visibility = "visible";
 	document.getElementById(this.id).style.opacity = 1;
 }
@@ -121,10 +123,10 @@ Pelagios.PersonalGraph.prototype.newPlace = function(place) {
 	    
 	    var map = this.map;
 		n.set[0].mouseover(function(event) {
-			map.setHighlight(place.label, true);
+			map.highlight(place.label, true);
 		});
 		n.set[0].mouseout(function (event) {
-			map.setHighlight(place.label, false);			
+			map.highlight(place.label, false);			
 		});
 		n.set[0].click(function (event) {
 			map.zoomTo(place.label);			

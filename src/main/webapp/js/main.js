@@ -38,6 +38,7 @@ window.onload = function() {
 		select: function(event, ui) {
 			pPersonalGraph.show();
 			pMap.addGeoJSON(ui.item.label, ui.item.geometry);
+			pMap.showFeature(ui.item.label);
 			pAsync.fetchPlaceReferences(ui.item, pPersonalGraph, pMap);
 		}
 	});
@@ -90,13 +91,10 @@ window.onload = function() {
     		},
     		
     		// mouseover
-    		function() { pMap.showFeature(dataset.name) },
+    		function() { pMap.showFeature(dataset.name); },
     		
     		// mouseout
-    		function() {
-    			if (!pGraph.isSelected(dataset.name))
-    				pMap.hideFeature(dataset.name) 
-    		},
+    		function() { pMap.hideFeature(dataset.name); },
     		
     		parent);
     	

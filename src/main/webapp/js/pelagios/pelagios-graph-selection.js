@@ -74,6 +74,7 @@ Pelagios.SelectionManager.prototype.toggleSelect = function(node) {
 }
 
 Pelagios.SelectionManager.prototype.deselectAll = function() {
+	this.map.clear();
 	for (var sel in this.selectedNodes) {
 		this.toggleSelect(this.selectedNodes[sel]);
 	}
@@ -179,7 +180,14 @@ Pelagios.SelectionManager.prototype.setLink = function(arg0, arg1, arg2) {
 		});
 		
 		link.line.click(function (event) {
-			// alert('open map with common places');
+			map.clear();
+			map.setVisible(true);
+			var places = arg2.commonPlaces;
+			for (var i=0, ii=places.length; i<ii; i++) {
+				map.addGeoJSON(places[i].label, places[i].geometry);
+				map.showFeature(places[i].label);
+			}
+			map.zoomTo(arg0.name);
 		});
 		
 		// Links are always attached to the source nodes!
