@@ -19,6 +19,7 @@
     <script type="text/javascript" src="js/pelagios/pelagios-graph-selection.js"></script>
     <script type="text/javascript" src="js/pelagios/pelagios-async.js"></script>
 	<script type="text/javascript" src="js/pelagios/pelagios-personal.js"></script>
+    <script type="text/javascript" src="js/pelagios/pelagios-dataview.js"></script>
 	<script type="text/javascript" src="js/pelagios/pelagios-embed.js"></script>
     <script type="text/javascript" src="js/pelagios/pelagios-raphael-ext.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
@@ -34,6 +35,16 @@
 			show:"fade",
 			hide:"fade",
 			position:[viewport.x / 2 - 300, viewport.y / 2 - 175]
+		});
+		
+		$("#data-panel").dialog({
+			autoOpen:false,
+			width:600,
+			height:350,
+			resizable:true,
+			show:"fade",
+			hide:"fade",
+			position:[viewport.x / 2 - 330, viewport.y / 2 - 205]
 		});
 	});
     </script>
@@ -62,6 +73,11 @@
     
     <div id="dialog" title="Map">
       <div id="map-panel"></div>
+    </div>
+    
+    <div id="data-panel" title="Data View">
+      <div id="data-panel-records"></div>
+      <div id="data-panel-map"></div>
     </div>
     
     <div id="personal-graph">

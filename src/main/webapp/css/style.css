@@ -68,3 +68,16 @@ html, body { padding:0px; margin:0px; background-color:#fff; width:100%; height:
 	cursor:pointer; 
 }
 
+#data-panel-records {
+	width:40%;
+	height:100%;	
+	float:left;
+	overflow-y:scroll;
+}
+
+#data-panel-map {
+	width:60%;
+	height:100%;
+	float:right;
+}
+

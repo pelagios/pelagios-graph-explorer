@@ -22,6 +22,11 @@ window.onload = function() {
     	pMap.setVisible(!pMap.isVisible())
     };
     
+    var pDataPanel = new Pelagios.DataPanel();
+    document.getElementById("toggle-dataview").onclick = function() {
+    	pDataPanel.setVisible(!pDataPanel.isVisible())
+    };    
+    
     var pGraph = new Pelagios.Graph(raphael, pMap);
     
     var pPersonalGraph = new Pelagios.PersonalGraph(
