@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.Context;
+
+import org.apache.log4j.Logger;
 import org.pelagios.explorer.rest.api.serializer.DatasetSerializer;
 import org.pelagios.explorer.rest.api.serializer.GeoAnnotationSerializer;
 import org.pelagios.explorer.rest.api.serializer.GeometrySerializer;
@@ -25,9 +29,25 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 public class AbstractController {
 	
 	/**
+	 * 'Space' String constant
+	 */
+	protected static final String _ = " ";
+	
+	/**
 	 * GSON serializer instance
 	 */
 	private GsonBuilder gsonBuilder;
+	
+	/**
+	 * Servlet context
+	 */
+	@Context
+	protected HttpServletRequest request;
+	
+	/**
+	 * Logger
+	 */
+	protected Logger log = Logger.getLogger(this.getClass());
 	
 	public AbstractController() {
 		gsonBuilder = new GsonBuilder();
