@@ -302,23 +302,23 @@ Pelagios.Graph.Local.getInstance = function() {
 	    this.maxDatasetSize = 0;
 	    this.maxEdgeWeight = 0;
 	    
-		for (var d in this.datasets) {
-			var dataset = this.datasets[d];			
-			var edges = this.findEdgesFor(dataset);
+		for (var d in datasets) {
+			var dataset = datasets[d];			
+			var lEdges = this.findEdgesFor(dataset);
 			
-			for (var i=0, ii=edges.length; i<ii; i++) {
-				edges[i].connection.line.remove();
-				delete this.edges[edges[i].from.name];
+			for (var i=0, ii=lEdges.length; i<ii; i++) {
+				lEdges[i].connection.line.remove();
+				delete edges[lEdges[i].from.name];
 			}
-			this.graph.removeNode(dataset);
+			springyGraph.removeNode(dataset);
 			dataset.set.remove();
-			delete this.datasets[dataset.name];
+			delete datasets[dataset.name];
 		}
 		
-		for (var i=0, ii=this.places.length; i<ii; i++) {
-			this.places[i].set.remove();
+		for (var i=0, ii=places.length; i<ii; i++) {
+			places[i].set.remove();
 		}
-		this.places.length = 0;
+		places.length = 0;
 	}
 	
     Pelagios.Graph.Local.instance.moveNodeTo = function(node, x, y) {
