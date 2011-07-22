@@ -1,6 +1,7 @@
 TODO...
 
 - Data View!
+- On first access, page loading can take a while -> enable AJAX load spinner
 - Map/Graph synchronization is still very incomplete in both views
 - Add some basic stats (total datasets, total GeoAnnotations, total places,...) to the title bar
 - Documentation for the REST API
@@ -15,3 +16,4 @@ TODO...
     to one common base class
   - Ideally, all JavaScript should REALLY be ported to GWT (along with
     Springy!)
+- In general: JavaScript refactoring if there's time!!!
