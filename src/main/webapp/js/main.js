@@ -47,6 +47,6 @@ window.onload = function() {
 	// Check if there are query params (and switch to embed mode if so)
 	var search = Pelagios.Embed.getQueryParameter('search');
 	if (search)
-		Pelagios.Embed.searchPlaces(search, pAsync, pPersonalGraph, pMap);
+		Pelagios.Embed.searchPlaces(search, async, lGraph, map);
 }
 
