@@ -27,15 +27,22 @@ Pelagios.DataPanel.getInstance = function() {
 		},
 	
 		showDatasetInfo : function(dataset) {
-			set('<div class="dataset-info">' +
+			var innerHTML = '<div class="dataset-info">' +
 				'<h1>' + dataset.name + '</h1>' +
-				'<p>Contains ' + dataset.geoAnnotations + ' geo-annotations<br/>' +
-				'referencing ' + dataset.places + ' unique places.</p>' +
-				'<input id="btnShowOnMap" type="button" value="Show on Map"/></div>');
+				'<p>This data set contains <b>' + dataset.geoAnnotations + '</b> geo-annotations ';
+			
+			if (dataset.subsets > 0)
+				innerHTML += 'in <b>' + dataset.subsets + '</b> sub-sets, ';
+			
+			innerHTML += 'referencing <b>' + dataset.places + '</b> unique places.</p>' +
+				'<input id="btnShowOnMap" type="button" value="Show on Map"/></div>';
+			
+			set(innerHTML);
 			
 			$("#btnShowOnMap").click(function() {
 				var map = Pelagios.Map.getInstance();
 				map.clear();
+				map.setVisible(true);
 				Pelagios.Async.getInstance().getPlaces(dataset.name, function(data) {
 					for (var i=0, ii=data.length; i<ii; i++) {
 						map.addGeoJSON(data[i].label, data[i].geometry);

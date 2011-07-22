@@ -12,13 +12,13 @@ window.onload = function() {
 	var async = Pelagios.Async.getInstance();
 	
 	// Attach click handler to 'toggle map' button
-    $("toggle-map").click(function() {
-    	map.setVisible(!pMap.isVisible())
+    $("#toggle-map").click(function() {
+    	map.setVisible(!map.isVisible())
     });
     
     // Attach click handler to 'toogle dataview' button
-    $("toggle-dataview").click(function() {
-    	dataPanel.setVisible(!pDataview.isVisible())
+    $("#toggle-dataview").click(function() {
+    	dataPanel.setVisible(!dataPanel.isVisible())
     });    
     
     // Attach click handler to local graph 'back' button

@@ -99,7 +99,7 @@ Pelagios.Map.getInstance = function() {
 		},
 	
 		clear : function() {
-			for (var f in this.features) {
+			for (var f in features) {
 				this.hideFeature(f);
 			}
 		},

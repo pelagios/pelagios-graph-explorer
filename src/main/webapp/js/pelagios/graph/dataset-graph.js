@@ -133,6 +133,12 @@ Pelagios.Graph.Dataset.getInstance = function() {
 			} else {
 				Pelagios.Async.getInstance().datasets(n.dataset, function(data) {
 					n.opened = true;
+					if (data.length > Pelagios.Const.DATASET_CHILD_NODE_LIMIT) {
+						alert("This dataset has " + data.length + " child sets. That's too much " +
+							"to display it in the graph view. We're working on it!");
+						return;
+					}
+					
 					for (var i=0, ii=data.length; i<ii; i++) {
 						Pelagios.Graph.Dataset.getInstance().addDataset(data[i], n);
 					}

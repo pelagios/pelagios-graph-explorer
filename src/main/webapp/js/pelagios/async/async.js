@@ -87,7 +87,7 @@ Pelagios.Async.getInstance = function() {
 		intersect : function(srcNode, destNode, selectionManager) {
 			Pelagios.Loadmask.getInstance().show();
 			var url = "places/intersect?set1=" +
-				srcNode.name + "&set2=" + destNode.name;
+				srcNode.dataset.name + "&set2=" + destNode.dataset.name;
 			
 			$.getJSON(url, function(data) {
 				selectionManager.setLink(srcNode, destNode, data);

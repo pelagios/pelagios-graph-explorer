@@ -19,3 +19,7 @@ Pelagios.Tooltip.prototype.show = function(x, y) {
 Pelagios.Tooltip.prototype.hide = function() {
 	this.div.style.visibility = "hidden";
 }
+
+Pelagios.Tooltip.prototype.remove = function() {
+	// TODO
+}

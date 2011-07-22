@@ -12,13 +12,6 @@ Pelagios.SelectionManager = function(raphael) {
 	}
 }
 
-Pelagios.SelectionManager.prototype.isSelected = function(name) {
-	if (this.selectedNodes[name]) {
-		return true;
-	}
-	return false;
-}
-
 Pelagios.SelectionManager.prototype.toggleSelect = function(node) {
 	node.selected = !node.selected;
 	if (node.selected) {
@@ -34,37 +27,31 @@ Pelagios.SelectionManager.prototype.toggleSelect = function(node) {
 				"stroke-dasharray" : "-"
 			});
 		
-		// Show on map
-		Pelagios.Map.getInstance().showFeature(node.name);
-		
 		// Show in data view
-		Pelagios.DataPanel.getInstance().showDatasetInfo({
-			name: node.name,
-			geoAnnotations: node.records,
-			places: node.place
-		});
+		Pelagios.DataPanel.getInstance().showDatasetInfo(node.dataset);
 		
 		// Fetch link data for this node
 		this.fetchLinkData(node);
 		
 		// Store in 'selectedNodes' array
-		this.selectedNodes[node.name] = node;
+		this.selectedNodes[node.dataset.name] = node;
 	} else {		
 		// Remove highlight on screen
 		node.set.selection.remove();
 		
 		// Remove from map
-		Pelagios.Map.getInstance().hideFeature(node.name);
+		Pelagios.Map.getInstance().hideFeature(node.dataset.name);
 		
 		// Remove links on screen
 		var links = this.getLinksFor(node);
 		for (var i=0, ii=links.length; i<ii; i++) {
 			links[i].line.remove();
-			links[i].tooltip.remove();
+			if (links[i].tooltip)
+				links[i].tooltip.remove();
 		}
 		
 		// Remove from 'selectedNodes' array
-		delete this.selectedNodes[node.name];
+		delete this.selectedNodes[node.dataset.name];
 		
 		// Re-normalize
 		this.maxOverlapWeight = 0;
@@ -88,7 +75,7 @@ Pelagios.SelectionManager.prototype.deselectAll = function() {
 }
 
 Pelagios.SelectionManager.prototype.getLinksFor = function(node) {
-	if (!this.selectedNodes[node.name])
+	if (!this.selectedNodes[node.dataset.name])
 		return;
 	
 	var allLinks = new Array();
@@ -104,7 +91,7 @@ Pelagios.SelectionManager.prototype.getLinksFor = function(node) {
 	// Inbound links
 	var otherNodes = new Array()
 	for (var n in this.selectedNodes) {
-		if (n != node.name)
+		if (n != node.dataset.name)
 			otherNodes.push(this.selectedNodes[n]);
 	}
 	
@@ -128,7 +115,7 @@ Pelagios.SelectionManager.prototype.getAllLinks = function() {
 		var linksForN = this.selectedNodes[n].set.links;
 		if (linksForN) {
 			for (var i=0, ii=linksForN.length; i<ii; i++) {
-				if (this.selectedNodes[linksForN[i].to.name])
+				if (this.selectedNodes[linksForN[i].to.dataset.name])
 					allLinks.push(linksForN[i]);
 			}
 		}
@@ -143,7 +130,7 @@ Pelagios.SelectionManager.prototype.fetchLinkData = function(node) {
 }
 
 Pelagios.SelectionManager.prototype.setLink = function(arg0, arg1, arg2) {
-	if (arg1) {		
+	if (arg1) {	
 		// arg0 -> srcNode, arg1 -> destNode, arg2 -> data	
 		if (arg2.commonPlaces.length > this.maxOverlapWeight) {
 			this.maxOverlapWeight = arg2.commonPlaces.length;
