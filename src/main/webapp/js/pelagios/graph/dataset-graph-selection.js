@@ -1,5 +1,5 @@
 // An attempt to clean up the selection code mess in the dataset graph
-Pelagios.SelectionManager = function(raphael, map, async) {
+Pelagios.SelectionManager = function(raphael) {
 	this.raphael = raphael;
 	this.map = map;
 	this.async = async;

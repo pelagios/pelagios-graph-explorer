@@ -8,15 +8,7 @@ window.onresize = function(event) {
 }
 
 window.onload = function() {	
-	// Init drawing canvas
 	var viewport = Pelagios.getViewport();
-    raphael = Raphael("graph-canvas", viewport.x, viewport.y);
-    raphael.canvas.onclick = function(event){
-    	if (event.target.tagName == 'svg') {
-    		pGraph.deselectAll();
-    	}
-    };
-    
     var pMap = new Pelagios.Map.getInstance();
     document.getElementById("toggle-map").onclick = function() {
     	pMap.setVisible(!pMap.isVisible())
@@ -27,7 +19,7 @@ window.onload = function() {
     	pDataview.setVisible(!pDataview.isVisible())
     };    
     
-    var pGraph = new Pelagios.Graph(raphael, pMap, pDataview);
+    var pGraph = new Pelagios.Graph.Dataset.getInstance();
     
     var pPersonalGraph = new Pelagios.PersonalGraph(
     		"personal-graph", 

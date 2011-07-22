@@ -1,6 +1,7 @@
-Pelagios.AbstractGraph = function() { }
+Pelagios.Graph = function() { }
+Pelagios.Graph.Abstract = function() { }
 
-Pelagios.AbstractGraph.prototype.toScreen = function(p, layout) {
+Pelagios.Graph.Abstract.prototype.toScreen = function(p, layout) {
 	var viewport = Pelagios.getViewport();
 	var g = layout.getBoundingBox();
 		
@@ -11,7 +12,7 @@ Pelagios.AbstractGraph.prototype.toScreen = function(p, layout) {
 	return new Vector(sx, sy);
 }
 
-Pelagios.AbstractGraph.prototype.fromScreen = function(s) {
+Pelagios.Graph.Abstract.prototype.fromScreen = function(s) {
 	var viewport = Pelagios.getViewport();
 	var g = this.layout.getBoundingBox();
 	
