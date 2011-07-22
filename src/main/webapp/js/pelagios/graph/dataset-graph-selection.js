@@ -54,7 +54,7 @@ Pelagios.SelectionManager.prototype.toggleSelect = function(node) {
 		node.set.selection.remove();
 		
 		// Remove from map
-		this.map.hideFeature(node.name);
+		Pelagios.Map.getInstance().hideFeature(node.name);
 		
 		// Remove links on screen
 		var links = this.getLinksFor(node);

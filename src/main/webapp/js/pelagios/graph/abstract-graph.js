@@ -12,9 +12,9 @@ Pelagios.Graph.Abstract.prototype.toScreen = function(p, layout) {
 	return new Vector(sx, sy);
 }
 
-Pelagios.Graph.Abstract.prototype.fromScreen = function(s) {
+Pelagios.Graph.Abstract.prototype.fromScreen = function(s, layout) {
 	var viewport = Pelagios.getViewport();
-	var g = this.layout.getBoundingBox();
+	var g = layout.getBoundingBox();
 	
     var graphSize = g.topright.subtract(g.bottomleft);
     var px = (s.x / viewport.x) * graphSize.x + g.bottomleft.x;

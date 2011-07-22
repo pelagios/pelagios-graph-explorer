@@ -3,6 +3,14 @@
 // Namespace declarations
 Pelagios = {};
 
+Pelagios.Const = {};
+Pelagios.Const.MAX_CONNECTION_WIDTH = 12; 
+Pelagios.Const.MIN_CONNECTION_WIDTH = 3;  
+Pelagios.Const.MAX_DATASET_RADIUS = 20;  
+Pelagios.Const.MIN_DATASET_RADIUS = 5;    
+Pelagios.Const.CLICK_DELAY = 200;
+Pelagios.Const.MAX_CLICK_TIME = 300;
+
 // Utility function for querying current viewport size
 Pelagios.getViewport = function() {
 	 var w, h;

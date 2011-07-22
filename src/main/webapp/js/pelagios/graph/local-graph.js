@@ -30,7 +30,7 @@ Pelagios.Graph.Local.getInstance = function() {
 
     // Init drawing canvas
 	var viewport = Pelagios.getViewport();
-    var raphael = Raphael("personal-graph", viewport.x, viewport.y);
+    var raphael = Raphael(Pelagios.Graph.Local.DIV_ID, viewport.x, viewport.y);
     
     // Keep track of places, datasets and edges in the graph
     var places = new Array();
@@ -41,26 +41,26 @@ Pelagios.Graph.Local.getInstance = function() {
     var maxDatasetSize = 0;
     
 	function getWidthFromWeight(weight) {
-		var w = 12 * weight / this.maxEdgeWeight;
-		if (w < 2)
-			w = 2;
+		var w = Pelagios.Const.MAX_CONNECTION_WIDTH * weight / maxEdgeWeight;
+		if (w < Pelagios.Const.MIN_CONNECTION_WIDTH)
+			w = Pelagios.Const.MIN_CONNECTION_WIDTH;
 		return w;
 	}
 	
 	function getRadiusFromSize(size) {
-		var r = 25 * size / this.maxDatasetSize;
-		if (r < 5)
-			r = 5;
+		var r = Pelagios.Const.MAX_DATASET_RADIUS * size / maxDatasetSize;
+		if (r < Pelagios.Const.MIN_DATASET_RADIUS)
+			r = Pelagios.Const.MIN_DATASET_RADIUS;
 		return r;
 	}
 	
-	function normalizeLineWidths() {
+	function redrawEdges() {
 		for (var e in edges) {
 			Pelagios.Graph.Local.instance.setEdge(edges[e]);
 		}
 	}
 
-	function normalizeDatasetSizes() {
+	function redrawDatasets() {
 		for (var d in datasets) {
 			Pelagios.Graph.Local.instance.newDataset(d);
 		}
@@ -74,13 +74,13 @@ Pelagios.Graph.Local.getInstance = function() {
    		renderer.graphChanged();
     }
     
-    Pelagios.Graph.Local.instance.hide = function() {
+    Pelagios.Graph.Local.instance.close = function() {
+		Pelagios.Map.getInstance().clear();
 		setTimeout(function(){ 
-			this.clear();
+			Pelagios.Graph.Local.getInstance().clear();
 			document.getElementById(Pelagios.Graph.Local.DIV_ID).style.visibility = "hidden";
-		}.bind(this), 500);
+		}, 500);
 		document.getElementById(Pelagios.Graph.Local.DIV_ID).style.opacity = 0;
-		this.map.clear();
 	}
 
     Pelagios.Graph.Local.instance.show = function() {
@@ -114,7 +114,7 @@ Pelagios.Graph.Local.getInstance = function() {
 		        n.set[i].graphNode = n;    	
 		    }
 		    
-		    var map = Pelagios.Map.getInstance().map;
+		    var map = Pelagios.Map.getInstance();
 			n.set[0].mouseover(function(event) {
 				map.highlight(place.label, true);
 			});
@@ -149,7 +149,7 @@ Pelagios.Graph.Local.getInstance = function() {
 		} else {
 			if (datasetSize > maxDatasetSize) {
 				maxDatasetSize = datasetSize;
-				normalizeDatasetSizes();
+				redrawDatasets();
 			}
 			
 		    var fill = Pelagios.Palette.getInstance().getColor(rootLabel);
@@ -239,8 +239,8 @@ Pelagios.Graph.Local.getInstance = function() {
 			
 		    maxDatasetSize = maxSize;
 		    maxEdgeWeight = maxWeight;
-			normalizeLineWidths();
-			normalizeDatasetSizes();
+			redrawEdges();
+			redrawDatasets();
 		}
 	}
 
@@ -266,7 +266,7 @@ Pelagios.Graph.Local.getInstance = function() {
 			
 			if (arg2 > maxEdgeWeight) {
 				maxEdgeWeight = arg2;
-				normalizeLineWidths();
+				redrawEdges();
 			}
 			
 			var sizeNorm = getWidthFromWeight(arg2);
@@ -320,6 +320,17 @@ Pelagios.Graph.Local.getInstance = function() {
 		}
 		this.places.length = 0;
 	}
+	
+    Pelagios.Graph.Local.instance.moveNodeTo = function(node, x, y) {
+    	if (node.place) {
+			raphael.pelagios.placeLabel(node.set, x, y);
+		} else {
+			raphael.pelagios.datasetLabel(node.set, x, y);			
+		}
+		var pt = this.fromScreen(new Vector(x, y), layout);
+		layout.point(node).p = pt;
+		renderer.start();
+    }
 
 	Pelagios.Graph.Local.instance.handler = {
 
@@ -334,14 +345,8 @@ Pelagios.Graph.Local.getInstance = function() {
 		},
 			
 		move : function(dx, dy) {
-			if (this.graphNode.place) {
-				window.personalGraph.raphael.pelagios.placeLabel(this.graphNode.set, this.ox + dx, this.oy + dy);
-			} else {
-				window.personalGraph.raphael.pelagios.datasetLabel(this.graphNode.set, this.ox + dx, this.oy + dy);			
-			}
-			var pt = window.personalGraph.fromScreen(new Vector(this.ox + dx, this.oy + dy));
-			window.personalGraph.layout.point(this.graphNode).p = pt;
-			window.personalGraph.renderer.start();
+    		Pelagios.Graph.Local.getInstance()
+				.moveNodeTo(this.graphNode, this.ox + dx, this.oy + dy);
 		},
 			
 		up : function() {

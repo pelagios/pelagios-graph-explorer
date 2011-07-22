@@ -6,6 +6,17 @@ Pelagios.Async.getInstance = function() {
 		return Pelagios.Async.instance;
 	
 	Pelagios.Async.instance = {
+		datasets : function(parent, callback) {
+	    	var url = "datasets/"
+	    	if (parent)
+	    		url += parent.name;
+	    	
+	    	$.getJSON(url, function(data) {
+	    		callback(data);
+	    	})
+	    	.error(function() { alert("Error."); });
+	    },
+			
 		search : function(term, callback) {
 			$.getJSON("places/search?q=" + term, function(data) {
 				callback(data);

@@ -17,10 +17,13 @@ import com.google.gson.JsonSerializer;
  */
 public class DatasetSerializer implements JsonSerializer<Dataset> {
 	
+	private static final String KEY_ROOT_DATASET = "rootDataset";
+	
 	public JsonElement serialize(Dataset dataset, Type typeOfSrc, JsonSerializationContext context) {
 		JsonObject json = new JsonObject();
 		json.add(Dataset.KEY_NAME, new JsonPrimitive(dataset.getName()));
-		json.add(Dataset.KEY_RECORDS, new JsonPrimitive(dataset.listGeoAnnotations(true).size()));
+		json.add(KEY_ROOT_DATASET, new JsonPrimitive(dataset.getRoot().getName()));
+		json.add(Dataset.KEY_GEOANNOTATIONS, new JsonPrimitive(dataset.listGeoAnnotations(true).size()));
 		json.add(Dataset.KEY_PLACES, new JsonPrimitive(dataset.listPlaces(true).size()));
 		return json;
 	}

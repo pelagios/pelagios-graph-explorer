@@ -1,5 +1,7 @@
 Pelagios.Graph.Dataset = {}
 
+Pelagios.Graph.Dataset.DIV_ID = "graph-canvas";
+
 Pelagios.Graph.Dataset.getInstance = function() {
 	if (Pelagios.Graph.Dataset.instance)
 		return Pelagios.Graph.Dataset.instance;
@@ -26,7 +28,7 @@ Pelagios.Graph.Dataset.getInstance = function() {
 
     // Init drawing canvas
 	var viewport = Pelagios.getViewport();
-    var raphael = Raphael("graph-canvas", viewport.x, viewport.y);
+    var raphael = Raphael(Pelagios.Graph.Dataset.DIV_ID, viewport.x, viewport.y);
     raphael.canvas.onclick = function(event){
     	if (event.target.tagName == 'svg') {
     		Pelagios.Graph.Dataset.instance.deselectAll();
@@ -43,6 +45,29 @@ Pelagios.Graph.Dataset.getInstance = function() {
     // Keep track of node -> outbound edges relations
     var edges = new Array();
     
+    var maxDatasetSize = 0;
+    
+    // Initialize the graph
+    Pelagios.Async.getInstance().datasets(null, function(data) {
+		for (var i=0, ii=data.length; i<ii; i++) {
+			if (data[i].geoAnnotations > maxDatasetSize)
+				maxDatasetSize = data[i].geoAnnotations;
+		}
+
+		for (var i=0, ii=data.length; i<ii; i++) {
+			Pelagios.Graph.Dataset.instance.addDataset(data[i]);
+		}
+    });
+    
+	function getRadiusFromSize(numberOfGeoAnnotations) {
+    	var r = Math.sqrt(numberOfGeoAnnotations) *
+    		Pelagios.Const.MAX_DATASET_RADIUS / Math.sqrt(maxDatasetSize);
+    		
+    	if (r < Pelagios.Const.MIN_DATASET_RADIUS)
+    		r = Pelagios.Const.MIN_DATASET_RADIUS;
+    	return r;
+	}
+    
     Pelagios.Graph.Dataset.instance = new Pelagios.Graph.Abstract();
 
     Pelagios.Graph.Dataset.instance.refresh = function() {
@@ -51,23 +76,28 @@ Pelagios.Graph.Dataset.getInstance = function() {
    		renderer.graphChanged();
     }
     
-    Pelagios.Graph.Dataset.instance.newNode = function(name, size, records, places, 
-    		fill, stroke, dblclick, mouseover, mouseout, parent) {
-    	
+    Pelagios.Graph.Dataset.instance.addDataset = function(dataset, parent) {
         var n = springyGraph.newNode();
         springyGraph.newEdge(n, locus, { length: 0.2 });
         
-        n.size = size;
-        n.name = name;
+        n.dataset = dataset;
         n.selected = false;
-        n.records = records;
-        n.place = places;
         n.opened = false;
-        n.fill = fill;
-        n.stroke = stroke
+        
+        var size = getRadiusFromSize(dataset.geoAnnotations);
         n.data.mass = size / 10;
         
-        n.set = raphael.pelagios.dataset(name, size, records, places, fill, stroke);
+        var palette = Pelagios.Palette.getInstance();
+        var fill = palette.getColor(dataset.rootDataset);
+        var stroke = palette.darker(fill);
+        
+        n.set = raphael.pelagios.dataset(
+        		dataset.name,
+        		size,
+        		dataset.geoAnnotations,
+        		dataset.places,
+        		fill, stroke);
+        
         n.set.drag(
         	this.handler.move,
         	this.handler.drag,
@@ -76,11 +106,7 @@ Pelagios.Graph.Dataset.getInstance = function() {
         // This is to enable clicks AND double clicks on the same element 
         // See http://christopherj.us/javascript-click-and-double-click-on-same-element/
         var clickTimeout = null;
-        var clickDelay = 200;
-        
         var lastClick = null;
-        var maxClickTime = 300;
-   
     	n.set.mousedown(function() {
     		lastClick = new Date().getTime();
     	});
@@ -88,30 +114,35 @@ Pelagios.Graph.Dataset.getInstance = function() {
     	n.set.click(function(event) { 
     		if (clickTimeout){ return; }
     		
-    		if ((new Date().getTime() - lastClick) > maxClickTime) { return; } 
+    		if ((new Date().getTime() - lastClick) > Pelagios.Const.MAX_CLICK_TIME) { return; } 
     		
     		clickTimeout = window.setTimeout(function(){
     			clickTimeout = null;  
     			selectionManager.toggleSelect(n);
-    		}, clickDelay);
+    		}, Pelagios.Const.CLICK_DELAY);
     	});
         
-        if (dblclick)
-        	n.set.dblclick(function(event) {
-        		
-        		if(clickTimeout){
-        			clearTimeout(clickTimeout);
-        			clickTimeout = null;
-        		}
-        		
-        		new dblclick(n, event); 
-        	});
+        n.set.dblclick(function(event) {		
+    		if(clickTimeout){
+    			clearTimeout(clickTimeout);
+    			clickTimeout = null;
+    		}
+    		
+			if (n.opened) {
+				Pelagios.Graph.Dataset.getInstance().closeNode(n);
+			} else {
+				Pelagios.Async.getInstance().datasets(n.dataset, function(data) {
+					n.opened = true;
+					for (var i=0, ii=data.length; i<ii; i++) {
+						Pelagios.Graph.Dataset.getInstance().addDataset(data[i], n);
+					}
+				});
+			}
+        });
         
-        if (mouseover)
-        	n.set.mouseover(mouseover);
-        
-        if (mouseout)
-        	n.set.mouseout(mouseout);
+        var map = Pelagios.Map.getInstance();
+        n.set.mouseover(function() { map.showFeature(dataset.name); });
+        n.set.mouseout(function() { map.hideFeature(dataset.name); });
         
         // Seems kind of recursive... but we need that in
         // the move handler, which only has access to the
@@ -123,13 +154,14 @@ Pelagios.Graph.Dataset.getInstance = function() {
         
         if (parent) {
         	var c;
-        	if (children[parent.name]) {
-        		c = children[parent.name];
+        	if (children[parent.dataset.name]) {
+        		c = children[parent.dataset.name];
         	} else {
         		c = new Array();
-        		children[parent.name] = c;
+        		children[parent.dataset.name] = c;
         	}
         	c.push(n);
+        	Pelagios.Graph.Dataset.instance.newEdge(parent, n);
         }
         
         return n;
@@ -137,13 +169,13 @@ Pelagios.Graph.Dataset.getInstance = function() {
 
     Pelagios.Graph.Dataset.instance.newEdge = function(from, to, width) {
     	var ed;
-    	if (edges[from.name]) {
-    		ed = edges[from.name];
+    	if (edges[from.dataset.name]) {
+    		ed = edges[from.dataset.name];
     	} else {
     		ed = new Array();
-    		edges[from.name] = ed;
+    		edges[from.dataset.name] = ed;
     	}
-    	
+    
         var e = springyGraph.newEdge(from, to, { length: .05 });
         e.connection = raphael.pelagios.connection(from.set[0], to.set[0], "#000", width);
         ed.push(e);
@@ -151,22 +183,30 @@ Pelagios.Graph.Dataset.getInstance = function() {
     }
 
     Pelagios.Graph.Dataset.instance.getChildNodes = function(parent) {
-    	if (children[parent.name])
-    		return children[parent.name];
+    	if (children[parent.dataset.name])
+    		return children[parent.dataset.name];
     	return new Array();
     }
 
+    Pelagios.Graph.Dataset.instance.closeNode = function(node) {
+    	var children = this.getChildNodes(node);
+    	for (var i=0, ii=children.length; i<ii; i++) {
+    		this.closeNode(children[i]);
+    	}
+    	this.removeChildNodes(node);
+    }
+    
     Pelagios.Graph.Dataset.instance.removeChildNodes = function(parent) {
     	// Remove outbound edges (SVG only - graph edges are handled by Springy)
-    	var ed = edges[parent.name];
+    	var ed = edges[parent.dataset.name];
     	if (ed) {
     		for (var i=0, ii=ed.length; i<ii; i++) {
     			ed[i].connection.line.remove();
     		}
-    		delete edges[parent.name];
+    		delete edges[parent.dataset.name];
     		
     		// Remove child nodes
-    		var ch = children[parent.name];
+    		var ch = children[parent.dataset.name];
     		for (var i=0, ii=ch.length; i<ii; i++) {
     			ch[i].set.remove();
     			springyGraph.removeNode(ch[i]);
@@ -175,7 +215,7 @@ Pelagios.Graph.Dataset.getInstance = function() {
     			if (ch[i].selected)
     				selectionManager.toggleSelect(ch[i]);
     		}
-    		delete children[parent.name];
+    		delete children[parent.dataset.name];
     		parent.opened = false;
     	}
     }
@@ -187,28 +227,30 @@ Pelagios.Graph.Dataset.getInstance = function() {
     Pelagios.Graph.Dataset.instance.deselectAll = function() {
     	selectionManager.deselectAll();
     }
+    
+    Pelagios.Graph.Dataset.instance.moveDatasetTo = function(node, x, y) {
+		raphael.pelagios.dataset(node.set, x, y);
+		var pt = this.fromScreen(new Vector(x, y), layout);
+		layout.point(node).p = pt;
+		renderer.start();   	
+    }
 
     Pelagios.Graph.Dataset.instance.handler = {
 
     	drag : function() {
-    		this.graphNode.data.mass = 100000;
     		this.ox = this.attr("cx");
     		this.oy = this.attr("cy");
     	},
     		
     	move : function(dx, dy) {
-    		this.graphNode.data.mass = 100000;
-    		window.pGraph.raphael.pelagios.dataset(this.graphNode.set, this.ox + dx, this.oy + dy);
-    		var pt = window.pGraph.fromScreen(new Vector(this.ox + dx, this.oy + dy));
-    		window.pGraph.layout.point(this.graphNode).p = pt;
-    		window.pGraph.renderer.start();
+    		Pelagios.Graph.Dataset.getInstance()
+    			.moveDatasetTo(this.graphNode, this.ox + dx, this.oy + dy);
     	},
     		
     	up : function() {
     		this.animate({
     			"scale" : "1.0, 1.0",
     		}, 350, "bounce");
-    		this.graphNode.data.mass = this.graphNode.data.size / 3;
     	}
 
     }
