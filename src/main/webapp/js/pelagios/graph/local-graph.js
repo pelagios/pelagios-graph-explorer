@@ -132,7 +132,7 @@ Pelagios.Graph.Local.getInstance = function() {
 		    
 		    // Find paths between places
 		    for (var i=0, ii=places.length; i<ii; i++) {
-		        Pelagios.Async.getInstance().findShortestPaths(n, this.places[i], this);    	
+		        Pelagios.Async.getInstance().findShortestPaths(n, places[i], this);    	
 		    }
 		    
 		    places.push(n);
@@ -218,9 +218,9 @@ Pelagios.Graph.Local.getInstance = function() {
 			
 			for (var d in datasets) {
 				var dataset = datasets[d];			
-				var lEdges = findEdgesFor(dataset);
+				var lEdges = this.findEdgesFor(dataset);
 		
-				if (edges.length < 2) { 
+				if (lEdges.length < 2) { 
 					delete edges[lEdges[0].from.name];
 					lEdges[0].connection.line.remove();
 					dataset.set.remove();

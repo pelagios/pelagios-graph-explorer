@@ -65,6 +65,7 @@ Pelagios.Async.getInstance = function() {
 			$.getJSON("places/shortestpaths?from=" + encodeURI(from.place.uri) + 
 				"&to=" + encodeURI(to.place.uri), function(data) {
 
+				var personalGraph = Pelagios.Graph.Local.getInstance();
 				for (var j=0, jj=data.length; j<jj; j++) {
 					var lastNode = from;
 					var lastWeight = data[j].start.annotations;

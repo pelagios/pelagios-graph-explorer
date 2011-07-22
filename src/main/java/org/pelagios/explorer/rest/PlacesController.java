@@ -13,6 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
+import org.pelagios.explorer.Config;
 import org.pelagios.explorer.rest.api.Occurences;
 import org.pelagios.explorer.rest.api.Overlap;
 import org.pelagios.graph.Path;
@@ -85,7 +86,7 @@ public class PlacesController extends AbstractController {
 		
 		// Fold the paths to a maximum of 12
 		int loopCount = 0;
-		while (shortestPaths.size() > 12 && loopCount < 3) {
+		while ((shortestPaths.size() > Config.getInstance().getMaxNumberOfShortestPaths()) && (loopCount < 3)) {	
 			for (Path p : shortestPaths) {
 				p.fold();
 			}
