@@ -1,14 +1,9 @@
-var raphael;
-
 window.onresize = function(event) {
-	var viewport = Pelagios.getViewport();
-    raphael.setSize(viewport.x, viewport.y);
-	window.pGraph.renderer.graphChanged();
-	window.personalGraph.graphChanged();
+	Pelagios.Graph.Dataset.getInstance().refresh();
+	Pelagios.Graph.Local.getInstance().refresh();
 }
 
 window.onload = function() {	
-	var viewport = Pelagios.getViewport();
     var pMap = new Pelagios.Map.getInstance();
     document.getElementById("toggle-map").onclick = function() {
     	pMap.setVisible(!pMap.isVisible())
@@ -19,12 +14,9 @@ window.onload = function() {
     	pDataview.setVisible(!pDataview.isVisible())
     };    
     
-    var pGraph = new Pelagios.Graph.Dataset.getInstance();
+    var pGraph = Pelagios.Graph.Dataset.getInstance();
     
-    var pPersonalGraph = new Pelagios.PersonalGraph(
-    		"personal-graph", 
-    		Raphael("personal-graph", viewport.x, viewport.y),
-    		pMap);
+    var pPersonalGraph = Pelagios.Graph.Local.getInstance();
 	$("#back-button").click(function(){
 		pPersonalGraph.hide();
 	});
@@ -36,7 +28,7 @@ window.onload = function() {
 			pPersonalGraph.show();
 			pMap.addGeoJSON(ui.item.label, ui.item.geometry);
 			pMap.showFeature(ui.item.label);
-			pAsync.fetchPlaceReferences(ui.item, pPersonalGraph, pMap);
+			pAsync.occurences(ui.item, pPersonalGraph, pMap);
 		}
 	});
 	$("#searchfield").focus(function() {

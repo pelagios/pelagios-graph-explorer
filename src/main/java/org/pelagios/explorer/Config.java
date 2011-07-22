@@ -11,6 +11,7 @@ public class Config {
 	private Properties props;
 	
 	private static final String NEO4J_DIR = "neo4j.dir";
+	private static final String MAX_SHORTEST_PATHS = "maximum.shortestpaths";
 	
 	private Config() {
 		props = new Properties();
@@ -35,6 +36,10 @@ public class Config {
 	
 	public String getNeo4jDirectory() {
 		return props.getProperty(NEO4J_DIR);
+	}
+	
+	public int getMaxNumberOfShortestPaths() {
+		return Integer.parseInt(props.getProperty(MAX_SHORTEST_PATHS, "5"));
 	}
 
 }

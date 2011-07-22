@@ -1,8 +1,6 @@
 // An attempt to clean up the selection code mess in the dataset graph
 Pelagios.SelectionManager = function(raphael) {
 	this.raphael = raphael;
-	this.map = map;
-	this.async = async;
 	this.selectedNodes = new Array();
 	this.maxOverlapWeight = 0;
 	
@@ -37,7 +35,7 @@ Pelagios.SelectionManager.prototype.toggleSelect = function(node) {
 			});
 		
 		// Show on map
-		this.map.showFeature(node.name);
+		Pelagios.Map.getInstance().showFeature(node.name);
 		
 		// Show in data view
 		Pelagios.DataPanel.getInstance().showDatasetInfo({
@@ -81,7 +79,7 @@ Pelagios.SelectionManager.prototype.toggleSelect = function(node) {
 }
 
 Pelagios.SelectionManager.prototype.deselectAll = function() {
-	this.map.clear();
+	Pelagios.Map.getInstance().clear();
 	for (var sel in this.selectedNodes) {
 		this.toggleSelect(this.selectedNodes[sel]);
 	}
@@ -140,7 +138,7 @@ Pelagios.SelectionManager.prototype.getAllLinks = function() {
 
 Pelagios.SelectionManager.prototype.fetchLinkData = function(node) {
 	for (var n in this.selectedNodes) {
-		this.async.computeOverlap(node, this.selectedNodes[n], this);
+		Pelagios.Async.getInstance().intersect(node, this.selectedNodes[n], this);
 	}
 }
 
@@ -177,7 +175,7 @@ Pelagios.SelectionManager.prototype.setLink = function(arg0, arg1, arg2) {
 		}
 		
 		// Add mouseover information to link line
-		var map = this.map;		
+		var map = Pelagios.Map.getInstance();		
 		link.line.mouseover(function(event) {
 			link.tooltip.show(event.clientX, event.clientY);
 			map.showFeature(arg0.name + "-" + arg1.name);

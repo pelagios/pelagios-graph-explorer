@@ -1,351 +1,354 @@
-// Code related to a place's 'personal graph'
-Pelagios.PersonalGraph = function(id, raphael, map) {
-	this.id = id;	
-	this.raphael = raphael;
-	this.map = map;
-	this.locus = null;
+Pelagios.Graph.Local = {}
+
+Pelagios.Graph.Local.DIV_ID = "personal-graph";
+
+Pelagios.Graph.Local.getInstance = function() {
+	if (Pelagios.Graph.Local.instance)
+		return Pelagios.Graph.Local.instance;
 	
-	this.graph = new Graph();
-    this.layout = new Layout.ForceDirected(this.graph, 400, 30, 0.3);
-    
-    this.pAsync = Pelagios.Async.getInstance();
+	// Init force layout system	
+	var springyGraph = new Graph();
+    var layout = new Layout.ForceDirected(springyGraph, 400, 30, 0.3);
+    var renderer = new Renderer(10, layout,
+		  function clear() { },
+		  
+		  function drawEdge(edge, p1, p2) {
+			  if (edge.connection)
+				  raphael.pelagios.connection(edge.connection);
+		  },
+		  
+		  function drawNode(node, pt) {
+			  var xy = Pelagios.Graph.Local.instance.toScreen(pt, layout);
+			  
+			  if (node.place) {
+				  raphael.pelagios.placeLabel(node.set, xy.x, xy.y);
+			  } else {
+				  raphael.pelagios.datasetLabel(node.set, xy.x, xy.y);
+			  }
+		  }
+	);
+
+    // Init drawing canvas
+	var viewport = Pelagios.getViewport();
+    var raphael = Raphael("personal-graph", viewport.x, viewport.y);
     
     // Keep track of places, datasets and edges in the graph
-    this.places = new Array();
-    this.datasets = new Array();
-    this.edges = new Array();
-    this.maxEdgeWeight = 0;
-    this.maxDatasetSize = 0;
+    var places = new Array();
+    var datasets = new Array();
+    var edges = new Array();
     
-	this.getWidthFromWeight = function(weight) {
+    var maxEdgeWeight = 0;
+    var maxDatasetSize = 0;
+    
+	function getWidthFromWeight(weight) {
 		var w = 12 * weight / this.maxEdgeWeight;
 		if (w < 2)
 			w = 2;
 		return w;
 	}
 	
-	this.getRadiusFromSize= function(size) {
+	function getRadiusFromSize(size) {
 		var r = 25 * size / this.maxDatasetSize;
 		if (r < 5)
 			r = 5;
 		return r;
 	}
+	
+	function normalizeLineWidths() {
+		for (var e in edges) {
+			Pelagios.Graph.Local.instance.setEdge(edges[e]);
+		}
+	}
+
+	function normalizeDatasetSizes() {
+		for (var d in datasets) {
+			Pelagios.Graph.Local.instance.newDataset(d);
+		}
+	}
+
+    Pelagios.Graph.Local.instance = new Pelagios.Graph.Abstract();
+
+    Pelagios.Graph.Local.instance.refresh = function() {
+    	var viewport = Pelagios.getViewport();
+    	raphael.setSize(viewport.x, viewport.y);
+   		renderer.graphChanged();
+    }
     
-	var toScreen = this.toScreen;
-    this.renderer = new Renderer(10, this.layout,
-	  function clear() { },
-	  
-	  function drawEdge(edge, p1, p2) {
-		  if (edge.connection)
-			  raphael.pelagios.connection(edge.connection);
-	  },
-	  
-	  function drawNode(node, pt) {
-		  var xy = toScreen(pt, this.layout);
-		  
-		  if (node.place) {
-			  raphael.pelagios.placeLabel(node.set, xy.x, xy.y);
-		  } else {
-			  raphael.pelagios.datasetLabel(node.set, xy.x, xy.y);
-		  }
-	  });
-	
-    // This is ugly... but don't know how to get rid of
-    // the global - it's needed in the move event handler
-    window.personalGraph = this;
-}
-
-Pelagios.PersonalGraph.prototype = new Pelagios.AbstractGraph();
-
-Pelagios.PersonalGraph.prototype.graphChanged = function() {
-	var viewport = Pelagios.getViewport();
-    this.raphael.setSize(viewport.x, viewport.y);
-	this.renderer.graphChanged();
-}
-
-Pelagios.PersonalGraph.prototype.hide = function() {
-	setTimeout(function(){ 
-		this.clear();
-		document.getElementById(this.id).style.visibility = "hidden";
-	}.bind(this), 500);
-	document.getElementById(this.id).style.opacity = 0;
-	this.map.clear();
-}
-
-Pelagios.PersonalGraph.prototype.show = function() {
-	this.map.clear();
-	document.getElementById(this.id).style.visibility = "visible";
-	document.getElementById(this.id).style.opacity = 1;
-}
-
-Pelagios.PersonalGraph.prototype.newPlace = function(place) {
-	var n;
-	if (this.places[place]) {
-		n = this.places[place];
-	} else {
-	    n = this.graph.newNode();
-	    
-	    n.set = this.raphael.pelagios.placeLabel(place.label);
-	    n.place = place;
-	    n.name = place.label;
-	    n.data.mass = 0.8;
-	    
-	    for (var i=0, ii=this.places.length; i<ii; i++) {
-	    	this.graph.newEdge(n, this.places[i], { length: 2.5 });
-	    }
-	
-	    // Seems kind of recursive... but we need that in
-	    // the move handler, which only has access to the
-	    // individual elements inside the set, not the original
-	    // set or graph node.
-	    for (var i=0, ii=n.set.length; i<ii; i++) {
-	        n.set[i].graphNode = n;    	
-	    }
-	    
-	    var map = this.map;
-		n.set[0].mouseover(function(event) {
-			map.highlight(place.label, true);
-		});
-		n.set[0].mouseout(function (event) {
-			map.highlight(place.label, false);			
-		});
-		n.set[0].click(function (event) {
-			map.zoomTo(place.label);			
-		});
-	    
-	    n.set.drag(
-	        	this.handler.move,
-	        	this.handler.drag,
-	        	this.handler.up);
-	    
-	    // Find paths between places
-	    for (var i=0, ii=this.places.length; i<ii; i++) {
-	        this.pAsync.findShortestPaths(n, this.places[i], this);    	
-	    }
-	    
-	    this.places.push(n);
+    Pelagios.Graph.Local.instance.hide = function() {
+		setTimeout(function(){ 
+			this.clear();
+			document.getElementById(Pelagios.Graph.Local.DIV_ID).style.visibility = "hidden";
+		}.bind(this), 500);
+		document.getElementById(Pelagios.Graph.Local.DIV_ID).style.opacity = 0;
+		this.map.clear();
 	}
-    return n;
-}
 
-Pelagios.PersonalGraph.prototype.newDataset = function(datasetLabel, datasetSize, rootLabel) {
-	var n;
-	if (this.datasets[datasetLabel]) {
-		n = this.datasets[datasetLabel];
-		var r = this.getRadiusFromSize(n.size);
-		n.set[0].animate({rx:r, ry:r}, 500);
-	} else {
-		if (datasetSize > this.maxDatasetSize) {
-			this.maxDatasetSize = datasetSize;
-			this.normalizeDatasetSizes();
+    Pelagios.Graph.Local.instance.show = function() {
+		Pelagios.Map.getInstance().clear();
+		var el = document.getElementById(Pelagios.Graph.Local.DIV_ID);
+		el.style.visibility = "visible";
+		el.style.opacity = 1;
+	}
+
+	Pelagios.Graph.Local.instance.newPlace = function(place) {
+		var n;
+		if (places[place]) {
+			n = places[place];
+		} else {
+		    n = springyGraph.newNode();
+		    
+		    n.set = raphael.pelagios.placeLabel(place.label);
+		    n.place = place;
+		    n.name = place.label;
+		    n.data.mass = 0.8;
+		    
+		    for (var i=0, ii=places.length; i<ii; i++) {
+		    	springyGraph.newEdge(n, places[i], { length: 2.5 });
+		    }
+		
+		    // Seems kind of recursive... but we need that in
+		    // the move handler, which only has access to the
+		    // individual elements inside the set, not the original
+		    // set or graph node.
+		    for (var i=0, ii=n.set.length; i<ii; i++) {
+		        n.set[i].graphNode = n;    	
+		    }
+		    
+		    var map = Pelagios.Map.getInstance().map;
+			n.set[0].mouseover(function(event) {
+				map.highlight(place.label, true);
+			});
+			n.set[0].mouseout(function (event) {
+				map.highlight(place.label, false);			
+			});
+			n.set[0].click(function (event) {
+				map.zoomTo(place.label);			
+			});
+		    
+		    n.set.drag(
+		        	this.handler.move,
+		        	this.handler.drag,
+		        	this.handler.up);
+		    
+		    // Find paths between places
+		    for (var i=0, ii=places.length; i<ii; i++) {
+		        Pelagios.Async.getInstance().findShortestPaths(n, this.places[i], this);    	
+		    }
+		    
+		    places.push(n);
+		}
+	    return n;
+	}
+
+	Pelagios.Graph.Local.instance.newDataset = function(datasetLabel, datasetSize, rootLabel) {
+		var n;
+		if (datasets[datasetLabel]) {
+			n = datasets[datasetLabel];
+			var r = getRadiusFromSize(n.size);
+			n.set[0].animate({rx:r, ry:r}, 500);
+		} else {
+			if (datasetSize > maxDatasetSize) {
+				maxDatasetSize = datasetSize;
+				normalizeDatasetSizes();
+			}
+			
+		    var fill = Pelagios.Palette.getInstance().getColor(rootLabel);
+		    
+		    n = springyGraph.newNode();
+		    n.name = datasetLabel;
+		    n.size = datasetSize;
+		    n.set = raphael.pelagios.datasetLabel(
+		    		datasetLabel + "\n" + datasetSize + " Geoannotations",
+		    		fill,
+		    		Pelagios.Palette.getInstance().darker(fill));
+		    
+			var r = getRadiusFromSize(datasetSize);
+		    n.set[0].attr({rx:r, ry:r});
+		    
+		    var map = Pelagios.Map.getInstance();
+			n.set[0].mouseover(function(event) {
+			    n.set[1].animate({
+			    	"opacity" : 1,
+			    }, 200);
+			    map.showFeature(datasetLabel);
+			});
+			n.set[0].mouseout(function (event) {
+			    n.set[1].animate({
+			    	"opacity" : 0,
+			    }, 200);
+			    map.hideFeature(datasetLabel);
+			});
+			n.set[0].click(function (event) {
+				map.zoomTo(datasetLabel);			
+			});
+		
+		    // Seems kind of recursive... but we need that in
+		    // the move handler, which only has access to the
+		    // individual elements inside the set, not the original
+		    // set or graph node.
+		    for (var i=0, ii=n.set.length; i<ii; i++) {
+		        n.set[i].graphNode = n;    	
+		    }
+		    
+		    n.set[0].drag(
+		        	this.handler.move,
+		        	this.handler.drag,
+		        	this.handler.up);
+
+		    datasets[datasetLabel] = n;
+		}
+	    return n;
+	}
+
+	Pelagios.Graph.Local.instance.findEdgesFor = function(dataset) {
+		var dsEdges = new Array();
+		for (var e in edges) {
+			var edge = edges[e];
+			if ((edge.to == dataset) || (edge.from == dataset)) {
+				dsEdges.push(edge);	
+			}
+		}
+		return dsEdges;
+	}
+
+	Pelagios.Graph.Local.instance.purgeGraph = function() {
+		if (places.length > 1) {
+			var maxSize = 0;
+			var maxWeight = 0;
+			
+			for (var d in datasets) {
+				var dataset = datasets[d];			
+				var lEdges = findEdgesFor(dataset);
+		
+				if (edges.length < 2) { 
+					delete edges[lEdges[0].from.name];
+					lEdges[0].connection.line.remove();
+					dataset.set.remove();
+					springyGraph.removeNode(dataset);
+					delete datasets[dataset.name];
+				} else {
+					if (dataset.size > maxSize)
+						maxSize = dataset.size;
+					
+					for (var i=0, ii=lEdges.length; i<ii; i++) {
+						if (lEdges[i].connection.weight > maxWeight)
+							maxWeight = lEdges[i].connection.weight;
+					}
+				}
+			}
+			
+		    maxDatasetSize = maxSize;
+		    maxEdgeWeight = maxWeight;
+			normalizeLineWidths();
+			normalizeDatasetSizes();
+		}
+	}
+
+	Pelagios.Graph.Local.instance.edgeExists = function(from, to) {
+		for (var e in this.edges) {
+			var edge = this.edges[e];
+			if (edge.from == from && edge.to == to)
+				return edge;
+			
+			if (edge.to == from && edge.from == to)
+				return e;
 		}
 		
-	    var fill = Pelagios.Palette.getInstance().getColor(rootLabel);
-	    
-	    n = this.graph.newNode();
-	    n.name = datasetLabel;
-	    n.size = datasetSize;
-	    n.set = this.raphael.pelagios.datasetLabel(
-	    		datasetLabel + "\n" + datasetSize + " Geoannotations",
-	    		fill,
-	    		Pelagios.Palette.getInstance().darker(fill));
-	    
-		var r = this.getRadiusFromSize(datasetSize);
-	    n.set[0].attr({rx:r, ry:r});
-	    
-	    var map = this.map;
-		n.set[0].mouseover(function(event) {
-		    n.set[1].animate({
-		    	"opacity" : 1,
-		    }, 200);
-		    map.showFeature(datasetLabel);
-		});
-		n.set[0].mouseout(function (event) {
-		    n.set[1].animate({
-		    	"opacity" : 0,
-		    }, 200);
-		    map.hideFeature(datasetLabel);
-		});
-		n.set[0].click(function (event) {
-			map.zoomTo(datasetLabel);			
-		});
-	
-	    // Seems kind of recursive... but we need that in
-	    // the move handler, which only has access to the
-	    // individual elements inside the set, not the original
-	    // set or graph node.
-	    for (var i=0, ii=n.set.length; i<ii; i++) {
-	        n.set[i].graphNode = n;    	
-	    }
-	    
-	    n.set[0].drag(
-	        	this.handler.move,
-	        	this.handler.drag,
-	        	this.handler.up);
-
-	    this.datasets[datasetLabel] = n;
+		return false;
 	}
-    return n;
-}
 
-Pelagios.PersonalGraph.prototype.findEdgesFor = function(dataset) {
-	var dsEdges = new Array();
-	for (var e in this.edges) {
-		var edge = this.edges[e];
-		if ((edge.to == dataset) || (edge.from == dataset)) {
-			dsEdges.push(edge);	
+	Pelagios.Graph.Local.instance.setEdge = function(arg0, arg1, arg2) {	
+		if (arg1) {
+			// arg0 -> from, arg1 -> to, arg2 -> weight
+			var exists = this.edgeExists(arg0, arg1); 
+			if (exists)
+				return exists;
+			
+			if (arg2 > maxEdgeWeight) {
+				maxEdgeWeight = arg2;
+				normalizeLineWidths();
+			}
+			
+			var sizeNorm = getWidthFromWeight(arg2);
+			
+		    var e = springyGraph.newEdge(arg0, arg1, { length: 1 });
+		    e.connection = raphael.pelagios.connection(arg0.set[0], arg1.set[0], "#000", sizeNorm);
+		    e.connection.weight = arg2;
+		    e.from = arg0;
+		    e.to = arg1;
+			e.connection.tooltip = new Pelagios.Tooltip(arg2 + " occurences in " + arg1.name);
+		    
+		    e.connection.line.mouseover(function(event) {
+		    	e.connection.tooltip.show(event.clientX, event.clientY);
+				// map.showPolygon(arg0.name + "-" + arg1.name);
+			});
+			
+		    e.connection.line.mouseout(function (event) {
+		    	e.connection.tooltip.hide();
+				// map.hidePolygon(arg0.name + "-" + arg1.name);
+			});
+		    
+		    edges[e.from.name + "-" + e.to.name] = e;
+		    return e;
+		} else {
+			// arg0 -> edge
+			arg0.connection.line
+				.animate({ "stroke-width" : getWidthFromWeight(arg0.connection.weight) }, 500);
+			return arg0;
 		}
 	}
-	return dsEdges;
-}
 
-Pelagios.PersonalGraph.prototype.purgeGraph = function() {
-	if (this.places.length > 1) {
-		var maxDatasetSize = 0;
-		var maxEdgeWeight = 0;
-		
+	Pelagios.Graph.Local.instance.clear = function() {
+	    this.maxDatasetSize = 0;
+	    this.maxEdgeWeight = 0;
+	    
 		for (var d in this.datasets) {
 			var dataset = this.datasets[d];			
 			var edges = this.findEdgesFor(dataset);
-	
-			if (edges.length < 2) { 
-				delete this.edges[edges[0].from.name];
-				edges[0].connection.line.remove();
-				dataset.set.remove();
-				this.graph.removeNode(dataset);
-				delete this.datasets[dataset.name];
-			} else {
-				if (dataset.size > maxDatasetSize)
-					maxDatasetSize = dataset.size;
-				
-				for (var i=0, ii=edges.length; i<ii; i++) {
-					if (edges[i].connection.weight > maxEdgeWeight)
-						maxEdgeWeight = edges[i].connection.weight;
-				}
+			
+			for (var i=0, ii=edges.length; i<ii; i++) {
+				edges[i].connection.line.remove();
+				delete this.edges[edges[i].from.name];
 			}
+			this.graph.removeNode(dataset);
+			dataset.set.remove();
+			delete this.datasets[dataset.name];
 		}
 		
-	    this.maxDatasetSize = maxDatasetSize;
-	    this.maxEdgeWeight = maxEdgeWeight;
-		this.normalizeLineWidths();
-		this.normalizeDatasetSizes();
+		for (var i=0, ii=this.places.length; i<ii; i++) {
+			this.places[i].set.remove();
+		}
+		this.places.length = 0;
 	}
-}
 
-Pelagios.PersonalGraph.prototype.edgeExists = function(from, to) {
-	for (var e in this.edges) {
-		var edge = this.edges[e];
-		if (edge.from == from && edge.to == to)
-			return edge;
-		
-		if (edge.to == from && edge.from == to)
-			return e;
+	Pelagios.Graph.Local.instance.handler = {
+
+		drag : function() {
+			if (this.graphNode.place) {
+				this.ox = this.attr("x");
+				this.oy = this.attr("y");
+			} else {
+				this.ox = this.attr("cx");
+				this.oy = this.attr("cy");			
+			}
+		},
+			
+		move : function(dx, dy) {
+			if (this.graphNode.place) {
+				window.personalGraph.raphael.pelagios.placeLabel(this.graphNode.set, this.ox + dx, this.oy + dy);
+			} else {
+				window.personalGraph.raphael.pelagios.datasetLabel(this.graphNode.set, this.ox + dx, this.oy + dy);			
+			}
+			var pt = window.personalGraph.fromScreen(new Vector(this.ox + dx, this.oy + dy));
+			window.personalGraph.layout.point(this.graphNode).p = pt;
+			window.personalGraph.renderer.start();
+		},
+			
+		up : function() {
+
+		}
+
 	}
 	
-	return false;
-}
-
-Pelagios.PersonalGraph.prototype.setEdge = function(arg0, arg1, arg2) {	
-	if (arg1) {
-		// arg0 -> from, arg1 -> to, arg2 -> weight
-		var exists = this.edgeExists(arg0, arg1); 
-		if (exists)
-			return exists;
-		
-		if (arg2 > this.maxEdgeWeight) {
-			this.maxEdgeWeight = arg2;
-			this.normalizeLineWidths();
-		}
-		
-		var sizeNorm = this.getWidthFromWeight(arg2);
-		
-	    var e = this.graph.newEdge(arg0, arg1, { length: 1 });
-	    e.connection = this.raphael.pelagios.connection(arg0.set[0], arg1.set[0], "#000", sizeNorm);
-	    e.connection.weight = arg2;
-	    e.from = arg0;
-	    e.to = arg1;
-		e.connection.tooltip = new Pelagios.Tooltip(arg2 + " occurences in " + arg1.name);
-	    
-	    e.connection.line.mouseover(function(event) {
-	    	e.connection.tooltip.show(event.clientX, event.clientY);
-			// map.showPolygon(arg0.name + "-" + arg1.name);
-		});
-		
-	    e.connection.line.mouseout(function (event) {
-	    	e.connection.tooltip.hide();
-			// map.hidePolygon(arg0.name + "-" + arg1.name);
-		});
-	    
-	    this.edges[e.from.name + "-" + e.to.name] = e;
-	    return e;
-	} else {
-		// arg0 -> edge
-		arg0.connection.line
-			.animate({ "stroke-width" : this.getWidthFromWeight(arg0.connection.weight) }, 500);
-		return arg0;
-	}
-}
-
-Pelagios.PersonalGraph.prototype.normalizeLineWidths = function() {
-	for (var e in this.edges) {
-		this.setEdge(this.edges[e]);
-	}
-}
-
-Pelagios.PersonalGraph.prototype.normalizeDatasetSizes = function() {
-	for (var d in this.datasets) {
-		this.newDataset(d);
-	}
-}
-
-Pelagios.PersonalGraph.prototype.clear = function() {
-    this.maxDatasetSize = 0;
-    this.maxEdgeWeight = 0;
-    
-	for (var d in this.datasets) {
-		var dataset = this.datasets[d];			
-		var edges = this.findEdgesFor(dataset);
-		
-		for (var i=0, ii=edges.length; i<ii; i++) {
-			edges[i].connection.line.remove();
-			delete this.edges[edges[i].from.name];
-		}
-		this.graph.removeNode(dataset);
-		dataset.set.remove();
-		delete this.datasets[dataset.name];
-	}
-	
-	for (var i=0, ii=this.places.length; i<ii; i++) {
-		this.places[i].set.remove();
-	}
-	this.places.length = 0;
-}
-
-Pelagios.PersonalGraph.prototype.handler = {
-
-	drag : function() {
-		if (this.graphNode.place) {
-			this.ox = this.attr("x");
-			this.oy = this.attr("y");
-		} else {
-			this.ox = this.attr("cx");
-			this.oy = this.attr("cy");			
-		}
-	},
-		
-	move : function(dx, dy) {
-		if (this.graphNode.place) {
-			window.personalGraph.raphael.pelagios.placeLabel(this.graphNode.set, this.ox + dx, this.oy + dy);
-		} else {
-			window.personalGraph.raphael.pelagios.datasetLabel(this.graphNode.set, this.ox + dx, this.oy + dy);			
-		}
-		var pt = window.personalGraph.fromScreen(new Vector(this.ox + dx, this.oy + dy));
-		window.personalGraph.layout.point(this.graphNode).p = pt;
-		window.personalGraph.renderer.start();
-	},
-		
-	up : function() {
-
-	}
-
+    return Pelagios.Graph.Local.instance;
 }

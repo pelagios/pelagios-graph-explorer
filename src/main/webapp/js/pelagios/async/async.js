@@ -29,8 +29,9 @@ Pelagios.Async.getInstance = function() {
 			.error(function(data) { alert("Something went wrong: " + data.responseText); });	
 		},
 
-		fetchPlaceReferences : function(place) {
+		occurences : function(place) {
 			Pelagios.Loadmask.getInstance().show();
+			var personalGraph = Pelagios.Graph.Local.getInstance(); 
 			var pNode = personalGraph.newPlace(place);
 			$.getJSON("places/occurences?place=" + encodeURI(place.uri), function(data) {
 				for (var i=0, ii=data.length; i<ii; i++) {
@@ -72,7 +73,7 @@ Pelagios.Async.getInstance = function() {
 			.error(function(data) { alert("Something went wrong: " + data.responseText); });	
 		},
 
-		computeOverlap : function(srcNode, destNode, selectionManager) {
+		intersect : function(srcNode, destNode, selectionManager) {
 			Pelagios.Loadmask.getInstance().show();
 			var url = "places/intersect?set1=" +
 				srcNode.name + "&set2=" + destNode.name;

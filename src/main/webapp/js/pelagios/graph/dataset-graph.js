@@ -1,4 +1,3 @@
-// Graph-related code
 Pelagios.Graph.Dataset = {}
 
 Pelagios.Graph.Dataset.getInstance = function() {
@@ -36,7 +35,7 @@ Pelagios.Graph.Dataset.getInstance = function() {
     
     // Init selection manager
     var selectionManager 
-    	= new Pelagios.SelectionManager(this.raphael);
+    	= new Pelagios.SelectionManager(raphael);
     
     // Keep track of parent -> child relations
     var children = new Array();
@@ -45,12 +44,18 @@ Pelagios.Graph.Dataset.getInstance = function() {
     var edges = new Array();
     
     Pelagios.Graph.Dataset.instance = new Pelagios.Graph.Abstract();
+
+    Pelagios.Graph.Dataset.instance.refresh = function() {
+    	var viewport = Pelagios.getViewport();
+    	raphael.setSize(viewport.x, viewport.y);
+   		renderer.graphChanged();
+    }
     
     Pelagios.Graph.Dataset.instance.newNode = function(name, size, records, places, 
     		fill, stroke, dblclick, mouseover, mouseout, parent) {
     	
-        var n = this.graph.newNode();
-        this.graph.newEdge(n, this.locus, { length: 0.2 });
+        var n = springyGraph.newNode();
+        springyGraph.newEdge(n, locus, { length: 0.2 });
         
         n.size = size;
         n.name = name;
@@ -62,7 +67,7 @@ Pelagios.Graph.Dataset.getInstance = function() {
         n.stroke = stroke
         n.data.mass = size / 10;
         
-        n.set = this.raphael.pelagios.dataset(name, size, records, places, fill, stroke);
+        n.set = raphael.pelagios.dataset(name, size, records, places, fill, stroke);
         n.set.drag(
         	this.handler.move,
         	this.handler.drag,
@@ -75,9 +80,7 @@ Pelagios.Graph.Dataset.getInstance = function() {
         
         var lastClick = null;
         var maxClickTime = 300;
-        
-        var selectionManager = this.selectionManager;
-        
+   
     	n.set.mousedown(function() {
     		lastClick = new Date().getTime();
     	});
@@ -120,11 +123,11 @@ Pelagios.Graph.Dataset.getInstance = function() {
         
         if (parent) {
         	var c;
-        	if (this.children[parent.name]) {
-        		c = this.children[parent.name];
+        	if (children[parent.name]) {
+        		c = children[parent.name];
         	} else {
         		c = new Array();
-        		this.children[parent.name] = c;
+        		children[parent.name] = c;
         	}
         	c.push(n);
         }
@@ -134,55 +137,55 @@ Pelagios.Graph.Dataset.getInstance = function() {
 
     Pelagios.Graph.Dataset.instance.newEdge = function(from, to, width) {
     	var ed;
-    	if (this.edges[from.name]) {
-    		ed = this.edges[from.name];
+    	if (edges[from.name]) {
+    		ed = edges[from.name];
     	} else {
     		ed = new Array();
-    		this.edges[from.name] = ed;
+    		edges[from.name] = ed;
     	}
     	
-        var e = this.graph.newEdge(from, to, { length: .05 });
-        e.connection = this.raphael.pelagios.connection(from.set[0], to.set[0], "#000", width);
+        var e = springyGraph.newEdge(from, to, { length: .05 });
+        e.connection = raphael.pelagios.connection(from.set[0], to.set[0], "#000", width);
         ed.push(e);
         return e;
     }
 
     Pelagios.Graph.Dataset.instance.getChildNodes = function(parent) {
-    	if (this.children[parent.name])
-    		return this.children[parent.name];
+    	if (children[parent.name])
+    		return children[parent.name];
     	return new Array();
     }
 
     Pelagios.Graph.Dataset.instance.removeChildNodes = function(parent) {
     	// Remove outbound edges (SVG only - graph edges are handled by Springy)
-    	var ed = this.edges[parent.name];
+    	var ed = edges[parent.name];
     	if (ed) {
     		for (var i=0, ii=ed.length; i<ii; i++) {
     			ed[i].connection.line.remove();
     		}
-    		delete this.edges[parent.name];
+    		delete edges[parent.name];
     		
     		// Remove child nodes
-    		var ch = this.children[parent.name];
+    		var ch = children[parent.name];
     		for (var i=0, ii=ch.length; i<ii; i++) {
     			ch[i].set.remove();
-    			this.graph.removeNode(ch[i]);
+    			springyGraph.removeNode(ch[i]);
     			
     			// Remove selection, if any
     			if (ch[i].selected)
-    				this.selectionManager.toggleSelect(ch[i]);
+    				selectionManager.toggleSelect(ch[i]);
     		}
-    		delete this.children[parent.name];
+    		delete children[parent.name];
     		parent.opened = false;
     	}
     }
 
     Pelagios.Graph.Dataset.instance.isSelected = function(name) {
-    	return this.selectionManager.isSelected(name);
+    	return selectionManager.isSelected(name);
     }
 
     Pelagios.Graph.Dataset.instance.deselectAll = function() {
-    	this.selectionManager.deselectAll();
+    	selectionManager.deselectAll();
     }
 
     Pelagios.Graph.Dataset.instance.handler = {
