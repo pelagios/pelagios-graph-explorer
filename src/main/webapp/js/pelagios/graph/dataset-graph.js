@@ -12,7 +12,7 @@ Pelagios.Graph = function(raphael, map, dataview) {
     this.edges = new Array();
     
     this.selectionManager 
-    	= new Pelagios.SelectionManager(this.raphael, map, new Pelagios.Async(null, null, dataview));
+    	= new Pelagios.SelectionManager(this.raphael, map, Pelagios.Async.getInstance());
     
 	var toScreen = this.toScreen;
     this.renderer = new Renderer(10, this.layout,

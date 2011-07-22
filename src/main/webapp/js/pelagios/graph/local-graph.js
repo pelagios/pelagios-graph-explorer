@@ -8,7 +8,7 @@ Pelagios.PersonalGraph = function(id, raphael, map) {
 	this.graph = new Graph();
     this.layout = new Layout.ForceDirected(this.graph, 400, 30, 0.3);
     
-    this.pAsync = new Pelagios.Async();
+    this.pAsync = Pelagios.Async.getInstance();
     
     // Keep track of places, datasets and edges in the graph
     this.places = new Array();

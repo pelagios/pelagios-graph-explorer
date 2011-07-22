@@ -37,7 +37,7 @@ window.onload = function() {
 		pPersonalGraph.hide();
 	});
 
-    var pAsync = new Pelagios.Async(pGraph, pMap, pDataview);
+    var pAsync = Pelagios.Async.getInstance();
 	$("#searchfield").autocomplete({
 		source: function(term, callback) { pAsync.getAutoCompleteHint(term.term, callback); },
 		select: function(event, ui) {
