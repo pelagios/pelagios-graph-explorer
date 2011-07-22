@@ -17,12 +17,12 @@ window.onload = function() {
     	}
     };
     
-    var pMap = new Pelagios.Map();
+    var pMap = new Pelagios.Map.getInstance();
     document.getElementById("toggle-map").onclick = function() {
     	pMap.setVisible(!pMap.isVisible())
     };
     
-    var pDataview = new Pelagios.DataPanel();
+    var pDataview = Pelagios.DataPanel.getInstance();
     document.getElementById("toggle-dataview").onclick = function() {
     	pDataview.setVisible(!pDataview.isVisible())
     };    

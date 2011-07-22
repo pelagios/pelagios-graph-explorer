@@ -48,6 +48,7 @@ Pelagios.Graph.prototype.newNode = function(name, size, records, places,
     n.name = name;
     n.selected = false;
     n.records = records;
+    n.place = places;
     n.opened = false;
     n.fill = fill;
     n.stroke = stroke

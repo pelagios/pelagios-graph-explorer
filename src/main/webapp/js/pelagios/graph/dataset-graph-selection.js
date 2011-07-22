@@ -40,7 +40,11 @@ Pelagios.SelectionManager.prototype.toggleSelect = function(node) {
 		this.map.showFeature(node.name);
 		
 		// Show in data view
-		this.async.fetchGeoAnnotations(node);
+		Pelagios.DataPanel.getInstance().showDatasetInfo({
+			name: node.name,
+			geoAnnotations: node.records,
+			places: node.place
+		});
 		
 		// Fetch link data for this node
 		this.fetchLinkData(node);
@@ -81,6 +85,8 @@ Pelagios.SelectionManager.prototype.deselectAll = function() {
 	for (var sel in this.selectedNodes) {
 		this.toggleSelect(this.selectedNodes[sel]);
 	}
+	
+	Pelagios.DataPanel.getInstance().clear();
 }
 
 Pelagios.SelectionManager.prototype.getLinksFor = function(node) {
