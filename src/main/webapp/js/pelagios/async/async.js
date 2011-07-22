@@ -6,14 +6,23 @@ Pelagios.Async.getInstance = function() {
 		return Pelagios.Async.instance;
 	
 	Pelagios.Async.instance = {
-		getAutoCompleteHint : function(term, callback) {
+		search : function(term, callback) {
 			$.getJSON("places/search?q=" + term, function(data) {
 				callback(data);
 			});
 		},
+		
+		getPlaces : function(datasetName, callback) {
+			$.getJSON("datasets/" + datasetName + "/places", function(data) {
+				callback(data);
+			})
+			.error(function(data) { 
+				alert("Sorry. Something went wrong while fetching places contained in "
+					+ datasetName + ": " + data.responseText); 
+			});	
+		},
 
 		fetchConvexHull : function(node) {
-			var pMap = this.pMap;
 			$.getJSON("datasets/" + node.name + "/places/convexhull", function(data) {
 				Pelagios.Map.getInstance().addPolygon(node.name, data, node.stroke);
 			})

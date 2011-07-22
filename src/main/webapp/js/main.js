@@ -39,7 +39,7 @@ window.onload = function() {
 
     var pAsync = Pelagios.Async.getInstance();
 	$("#searchfield").autocomplete({
-		source: function(term, callback) { pAsync.getAutoCompleteHint(term.term, callback); },
+		source: function(term, callback) { pAsync.search(term.term, callback); },
 		select: function(event, ui) {
 			pPersonalGraph.show();
 			pMap.addGeoJSON(ui.item.label, ui.item.geometry);

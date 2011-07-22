@@ -91,7 +91,7 @@ Pelagios.Map.getInstance = function() {
 		},
 	
 		zoomTo : function(name) {
-			var geom = this.features[name];
+			var geom = features[name];
 				
 			if (geom) {
 				map.fitBounds(geom.getBounds());

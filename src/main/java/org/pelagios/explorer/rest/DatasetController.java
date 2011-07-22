@@ -77,28 +77,10 @@ public class DatasetController extends AbstractController {
 	public Response getPlaces(@PathParam("dataset") String dataset)
 		throws DatasetNotFoundException {
 		
-		Geometry footprint = null;
-		for (Place p : PelagiosGraph.getInstance().getDataset(dataset).listPlaces(true)) {
-			if (footprint == null) {
-				footprint = p.getGeometry();
-			} else {
-				footprint.union(p.getGeometry());
-			}
-		}
+		List<Place> places = 
+			PelagiosGraph.getInstance().getDataset(dataset).listPlaces(true);
 		
-		return Response.ok(toJSON(footprint)).build();
-	}
-	
-	@GET
-	@Produces("application/json")
-	@Path("/{dataset}/annotations")
-	public Response getGeoAnnotations(@PathParam("dataset") String dataset)
-		throws DatasetNotFoundException {
-		
-		List<GeoAnnotation> annotations = 
-			PelagiosGraph.getInstance().getDataset(dataset).listGeoAnnotations(true);
-	
-		return Response.ok(toJSON(annotations)).build();
+		return Response.ok(toJSON(places)).build();
 	}
 	
 	/**
@@ -120,4 +102,16 @@ public class DatasetController extends AbstractController {
 		return Response.ok(toJSON(cv)).build();
 	}
 
+	@GET
+	@Produces("application/json")
+	@Path("/{dataset}/annotations")
+	public Response getGeoAnnotations(@PathParam("dataset") String dataset)
+		throws DatasetNotFoundException {
+		
+		List<GeoAnnotation> annotations = 
+			PelagiosGraph.getInstance().getDataset(dataset).listGeoAnnotations(true);
+	
+		return Response.ok(toJSON(annotations)).build();
+	}
+	
 }

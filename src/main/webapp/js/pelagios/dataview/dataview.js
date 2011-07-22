@@ -34,7 +34,14 @@ Pelagios.DataPanel.getInstance = function() {
 				'<input id="btnShowOnMap" type="button" value="Show on Map"/></div>');
 			
 			$("#btnShowOnMap").click(function() {
-				
+				var map = Pelagios.Map.getInstance();
+				map.clear();
+				Pelagios.Async.getInstance().getPlaces(dataset.name, function(data) {
+					for (var i=0, ii=data.length; i<ii; i++) {
+						map.addGeoJSON(data[i].label, data[i].geometry);
+						map.showFeature(data[i].label);
+					}
+				});
 			});
 		},
 		
