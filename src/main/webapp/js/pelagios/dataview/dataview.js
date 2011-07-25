@@ -48,7 +48,7 @@ Pelagios.DataPanel.getInstance = function() {
 				async.getPlaces(dataset.name, function(data) {
 					for (var i=0, ii=data.length; i<ii; i++) {
 						map.addPlace(data[i], function(place, event) {
-							async.getAnnotations(place.uri, dataset.name);
+							async.getAnnotations(place, dataset);
 						});
 						map.showFeature(data[i].uri);
 					}
@@ -64,10 +64,13 @@ Pelagios.DataPanel.getInstance = function() {
 			
 		},
 		
-		showGeoAnnotations : function(annotations) {
+		showGeoAnnotations : function(place, dataset, annotations) {
 			var innerHTML = '';
 			for (var i=0, ii=annotations.length; i<ii; i++) {
-				innerHTML += '<p><a target="_blank" href="' + annotations[i].uri + '">' + annotations[i].uri + '</a></p>';
+				innerHTML += '<p>Annotation: ' + place.label + ' (<a target="_blank" href="' 
+					+ place.uri + '">Pleiades</a>) in ' + dataset.name
+					+ '<br/><a target="_blank" href="' + annotations[i].uri + '">' 
+					+ annotations[i].uri + '</a></p>';
 			}
 			set(innerHTML);
 		}
