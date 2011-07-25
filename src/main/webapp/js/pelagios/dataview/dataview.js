@@ -48,7 +48,6 @@ Pelagios.DataPanel.getInstance = function() {
 				async.getPlaces(dataset.name, function(data) {
 					for (var i=0, ii=data.length; i<ii; i++) {
 						map.addPlace(data[i], function(place, event) {
-							// alert('clicked ' + place.label + ' (' + place.uri + ') in ' + dataset.name);
 							async.getAnnotations(place.uri, dataset.name);
 						});
 						map.showFeature(data[i].uri);
