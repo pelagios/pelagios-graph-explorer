@@ -48,6 +48,8 @@ Pelagios.Graph.Dataset.getInstance = function() {
     var maxDatasetSize = 0;
     
     // Initialize the graph
+    var loadMask = Pelagios.Loadmask.getInstance();
+    loadMask.show();
     Pelagios.Async.getInstance().datasets(null, function(data) {
 		for (var i=0, ii=data.length; i<ii; i++) {
 			if (data[i].geoAnnotations > maxDatasetSize)
@@ -57,6 +59,8 @@ Pelagios.Graph.Dataset.getInstance = function() {
 		for (var i=0, ii=data.length; i<ii; i++) {
 			Pelagios.Graph.Dataset.instance.addDataset(data[i]);
 		}
+		
+	    loadMask.hide();
     });
     
 	function getRadiusFromSize(numberOfGeoAnnotations) {
