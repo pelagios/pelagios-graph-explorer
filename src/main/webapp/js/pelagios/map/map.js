@@ -70,6 +70,12 @@ Pelagios.Map.getInstance = function() {
 		});
 	}
 	
+	function addClickListener(place, feature, callback) {
+		google.maps.event.addListener(feature, 'click', function(event) {
+			callback(place, event);
+		});
+	}
+	
 	Pelagios.Map.instance = {
 		setVisible : function(visible) {
 			if (visible) {
@@ -144,7 +150,7 @@ Pelagios.Map.getInstance = function() {
 			feature[name] = marker
 		},
 	
-		addGeoJSON : function(name, json) {
+		addPlace : function(place, clickCallback) {
 			var options = {
 				"strokeColor": "#FF7800",
 				"strokeOpacity": 1,
@@ -153,14 +159,18 @@ Pelagios.Map.getInstance = function() {
 				"fillOpacity": 0.25
 			};
 			
-			var geom = new GeoJSON(json, options);
+			var geom = new GeoJSON(place.geometry, options);
 			geom.options = options;
-			addTooltip(name, geom);
-			features[name] = geom;
+			addTooltip(place.label, geom);
+			
+			if (clickCallback)
+				addClickListener(place, geom, clickCallback);
+			
+			features[place.uri] = geom;
 		},
 	
-		highlight : function(name, highlighted) {
-			var geom = features[name];
+		highlight : function(uri, highlighted) {
+			var geom = features[uri];
 			if (geom) {
 				if (highlighted) {
 					geom.setOptions(this.hilightStyle);

@@ -43,10 +43,15 @@ Pelagios.DataPanel.getInstance = function() {
 				var map = Pelagios.Map.getInstance();
 				map.clear();
 				map.setVisible(true);
-				Pelagios.Async.getInstance().getPlaces(dataset.name, function(data) {
+				
+				var async = Pelagios.Async.getInstance();
+				async.getPlaces(dataset.name, function(data) {
 					for (var i=0, ii=data.length; i<ii; i++) {
-						map.addGeoJSON(data[i].label, data[i].geometry);
-						map.showFeature(data[i].label);
+						map.addPlace(data[i], function(place, event) {
+							// alert('clicked ' + place.label + ' (' + place.uri + ') in ' + dataset.name);
+							async.getAnnotations(place.uri, dataset.name);
+						});
+						map.showFeature(data[i].uri);
 					}
 				});
 			});

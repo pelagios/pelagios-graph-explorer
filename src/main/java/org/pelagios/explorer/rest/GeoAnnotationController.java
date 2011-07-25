@@ -2,6 +2,7 @@ package org.pelagios.explorer.rest;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.GET;
@@ -20,6 +21,11 @@ import org.pelagios.graph.nodes.Place;
 @Path("/annotations")
 public class GeoAnnotationController extends AbstractController {
 
+	/**
+	 * Log message String constants
+	 */
+	private static final String LOG_GET_ANNOTATIONS = " Getting annotations ";
+	
 	@GET
 	@Produces("application/json")
 	@Path("/")
@@ -28,17 +34,19 @@ public class GeoAnnotationController extends AbstractController {
 			DatasetNotFoundException, PlaceNotFoundException, 
 			URISyntaxException {
 		
+		log.info(request.getRemoteAddr() + LOG_GET_ANNOTATIONS + place + _ + dataset);
 		PelagiosGraph graph = PelagiosGraph.getInstance();
 		Dataset ds = graph.getDataset(dataset);
 		Place p = graph.getPlace(new URI((place)));
 		
-		List<GeoAnnotation> annotations = ds.listGeoAnnotations(true);
-		for (GeoAnnotation a : annotations) {
-			if (!a.listPlaces().contains(p))
-				annotations.remove(a);
+		List<GeoAnnotation> allAnnotations = ds.listGeoAnnotations(true);
+		List<GeoAnnotation> filteredByPlace = new ArrayList<GeoAnnotation>();
+		for (GeoAnnotation a : allAnnotations) {
+			if (a.listPlaces().contains(p))
+				filteredByPlace.add(a);
 		}
 		
-		return Response.ok(toJSON(annotations)).build();
+		return Response.ok(toJSON(filteredByPlace)).build();
 	}
 	
 }

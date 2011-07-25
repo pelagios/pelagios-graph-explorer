@@ -107,6 +107,14 @@ Pelagios.Async.getInstance = function() {
 				})
 				.error(function(data) { alert("Something went wrong: " + data.responseText); });
 			}
+		},
+		
+		getAnnotations : function(placeURI, datasetName) {
+			$.getJSON("annotations?place=" + encodeURI(placeURI) + "&dataset=" + datasetName,
+				function(data) {
+
+				console.log(data);
+			})
 		}
 			
 	}
