@@ -69,7 +69,7 @@ class PlaceImpl extends PelagiosGraphNode implements Place {
 		set(KEY_GEOMETRY, new GeoJSONSerializer().toString(geometry));
 	}
 
-	public List<GeoAnnotation> listDataRecords() {
+	public List<GeoAnnotation> listGeoAnnotations() {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -59,7 +59,7 @@ class SPQRImporter {
 			records.add(record);
 		}
 		
-		graph.addDataRecords(records, rootNode)
+		graph.addGeoAnnotations(records, rootNode)
 	}
 	
 	class PelagiosAnnotation {

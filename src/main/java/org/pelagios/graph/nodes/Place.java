@@ -41,6 +41,6 @@ public interface Place {
 	 * Returns a list of all data records that reference this place.
 	 * @return the data records
 	 */
-	public List<GeoAnnotation> listDataRecords();
+	public List<GeoAnnotation> listGeoAnnotations();
 	
 }

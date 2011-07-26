@@ -97,7 +97,7 @@ public abstract class AbstractDatasetImporter {
 		for (Hierarchy h : records.keySet()) {
 			try {
 				DatasetBuilder parent = buildHierarchy(h, graph);
-				graph.addDataRecords(records.get(h), parent);
+				graph.addGeoAnnotations(records.get(h), parent);
 			} catch (DatasetNotFoundException e) {
 				// Can never happen
 				throw new RuntimeException(e);

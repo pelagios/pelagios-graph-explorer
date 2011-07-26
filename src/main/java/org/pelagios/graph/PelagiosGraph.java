@@ -26,10 +26,6 @@ public abstract class PelagiosGraph {
 	
 	private static PelagiosGraph instance = null;
 	
-	/**
-	 * TODO implement this!
-	 * @return
-	 */
 	public static PelagiosGraph getInstance() {
 		if (instance == null) {
 			PelagiosGraphBuilder builder = 
@@ -72,6 +68,8 @@ public abstract class PelagiosGraph {
 	 */
 	public abstract Dataset getDataset(String name) throws DatasetNotFoundException;
 	
+	public abstract List<Dataset> findSimilarDatasets(Dataset dataset);
+	
 	/**
 	 * Adds a list of data records to the graph, belonging to the
 	 * specified data set.
@@ -79,7 +77,7 @@ public abstract class PelagiosGraph {
 	 * @param parent the parent data set
 	 * @throws DatasetNotFoundException if the parent data set was not found in the graph
 	 */
-	public abstract void addDataRecords(List<GeoAnnotationBuilder> records, DatasetBuilder parent)
+	public abstract void addGeoAnnotations(List<GeoAnnotationBuilder> records, DatasetBuilder parent)
 		throws DatasetNotFoundException;
 	
 	/**
@@ -107,6 +105,8 @@ public abstract class PelagiosGraph {
 	 * @return the places
 	 */
 	public abstract Iterable<Place> listPlaces();
+
+	public abstract List<Place> findStronglyRelatedPlaces(Place place, int limit);
 	
 	/**
 	 * Returns all data records that reference the specified place. 

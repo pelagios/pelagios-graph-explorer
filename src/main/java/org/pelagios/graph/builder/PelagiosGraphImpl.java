@@ -144,7 +144,13 @@ class PelagiosGraphImpl extends PelagiosGraph {
 		return new DatasetImpl(hits.getSingle());
 	}
 	
-	public void addDataRecords(List<GeoAnnotationBuilder> records, DatasetBuilder parent)
+	@Override
+	public List<Dataset> findSimilarDatasets(Dataset dataset) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public void addGeoAnnotations(List<GeoAnnotationBuilder> records, DatasetBuilder parent)
 		throws DatasetNotFoundException {
 		
 		Transaction tx = graphDb.beginTx();
@@ -232,6 +238,14 @@ class PelagiosGraphImpl extends PelagiosGraph {
 				};
 			}
 		};
+	}
+
+	@Override
+	public List<Place> findStronglyRelatedPlaces(Place place, int limit) {
+		// TODO implement
+		List<GeoAnnotation> annotations = place.listGeoAnnotations();
+		
+		return null;
 	}
 	
 	public List<GeoAnnotation> listReferencesTo(Place place) throws PlaceNotFoundException {

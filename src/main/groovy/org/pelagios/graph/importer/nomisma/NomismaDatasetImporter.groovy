@@ -40,7 +40,7 @@ public class NomismaDatasetImporter extends AbstractDatasetImporter {
 			records.add(record);
 		}
 		
-		graph.addDataRecords(records, rootNode)
+		graph.addGeoAnnotations(records, rootNode)
 	}
 
 }

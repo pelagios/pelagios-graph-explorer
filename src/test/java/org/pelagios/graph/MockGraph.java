@@ -39,7 +39,13 @@ public class MockGraph extends PelagiosGraph {
 		return null;
 	}
 
-	public void addDataRecords(List<GeoAnnotationBuilder> records,
+	@Override
+	public List<Dataset> findSimilarDatasets(Dataset dataset) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public void addGeoAnnotations(List<GeoAnnotationBuilder> records,
 			DatasetBuilder parent) throws DatasetNotFoundException {
 		// TODO Auto-generated method stub
 		
@@ -66,6 +72,12 @@ public class MockGraph extends PelagiosGraph {
 		return null;
 	}
 
+	@Override
+	public List<Place> findStronglyRelatedPlaces(Place place, int limit) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	public List<GeoAnnotation> listReferencesTo(Place place)
 			throws PlaceNotFoundException {
 		// TODO Auto-generated method stub
