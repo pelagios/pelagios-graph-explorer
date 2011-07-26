@@ -242,9 +242,10 @@ class PelagiosGraphImpl extends PelagiosGraph {
 
 	@Override
 	public List<Place> findStronglyRelatedPlaces(Place place, int limit) {
-		// TODO implement
-		List<GeoAnnotation> annotations = place.listGeoAnnotations();
-		
+		// TODO 1. get the top datasets referring to this place (Place A)
+		// TODO 2. get the top places referred to in these datasets (Place B)
+		// TODO 3. take the N places with highest rank
+		// TODO rank = no. of references to place A + no. of references to Place B
 		return null;
 	}
 	
