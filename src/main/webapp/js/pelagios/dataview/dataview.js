@@ -68,7 +68,10 @@ Pelagios.DataPanel.getInstance = function() {
 			'about their common places.<b>');
 		},
 		
-		showOverlapInfo : function() {
+		showOverlapInfo : function(overlap) {
+			var innerHTML = '<h1>Intersection between ' + overlap.srcSet +
+				' and ' + overlap.destSet + '</h1>' +
+				'<p>' + overlap.commonPlaces.length + ' in common.</p>'
 			
 		},
 		

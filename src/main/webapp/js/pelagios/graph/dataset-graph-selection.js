@@ -189,6 +189,7 @@ Pelagios.SelectionManager.prototype.setLink = function(arg0, arg1, arg2) {
 			for (var i=0, ii=places.length; i<ii; i++) {
 				map.addGeoJSON(places[i].label, places[i].geometry);
 				map.showFeature(places[i].label);
+				Pelagios.DataPanel.getInstance().showOverlapInfo(arg2);
 			}
 			map.zoomTo(arg0.name);
 		});
