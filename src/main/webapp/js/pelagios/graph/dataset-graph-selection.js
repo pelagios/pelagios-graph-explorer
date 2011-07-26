@@ -28,8 +28,17 @@ Pelagios.SelectionManager.prototype.toggleSelect = function(node) {
 			});
 		
 		// Show in data view
-		Pelagios.DataPanel.getInstance().showDatasetInfo(node.dataset);
+		var multipleSelections = false;
+		for (var n in this.selectedNodes) {
+			multipleSelections = true;
+			break;
+		}
 		
+		if (multipleSelections) {
+			Pelagios.DataPanel.getInstance().showMultiSelectionMessage();
+		} else {
+			Pelagios.DataPanel.getInstance().showDatasetInfo(node.dataset);
+		}
 		// Fetch link data for this node
 		this.fetchLinkData(node);
 		

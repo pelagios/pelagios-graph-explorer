@@ -1,25 +1,30 @@
 // Code related to the data view panel
 Pelagios.DataPanel = {}
 
+Pelagios.DataPanel.PANEL_DIV_ID = "#data-panel";
+Pelagios.DataPanel.CONTENT_DIV_ID = "data-panel-records";
+
 Pelagios.DataPanel.getInstance = function() {
 	if (Pelagios.DataPanel.instance)
 		return Pelagios.DataPanel.instance;
 	
 	function set(innerHTML) {
-		document.getElementById('data-panel-records').innerHTML = innerHTML;
+		document.getElementById(Pelagios.DataPanel.CONTENT_DIV_ID)
+			.innerHTML = innerHTML;
 	}
 	
 	Pelagios.DataPanel.instance = {
 		setVisible : function(visible) {
 			if (visible) {
-				$("#data-panel").dialog("open");
+				$(Pelagios.DataPanel.PANEL_DIV_ID).dialog("open");
 			} else {
-				$("#data-panel").dialog("close");		
+				$(Pelagios.DataPanel.PANEL_DIV_ID).dialog("close");		
 			}
 		},
 	
 		isVisible : function() {
-			return $("#data-panel").parents(".ui-dialog").is(":visible");
+			return $(Pelagios.DataPanel.PANEL_DIV_ID)
+				.parents(".ui-dialog").is(":visible");
 		},
 		
 		clear : function() {
@@ -56,8 +61,11 @@ Pelagios.DataPanel.getInstance = function() {
 			});
 		},
 		
-		showMultiDatasetInfo : function(datasets) {
-			
+		showMultiSelectionMessage : function() {
+			set('<div class="dataset-info">' +
+			'<h1>Multiple Datasets Selected</h1>' +
+			'<p>Click on a link between two datasets to show information ' +
+			'about their common places.<b>');
 		},
 		
 		showOverlapInfo : function() {
