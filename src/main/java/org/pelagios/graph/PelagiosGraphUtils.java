@@ -25,9 +25,7 @@ public class PelagiosGraphUtils {
 				placesMap.put(p, count);
 			}
 		}
-		List<Count<Place>> uniquePlaces = new ArrayList<Count<Place>>(placesMap.values());
-		Collections.sort(uniquePlaces);	
-		return uniquePlaces;
+		return new ArrayList<Count<Place>>(placesMap.values());
 	}
 	
 	public static List<Count<Dataset>> getTopDatasets(List<GeoAnnotation> annotations) {
@@ -58,12 +56,16 @@ public class PelagiosGraphUtils {
 		
 		private int count = 0;
 		
-		Count(T elem) {
+		public Count(T elem) {
 			this.elem = elem;
 		}
 		
-		private void increment() {
+		public void increment() {
 			count++;
+		}
+		
+		public void add(int ct) {
+			count += ct;
 		}
 		
 		public T getElement() {

@@ -2,6 +2,7 @@ package org.pelagios.graph.builder;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -24,6 +25,8 @@ import org.neo4j.kernel.Traversal;
 import org.pelagios.graph.PelagiosGraph;
 import org.pelagios.graph.PelagiosGraphNode;
 import org.pelagios.graph.PelagiosGraphNode.NodeType;
+import org.pelagios.graph.PelagiosGraphUtils;
+import org.pelagios.graph.PelagiosGraphUtils.Count;
 import org.pelagios.graph.PelagiosRelationships;
 import org.pelagios.graph.exceptions.DatasetExistsException;
 import org.pelagios.graph.exceptions.DatasetNotFoundException;
@@ -242,11 +245,31 @@ class PelagiosGraphImpl extends PelagiosGraph {
 
 	@Override
 	public List<Place> findStronglyRelatedPlaces(Place place, int limit) {
-		// TODO 1. get the top datasets referring to this place (Place A)
-		// TODO 2. get the top places referred to in these datasets (Place B)
-		// TODO 3. take the N places with highest rank
-		// TODO rank = no. of references to place A + no. of references to Place B
-		return null;
+		List<Count<Dataset>> topDatasets = 
+			PelagiosGraphUtils.getTopDatasets(place.listGeoAnnotations());
+	
+		HashMap<Place, Count<Place>> ranks = new HashMap<Place, Count<Place>>();
+		for (Count<Dataset> cd : topDatasets) {
+			Dataset dataset = cd.getElement();						
+			List<GeoAnnotation> annotations = dataset.listGeoAnnotations(true);
+			for (Count<Place> cp : PelagiosGraphUtils.getUniquePlaces(annotations)) {
+				Count<Place> rank = ranks.get(cp.getElement());
+				if (rank == null) {
+					rank = new Count<Place>(cp.getElement());
+				}
+				rank.add(cd.getCount() * cp.getCount());
+			}
+		}
+		List<Count<Place>> rankedCounts= new ArrayList<Count<Place>>(ranks.values());
+		Collections.sort(rankedCounts);
+		
+		List<Place> relatedPlaces = new ArrayList<Place>();
+		int ct = 0;
+		while (ct < limit && ct < rankedCounts.size()) {
+			relatedPlaces.add(rankedCounts.get(ct).getElement());
+			ct++;
+		}
+		return relatedPlaces;
 	}
 	
 	public List<GeoAnnotation> listReferencesTo(Place place) throws PlaceNotFoundException {
