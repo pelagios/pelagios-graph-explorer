@@ -45,17 +45,17 @@ public class PelagiosGraphUtils {
 
 	public class Count<T extends Object> {
 		
-		private T graphNode;
+		private T elem;
 		
 		private int count;
 		
-		private Count(T graphNode, int count) {
-			this.graphNode = graphNode;
+		private Count(T elem, int count) {
+			this.elem = elem
 			this.count = count;
 		}
 		
-		public T getGraphNode() {
-			return graphNode;
+		public T getElement() {
+			return elem;
 		}
 		
 		public int getCount() {
