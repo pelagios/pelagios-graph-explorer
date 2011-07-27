@@ -1,6 +1,8 @@
 package org.pelagios.graph;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import org.pelagios.graph.nodes.Dataset;
@@ -12,30 +14,37 @@ public class PelagiosGraphUtils {
 	public static List<Count<Place>> 
 		getUniquePlaces(List<GeoAnnotation> annotations) {
 		
-		List<Count<Place>> uniquePlaces = new ArrayList<Count<Place>>();
-		/*
+		HashMap<Place, Count<Place>> placesMap = new HashMap<Place, Count<Place>>();
 		for (GeoAnnotation a : annotations) {
 			for (Place p : a.listPlaces()) {
-				Integer ct = uniquePlaces.get(p);
-				if (ct == null) {
-					ct = Integer.valueOf(1);
-				} else {
-					ct = Integer.valueOf(ct.intValue() + 1);
+				Count<Place> count = placesMap.get(p);
+				if (count == null) {
+					count = new Count<Place>(p);
 				}
-				uniquePlaces.put(p, ct);
+				count.increment();
+				placesMap.put(p, count);
 			}
 		}
-		*/
-			
+		List<Count<Place>> uniquePlaces = new ArrayList<Count<Place>>(placesMap.values());
+		Collections.sort(uniquePlaces);	
 		return uniquePlaces;
 	}
 	
-	
 	public static List<Count<Dataset>> getTopDatasets(List<GeoAnnotation> annotations) {
-		List<Count<Dataset>> topDatasets = new ArrayList<Count<Dataset>>();
+		HashMap<Dataset, Count<Dataset>> datasetMap = new HashMap<Dataset, Count<Dataset>>();
 		
-		// TODO implement 
+		for (GeoAnnotation a : annotations) {
+			Dataset parent = a.getParentDataset();
+			Count<Dataset> count = datasetMap.get(parent);
+			if (count == null) {
+				count = new Count<Dataset>(parent);
+			}
+			count.increment();
+			datasetMap.put(parent, count);
+		}
 		
+		List<Count<Dataset>> topDatasets = new ArrayList<Count<Dataset>>(datasetMap.values());
+		Collections.sort(topDatasets);		
 		return topDatasets;
 	}
 	
@@ -43,15 +52,18 @@ public class PelagiosGraphUtils {
 		return null; 
 	}
 
-	public class Count<T extends Object> {
+	public static class Count<T extends Object> implements Comparable<Count<T>> {
 		
 		private T elem;
 		
-		private int count;
+		private int count = 0;
 		
-		private Count(T elem, int count) {
-			this.elem = elem
-			this.count = count;
+		Count(T elem) {
+			this.elem = elem;
+		}
+		
+		private void increment() {
+			count++;
 		}
 		
 		public T getElement() {
@@ -60,6 +72,10 @@ public class PelagiosGraphUtils {
 		
 		public int getCount() {
 			return count;
+		}
+
+		public int compareTo(Count<T> other) {
+			return Integer.valueOf(count).compareTo(Integer.valueOf(other.count));
 		}
 		
 	}
