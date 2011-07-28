@@ -43,7 +43,7 @@ public class PlacesController extends AbstractController {
 	@Produces("application/json")
 	@javax.ws.rs.Path("/search")
 	public Response searchPlaces(@QueryParam("q") String q) {
-		PelagiosGraph graph = PelagiosGraph.getInstance();
+		PelagiosGraph graph = PelagiosGraph.getDefaultDB();
 		List<Place> hits = graph.searchPlaces(q, 15);
 		return Response.ok(toJSON(hits)).build();
 	}
@@ -55,7 +55,7 @@ public class PlacesController extends AbstractController {
 		throws DatasetNotFoundException {
 			
 		log.info(request.getRemoteAddr() + LOG_INTERSECT + set1 + _ + set2);
-		PelagiosGraph graph = PelagiosGraph.getInstance();
+		PelagiosGraph graph = PelagiosGraph.getDefaultDB();
 		List<Dataset> datasets = new ArrayList<Dataset>();
 		datasets.add(graph.getDataset(set1));
 		datasets.add(graph.getDataset(set2));
@@ -79,7 +79,7 @@ public class PlacesController extends AbstractController {
 		throws PlaceNotFoundException, URISyntaxException {
 		
 		log.info(request.getRemoteAddr() + LOG_SHORTESTPATH + from + _ + to);
-		PelagiosGraph graph = PelagiosGraph.getInstance();
+		PelagiosGraph graph = PelagiosGraph.getDefaultDB();
 		Place pFrom = graph.getPlace(new URI(from));
 		Place pTo = graph.getPlace(new URI(to));
 		Set<Path> shortestPaths = graph.findShortestPaths(pFrom, pTo);
@@ -106,7 +106,7 @@ public class PlacesController extends AbstractController {
 		log.info(request.getRemoteAddr() + LOG_OCCURENCES + place);
 		
 		// Get all references to this place from the graph
-		PelagiosGraph graph = PelagiosGraph.getInstance();
+		PelagiosGraph graph = PelagiosGraph.getDefaultDB();
 		Place p = graph.getPlace(new URI(place));
 		List<GeoAnnotation> records = graph.listReferencesTo(p);
 		

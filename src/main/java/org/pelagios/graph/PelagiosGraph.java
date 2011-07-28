@@ -26,7 +26,7 @@ public abstract class PelagiosGraph {
 	
 	private static PelagiosGraph instance = null;
 	
-	public static PelagiosGraph getInstance() {
+	public static PelagiosGraph getDefaultDB() {
 		if (instance == null) {
 			PelagiosGraphBuilder builder = 
 				new PelagiosGraphBuilder(Config.getInstance().getNeo4jDirectory());
@@ -145,5 +145,7 @@ public abstract class PelagiosGraph {
 	 * Be kind. Always disconnect the graph DB before leaving.
 	 */
 	public abstract void shutdown();
+	
+	
 	
 }

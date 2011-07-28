@@ -35,7 +35,7 @@ public class GeoAnnotationController extends AbstractController {
 			URISyntaxException {
 		
 		log.info(request.getRemoteAddr() + LOG_GET_ANNOTATIONS + place + _ + dataset);
-		PelagiosGraph graph = PelagiosGraph.getInstance();
+		PelagiosGraph graph = PelagiosGraph.getDefaultDB();
 		Dataset ds = graph.getDataset(dataset);
 		Place p = graph.getPlace(new URI((place)));
 		

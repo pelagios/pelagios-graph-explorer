@@ -41,7 +41,7 @@ public class DatasetController extends AbstractController {
 	@Path("/")
 	public Response listDatasets() {
 		log.info(request.getRemoteAddr() + LOG_TOP_LEVEL_LIST);
-		PelagiosGraph graph = PelagiosGraph.getInstance();
+		PelagiosGraph graph = PelagiosGraph.getDefaultDB();
 		List<Dataset> datasets = graph.listTopLevelDatasets();
 		return Response.ok(toJSON(datasets)).build();
 	}
@@ -60,7 +60,7 @@ public class DatasetController extends AbstractController {
 		throws DatasetNotFoundException {
 		
 		log.info(request.getRemoteAddr() + LOG_SUBSETS + superset);
-		List<Dataset> datasets = PelagiosGraph.getInstance().getDataset(superset).listSubsets();	
+		List<Dataset> datasets = PelagiosGraph.getDefaultDB().getDataset(superset).listSubsets();	
 		return Response.ok(toJSON(datasets)).build();
 	}
 	
@@ -78,7 +78,7 @@ public class DatasetController extends AbstractController {
 		throws DatasetNotFoundException {
 		
 		List<Place> places = 
-			PelagiosGraph.getInstance().getDataset(dataset).listPlaces(true);
+			PelagiosGraph.getDefaultDB().getDataset(dataset).listPlaces(true);
 		
 		return Response.ok(toJSON(places)).build();
 	}
@@ -96,7 +96,7 @@ public class DatasetController extends AbstractController {
 	public Response getConvexHull(@PathParam("dataset") String dataset)
 		throws DatasetNotFoundException {
 		
-		PelagiosGraph graph = PelagiosGraph.getInstance();
+		PelagiosGraph graph = PelagiosGraph.getDefaultDB();
 		Geometry cv = toConvexHull(graph.getDataset(dataset).listPlaces(true));
 		
 		return Response.ok(toJSON(cv)).build();
@@ -109,7 +109,7 @@ public class DatasetController extends AbstractController {
 		throws DatasetNotFoundException {
 		
 		List<GeoAnnotation> annotations = 
-			PelagiosGraph.getInstance().getDataset(dataset).listGeoAnnotations(true);
+			PelagiosGraph.getDefaultDB().getDataset(dataset).listGeoAnnotations(true);
 	
 		return Response.ok(toJSON(annotations)).build();
 	}

@@ -1,19 +1,16 @@
 import java.io.File
 
 import org.pelagios.explorer.Config
-import org.pelagios.graph.PelagiosGraphAdmin;
+import org.pelagios.graph.PelagiosGraph
 import org.pelagios.graph.importer.nomisma.NomismaDatasetImporter
 import org.pelagios.graph.importer.pleiades.PleiadesDumpFiles
 
 // A sample Groovy script that imports Pleiades and some sample data
 def initStart = System.currentTimeMillis()
 
-def neo4j = new PelagiosGraphAdmin()
+def graph = PelagiosGraph.getDefaultDB()
 
 def taskstart, duration
-
-println("Dropping existing database")
-neo4j.clearDatabase()
 
 taskStart = System.currentTimeMillis()
 println("Importing Pleiades Gazetteer")
