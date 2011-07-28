@@ -2,10 +2,13 @@ package org.pelagios.graph.builder;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Relationship;
 import org.pelagios.graph.PelagiosGraphNode;
+import org.pelagios.graph.PelagiosRelationships;
 import org.pelagios.graph.nodes.GeoAnnotation;
 import org.pelagios.graph.nodes.Place;
 import org.pelagios.io.geojson.GeoJSONParser;
@@ -70,8 +73,11 @@ class PlaceImpl extends PelagiosGraphNode implements Place {
 	}
 
 	public List<GeoAnnotation> listGeoAnnotations() {
-		// TODO Auto-generated method stub
-		return null;
+		List<GeoAnnotation> annotations = new ArrayList<GeoAnnotation>(); 
+		for (Relationship r : backingNode.getRelationships(PelagiosRelationships.REFERENCES)) {
+			annotations.add(new GeoAnnotationImpl(r.getStartNode()));
+		}
+		return annotations;
 	}
 	
 	/**

@@ -76,8 +76,7 @@ class GeoAnnotationImpl extends PelagiosGraphNode implements GeoAnnotation {
 	}
 
 	public Dataset getRootDataset() {
-		// TODO Auto-generated method stub
-		return null;
+		return getParentDataset().getRoot();
 	}
 	
 	@Override
