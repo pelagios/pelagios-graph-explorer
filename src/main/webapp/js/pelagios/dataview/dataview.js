@@ -13,6 +13,8 @@ Pelagios.DataPanel.getInstance = function() {
 			.innerHTML = innerHTML;
 	}
 	
+	var annotationList = new Array();
+	
 	Pelagios.DataPanel.instance = {
 		setVisible : function(visible) {
 			if (visible) {
@@ -28,10 +30,13 @@ Pelagios.DataPanel.getInstance = function() {
 		},
 		
 		clear : function() {
+			annotationList.length = 0;
 			set('');
 		},
 	
 		showDatasetInfo : function(dataset) {
+			annotationList.length = 0;
+			
 			var innerHTML = '<div class="dataset-info">' +
 				'<h1>' + dataset.name + '</h1>' +
 				'<p>This data set contains <b>' + dataset.geoAnnotations + '</b> geo-annotations ';
@@ -53,7 +58,7 @@ Pelagios.DataPanel.getInstance = function() {
 				async.getPlaces(dataset.name, function(data) {
 					for (var i=0, ii=data.length; i<ii; i++) {
 						map.addPlace(data[i], function(place, event) {
-							async.getAnnotations(place, dataset);
+							async.getAnnotations(place, dataset.name);
 						});
 						map.showFeature(data[i].uri);
 					}
@@ -62,6 +67,8 @@ Pelagios.DataPanel.getInstance = function() {
 		},
 		
 		showMultiSelectionMessage : function() {
+			annotationList.length = 0;
+			
 			set('<div class="dataset-info">' +
 			'<h1>Multiple Datasets Selected</h1>' +
 			'<p>Click on a link between two datasets to show information ' +
@@ -69,19 +76,47 @@ Pelagios.DataPanel.getInstance = function() {
 		},
 		
 		showOverlapInfo : function(overlap) {
-			var innerHTML = '<h1>Intersection between ' + overlap.srcSet +
-				' and ' + overlap.destSet + '</h1>' +
-				'<p>' + overlap.commonPlaces.length + ' in common.</p>'
+			annotationList.length = 0;
 			
+			var innerHTML = '<div class="dataset-info">' +
+				'<h1>Intersection between ' + overlap.srcSet +
+				' and ' + overlap.destSet + '</h1>' +
+				'<p>' + overlap.commonPlaces.length + ' places in common.</p>' +
+				'<input id="btnShowOnMap" type="button" value="Show on Map"/></div>';
+			
+			set(innerHTML);
+			
+			$("#btnShowOnMap").click(function() {				
+				var map = Pelagios.Map.getInstance();
+				map.clear();
+				map.setVisible(true);
+				
+				var async = Pelagios.Async.getInstance();
+				var places = overlap.commonPlaces;
+				for (var i=0, ii= places.length; i<ii; i++) {
+					map.addPlace(places[i], function(place, event) {		
+						async.getAnnotations(place, overlap.srcSet);
+						async.getAnnotations(place, overlap.destSet);
+					});
+					map.showFeature(places[i].uri);
+				}
+			});
 		},
 		
-		showGeoAnnotations : function(place, dataset, annotations) {
-			var innerHTML = '';
+		showGeoAnnotations : function(place, datasetName, annotations) {
+			// Add to annotation list
 			for (var i=0, ii=annotations.length; i<ii; i++) {
-				innerHTML += '<p>Annotation: ' + place.label + ' (<a target="_blank" href="' 
-					+ place.uri + '">Pleiades</a>) in ' + dataset.name
-					+ '<br/><a target="_blank" href="' + annotations[i].uri + '">' 
-					+ annotations[i].uri + '</a></p>';
+				annotationList.push({annotation: annotations[i], place: place, dataset:datasetName});
+			}
+			
+			// Redraw
+			var innerHTML = '';
+			for (var i=0, ii=annotationList.length; i<ii; i++) {
+				var a = annotationList[i];
+				innerHTML += '<p>Annotation: ' + a.place.label + ' (<a target="_blank" href="' 
+					+ place.uri + '">Pleiades</a>) in ' + a.dataset
+					+ '<br/><a target="_blank" href="' + a.annotation.uri + '">' 
+					+ a.annotation.uri + '</a></p>';
 			}
 			set(innerHTML);
 		}

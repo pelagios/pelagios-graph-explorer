@@ -96,25 +96,12 @@ Pelagios.Async.getInstance = function() {
 			})
 			.error(function(data) { alert("Something went wrong: " + data.responseText); });			
 		},
-
-		fetchGeoAnnotations : function(node) {
-			if (node.records > 500) {
-				
-			} else {
-				var pDataview = this.pDataview;
-				$.getJSON("datasets/" + node.name + "/annotations", function(data) {
-					pDataview.setGeoAnnotations(data);
-				})
-				.error(function(data) { alert("Something went wrong: " + data.responseText); });
-			}
-		},
 		
-		getAnnotations : function(place, dataset) {
-			$.getJSON("annotations?place=" + encodeURI(place.uri) + "&dataset=" + dataset.name,
+		getAnnotations : function(place, datasetName) {
+			$.getJSON("annotations?place=" + encodeURI(place.uri) + "&dataset=" + datasetName,
 				function(data) {
-
-				Pelagios.DataPanel.getInstance().showGeoAnnotations(place, dataset, data);
-			})
+					Pelagios.DataPanel.getInstance().showGeoAnnotations(place, datasetName, data);
+				});
 		}
 			
 	}
