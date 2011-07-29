@@ -59,6 +59,8 @@ public abstract class AbstractDatasetImporter {
 	 */
 	protected Logger log = LoggerFactory.getLogger(AbstractDatasetImporter.class);
 	
+	public AbstractDatasetImporter() { }
+	
 	public AbstractDatasetImporter(File rdf, DatasetBuilder rootNode) {
 		this(rdf, rootNode, "RDF/XML");
 	}

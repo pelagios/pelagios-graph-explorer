@@ -13,24 +13,33 @@ import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.ResIterator;
 import com.hp.hpl.jena.rdf.model.Resource
+import com.sun.jmx.mbeanserver.MXBeanProxy.GetHandler;
 
 import org.apache.log4j.Logger
 import org.pelagios.graph.PelagiosGraph;
 import org.pelagios.graph.builder.GeoAnnotationBuilder;
 import org.pelagios.graph.builder.DatasetBuilder;
 import org.pelagios.graph.exceptions.DatasetExistsException;
-import org.pelagios.graph.importer.AbstractDatasetImporter;
+import org.pelagios.graph.importer.AbstractDatasetImporter
 import org.pelagios.graph.importer.Hierarchy;
+import org.pelagios.graph.nodes.GeoAnnotation;
 
-class SPQRImporter {
+class SPQRImporter extends AbstractDatasetImporter {
 	
 	private static final String OAC_NAMESPACE = "http://www.openannotation.org/ns/"
 	
+	private File downloadDir;
+	
 	private Logger log = Logger.getLogger(SPQRImporter.class)
 	
-	public SPQRImporter(File downloadDir, PelagiosGraph graph) {
-		List<GeoAnnotationBuilder> records = new ArrayList<GeoAnnotationBuilder>();
-		
+	public SPQRImporter(File downloadDir) {
+		super();
+		this.downloadDir = downloadDir;
+	}
+	
+	public void importData(PelagiosGraph graph) {				
+		HashMap<Hierarchy, List<GeoAnnotationBuilder>> allRecords =
+			new HashMap<Hierarchy, List<GeoAnnotationBuilder>>()
 		
 		Set<URI> uniqueUris = new HashSet<URI>(); 
 		
@@ -50,17 +59,40 @@ class SPQRImporter {
 			for (Resource r : annotations) {
 				PelagiosAnnotation a = new PelagiosAnnotation(r)
 				record.setDataURL(a.getTarget())
+				record.setLabel(a.getTarget().toString())
 				if (a.getBody().toString().indexOf("pleiades") > -1) {
 					record.addPlaceReference(a.getBody())
 					uniqueUris.add(a.getBody());
 				}
 			}
-			
-			records.add(record);
+	
+			Hierarchy h = getHierarchy(file)
+			List<GeoAnnotationBuilder> aList= allRecords.get(h)
+			if (aList == null) {
+				aList = new ArrayList<GeoAnnotationBuilder>()
+			}
+			aList.add(record)
+			allRecords.put(h, aList);
 		}
 		
-		graph.addGeoAnnotations(records, rootNode)
+		batchAdd(allRecords, graph);
 	}
+	
+	Hierarchy getHierarchy(File file) {
+		List<String> hierarchy = new ArrayList<String>()
+		hierarchy.add("SPQR")
+		
+		String name = file.getName()
+		if (name.contains("hgv")) {
+			hierarchy.add("HGV Papyri")
+		} else if (name.contains("IRT")) {
+			hierarchy.add("Inscriptions of Roman Tripolitania")
+		} else {
+			hierarchy.add("Inscriptions of Aphrodisias")
+		}	
+		
+		return new Hierarchy(hierarchy)
+	}	
 	
 	class PelagiosAnnotation {
 		

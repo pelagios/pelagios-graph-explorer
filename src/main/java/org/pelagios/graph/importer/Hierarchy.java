@@ -37,5 +37,14 @@ public class Hierarchy {
 		
 		return true;
 	}
+	
+	@Override
+	public int hashCode() {
+		String sl = "";
+		for (String s : levels) {
+			sl += s;
+		}
+		return sl.hashCode();
+	}
 
 }
