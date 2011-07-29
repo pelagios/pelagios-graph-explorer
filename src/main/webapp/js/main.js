@@ -34,8 +34,8 @@ window.onload = function() {
 				
 		select: function(event, ui) {
 					lGraph.show();
-					map.addGeoJSON(ui.item.label, ui.item.geometry);
-					map.showFeature(ui.item.label);
+					map.addPlace(ui.item);
+					map.showFeature(ui.item.uri);
 					async.occurences(ui.item, lGraph, map);
 				}
 	});

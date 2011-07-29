@@ -91,6 +91,7 @@ Pelagios.DataPanel.getInstance = function() {
 				var map = Pelagios.Map.getInstance();
 				map.clear();
 				map.setVisible(true);
+				map.zoomToArea(overlap.footprint);
 				
 				var async = Pelagios.Async.getInstance();
 				var places = overlap.commonPlaces;

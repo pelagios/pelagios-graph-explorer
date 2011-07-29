@@ -8,7 +8,7 @@ Pelagios.Graph.Local.getInstance = function() {
 	
 	// Init force layout system	
 	var springyGraph = new Graph();
-    var layout = new Layout.ForceDirected(springyGraph, 400, 30, 0.3);
+    var layout = new Layout.ForceDirected(springyGraph, 600, 30, 0.2);
     var renderer = new Renderer(10, layout,
 		  function clear() { },
 		  
@@ -100,10 +100,10 @@ Pelagios.Graph.Local.getInstance = function() {
 		    n.set = raphael.pelagios.placeLabel(place.label);
 		    n.place = place;
 		    n.name = place.label;
-		    n.data.mass = 0.8;
+		    n.data.mass = 2;
 		    
 		    for (var i=0, ii=places.length; i<ii; i++) {
-		    	springyGraph.newEdge(n, places[i], { length: 2.5 });
+		    	springyGraph.newEdge(n, places[i], { length: 2 });
 		    }
 		
 		    // Seems kind of recursive... but we need that in
@@ -271,7 +271,7 @@ Pelagios.Graph.Local.getInstance = function() {
 			
 			var sizeNorm = getWidthFromWeight(arg2);
 			
-		    var e = springyGraph.newEdge(arg0, arg1, { length: 1 });
+		    var e = springyGraph.newEdge(arg0, arg1, { length: 0.5 });
 		    e.connection = raphael.pelagios.connection(arg0.set[0], arg1.set[0], "#000", sizeNorm);
 		    e.connection.weight = arg2;
 		    e.from = arg0;

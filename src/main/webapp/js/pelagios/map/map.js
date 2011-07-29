@@ -100,12 +100,17 @@ Pelagios.Map.getInstance = function() {
 			var geom = features[name];
 				
 			if (geom) {
-				this.zoomToArea(geom);
+				map.fitBounds(geom.getBounds());
 			}
 		},
 		
-		zoomToArea : function(area) {
-			map.fitBounds(area.getBounds());
+		zoomToArea : function(coords) {
+			var gCoords = new Array();
+			for (var i=0, ii=coords.length; i<ii; i++) {
+				gCoords.push(new google.maps.LatLng(coords[i][1], coords[i][0]));
+			}
+			var poly = new google.maps.Polygon({ paths: gCoords });
+			map.fitBounds(poly.getBounds());
 		},
 	
 		clear : function() {
