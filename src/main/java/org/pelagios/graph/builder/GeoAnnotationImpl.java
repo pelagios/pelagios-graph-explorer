@@ -3,6 +3,7 @@ package org.pelagios.graph.builder;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.neo4j.graphdb.Node;
@@ -43,21 +44,23 @@ class GeoAnnotationImpl extends PelagiosGraphNode implements GeoAnnotation {
 	}
 
 	public void addProperty(String key, String value) {
-		// TODO
+		set(key, value);
 	}
-	
-	public void removeProperty(String key) {
-		// TODO
-	}
-	
+		
 	public String getProperty(String key) {
-		// TODO Auto-generated method stub
-		return null;
+		return getAsString(key);
 	}
 
 	public List<String> getPropertyKeys() {
-		// TODO Auto-generated method stub
-		return null;
+		List<String> commonProperties = Arrays.asList(
+			GeoAnnotation.KEY_URI, GeoAnnotation.KEY_LABEL);
+
+		List<String> properties = new ArrayList<String>();
+		for (String key : backingNode.getPropertyKeys()) {
+			if (!commonProperties.contains(key))
+				properties.add(key);
+		}
+		return properties;
 	}
 
 	/**
