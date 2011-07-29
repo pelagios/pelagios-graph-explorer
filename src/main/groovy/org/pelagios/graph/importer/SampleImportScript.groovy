@@ -4,6 +4,7 @@ import org.pelagios.explorer.Config
 import org.pelagios.graph.PelagiosGraph
 import org.pelagios.graph.importer.nomisma.NomismaDatasetImporter
 import org.pelagios.graph.importer.pleiades.PleiadesDumpFiles
+import org.pelagios.graph.importer.pleiades.PleiadesImporter;
 
 // A sample Groovy script that imports Pleiades and some sample data
 def initStart = System.currentTimeMillis()
@@ -15,18 +16,20 @@ def taskstart, duration
 taskStart = System.currentTimeMillis()
 println("Importing Pleiades Gazetteer")
 def pleiades = new PleiadesDumpFiles(new File("data"))
-neo4j.importPleiades(pleiades.getLocationsCSV(), pleiades.getNamesCSV())
+def places = new PleiadesImporter()
+	.importPleiadesDump(pleiades.getLocationsCSV(), pleiades.getNamesCSV())
+graph.addPlaces(places)
 duration = System.currentTimeMillis() - taskStart
 println("Done. (${duration} ms)")
 
 taskStart = System.currentTimeMillis()
 println("Importing nomisma dataset")
-neo4j.importDataset(new NomismaDatasetImporter(
-	new File("data/datasets/sample-nomisma.org.rdf")))
+def nomisma = new NomismaDatasetImporter(new File("data/datasets/sample-nomisma.org.rdf"))
+nomisma.importData(graph)
 duration = System.currentTimeMillis() - taskStart
 println("Done. (${duration} ms)")
 		
-neo4j.shutdown()
+graph.shutdown()
 duration = (System.currentTimeMillis() - initStart) / 1000
 println("Database initialized. Took ${duration} seconds.");
 
