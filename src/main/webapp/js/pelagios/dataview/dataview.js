@@ -57,6 +57,7 @@ Pelagios.DataPanel.getInstance = function() {
 				
 				var async = Pelagios.Async.getInstance();
 				async.getPlaces(dataset.name, function(data) {
+					annotationList.length = 0;
 					for (var i=0, ii=data.length; i<ii; i++) {
 						map.addPlace(data[i], function(place, event) {
 							async.getAnnotations(place, dataset.name);
@@ -69,6 +70,7 @@ Pelagios.DataPanel.getInstance = function() {
 		
 		showMultiSelectionMessage : function() {
 			annotationList.length = 0;
+			Pelagios.Map.getInstance().clear();
 			
 			set('<div class="dataset-info">' +
 			'<h1>Multiple Datasets Selected</h1>' +
@@ -96,7 +98,8 @@ Pelagios.DataPanel.getInstance = function() {
 				var async = Pelagios.Async.getInstance();
 				var places = overlap.commonPlaces;
 				for (var i=0, ii= places.length; i<ii; i++) {
-					map.addPlace(places[i], function(place, event) {		
+					map.addPlace(places[i], function(place, event) {	
+						annotationList.length = 0;
 						async.getAnnotations(place, overlap.srcSet);
 						async.getAnnotations(place, overlap.destSet);
 					});

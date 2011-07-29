@@ -27,11 +27,37 @@ Pelagios.Graph.Dataset.getInstance = function() {
     );
 
     // Init drawing canvas
+    var mousedown = false;
+    var startX, startY;
+    
 	var viewport = Pelagios.getViewport();
     var raphael = Raphael(Pelagios.Graph.Dataset.DIV_ID, viewport.x, viewport.y);
-    raphael.canvas.onclick = function(event){
+    raphael.canvas.onclick = function(event) {
     	if (event.target.tagName == 'svg') {
     		Pelagios.Graph.Dataset.instance.deselectAll();
+    	}
+    };
+    
+    raphael.canvas.onmousedown = function(event) {
+    	if (event.target.tagName == 'svg') {
+    		mousedown = true;
+    		startX = event.clientX;
+    		startY = event.clientY;
+    	}
+    };    
+    
+    raphael.canvas.onmouseup = function(event) {
+    	mousedown = false;
+    };
+    
+    raphael.canvas.onmousemove = function(event){
+    	if (mousedown) {
+    		var dx = startX - event.clientX;
+    		var dy = startY - event.clientY;
+    		Pelagios.Graph.Dataset.instance.shiftCenter(dx, dy);
+       		renderer.graphChanged();
+    		startX = event.clientX;
+    		startY = event.clientY;
     	}
     };
     
