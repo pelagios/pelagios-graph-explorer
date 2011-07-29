@@ -14,12 +14,20 @@ public interface GeoAnnotation {
 	 * String constants
 	 */
 	public static final String KEY_URI = "uri";
+	public static final String KEY_LABEL = "label";
+	public static final String KEY_PROPERTIES = "properties";
 	
 	/**
 	 * Returns the HTTP URL to the actual data record online.
 	 * @return the record's HTTP URL
 	 */
 	public URI getDataURL();
+	
+	public String getLabel();
+	
+	public String getProperty(String key);
+	
+	public List<String> getPropertyKeys();
 	
 	/**
 	 * Lists all places referred to in this data record 

@@ -140,14 +140,11 @@ Pelagios.DataPanel.getInstance = function() {
 			var palette = Pelagios.Palette.getInstance();
 			for (var i=0, ii=annotationList.length; i<ii; i++) {
 				var a = annotationList[i];
-				var label = a.annotation.uri;
-				if (label.length > 35)
-					label = label.substring(0, 34);
 				
 				innerHTML += '<p style="' + toCSS(palette.darker(palette.getColor(a.annotation.rootDataset)))
 					+ '">Reference in ' + a.dataset + '<br/>'
 					+ '<a target="_blank" href="' + a.annotation.uri + '">' 
-					+ label + '...</a></p>';
+					+ a.annotation.label + '...</a></p>';
 			}
 			
 			innerHTML += '</div>';

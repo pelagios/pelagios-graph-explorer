@@ -33,6 +33,32 @@ class GeoAnnotationImpl extends PelagiosGraphNode implements GeoAnnotation {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	public void setLabel(String label) {
+		set(GeoAnnotation.KEY_LABEL, label);
+	}
+
+	public String getLabel() {
+		return getAsString(GeoAnnotation.KEY_LABEL);
+	}
+
+	public void addProperty(String key, String value) {
+		// TODO
+	}
+	
+	public void removeProperty(String key) {
+		// TODO
+	}
+	
+	public String getProperty(String key) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<String> getPropertyKeys() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	/**
 	 * Batch-adds a list of place references to this data record. If
