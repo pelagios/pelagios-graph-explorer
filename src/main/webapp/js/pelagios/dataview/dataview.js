@@ -13,6 +13,20 @@ Pelagios.DataPanel.getInstance = function() {
 			.innerHTML = innerHTML;
 	}
 	
+	function toCSS(col) {
+		var css =
+			'background-color: ' + col + '; '; // +
+		/*
+			'background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(' + col + ')); ' +
+			'background-image: -webkit-linear-gradient(top, #fff, ' + col + '); ' +  
+			'background-image: -moz-linear-gradient(top, #fff, ' + col + '); ' +
+			'background-image: -ms-linear-gradient(top, #fff, ' + col + '); ' +
+			'background-image: -o-linear-gradient(top, #fff, ' + col + ');' +
+			'border-top: 1px solid ' + col + ';';
+		*/
+		return css;
+	}
+	
 	var annotationList = new Array();
 	
 	Pelagios.DataPanel.instance = {
@@ -115,15 +129,39 @@ Pelagios.DataPanel.getInstance = function() {
 			}
 			
 			// Redraw
-			var innerHTML = '';
+			var innerHTML = '<div class="annotation-list-header"><h1>' + place.label + '</h1>'
+			+ '<span class="annotation-list-info">' 
+			+ '[<a href="' + place.uri + '" target="_blank">View Pleiades Record</a>] '
+			+ '[<a id="view-graph" href="">View Local Graph</a>]'
+			+ '</span>'
+			+ '<p>' + annotationList.length + ' references in selected data sets</p></div>'
+			+ '<div class="annotation-list">';
+
+			var palette = Pelagios.Palette.getInstance();
 			for (var i=0, ii=annotationList.length; i<ii; i++) {
 				var a = annotationList[i];
-				innerHTML += '<p>Annotation: ' + a.place.label + ' (<a target="_blank" href="' 
-					+ place.uri + '">Pleiades</a>) in ' + a.dataset
-					+ '<br/><a target="_blank" href="' + a.annotation.uri + '">' 
-					+ a.annotation.uri + '</a></p>';
+				var label = a.annotation.uri;
+				if (label.length > 35)
+					label = label.substring(0, 34);
+				
+				innerHTML += '<p style="' + toCSS(palette.darker(palette.getColor(a.annotation.rootDataset)))
+					+ '">Reference in ' + a.dataset + '<br/>'
+					+ '<a target="_blank" href="' + a.annotation.uri + '">' 
+					+ label + '...</a></p>';
 			}
+			
+			innerHTML += '</div>';
 			set(innerHTML);
+			
+			var map = Pelagios.Map.getInstance();
+			$("#view-graph").click(function() {				
+				Pelagios.Graph.Local.getInstance().show();
+				map.clear();
+				map.addPlace(place);
+				map.showFeature(place.uri);
+				Pelagios.Async.getInstance().occurences(place);
+				return false;
+			});
 		}
 	}
 	

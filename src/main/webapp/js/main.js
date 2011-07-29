@@ -36,7 +36,7 @@ window.onload = function() {
 					lGraph.show();
 					map.addPlace(ui.item);
 					map.showFeature(ui.item.uri);
-					async.occurences(ui.item, lGraph, map);
+					async.occurences(ui.item);
 				}
 	});
 	

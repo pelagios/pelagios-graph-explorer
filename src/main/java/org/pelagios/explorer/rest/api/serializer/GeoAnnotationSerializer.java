@@ -17,9 +17,14 @@ import com.google.gson.JsonSerializer;
  */
 public class GeoAnnotationSerializer implements JsonSerializer<GeoAnnotation> {
 	
-	public JsonElement serialize(GeoAnnotation record, Type typeOfSrc, JsonSerializationContext context) {
+	private static final String KEY_PARENT_DATASET = "dataset";
+	private static final String KEY_ROOT_DATASET = "rootDataset";
+	
+	public JsonElement serialize(GeoAnnotation annotation, Type typeOfSrc, JsonSerializationContext context) {
 		JsonObject json = new JsonObject();
-		json.add(GeoAnnotation.KEY_URI, new JsonPrimitive(record.getDataURL().toString()));
+		json.add(GeoAnnotation.KEY_URI, new JsonPrimitive(annotation.getDataURL().toString()));
+		json.add(KEY_PARENT_DATASET, new JsonPrimitive(annotation.getParentDataset().getName()));
+		json.add(KEY_ROOT_DATASET, new JsonPrimitive(annotation.getRootDataset().getName()));
 		return json;
 	}
   
