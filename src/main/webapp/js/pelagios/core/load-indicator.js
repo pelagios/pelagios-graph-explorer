@@ -6,7 +6,7 @@ Pelagios.Loadmask.getInstance = function() {
 	
 	var div = document.createElement("div");
 	div.style.visibility = "visible";
-	div.innerHTML = "<img class=\"ajax-loader\" src=\"img/ajax-loader.gif\"/>";
+	div.innerHTML = "<div class=\"ajax-loader\" ><span class=\"msg\">LOADING</span><img src=\"img/ajax-loader.gif\"/></div>";
 	document.body.appendChild(div);
 	
 	var ctr = 0;
