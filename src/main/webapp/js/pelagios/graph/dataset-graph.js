@@ -50,6 +50,7 @@ Pelagios.Graph.Dataset.getInstance = function() {
     // Initialize the graph
     var loadMask = Pelagios.Loadmask.getInstance();
     loadMask.show();
+    
     Pelagios.Async.getInstance().datasets(null, function(data) {
 		for (var i=0, ii=data.length; i<ii; i++) {
 			if (data[i].geoAnnotations > maxDatasetSize)
@@ -149,6 +150,8 @@ Pelagios.Graph.Dataset.getInstance = function() {
 				});
 			}
         });
+        
+		Pelagios.Async.getInstance().fetchConvexHull(dataset);
         
         var map = Pelagios.Map.getInstance();
         n.set.mouseover(function() { map.showFeature(dataset.name); });

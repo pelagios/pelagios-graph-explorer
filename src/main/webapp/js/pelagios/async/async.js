@@ -33,9 +33,11 @@ Pelagios.Async.getInstance = function() {
 			});	
 		},
 
-		fetchConvexHull : function(node) {
-			$.getJSON("datasets/" + node.name + "/places/convexhull", function(data) {
-				Pelagios.Map.getInstance().addPolygon(node.name, data, node.stroke);
+		fetchConvexHull : function(dataset) {
+			$.getJSON("datasets/" + dataset.name + "/places/convexhull", function(data) {
+				var palette = Pelagios.Palette.getInstance();
+				Pelagios.Map.getInstance().addPolygon(dataset.name, data, 
+					palette.darker(palette.getColor(dataset.rootDataset)));
 			})
 			.error(function(data) { alert("Something went wrong: " + data.responseText); });	
 		},

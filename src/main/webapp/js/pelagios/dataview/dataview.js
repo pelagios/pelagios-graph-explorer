@@ -53,6 +53,7 @@ Pelagios.DataPanel.getInstance = function() {
 				var map = Pelagios.Map.getInstance();
 				map.clear();
 				map.setVisible(true);
+				map.zoomToFeature(dataset.name);
 				
 				var async = Pelagios.Async.getInstance();
 				async.getPlaces(dataset.name, function(data) {

@@ -96,12 +96,16 @@ Pelagios.Map.getInstance = function() {
 			google.maps.event.trigger(map, 'resize');
 		},
 	
-		zoomTo : function(name) {
+		zoomToFeature : function(name) {
 			var geom = features[name];
 				
 			if (geom) {
-				map.fitBounds(geom.getBounds());
+				this.zoomToArea(geom);
 			}
+		},
+		
+		zoomToArea : function(area) {
+			map.fitBounds(area.getBounds());
 		},
 	
 		clear : function() {

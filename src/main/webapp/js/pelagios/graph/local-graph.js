@@ -122,7 +122,7 @@ Pelagios.Graph.Local.getInstance = function() {
 				map.highlight(place.label, false);			
 			});
 			n.set[0].click(function (event) {
-				map.zoomTo(place.label);			
+				map.zoomToFeature(place.label);			
 			});
 		    
 		    n.set.drag(
@@ -179,7 +179,7 @@ Pelagios.Graph.Local.getInstance = function() {
 			    map.hideFeature(datasetLabel);
 			});
 			n.set[0].click(function (event) {
-				map.zoomTo(datasetLabel);			
+				map.zoomToFeature(datasetLabel);			
 			});
 		
 		    // Seems kind of recursive... but we need that in
