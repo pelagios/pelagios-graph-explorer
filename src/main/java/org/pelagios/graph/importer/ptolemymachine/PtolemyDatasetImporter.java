@@ -103,7 +103,9 @@ public class PtolemyDatasetImporter extends AbstractDatasetImporter {
 					records = new ArrayList<GeoAnnotationBuilder>();
 					allRecords.put(h, records);
 				}
-				records.add(new GeoAnnotationBuilder(new URI(recordURL)));
+				GeoAnnotationBuilder annotation = new GeoAnnotationBuilder(new URI(recordURL));
+				annotation.setLabel(recordURL);
+				records.add(annotation);
 			} catch (URISyntaxException e) {
 				// Only happens in case of data set errors - we have a 
 				// zero-tolerance policy for those kinds of things
