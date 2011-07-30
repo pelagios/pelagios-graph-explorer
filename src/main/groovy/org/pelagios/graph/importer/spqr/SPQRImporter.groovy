@@ -2,6 +2,7 @@ package org.pelagios.graph.importer.spqr
 
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
 
+import java.awt.Label;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -13,9 +14,13 @@ import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.ResIterator;
 import com.hp.hpl.jena.rdf.model.Resource
+import com.hp.hpl.jena.rdf.model.Statement;
+import com.hp.hpl.jena.vocabulary.DC;
 import com.sun.jmx.mbeanserver.MXBeanProxy.GetHandler;
 
 import org.apache.log4j.Logger
+import org.apache.xerces.dom.ParentNode;
+import org.pelagios.explorer.rest.DatasetController;
 import org.pelagios.graph.PelagiosGraph;
 import org.pelagios.graph.builder.GeoAnnotationBuilder;
 import org.pelagios.graph.builder.DatasetBuilder;
@@ -27,6 +32,7 @@ import org.pelagios.graph.nodes.GeoAnnotation;
 class SPQRImporter extends AbstractDatasetImporter {
 	
 	private static final String OAC_NAMESPACE = "http://www.openannotation.org/ns/"
+	private static final String SPQR_NAMESPACE = "http://spqr.epcc.ed.ac.uk/";
 	
 	private File downloadDir;
 	
@@ -59,7 +65,16 @@ class SPQRImporter extends AbstractDatasetImporter {
 			for (Resource r : annotations) {
 				PelagiosAnnotation a = new PelagiosAnnotation(r)
 				record.setDataURL(a.getTarget())
-				record.setLabel(a.getTarget().toString())
+				
+				String label = (a.getLabel() == null) ? a.getTarget().toString() : a.getLabel()
+				record.setLabel(label)
+				
+				if (a.getMaterial() != null)
+					record.addProperty("Material", a.getMaterial())
+				
+				if (a.getType() != null)
+					record.addProperty("Type", a.getType())
+				
 				if (a.getBody().toString().indexOf("pleiades") > -1) {
 					record.addPlaceReference(a.getBody())
 					uniqueUris.add(a.getBody());
@@ -110,7 +125,37 @@ class SPQRImporter extends AbstractDatasetImporter {
 		public URI getTarget() {
 			return get(ResourceFactory.createProperty(OAC_NAMESPACE, "hasTarget"));
 		}
+
+		public String getName() {
+			return resource.getProperty(ResourceFactory.createProperty(SPQR_NAMESPACE, "name")).getObject().toString()
+		}
+				
+		public String getLabel() {
+			List<Resource> parent = getParentNode();
+			if (parent.size() > 0) {
+				Statement s = parent.get(0).getProperty(DC.title);
+				if (s != null)
+					return s.getObject().toString()	
+			}
+			
+			String name = getName();
+			if (name.isEmpty())
+				return "...";
+			
+			return name;
+		}
+
+		public String getMaterial() {
+			List<Resource> parent = getParentNode();
+			if (parent.size() > 0) {
+				return parent.get(0).getProperty(ResourceFactory.createProperty(SPQR_NAMESPACE, "material")).getObject().toString()
+			}
+		}
 		
+		public String getType() {
+			return resource.getProperty(ResourceFactory.createProperty(SPQR_NAMESPACE, "type")).getObject().toString()
+		}
+				
 		private URI get(Property p) {
 			RDFNode node = resource.getProperty(p).getObject();
 			try {
@@ -123,6 +168,10 @@ class SPQRImporter extends AbstractDatasetImporter {
 				// This should never ever happen
 				throw new RuntimeException(e);
 			}
+		}
+		
+		private List<Resource> getParentNode() {
+			return resource.getModel().listResourcesWithProperty(ResourceFactory.createProperty(SPQR_NAMESPACE, "material")).toList();
 		}
 		
 	}

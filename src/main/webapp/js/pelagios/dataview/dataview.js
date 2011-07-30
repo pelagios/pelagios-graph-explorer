@@ -74,6 +74,7 @@ Pelagios.DataPanel.getInstance = function() {
 					annotationList.length = 0;
 					for (var i=0, ii=data.length; i<ii; i++) {
 						map.addPlace(data[i], function(place, event) {
+							annotationList.length = 0;
 							async.getAnnotations(place, dataset.name);
 						});
 						map.showFeature(data[i].uri);
@@ -144,7 +145,15 @@ Pelagios.DataPanel.getInstance = function() {
 				innerHTML += '<p style="' + toCSS(palette.darker(palette.getColor(a.annotation.rootDataset)))
 					+ '">Reference in ' + a.dataset + '<br/>'
 					+ '<a target="_blank" href="' + a.annotation.uri + '">' 
-					+ a.annotation.label + '...</a></p>';
+					+ a.annotation.label + '</a>';
+				
+				if (a.annotation.properties.Type)
+					innerHTML += "<br/>Type: " + a.annotation.properties.Type;
+				
+				if (a.annotation.properties.Material)
+					innerHTML += "<br/>Material: " + a.annotation.properties.Material;
+				
+				innerHTML += '</p>';
 			}
 			
 			innerHTML += '</div>';

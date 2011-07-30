@@ -36,7 +36,8 @@ public class NomismaDatasetImporter extends AbstractDatasetImporter {
 			String target = oac.getProperty(OAC_HASTARGET).getObject().toString()
 			
 			GeoAnnotationBuilder record = new GeoAnnotationBuilder(new URI(target))
-			record.setLabel(target.substring(target.lastIndexOf('/')))
+			record.setLabel(target.substring(target.lastIndexOf('/') + 1))
+			record.setDataURL(new URI(target));
 			record.addPlaceReference(
 					new URI(oac.getProperty(OAC_HASBODY).getObject().toString()))
 			records.add(record);
