@@ -100,7 +100,11 @@ Pelagios.Map.getInstance = function() {
 			var geom = features[name];
 				
 			if (geom) {
-				map.fitBounds(geom.getBounds());
+				if (geom.getBounds) {
+					map.fitBounds(geom.getBounds());
+				} else {
+					map.setCenter(geom.position);
+				}
 			}
 		},
 		
@@ -182,7 +186,7 @@ Pelagios.Map.getInstance = function() {
 			var geom = features[uri];
 			if (geom) {
 				if (highlighted) {
-					geom.setOptions(this.hilightStyle);
+					geom.setOptions(hilightStyle);
 				} else {
 					geom.setOptions(geom.options);
 				}

@@ -84,7 +84,6 @@ Pelagios.Graph.Local.getInstance = function() {
 	}
 
     Pelagios.Graph.Local.instance.show = function() {
-		Pelagios.Map.getInstance().clear();
 		var el = document.getElementById(Pelagios.Graph.Local.DIV_ID);
 		el.style.visibility = "visible";
 		el.style.opacity = 1;
@@ -116,13 +115,13 @@ Pelagios.Graph.Local.getInstance = function() {
 		    
 		    var map = Pelagios.Map.getInstance();
 			n.set[0].mouseover(function(event) {
-				map.highlight(place.label, true);
+				map.highlight(place.uri, true);
 			});
 			n.set[0].mouseout(function (event) {
-				map.highlight(place.label, false);			
+				map.highlight(place.uri, false);			
 			});
 			n.set[0].click(function (event) {
-				map.zoomToFeature(place.label);			
+				map.zoomToFeature(place.uri);			
 			});
 		    
 		    n.set.drag(
