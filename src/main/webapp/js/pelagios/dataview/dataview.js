@@ -143,7 +143,7 @@ Pelagios.DataPanel.getInstance = function() {
 				var a = annotationList[i];
 				
 				innerHTML += '<p style="' + toCSS(palette.darker(palette.getColor(a.annotation.rootDataset)))
-					+ '">Reference in ' + a.dataset + '<br/>'
+					+ '">Reference in ' + a.annotation.dataset + '<br/>'
 					+ '<a target="_blank" href="' + a.annotation.uri + '">' 
 					+ a.annotation.label + '</a>';
 				

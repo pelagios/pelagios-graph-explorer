@@ -9,6 +9,7 @@ import org.pelagios.graph.importer.AbstractDatasetImporter;
 import org.pelagios.graph.importer.Hierarchy;
 
 import com.hp.hpl.jena.rdf.model.Resource
+import com.hp.hpl.jena.vocabulary.DC;
 
 /**
  * Importer for one Perseus data file. RDF/XML sample:
@@ -67,11 +68,14 @@ class PerseusDatafileImporter extends AbstractDatasetImporter {
 			Hierarchy h = getHierarchy(oac.toString())
 			
 			// Target = data record URN
-			String recordURL = oac.getProperty(OAC_HASTARGET).getObject().toString()
+			String recordURL = oac.getProperty(OAC_HASTARGET).getObject().asResource().getURI()
 			
 			// Body = Pleiades Place
 			String pleiadesURL = oac.getProperty(OAC_HASBODY).getObject().toString()
 
+			// Title
+			String title = oac.getProperty(DC.title).getObject().asLiteral().getString()
+			
 			// Create the record and store in memory - we'll batch-add 
 			// all records to the graph later for added performance
 			try {
@@ -81,7 +85,9 @@ class PerseusDatafileImporter extends AbstractDatasetImporter {
 					allRecords.put(h, records)
 				}
 				GeoAnnotationBuilder record =
-					new GeoAnnotationBuilder(new URI(URLEncoder.encode(recordURL, 'UTF-8')))
+					new GeoAnnotationBuilder(new URI(recordURL.replace("xmlchunk", "text").replace(" ", "%20")))
+				
+				record.setLabel(title)
 				record.addPlaceReference(new URI(pleiadesURL))
 				records.add(record)
 			} catch (URISyntaxException e) {
@@ -119,10 +125,7 @@ class PerseusDatafileImporter extends AbstractDatasetImporter {
 		   
 	   // E.g. '1999.01.0084'
 	   String prefix = tokenizer.nextToken();
-	   String[] s = prefix.split("\\.")
-	   for (int i=0; i<s.length; i++) {
-	       hierarchy.add(s[i])
-	   }
+	   hierarchy.add(prefix)
 	   
 	   // Look for 'book', 'chapter', 'section', 'speech', 'narrative' and 'poem'
        while (tokenizer.hasMoreTokens()) {
