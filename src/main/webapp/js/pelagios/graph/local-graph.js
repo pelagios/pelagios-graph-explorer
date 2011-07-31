@@ -207,7 +207,21 @@ Pelagios.Graph.Local.getInstance = function() {
 			    map.hideFeature(datasetLabel);
 			});
 			n.set[0].click(function (event) {
-				map.zoomToFeature(datasetLabel);			
+				map.zoomToFeature(datasetLabel);
+				var edges = Pelagios.Graph.Local.instance.findEdgesFor(n);
+				var async = Pelagios.Async.getInstance();
+				for (var i=0, ii=edges.length; i<ii; i++) {
+					var place, datasetName;					
+					if (edges[i].from.place) {
+						place = edges[i].from.place;
+						datasetName = edges[i].to.name;
+					} else {
+						place = edges[i].to.place;
+						datasetName = edges[i].from.name;
+					}
+					
+					async.getAnnotationsForDataset(place, datasetName); 
+				}	
 			});
 		
 		    // Seems kind of recursive... but we need that in
@@ -234,7 +248,7 @@ Pelagios.Graph.Local.getInstance = function() {
 			var edge = edges[e];
 			if ((edge.to == dataset) || (edge.from == dataset)) {
 				dsEdges.push(edge);	
-			}
+			} 
 		}
 		return dsEdges;
 	}

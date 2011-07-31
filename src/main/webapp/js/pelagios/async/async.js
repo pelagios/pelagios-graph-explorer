@@ -99,10 +99,19 @@ Pelagios.Async.getInstance = function() {
 			.error(function(data) { alert("Something went wrong: " + data.responseText); });			
 		},
 		
+		// TODO quick hack -> different behaviors should be covered by a callback parameter!
 		getAnnotations : function(place, datasetName) {
 			$.getJSON("annotations?place=" + encodeURI(place.uri) + "&dataset=" + datasetName,
 				function(data) {
 					Pelagios.DataPanel.getInstance().showGeoAnnotations(place, datasetName, data);
+				});
+		},
+		
+		getAnnotationsForDataset : function(place, datasetName) {
+			$.getJSON("annotations?place=" + encodeURI(place.uri) + "&dataset=" + datasetName, 
+				function(data) {
+					// TODO implement
+					console.log(data);
 				});
 		}
 			
