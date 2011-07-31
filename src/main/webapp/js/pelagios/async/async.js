@@ -112,6 +112,12 @@ Pelagios.Async.getInstance = function() {
 				function(data) {
 					Pelagios.DataPanel.getInstance().showGeoAnnotations_local(place, datasetName, data);
 				});
+		},
+		
+		stronglyRelated : function(place, callback) {
+			$.getJSON("places/stronglyRelated?place=" + encodeURI(place.uri), function(data) {
+				callback(data);
+			});
 		}
 			
 	}

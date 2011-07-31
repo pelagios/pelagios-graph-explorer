@@ -140,6 +140,7 @@ Pelagios.Graph.Local.getInstance = function() {
 		    }
 		    
 		    var map = Pelagios.Map.getInstance();
+		    var async = Pelagios.Async.getInstance();
 			n.set[0].mouseover(function(event) {
 				map.highlight(place.uri, true);
 			});
@@ -150,7 +151,14 @@ Pelagios.Graph.Local.getInstance = function() {
 				map.zoomToFeature(place.uri);			
 			});
 			n.set[0].dblclick(function (event) {
-				alert('dbl');
+				async.stronglyRelated(place, function(data) {
+					for (var i=0, ii=data.length; i<ii; i++) {
+						map.addPlace(data[i]);
+						map.showFeature(data[i].uri);
+						map.zoomToFeature(data[i].uri);
+						async.occurences(data[i]);
+					}
+				});
 			});
 		    
 		    n.set.drag(

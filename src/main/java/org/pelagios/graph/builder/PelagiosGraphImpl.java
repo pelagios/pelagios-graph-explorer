@@ -258,6 +258,7 @@ class PelagiosGraphImpl extends PelagiosGraph {
 					rank = new Count<Place>(cp.getElement());
 				}
 				rank.add(cd.getCount() * cp.getCount());
+				ranks.put(cp.getElement(), rank);
 			}
 		}
 		List<Count<Place>> rankedCounts= new ArrayList<Count<Place>>(ranks.values());

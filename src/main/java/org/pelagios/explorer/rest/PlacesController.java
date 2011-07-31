@@ -179,9 +179,11 @@ public class PlacesController extends AbstractController {
 		
 		log.info(request.getRemoteAddr() + LOG_STRONGLY_RELATED + place);
 
-		// TODO implement
-		
-		return Response.ok("").build();	
+		PelagiosGraph graph = PelagiosGraph.getDefaultDB();
+		Place p = graph.getPlace(new URI(place));
+
+		List<Place> relatedPlaces = graph.findStronglyRelatedPlaces(p, 3);
+		return Response.ok(toJSON(relatedPlaces)).build();	
 	}
 
 }
