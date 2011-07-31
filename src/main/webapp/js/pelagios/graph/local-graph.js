@@ -29,8 +29,34 @@ Pelagios.Graph.Local.getInstance = function() {
 	);
 
     // Init drawing canvas
-	var viewport = Pelagios.getViewport();
+    var mousedown = false;
+    var startX, startY;
+
+    var viewport = Pelagios.getViewport();
     var raphael = Raphael(Pelagios.Graph.Local.DIV_ID, viewport.x, viewport.y);
+    raphael.canvas.onmousedown = function(event) {
+    	if (event.target.tagName == 'svg') {
+    		mousedown = true;
+    		startX = event.clientX;
+    		startY = event.clientY;
+    	}
+    };    
+    
+    raphael.canvas.onmouseup = function(event) {
+    	mousedown = false;
+    };
+    
+    raphael.canvas.onmousemove = function(event){
+    	if (mousedown) {
+    		var dx = startX - event.clientX;
+    		var dy = startY - event.clientY;
+    		Pelagios.Graph.Local.instance.shiftCenter(dx, dy);
+       		renderer.graphChanged();
+    		startX = event.clientX;
+    		startY = event.clientY;
+    	}
+    };
+
     
     // Keep track of places, datasets and edges in the graph
     var places = new Array();
@@ -122,6 +148,9 @@ Pelagios.Graph.Local.getInstance = function() {
 			});
 			n.set[0].click(function (event) {
 				map.zoomToFeature(place.uri);			
+			});
+			n.set[0].dblclick(function (event) {
+				alert('dbl');
 			});
 		    
 		    n.set.drag(
