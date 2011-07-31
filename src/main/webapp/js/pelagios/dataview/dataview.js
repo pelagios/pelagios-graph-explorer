@@ -123,6 +123,42 @@ Pelagios.DataPanel.getInstance = function() {
 			});
 		},
 		
+		// TODO unify this with the data graph's showGeoAnnotations function
+		showGeoAnnotations_local : function(place, datasetName, annotations) {
+			// Add to annotation list
+			for (var i=0, ii=annotations.length; i<ii; i++) {
+				annotationList.push({annotation: annotations[i], place: place, dataset:datasetName});
+			}
+
+			// Redraw
+			var innerHTML = '<div class="annotation-list-header"><h1>' + datasetName + '</h1>'
+			+ '<p>' + annotationList.length + ' references in selected places</p></div>'
+			+ '<div class="annotation-list">';
+
+			var palette = Pelagios.Palette.getInstance();
+			for (var i=0, ii=annotationList.length; i<ii; i++) {
+				var a = annotationList[i];
+				
+				innerHTML += '<p style="' + toCSS(palette.darker(palette.getColor(a.annotation.rootDataset)))
+					+ '">Reference to <a target="_blank" href="' + a.place.uri + '">' + a.place.label + '</a>' 
+					+ ' in ' + a.annotation.dataset + '<br/>'
+					+ '<a target="_blank" href="' + a.annotation.uri + '">' 
+					+ a.annotation.label + '</a>';
+				
+				if (a.annotation.properties.Type)
+					innerHTML += "<br/>Type: " + a.annotation.properties.Type;
+				
+				if (a.annotation.properties.Material)
+					innerHTML += "<br/>Material: " + a.annotation.properties.Material;
+				
+				innerHTML += '</p>';
+			
+			}
+
+			innerHTML += '</div>';
+			set(innerHTML);
+		},
+		
 		showGeoAnnotations : function(place, datasetName, annotations) {
 			// Add to annotation list
 			for (var i=0, ii=annotations.length; i<ii; i++) {
@@ -165,6 +201,7 @@ Pelagios.DataPanel.getInstance = function() {
 				map.clear();
 				map.addPlace(place);
 				map.showFeature(place.uri);
+				// clear();
 				Pelagios.Async.getInstance().occurences(place);
 				return false;
 			});

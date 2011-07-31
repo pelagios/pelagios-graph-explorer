@@ -110,8 +110,7 @@ Pelagios.Async.getInstance = function() {
 		getAnnotationsForDataset : function(place, datasetName) {
 			$.getJSON("annotations?place=" + encodeURI(place.uri) + "&dataset=" + datasetName, 
 				function(data) {
-					// TODO implement
-					console.log(data);
+					Pelagios.DataPanel.getInstance().showGeoAnnotations_local(place, datasetName, data);
 				});
 		}
 			
