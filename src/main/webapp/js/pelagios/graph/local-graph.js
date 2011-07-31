@@ -207,20 +207,28 @@ Pelagios.Graph.Local.getInstance = function() {
 			    map.hideFeature(datasetLabel);
 			});
 			n.set[0].click(function (event) {
+				var dataPanel = Pelagios.DataPanel.getInstance();
+				dataPanel.clear();
+				dataPanel.setVisible(true);
+				
 				map.zoomToFeature(datasetLabel);
 				var edges = Pelagios.Graph.Local.instance.findEdgesFor(n);
 				var async = Pelagios.Async.getInstance();
 				for (var i=0, ii=edges.length; i<ii; i++) {
-					var place, datasetName;					
+					
+					var place = null;
+					var datasetName = null;					
 					if (edges[i].from.place) {
 						place = edges[i].from.place;
 						datasetName = edges[i].to.name;
-					} else {
+					} else if (edges[i].to.place){
 						place = edges[i].to.place;
 						datasetName = edges[i].from.name;
 					}
 					
-					async.getAnnotationsForDataset(place, datasetName); 
+					if (place)  {					
+						async.getAnnotationsForDataset(place, datasetName);
+					}
 				}	
 			});
 		

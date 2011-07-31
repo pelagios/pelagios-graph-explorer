@@ -201,7 +201,6 @@ Pelagios.DataPanel.getInstance = function() {
 				map.clear();
 				map.addPlace(place);
 				map.showFeature(place.uri);
-				// clear();
 				Pelagios.Async.getInstance().occurences(place);
 				return false;
 			});
