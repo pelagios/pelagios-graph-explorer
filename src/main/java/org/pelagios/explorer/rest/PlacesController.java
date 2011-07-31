@@ -38,6 +38,7 @@ public class PlacesController extends AbstractController {
 	private static final String LOG_INTERSECT = " Intersection ";
 	private static final String LOG_SHORTESTPATH = " Shortest path ";
 	private static final String LOG_OCCURENCES = " Occurences ";
+	private static final String LOG_STRONGLY_RELATED = " Strongly related place "; 
 	
 	@GET
 	@Produces("application/json")
@@ -168,6 +169,19 @@ public class PlacesController extends AbstractController {
 		}
 		
 		return collapse(collapsed, limit);
+	}
+
+	@GET
+	@Produces("application/json")
+	@javax.ws.rs.Path("stronglyRelated")
+	public Response findStronglyRelatedPlace(@QueryParam("place") String place) throws
+		PlaceNotFoundException, URISyntaxException {
+		
+		log.info(request.getRemoteAddr() + LOG_STRONGLY_RELATED + place);
+
+		// TODO implement
+		
+		return Response.ok("").build();	
 	}
 
 }
