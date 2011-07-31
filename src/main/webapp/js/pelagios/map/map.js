@@ -133,8 +133,8 @@ Pelagios.Map.getInstance = function() {
 	
 		hideFeature : function(name) {
 			if (features[name]) {
-				delete shown[name];
 				features[name].setMap(null);
+				delete shown[name];
 			}
 		},
 	

@@ -69,7 +69,8 @@ class GAPImporter extends AbstractDatasetImporter {
 						allRecords.put(h, records)
 					}
 					GeoAnnotationBuilder record =
-						new GeoAnnotationBuilder(new URI(URLEncoder.encode(target, 'UTF-8')))
+						new GeoAnnotationBuilder(new URI(target.replace(" ", "%20")))
+					record.setLabel(target.substring(target.lastIndexOf("id=") + 3))
 					record.addPlaceReference(new URI(body))
 					records.add(record)
 				} catch (URISyntaxException e) {
