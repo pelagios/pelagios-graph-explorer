@@ -165,8 +165,8 @@ Pelagios.Graph.Dataset.getInstance = function() {
 				Pelagios.Async.getInstance().datasets(n.dataset, function(data) {
 					n.opened = true;
 					if (data.length > Pelagios.Const.DATASET_CHILD_NODE_LIMIT) {
-						alert("This dataset has " + data.length + " child sets. That's too much " +
-							"to display it in the graph view. We're working on it!");
+						alert("This dataset has " + data.length + " subsets - too much to display them " +
+							"in the graph view. Try viewing the dataset in the data view!");
 						return;
 					}
 					

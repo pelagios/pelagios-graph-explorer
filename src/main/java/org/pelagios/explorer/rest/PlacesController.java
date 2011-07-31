@@ -94,7 +94,7 @@ public class PlacesController extends AbstractController {
 			shortestPaths = new HashSet<Path>(shortestPaths);
 			loopCount++;
 		}
-		
+
 		return Response.ok(toJSON(shortestPaths)).build();	
 	}
 	
@@ -182,7 +182,7 @@ public class PlacesController extends AbstractController {
 		PelagiosGraph graph = PelagiosGraph.getDefaultDB();
 		Place p = graph.getPlace(new URI(place));
 
-		List<Place> relatedPlaces = graph.findStronglyRelatedPlaces(p, 3);
+		List<Place> relatedPlaces = graph.findStronglyRelatedPlaces(p, 2);
 		return Response.ok(toJSON(relatedPlaces)).build();	
 	}
 

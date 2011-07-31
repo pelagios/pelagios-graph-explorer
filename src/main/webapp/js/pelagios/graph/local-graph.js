@@ -117,8 +117,8 @@ Pelagios.Graph.Local.getInstance = function() {
 
 	Pelagios.Graph.Local.instance.newPlace = function(place) {
 		var n;
-		if (places[place]) {
-			n = places[place];
+		if (places[place.uri] != undefined) {
+			n = places[place.uri];
 		} else {
 		    n = springyGraph.newNode();
 		    
@@ -127,8 +127,8 @@ Pelagios.Graph.Local.getInstance = function() {
 		    n.name = place.label;
 		    n.data.mass = 2;
 		    
-		    for (var i=0, ii=places.length; i<ii; i++) {
-		    	springyGraph.newEdge(n, places[i], { length: 2 });
+		    for (var uri in places) {
+		    	springyGraph.newEdge(n, places[uri], { length: 2 });
 		    }
 		
 		    // Seems kind of recursive... but we need that in
@@ -167,15 +167,19 @@ Pelagios.Graph.Local.getInstance = function() {
 		        	this.handler.up);
 		    
 		    // Find paths between places
-		    for (var i=0, ii=places.length; i<ii; i++) {
-		        Pelagios.Async.getInstance().findShortestPaths(n, places[i], this);    	
+		    var placeArray = new Array();
+		    for (var p in places) {
+		    	placeArray.push(places[p]);
+		    }
+		    for (var i=0, ii=placeArray.length; i<ii; i++) {
+		        Pelagios.Async.getInstance().findShortestPaths(n, placeArray[i], this);    	
 		    }
 		    
-		    places.push(n);
+		    places[place.uri] = n;
 		}
 	    return n;
 	}
-
+	
 	Pelagios.Graph.Local.instance.newDataset = function(datasetLabel, datasetSize, rootLabel) {
 		var n;
 		if (datasets[datasetLabel]) {
@@ -270,7 +274,12 @@ Pelagios.Graph.Local.getInstance = function() {
 	}
 
 	Pelagios.Graph.Local.instance.purgeGraph = function() {
-		if (places.length > 1) {
+		var placesArray = new Array();
+		for (var p in places) {
+			placesArray.push(places[p]);
+		}
+		
+		if (placesArray.length > 1) {
 			var maxSize = 0;
 			var maxWeight = 0;
 			
@@ -279,10 +288,11 @@ Pelagios.Graph.Local.getInstance = function() {
 				var lEdges = this.findEdgesFor(dataset);
 		
 				if (lEdges.length < 2) { 
-					delete edges[lEdges[0].from.name];
 					lEdges[0].connection.line.remove();
 					dataset.set.remove();
 					springyGraph.removeNode(dataset);
+					//delete edges[lEdges[0].from.name];
+					delete edges[lEdges[0].from.name + "-" + lEdges[0].to.name]
 					delete datasets[dataset.name];
 				} else {
 					if (dataset.size > maxSize)
@@ -303,8 +313,8 @@ Pelagios.Graph.Local.getInstance = function() {
 	}
 
 	Pelagios.Graph.Local.instance.edgeExists = function(from, to) {
-		for (var e in this.edges) {
-			var edge = this.edges[e];
+		for (var e in edges) {
+			var edge = edges[e];
 			if (edge.from == from && edge.to == to)
 				return edge;
 			
@@ -318,7 +328,7 @@ Pelagios.Graph.Local.getInstance = function() {
 	Pelagios.Graph.Local.instance.setEdge = function(arg0, arg1, arg2) {	
 		if (arg1) {
 			// arg0 -> from, arg1 -> to, arg2 -> weight
-			var exists = this.edgeExists(arg0, arg1); 
+			var exists = this.edgeExists(arg0, arg1)
 			if (exists)
 				return exists;
 			
@@ -373,10 +383,12 @@ Pelagios.Graph.Local.getInstance = function() {
 			delete datasets[dataset.name];
 		}
 		
-		for (var i=0, ii=places.length; i<ii; i++) {
-			places[i].set.remove();
+		for (var uri in places) {
+			// for (var i=0, ii=placesArray.length; i<ii; i++) {
+			places[uri].set.remove();
+			delete places[uri];
 		}
-		places.length = 0;
+		// places.length = 0;
 	}
 	
     Pelagios.Graph.Local.instance.moveNodeTo = function(node, x, y) {

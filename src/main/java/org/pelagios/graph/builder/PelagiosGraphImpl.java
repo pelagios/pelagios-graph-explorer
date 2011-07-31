@@ -340,12 +340,20 @@ class PelagiosGraphImpl extends PelagiosGraph {
 			List<PelagiosGraphNode> nodes = new ArrayList<PelagiosGraphNode>();
 			for (Node n : p.nodes()) {
 				PelagiosGraphNode gNode = wrap(n);
-				if (gNode.getType() != NodeType.GEOANNOTATION)
-					nodes.add(gNode);
+				if (gNode.getType() != NodeType.GEOANNOTATION) {
+					if (!nodes.contains(gNode))
+						nodes.add(gNode);
+				} else {
+					DatasetImpl di = (DatasetImpl) new GeoAnnotationImpl(n).getParentDataset();
+					if (!nodes.contains(di)) 
+						nodes.add(di);
+				}
 			}
-			paths.add(new org.pelagios.graph.Path(nodes));
+
+			if (nodes.size() > 2)
+				paths.add(new org.pelagios.graph.Path(nodes));
 		}
-		
+	
 		return paths;
 	}
 	

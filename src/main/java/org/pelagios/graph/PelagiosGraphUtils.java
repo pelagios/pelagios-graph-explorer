@@ -77,7 +77,7 @@ public class PelagiosGraphUtils {
 		}
 
 		public int compareTo(Count<T> other) {
-			return Integer.valueOf(count).compareTo(Integer.valueOf(other.count));
+			return Integer.valueOf(other.count).compareTo(Integer.valueOf(count));
 		}
 		
 	}

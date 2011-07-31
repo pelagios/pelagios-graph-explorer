@@ -50,6 +50,7 @@ Pelagios.Async.getInstance = function() {
 				for (var i=0, ii=data.length; i<ii; i++) {
 					var di = data[i];
 					var dNode = personalGraph.newDataset(di.dataset, di.datasetSize, di.rootDataset);
+					// alert(pNode.name + " - " + dNode.name);
 					personalGraph.setEdge(pNode, dNode, di.occurences);
 					
 					var palette = Pelagios.Palette.getInstance();
@@ -66,20 +67,22 @@ Pelagios.Async.getInstance = function() {
 			Pelagios.Loadmask.getInstance().show();
 			$.getJSON("places/shortestpaths?from=" + encodeURI(from.place.uri) + 
 				"&to=" + encodeURI(to.place.uri), function(data) {
-
+				
 				var personalGraph = Pelagios.Graph.Local.getInstance();
 				for (var j=0, jj=data.length; j<jj; j++) {
-					var lastNode = from;
-					var lastWeight = data[j].start.annotations;
-					for (var i=0, ii=data[j].via.length; i<ii; i++) {
-						var dset = data[j].via[i];
-						newNode = personalGraph.newDataset(dset.dataset, dset.datasetSize, dset.rootDataset);
-						personalGraph.setEdge(lastNode, newNode, lastWeight);
-						lastWeight = 1;
-						lastNode = newNode;
+					if (data[j].via) {
+						var lastNode = from;
+						var lastWeight = data[j].start.annotations;
+						for (var i=0, ii=data[j].via.length; i<ii; i++) {
+							var dset = data[j].via[i];
+							newNode = personalGraph.newDataset(dset.dataset, dset.datasetSize, dset.rootDataset);
+							personalGraph.setEdge(lastNode, newNode, lastWeight);
+							lastWeight = 1;
+							lastNode = newNode;
+						}
+				
+						personalGraph.setEdge(to, lastNode, data[j].end.annotations);
 					}
-			
-					personalGraph.setEdge(to, lastNode, data[j].end.annotations);
 				}
 
 				Pelagios.Loadmask.getInstance().hide();

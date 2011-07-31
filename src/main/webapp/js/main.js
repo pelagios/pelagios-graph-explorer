@@ -24,6 +24,7 @@ window.onload = function() {
     // Attach click handler to local graph 'back' button
 	$("#back-button").click(function(){
 		lGraph.close();
+		map.clear();
 	});
 
 	// Initialize auto-completion search field
