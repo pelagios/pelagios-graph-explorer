@@ -104,6 +104,7 @@ Pelagios.Map.getInstance = function() {
 					map.fitBounds(geom.getBounds());
 				} else {
 					map.setCenter(geom.position);
+					map.setZoom(7);
 				}
 			}
 		},
