@@ -38,7 +38,7 @@ Pelagios.Embed.searchPlaces = function(query, async, personalGraph, map) {
 Pelagios.Embed.switchView = function(places, async, personalGraph, map) {
 	personalGraph.show();
 	for (var i=0, ii=places.length; i<ii; i++) {
-		map.addGeoJSON(places[i].label, places[i].geometry);
+		map.addPlace(places[i]);
 		async.occurences(places[i], personalGraph, map);
 	}
 }
