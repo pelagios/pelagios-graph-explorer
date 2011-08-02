@@ -12,66 +12,61 @@ import org.neo4j.kernel.EmbeddedGraphDatabase;
 import org.pelagios.graph.PelagiosRelationships;
 
 /**
- * Implementation of the PelagiosGraph factory.
+ * The class contains the logic needed to initialize and/or instantiate
+ * a Neo4j-based PelagiosGraph.
  * 
- * @author Rainer Simon
+ * @author Rainer Simon <rainer.simon@ait.ac.at>
  */
 public class PelagiosGraphBuilder {
-	
-	private String directory;
-	
-	public PelagiosGraphBuilder(String directory) {
-		this.directory = directory;
-	}
-	
-	public PelagiosGraphImpl build() {
-		GraphDatabaseService graphDb = new EmbeddedGraphDatabase(directory);
-		Transaction tx = graphDb.beginTx();
-		try {
-			// Initialize sub-reference nodes
-			Node datasetSubreference = null;
-			Node placeSubreference = null;
-			for (Relationship r : graphDb.getReferenceNode().getRelationships()) {
-				if (r.isType(PelagiosRelationships.DATASETS)) {
-					datasetSubreference = r.getEndNode();
-				} else if (r.isType(PelagiosRelationships.PLACES)) {
-					placeSubreference = r.getEndNode();
-				}
-			}
-			
-			if (datasetSubreference == null)
-				datasetSubreference = createDatasetSubreferenceNode(graphDb);
-			
-			if (placeSubreference == null)
-				placeSubreference = createPlaceSubreferenceNode(graphDb);
-			
-			HashMap<PelagiosRelationships, Node> subreferences = new HashMap<PelagiosRelationships, Node>();
-			subreferences.put(PelagiosRelationships.DATASETS, datasetSubreference);
-			subreferences.put(PelagiosRelationships.PLACES, placeSubreference);
-			
-			// Initialize indexes
-			IndexManager im = graphDb.index();
-			HashMap<String, Index<Node>> indexes = new HashMap<String, Index<Node>>();
-			indexes.put(PelagiosGraphImpl.DATASET_INDEX, im.forNodes(PelagiosGraphImpl.DATASET_INDEX));
-			indexes.put(PelagiosGraphImpl.PLACE_INDEX, im.forNodes(PelagiosGraphImpl.PLACE_INDEX));
-			
-			tx.success();
-			return new PelagiosGraphImpl(graphDb, subreferences, indexes);
-		} finally {
-			tx.finish();
-		}
-	}
-	
-	private Node createDatasetSubreferenceNode(GraphDatabaseService graphDb) {
-		Node node = graphDb.createNode();
-		graphDb.getReferenceNode().createRelationshipTo(node, PelagiosRelationships.DATASETS);
-		return node;
-	}
-	
-	private Node createPlaceSubreferenceNode(GraphDatabaseService graphDb) {
-		Node node = graphDb.createNode();
-		graphDb.getReferenceNode().createRelationshipTo(node, PelagiosRelationships.PLACES);
-		return node;
-	}
+
+    private String neo4jDir;
+
+    public PelagiosGraphBuilder(String neo4jDir) {
+        this.neo4jDir = neo4jDir;
+    }
+
+    public PelagiosGraphImpl build() {
+        GraphDatabaseService graphDb = new EmbeddedGraphDatabase(neo4jDir);
+        Transaction tx = graphDb.beginTx();
+        try {
+            // Initialize sub-reference nodes
+            Node datasetSubreference = null;
+            Node placeSubreference = null;
+            for (Relationship r : graphDb.getReferenceNode().getRelationships()) {
+                if (r.isType(PelagiosRelationships.DATASETS)) {
+                    datasetSubreference = r.getEndNode();
+                } else if (r.isType(PelagiosRelationships.PLACES)) {
+                    placeSubreference = r.getEndNode();
+                }
+            }
+
+            if (datasetSubreference == null)
+                datasetSubreference = createSubreferenceNode(graphDb, PelagiosRelationships.DATASETS);
+
+            if (placeSubreference == null)
+                placeSubreference = createSubreferenceNode(graphDb, PelagiosRelationships.PLACES);
+
+            HashMap<PelagiosRelationships, Node> subreferences = new HashMap<PelagiosRelationships, Node>();
+            subreferences.put(PelagiosRelationships.DATASETS, datasetSubreference);
+            subreferences.put(PelagiosRelationships.PLACES, placeSubreference);
+
+            // Initialize indexes
+            IndexManager im = graphDb.index();
+            HashMap<String, Index<Node>> indexes = new HashMap<String, Index<Node>>();
+            indexes.put(PelagiosGraphImpl.DATASET_INDEX, im.forNodes(PelagiosGraphImpl.DATASET_INDEX));
+            indexes.put(PelagiosGraphImpl.PLACE_INDEX, im.forNodes(PelagiosGraphImpl.PLACE_INDEX));
+
+            tx.success();
+            return new PelagiosGraphImpl(graphDb, subreferences, indexes);
+        } finally {
+            tx.finish();
+        }
+    }
+
+    private Node createSubreferenceNode(GraphDatabaseService graphDb, PelagiosRelationships r) {
+        Node node = graphDb.createNode();
+        graphDb.getReferenceNode().createRelationshipTo(node, r);
+        return node;
+    } 
 
 }

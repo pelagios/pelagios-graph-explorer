@@ -10,22 +10,28 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
+/**
+ * A parser for the contents of the 'geometry' field in the
+ * 'pleiades-locations' CSV dump. 
+ * 
+ * @author Rainer Simon <rainer.simon@ait.ac.at>
+ */
 public class PleiadesGeometryDeserializer implements JsonDeserializer<PleiadesGeometry> {
-	
-	private static final String RELATION_KEY = "relation";
 
-	public PleiadesGeometry deserialize(JsonElement json, Type typeOfT,
-			JsonDeserializationContext context) throws JsonParseException {
+    private static final String RELATION_KEY = "relation";
 
-		JsonObject obj = json.getAsJsonObject();
-		PleiadesGeometry geometry = new PleiadesGeometry();
-		
-		geometry.setRelation(obj.get(RELATION_KEY).getAsString());
-		
-		GeoJSONParser parser = new GeoJSONParser();
-		geometry.setGeometry(parser.parse(obj));
-		
-		return geometry;
-	}
+    public PleiadesGeometry deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+            throws JsonParseException {
+
+        JsonObject obj = json.getAsJsonObject();
+        PleiadesGeometry geometry = new PleiadesGeometry();
+
+        geometry.setRelation(obj.get(RELATION_KEY).getAsString());
+
+        GeoJSONParser parser = new GeoJSONParser();
+        geometry.setGeometry(parser.parse(obj));
+
+        return geometry;
+    }
 
 }

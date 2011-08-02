@@ -7,7 +7,6 @@ files("src")
 
 repositories {
 	mavenCentral()
-	// mavenRepo urls: 'http://download.osgeo.org/webdav/geotools'
 	mavenRepo urls: 'http://repository.jboss.org/nexus/content/groups/public/'
 }
 

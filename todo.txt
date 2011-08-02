@@ -1,19 +1,14 @@
 TODO...
 
-- Data View!
-- On first access, page loading can take a while -> enable AJAX load spinner
-- Map/Graph synchronization is still very incomplete in both views
 - Add some basic stats (total datasets, total GeoAnnotations, total places,...) to the title bar
 - Documentation for the REST API
-- Documentation for the internal graph model
 - Add 3rd party JavaScript licences + credits 
 - Add sample data
 - Clean up the unit tests 
 - Add HTTP scripts for harvesting Ptolemy Machine place data 
-- JavaScript "graph" and "personal graph"
-  - Renaming badly needed...
-  - Both now contain lots of duplicate code - should be refactored
-    to one common base class
-  - Ideally, all JavaScript should REALLY be ported to GWT (along with
-    Springy!)
-- In general: JavaScript refactoring if there's time!!!
+- JavaScript refactoring/renaming badly needed...
+- For the future, we should REALLY consider porting the client side code to GWT (along with Springy!)
+- The shortest-path feature needs a full overhaul to make it more robust & flexible
+- Ptolemy Machine data is not aligned with Pleiades (and therefore not imported at the moment) - find
+  a way to deal with this.
+- Introduce unique machine-readable identifiers for datasets (URIs)

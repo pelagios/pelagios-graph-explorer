@@ -17,100 +17,93 @@ import org.pelagios.io.geojson.GeoJSONSerializer;
 import com.vividsolutions.jts.geom.Geometry;
 
 /**
- * Implementation of the Pelagios Place graph node type.
- *  
- * @author Rainer Simon
+ * Default (Neo4j-based) implementation of the PELAGIOS Place interface.
+ * 
+ * @author Rainer Simon <rainer.simon@ait.ac.at>
  */
 class PlaceImpl extends PelagiosGraphNode implements Place {
-	
-	/**
-	 * We'll also keep some properties in memory. Otherwise
-	 * each access to them will result in a DB transaction
-	 */
-	private URI memCachedURI = null;
-	
-	private Geometry memCachedGeometry = null;
-	
-	PlaceImpl(Node backingNode) {
-		super(backingNode);
-	}
 
-	public String getLabel() {
-		return getAsString(Place.KEY_LABEL);
-	}
+    // We'll keep some properties in memory to avoid excessive DB transactions
+    private URI memCachedURI = null;
+    private Geometry memCachedGeometry = null;
 
-	public void setLabel(String label) {
-		set(Place.KEY_LABEL, label);
-	}
+    PlaceImpl(Node backingNode) {
+        super(backingNode);
+    }
 
-	public URI getURI() {
-		try {
-			if (memCachedURI == null)
-				memCachedURI = new URI(getAsString(Place.KEY_URI));
-			
-			return memCachedURI;
-		} catch (URISyntaxException e) {
-			throw new IllegalArgumentException(e);
-		}
-	}
+    public String getLabel() {
+        return getAsString(Place.KEY_LABEL);
+    }
 
-	public void setURI(URI uri) {
-		memCachedURI = null;
-		set(Place.KEY_URI, uri.toString());
-	}
-	
-	public Geometry getGeometry() {
-		if (memCachedGeometry == null) {
-			GeoJSONParser parser = new GeoJSONParser();
-			memCachedGeometry = parser.parse(getAsString(Place.KEY_GEOMETRY));
-		}
-		
-		return memCachedGeometry;
-	}
-	
-	public void setGeometry(Geometry geometry) {
-		set(KEY_GEOMETRY, new GeoJSONSerializer().toString(geometry));
-	}
+    public void setLabel(String label) {
+        set(Place.KEY_LABEL, label);
+    }
 
-	public List<GeoAnnotation> listGeoAnnotations() {
-		List<GeoAnnotation> annotations = new ArrayList<GeoAnnotation>(); 
-		for (Relationship r : backingNode.getRelationships(PelagiosRelationships.REFERENCES)) {
-			annotations.add(new GeoAnnotationImpl(r.getStartNode()));
-		}
-		return annotations;
-	}
-	
-	/**
-	 * Places are considered equal as soon as 
-	 * their URIs are equal! We don't care about
-	 * the rest.
-	 */
-	@Override
-	public boolean equals(Object arg) {
-		if (!(arg instanceof PlaceImpl))
-			return false;
-		
-		PlaceImpl other = (PlaceImpl) arg;
-		return getURI().equals(other.getURI());
-	}
-	
-	@Override
-	public int hashCode() {
-		return getURI().hashCode();
-	}
-	
-	@Override
-	public String toString() {
-		return "PLACE: " + getLabel() + " - " + getURI();
-	}
+    public URI getURI() {
+        try {
+            if (memCachedURI == null)
+                memCachedURI = new URI(getAsString(Place.KEY_URI));
 
-	@Override
-	public NodeType getType() {
-		return NodeType.PLACE;
-	}
-	
-	Node getBackingNode() {
-		return backingNode;
-	}
+            return memCachedURI;
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    public void setURI(URI uri) {
+        memCachedURI = uri;
+        set(Place.KEY_URI, uri.toString());
+    }
+
+    public Geometry getGeometry() {
+        if (memCachedGeometry == null) {
+            GeoJSONParser parser = new GeoJSONParser();
+            memCachedGeometry = parser.parse(getAsString(Place.KEY_GEOMETRY));
+        }
+
+        return memCachedGeometry;
+    }
+
+    public void setGeometry(Geometry geometry) {
+        memCachedGeometry = geometry;
+        set(KEY_GEOMETRY, new GeoJSONSerializer().toString(geometry));
+    }
+
+    public List<GeoAnnotation> listGeoAnnotations() {
+        List<GeoAnnotation> annotations = new ArrayList<GeoAnnotation>();
+        for (Relationship r : backingNode.getRelationships(PelagiosRelationships.REFERENCES)) {
+            annotations.add(new GeoAnnotationImpl(r.getStartNode()));
+        }
+        return annotations;
+    }
+
+    @Override
+    public boolean equals(Object arg) {
+        // Places are considered equal if their URIs are equal
+        if (!(arg instanceof PlaceImpl))
+            return false;
+
+        PlaceImpl other = (PlaceImpl) arg;
+        return getURI().equals(other.getURI());
+    }
+
+    @Override
+    public int hashCode() {
+        return getURI().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "PLACE: " + getLabel() + " - " + getURI();
+    }
+
+    @Override
+    public NodeType getType() {
+        return NodeType.PLACE;
+    }
+
+    Node getBackingNode() {
+        return backingNode;
+    }
 
 }

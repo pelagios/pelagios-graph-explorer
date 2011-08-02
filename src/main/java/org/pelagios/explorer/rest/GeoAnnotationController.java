@@ -56,7 +56,7 @@ public class GeoAnnotationController extends AbstractController {
         List<GeoAnnotation> allAnnotations = ds.listGeoAnnotations(true);
         List<GeoAnnotation> filteredByPlace = new ArrayList<GeoAnnotation>();
         for (GeoAnnotation a : allAnnotations) {
-            if (a.listPlaces().contains(p))
+            if (a.getPlace().equals(p))
                 filteredByPlace.add(a);
         }
 

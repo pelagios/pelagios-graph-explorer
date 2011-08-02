@@ -5,38 +5,43 @@ import org.mortbay.jetty.Server;
 import org.mortbay.jetty.bio.SocketConnector;
 import org.mortbay.jetty.webapp.WebAppContext;
 
+/**
+ * Starter class that launches the Graph Explorer in an embedded Jetty.
+ * 
+ * @author Rainer Simon <rainer.simon@ait.ac.at>
+ */
 public class StartGraphExplorer {
 
-	public static void main(String[] args) throws Exception {
-		new StartGraphExplorer().start();
-	}
-	
-	public void start() {
-		Server server = new Server();
-		SocketConnector connector = new SocketConnector();
-	
-		connector.setMaxIdleTime(1000 * 60 * 60);
-		connector.setSoLingerTime(-1);
-		connector.setPort(8080);
-		server.setConnectors(new Connector[] { connector });
+    public static void main(String[] args) throws Exception {
+        new StartGraphExplorer().start();
+    }
 
-		WebAppContext bb = new WebAppContext();
-		bb.setServer(server);
-		bb.setContextPath("/pelagios");
-		bb.setWar("src/main/webapp");
-		
-		server.addHandler(bb);
-		try {
-			System.out.println(">>> STARTING EMBEDDED JETTY SERVER, PRESS ANY KEY TO STOP");
-			server.start();
-			System.in.read();
-			System.out.println(">>> STOPPING EMBEDDED JETTY SERVER"); 
-			server.stop();
-			server.join();
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(100);
-		}
-	}
-	
+    public void start() {
+        Server server = new Server();
+        SocketConnector connector = new SocketConnector();
+
+        connector.setMaxIdleTime(1000 * 60 * 60);
+        connector.setSoLingerTime(-1);
+        connector.setPort(8080);
+        server.setConnectors(new Connector[] { connector });
+
+        WebAppContext bb = new WebAppContext();
+        bb.setServer(server);
+        bb.setContextPath("/pelagios");
+        bb.setWar("src/main/webapp");
+
+        server.addHandler(bb);
+        try {
+            System.out.println(">>> STARTING EMBEDDED JETTY SERVER, PRESS ANY KEY TO STOP");
+            server.start();
+            System.in.read();
+            System.out.println(">>> STOPPING EMBEDDED JETTY SERVER");
+            server.stop();
+            server.join();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(100);
+        }
+    }
+
 }

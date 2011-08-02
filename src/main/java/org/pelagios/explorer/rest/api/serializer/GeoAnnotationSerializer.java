@@ -23,10 +23,10 @@ public class GeoAnnotationSerializer implements JsonSerializer<GeoAnnotation> {
 
     public JsonElement serialize(GeoAnnotation annotation, Type typeOfSrc, JsonSerializationContext context) {
         JsonObject json = new JsonObject();
-        json.add(GeoAnnotation.KEY_URI, new JsonPrimitive(annotation.getDataURL().toString()));
+        json.add(GeoAnnotation.KEY_URI, new JsonPrimitive(annotation.getTargetURI().toString()));
         json.add(GeoAnnotation.KEY_LABEL, new JsonPrimitive(annotation.getLabel()));
         json.add(KEY_PARENT_DATASET, new JsonPrimitive(annotation.getParentDataset().getName()));
-        json.add(KEY_ROOT_DATASET, new JsonPrimitive(annotation.getRootDataset().getName()));
+        json.add(KEY_ROOT_DATASET, new JsonPrimitive(annotation.getParentDataset().getRootDataset().getName()));
 
         JsonObject properties = new JsonObject();
         for (String key : annotation.getPropertyKeys()) {

@@ -18,108 +18,107 @@ import org.pelagios.graph.nodes.Place;
 
 class GeoAnnotationImpl extends PelagiosGraphNode implements GeoAnnotation {
 
-	public GeoAnnotationImpl(Node backingNode) {
-		super(backingNode);
-	}
-	
-	void setDataURL(URI url) {
-		set(GeoAnnotation.KEY_URI, url.toString());
-	}
+    public GeoAnnotationImpl(Node backingNode) {
+        super(backingNode);
+    }
 
-	public URI getDataURL() {
-		try {
-			return new URI(getAsString(GeoAnnotation.KEY_URI));
-		} catch (URISyntaxException e) {
-			// Should never happen
-			throw new RuntimeException(e);
-		}
-	}
-	
-	public void setLabel(String label) {
-		set(GeoAnnotation.KEY_LABEL, label);
-	}
+    void setTargetURI(URI uri) {
+        set(GeoAnnotation.KEY_URI, uri.toString());
+    }
 
-	public String getLabel() {
-		return getAsString(GeoAnnotation.KEY_LABEL);
-	}
+    public URI getTargetURI() {
+        try {
+            return new URI(getAsString(GeoAnnotation.KEY_URI));
+        } catch (URISyntaxException e) {
+            // Should never happen
+            throw new RuntimeException(e);
+        }
+    }
 
-	public void addProperty(String key, String value) {
-		set(key, value);
-	}
-		
-	public String getProperty(String key) {
-		return getAsString(key);
-	}
+    public void setLabel(String label) {
+        set(GeoAnnotation.KEY_LABEL, label);
+    }
+   
+    public String getLabel() {
+        return getAsString(GeoAnnotation.KEY_LABEL);
+    }
 
-	public List<String> getPropertyKeys() {
-		List<String> commonProperties = Arrays.asList(
-			GeoAnnotation.KEY_URI, GeoAnnotation.KEY_LABEL);
+    public void addProperty(String key, String value) {
+        set(key, value);
+    }
 
-		List<String> properties = new ArrayList<String>();
-		for (String key : backingNode.getPropertyKeys()) {
-			if (!commonProperties.contains(key))
-				properties.add(key);
-		}
-		return properties;
-	}
+    public String getProperty(String key) {
+        return getAsString(key);
+    }
 
-	/**
-	 * Batch-adds a list of place references to this data record. If
-	 * the list contains URIs to places which are NOT in the graph, the
-	 * method will simply skip those. All skipped places are added to 
-	 * a list. This list is returned as result of the method. 
-	 * @param uris the place URIs
-	 * @param placeIndex the graph's Lucene index for places
-	 * @return the list of places which were skipped during import
-	 */
-	List<URI> addPlaces(List<URI> uris, Index<Node> placeIndex) {
-		List<URI> skipped = new ArrayList<URI>();
-		for (URI uri : uris) {
-			IndexHits<Node> hits = placeIndex.get(Place.KEY_URI, uri);
-			if (hits.size() == 0) {
-				log.warn("Place " + uri.toString() + " not in graph - skipping this reference");
-				skipped.add(uri);
-			} else {
-				Node placeNode = hits.getSingle();
-				backingNode.createRelationshipTo(placeNode, PelagiosRelationships.REFERENCES);
-			}
-		}
-		return skipped;
-	}
-	
-	public List<Place> listPlaces() {
-		List<Place> places = new ArrayList<Place>(); 
-		for (Relationship r : backingNode.getRelationships(PelagiosRelationships.REFERENCES)) {
-			places.add(new PlaceImpl(r.getEndNode()));
-		}
-		return places;
-	}
+    public List<String> getPropertyKeys() {
+        List<String> commonProperties = Arrays.asList(GeoAnnotation.KEY_URI, GeoAnnotation.KEY_LABEL);
 
-	public Dataset getParentDataset() {
-		Dataset d = null;
-		for (Relationship r : backingNode.getRelationships(PelagiosRelationships.RECORD)) {
-			// Can only have 1 relationship of type RECORD
-			d = new DatasetImpl(r.getStartNode());
-		}
-		return d;
-	}
+        List<String> properties = new ArrayList<String>();
+        for (String key : backingNode.getPropertyKeys()) {
+            if (!commonProperties.contains(key))
+                properties.add(key);
+        }
+        return properties;
+    }
 
-	public Dataset getRootDataset() {
-		return getParentDataset().getRoot();
-	}
-	
-	@Override
-	public String toString() {
-		return "GEOANNOTATION: " + getDataURL();
-	}
+    boolean setPlace(URI uri, Index<Node> placeIndex) {
+        boolean success = true;
+        IndexHits<Node> hits = placeIndex.get(Place.KEY_URI, uri);
+        if (hits.size() == 0) {
+            log.warn("Place " + uri.toString() + " not in graph - skipping this reference");
+            success = false;
+        } else {
+            Node placeNode = hits.next();
+            backingNode.createRelationshipTo(placeNode, PelagiosRelationships.REFERENCES);
+        }
+        return success;
+    }
+    
+    public Place getPlace() {
+        Place p = null;
+        for (Relationship r : backingNode.getRelationships(PelagiosRelationships.REFERENCES)) {
+            p = new PlaceImpl(r.getEndNode());
+        }
+        
+        // Sanity check
+        if (p == null)
+            throw new RuntimeException("Graph inconsitency: annotation does not reference a place");
+        
+        return p;
+    }
 
-	@Override
-	public NodeType getType() {
-		return NodeType.GEOANNOTATION;
-	}
+    public Dataset getParentDataset() {
+        Dataset d = null;
+        int ctr = 0;
+        for (Relationship r : backingNode.getRelationships(PelagiosRelationships.GEOANNOTATION)) {
+            // Can only have 1 relationship of type RECORD
+            d = new DatasetImpl(r.getStartNode());
+            ctr++;
+        }
+        
+        // Sanity checks
+        if (ctr > 1)
+            throw new RuntimeException("Graph inconsistency: annotation referenced by " + ctr +  " datasets");
+        
+        if (d == null)
+            throw new RuntimeException("Graph inconsistency: annotation not referenced by any dataset");
+        
+        return d;
+    }
 
-	Node getBackingNode() {
-		return backingNode;
-	}
-	
+    @Override
+    public String toString() {
+        return "GEOANNOTATION: " + getTargetURI();
+    }
+
+    @Override
+    public NodeType getType() {
+        return NodeType.GEOANNOTATION;
+    }
+
+    Node getBackingNode() {
+        return backingNode;
+    }
+
 }

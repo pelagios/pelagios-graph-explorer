@@ -6,41 +6,27 @@ import java.util.List;
 import com.vividsolutions.jts.geom.Geometry;
 
 /**
- * The Pelagios Place interface.
+ * The PELAGIOS Place interface.
  * 
- * @author Rainer Simon
+ * @author Rainer Simon <rainer.simon@ait.ac.at>
  */
 public interface Place {
-	
-	/**
-	 * String constants
-	 */
-	public static final String KEY_LABEL = "label";
-	public static final String KEY_URI = "uri";
-	public static final String KEY_GEOMETRY = "geometry";
-	
-	/**
-	 * Returns the label for this place.
-	 * @return the label
-	 */
-	public String getLabel();
-	
-	/**
-	 * Returns the URI of this place.
-	 * @return the URI
-	 */
-	public URI getURI();
-	
-	/**
-	 * Returns the geometry of this place
-	 * @return
-	 */
-	public Geometry getGeometry();	
-	
-	/**
-	 * Returns a list of all data records that reference this place.
-	 * @return the data records
-	 */
-	public List<GeoAnnotation> listGeoAnnotations();
-	
+
+    // String constants
+    public static final String KEY_LABEL = "label";
+    public static final String KEY_URI = "uri";
+    public static final String KEY_GEOMETRY = "geometry";
+
+    public String getLabel();
+
+    public URI getURI();
+
+    public Geometry getGeometry();
+
+    /**
+     * Lists all GeoAnnotations that reference this place.
+     * @return the GeoAnnotations
+     */
+    public List<GeoAnnotation> listGeoAnnotations();
+
 }

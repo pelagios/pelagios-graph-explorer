@@ -3,108 +3,68 @@ package org.pelagios.graph.nodes;
 import java.util.List;
 
 /**
- * The Pelagios Dataset interface.
+ * The PELAGIOS Dataset interface.
  * 
- * TODO we should return iterators instead of lists
- * for the listSubsets() and listPlaces() methods in
- * the future.
- * 
- * @author Rainer Simon
+ * @author Rainer Simon <rainer.simon@ait.ac.at>
  */
 public interface Dataset {
-	
-	/**
-	 * Property key for the 'name' property
-	 */
-	public static final String KEY_NAME = "name";
-	
-	public static final String KEY_GEOANNOTATIONS = "geoAnnotations";
-	
-	public static final String KEY_PLACES = "places";
-	
-	/**
-	 * Returns the name of this dataset.
-	 * @return the name
-	 */
-	public String getName();
-	
-	/**
-	 * Returns the parent data set of this set, or
-	 * <code>null</code> if it is a top-level data set.
-	 * @return the parent or <code>null</code>
-	 */
-	public Dataset getParent();
-	
-	/**
-	 * Returns the root data set of this set. Will return
-	 * itself, in case this is a top-level data set.
-	 * @return the root node of this data set
-	 */
-	public Dataset getRoot();
-	
-	/**
-	 * Checks wether this data set has any sub-sets attached to it.
-	 * @return true in case there are sub-sets
-	 */
-	public boolean hasSubsets();
-	
-	/**
-	 * Lists all sub sets of contained in this data set
-	 * @return the sub sets 
-	 */
-	public List<Dataset> listSubsets();
-	
-	/**
-	 * Checks whether this data set is a sub set of the
-	 * specified data set 
-	 * @param d the possible parent data set
-	 * @return true if this data set is a subset of d
-	 */
-	public boolean isSubsetOf(Dataset d);
-	
-	/**
-	 * Returns a list of all data records contained in this data set.
-	 * @return the list of data records;
-	 */
-	public List<GeoAnnotation> listGeoAnnotations(boolean includeSubsets);
-	
 
-	/**
-	 * Lists all places contained in this data set. The method
-	 * will either return ONLY the places referenced in the
-	 * records contained directly in this data set, or include
-	 * also the places referenced in sub-sets of this data set,
-	 * depending on the <code>includeSubsets</code> flag.  
-	 * @param includeSubsets if <code>true</code>, places contained in
-	 * sub-sets of this data set will also be returned
-	 * @return the places
-	 */
-	public List<Place> listPlaces(boolean includeSubsets);
-	
-	/**
-	 * Counts how often the specified place is referenced
-	 * in this data set. If <code>includeSubsets</code> is set
-	 * to true, the operation will also consider places contained
-	 * in sub-sets of this data set.
-	 * @param place the place
-	 * @param includeSubsets if <code>true</code>, places contained in
-	 * sub-sets of this data set will also be returned
-	 * @return the number of times the place is referenced in the data set
-	 */
-	public int countReferences(Place place, boolean includeSubsets);
-	
-	/**
-	 * Checks all places in the given list, and returns only those
-	 * places from the list which are referenced in this data set.
-	 * If <code>includeSubsets</code> is set to true, the operation
-	 * will also consider places contained in sub-sets of this
-	 * data set.
-	 * @param places a list of places to check
-	 * @param includeSubsets if <code>true</code>, places contained in
-	 * sub-sets of this data set will also be returned
-	 * @return those places from the list which are also referenced 
-	 * in this data set
-	 */
-	public List<Place> filterReferenced(List<Place> places, boolean includeSubsets);
-		
+    // String constants
+    public static final String KEY_NAME = "name";
+    public static final String KEY_GEOANNOTATIONS = "geoAnnotations";
+    public static final String KEY_PLACES = "places";
+
+    public String getName();
+
+    public Dataset getParentDataset();
+
+    public Dataset getRootDataset();
+
+    public boolean hasSubsets();
+
+    public List<Dataset> listSubsets();
+
+    public boolean isSubsetOf(Dataset d);
+
+    /**
+     * Returns a list of all GeoAnnotations contained in this data set. If
+     * <code>includeSubsets</code> is set to <code>true</code> the method
+     * will iterate through all the subsets as well.
+     * @param includeSubsets if <code>true</code>, the method will iterate through
+     * all the subsets of this dataset
+     * @return the list of GeoAnnotations
+     */
+    public List<GeoAnnotation> listGeoAnnotations(boolean includeSubsets);
+
+    /**
+     * Lists all places referenced by annotations in this data set. If
+     * <code>includeSubsets</code> is set to <code>true</code> the method
+     * will iterate through all the subsets as well.
+     * @param includeSubsets if <code>true</code>, the method will iterate through
+     * all the subsets of this dataset
+     * @return the places
+     */
+    public List<Place> listPlaces(boolean includeSubsets);
+
+    /**
+     * Counts how often the specified place is referenced by annotations in this data
+     * set. If <code>includeSubsets</code> is set to <code>true</code> the method
+     * will iterate through all the subsets as well.
+     * @param place the place
+     * @param includeSubsets if <code>true</code>, the method will iterate through
+     * all the subsets of this dataset
+     * @return the number of times the place is referenced in the data set
+     */
+    public int countReferencesTo(Place place, boolean includeSubsets);
+
+    /**
+     * Checks all places in the given list, and returns a list which contains
+     * only those places which are referenced in this data set.
+     * @param places a list of places to filter
+     * @param includeSubsets if <code>true</code>, the method will iterate through
+     * all the subsets of this dataset
+     * @return the places from the list which are referenced in this data set
+     */
+    public List<Place> filterByReferenced(List<Place> places, boolean includeSubsets);
+
 }

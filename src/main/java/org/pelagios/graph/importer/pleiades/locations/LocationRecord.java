@@ -5,71 +5,71 @@ import java.util.Date;
 import com.vividsolutions.jts.geom.Geometry;
 
 /**
- * The data contained in one line of the 'pleiades-locations' 
- * CSV dump.
+ * A simple class that wraps the (relevant) data contained in one
+ * line of the 'pleiades-locations' CSV dump.
  * 
- * @author Rainer Simon
+ * @author Rainer Simon <rainer.simon@ait.ac.at>
  */
 public class LocationRecord {
 
-	private String pid;
-	
-	private Date created;
-	
-	private String creators;
-	
-	private String description;
-	
-	private String relation;
-	
-	private Geometry geometry;
+    private String pid;
 
-	public void setPid(String pid) {
-		this.pid = pid;
-	}
+    private Date created;
 
-	public String getPid() {
-		return pid;
-	}
+    private String creators;
 
-	public void setCreated(Date created) {
-		this.created = created;
-	}
+    private String description;
 
-	public Date getCreated() {
-		return created;
-	}
+    private String relation;
 
-	public void setCreators(String creators) {
-		this.creators = creators;
-	}
+    private Geometry geometry;
 
-	public String getCreators() {
-		return creators;
-	}
+    public void setPid(String pid) {
+        this.pid = pid;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public String getPid() {
+        return pid;
+    }
 
-	public String getDescription() {
-		return description;
-	}
-	
-	public void setRelation(String relation) {
-		this.relation = relation;
-	}
+    public void setCreated(Date created) {
+        this.created = created;
+    }
 
-	public String getRelation() {
-		return relation;
-	}
+    public Date getCreated() {
+        return created;
+    }
 
-	public void setGeometry(Geometry geometry) {
-		this.geometry = geometry;
-	}
+    public void setCreators(String creators) {
+        this.creators = creators;
+    }
 
-	public Geometry getGeometry() {
-		return geometry;
-	}
+    public String getCreators() {
+        return creators;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setRelation(String relation) {
+        this.relation = relation;
+    }
+
+    public String getRelation() {
+        return relation;
+    }
+
+    public void setGeometry(Geometry geometry) {
+        this.geometry = geometry;
+    }
+
+    public Geometry getGeometry() {
+        return geometry;
+    }
 
 }

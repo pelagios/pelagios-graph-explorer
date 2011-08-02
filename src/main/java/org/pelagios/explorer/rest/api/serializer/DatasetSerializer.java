@@ -24,7 +24,7 @@ public class DatasetSerializer implements JsonSerializer<Dataset> {
     public JsonElement serialize(Dataset dataset, Type typeOfSrc, JsonSerializationContext context) {
         JsonObject json = new JsonObject();
         json.add(Dataset.KEY_NAME, new JsonPrimitive(dataset.getName()));
-        json.add(KEY_ROOT_DATASET, new JsonPrimitive(dataset.getRoot().getName()));
+        json.add(KEY_ROOT_DATASET, new JsonPrimitive(dataset.getRootDataset().getName()));
         json.add(KEY_SUBSETS, new JsonPrimitive(dataset.listSubsets().size()));
         json.add(Dataset.KEY_GEOANNOTATIONS, new JsonPrimitive(dataset.listGeoAnnotations(true).size()));
         json.add(Dataset.KEY_PLACES, new JsonPrimitive(dataset.listPlaces(true).size()));

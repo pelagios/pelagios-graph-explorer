@@ -83,7 +83,7 @@ public class PlacesController extends AbstractController {
         // Note the internal graph API actually supports intersections between
         // arbitrary numbers of datasets - but we'll limit it to 2 for the
         // external REST API
-        List<Place> commonPlaces = graph.listSharedPlaces(datasets);
+        List<Place> commonPlaces = graph.listCommonPlaces(datasets);
         Overlap o = new Overlap(set1, set2, commonPlaces, PelagiosGraphUtils.toConvexHull(commonPlaces));
 
         return Response.ok(toJSON(o)).build();
@@ -169,7 +169,7 @@ public class PlacesController extends AbstractController {
         List<ReferencesTo> refJson = new ArrayList<ReferencesTo>();
         for (Dataset s : referencesTo.keySet()) {
             refJson.add(new ReferencesTo(p.getURI().toString(), s.getName(), s.listGeoAnnotations(true).size(),
-                    PelagiosGraphUtils.toConvexHull(s.listPlaces(true)), s.getRoot().getName(), referencesTo.get(s)));
+                    PelagiosGraphUtils.toConvexHull(s.listPlaces(true)), s.getRootDataset().getName(), referencesTo.get(s)));
         }
 
         return Response.ok(toJSON(refJson)).build();
@@ -182,7 +182,7 @@ public class PlacesController extends AbstractController {
 
         HashMap<Dataset, Integer> collapsed = new HashMap<Dataset, Integer>();
         for (Dataset s : datasets.keySet()) {
-            Dataset parent = s.getParent();
+            Dataset parent = s.getParentDataset();
             if (parent == null) {
                 collapsed.put(s, datasets.get(s));
                 limit++;

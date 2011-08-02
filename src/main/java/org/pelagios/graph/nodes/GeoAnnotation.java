@@ -4,52 +4,35 @@ import java.net.URI;
 import java.util.List;
 
 /**
- * The Pelagios Data Record interface.
+ * The Pelagios GeoAnnotation interface.
  * 
- * @author Rainer Simon
+ * @author Rainer Simon <rainer.simon@ait.ac.at>
  */
 public interface GeoAnnotation {
-	
-	/**
-	 * String constants
-	 */
-	public static final String KEY_URI = "uri";
-	public static final String KEY_LABEL = "label";
-	public static final String KEY_PROPERTIES = "properties";
-	
-	/**
-	 * Returns the HTTP URL to the actual data record online.
-	 * @return the record's HTTP URL
-	 */
-	public URI getDataURL();
-	
-	public String getLabel();
-	
-	public String getProperty(String key);
-	
-	public List<String> getPropertyKeys();
-	
-	/**
-	 * Lists all places referred to in this data record 
-	 * @return the places
-	 */
-	public List<Place> listPlaces();
-	
-	/**
-	 * Returns the (lowest-level) data (sub-)set 
-	 * this data record belongs to.
-	 * @return the parent data set
-	 */
-	public Dataset getParentDataset(); 
 
-	/**
-	 * Returns the top-level data set this data
-	 * record belongs to. If the data set is not
-	 * structured into sub sets, this method
-	 * will return the same data set as 
-	 * getParentDataset().
-	 * @return the root data set
-	 */
-	public Dataset getRootDataset();
-	
+    // String constants    
+    public static final String KEY_URI = "uri";
+    public static final String KEY_LABEL = "label";
+    public static final String KEY_PROPERTIES = "properties";
+
+    public URI getTargetURI();
+
+    public String getLabel();
+
+    public String getProperty(String key);
+
+    public List<String> getPropertyKeys();
+
+    /**
+     * Returns the place referenced by the annotation body URI
+     * @return the place
+     */
+    public Place getPlace();
+
+    /**
+     * Returns the (lowest-level) data (sub-)set this data record belongs to. 
+     * @return the parent data set
+     */
+    public Dataset getParentDataset();
+
 }

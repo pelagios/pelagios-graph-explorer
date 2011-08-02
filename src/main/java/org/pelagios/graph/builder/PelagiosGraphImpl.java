@@ -37,356 +37,385 @@ import org.pelagios.graph.nodes.GeoAnnotation;
 import org.pelagios.graph.nodes.Place;
 
 /**
- * Implementation of the PelagiosGraph interface.
- * 
- * @author Rainer Simon
+ * The core class of the Pelagios Graph Explorer! The implementation of the
+ * PelagiosGraph abstract class.
+ *  
+ * @author Rainer Simon <rainer.simon@ait.ac.at>
  */
 class PelagiosGraphImpl extends PelagiosGraph {
-	
-	/**
-	 * String constants
-	 */
-	static final String DATASET_INDEX = "datasets";
-	static final String PLACE_INDEX = "places";
-	
-	/**
-	 * The graph DB instance
-	 */
-	private GraphDatabaseService graphDb;
-	
-	/**
-	 * This graph's sub-reference nodes
-	 */
-	private HashMap<PelagiosRelationships, Node> subreferenceNodes;
-	
-	/**
-	 * This graph's indexes
-	 */
-	private HashMap<String, Index<Node>> indexes;
 
-	PelagiosGraphImpl(GraphDatabaseService graphDb,
-			HashMap<PelagiosRelationships, Node> subreferenceNodes,
-			HashMap<String, Index<Node>> indexes) {
-		
-		this.graphDb = graphDb;
-		this.subreferenceNodes = subreferenceNodes;
-		this.indexes = indexes;
-	}
+    /**
+     * String constants
+     */
+    static final String DATASET_INDEX = "datasets";
+    static final String PLACE_INDEX = "places";
 
-	public GraphDatabaseService getGraphDB() {
-		return graphDb;
-	}
-	
-	public Index<Node> getDatasetIndex() {
-		return indexes.get(DATASET_INDEX);
-	}
-	
-	public Index<Node> getPlaceIndex() {
-		return indexes.get(PLACE_INDEX);
-	}
-	
-	public List<Dataset> listTopLevelDatasets() {
-		Iterable<Relationship> rels = subreferenceNodes.get(PelagiosRelationships.DATASETS)
-			.getRelationships(PelagiosRelationships.DATASET);
-	 
-	    List<Dataset> datasets = new ArrayList<Dataset>();
-	    for (Relationship rel : rels) {
-	        Node datasetNode = rel.getEndNode();
-	        datasets.add(new DatasetImpl(datasetNode));
-	    }
-	 
-	    return datasets;
-	}
-	
-	public void addDataset(DatasetBuilder dataset) throws DatasetExistsException {
-		try {
-			addDataset(dataset, null);
-		} catch (DatasetNotFoundException e) {
-			// Can never happen
-			throw new RuntimeException(e);
-		}
-	}
+    /**
+     * The Neo4j instance
+     */
+    private GraphDatabaseService graphDb;
 
-	public void addDataset(DatasetBuilder dataset, DatasetBuilder parent) 
-		throws DatasetExistsException, DatasetNotFoundException {
-		
-		IndexHits<Node> hits = getDatasetIndex().get(Dataset.KEY_NAME, dataset.getName());
-		if (hits.size() > 0)
-			throw new DatasetExistsException(dataset.getName());
-		
-		Transaction tx = graphDb.beginTx();
-		try {
-			DatasetImpl d = dataset.build(graphDb, getDatasetIndex());
-			if (parent == null) {
-				// Top-level data set - attach to sub-reference node
-				Node subreference = subreferenceNodes.get(PelagiosRelationships.DATASETS);
-				subreference.createRelationshipTo(d.getBackingNode(), PelagiosRelationships.DATASET);				
-			} else {
-				// Sub-set - attach to parent node (if it exists)
-				IndexHits<Node> parentHits = getDatasetIndex()
-					.get(Dataset.KEY_NAME, parent.getName());
-				
-				if (parentHits.size() == 0)
-					throw new DatasetNotFoundException(parent.getName());
-				
-				Node parentNode = parentHits.getSingle();
-				d.getBackingNode().createRelationshipTo(parentNode, PelagiosRelationships.IS_SUBSET_OF);
-			}			
-			tx.success();
-		} finally {
-			tx.finish();
-		}
-	}
-	
-	public Dataset getDataset(String name) throws DatasetNotFoundException {
-		IndexHits<Node> hits = getDatasetIndex().get(Dataset.KEY_NAME, name);
-		
-		if (hits.size() == 0)
-			throw new DatasetNotFoundException(name);
-		
-		return new DatasetImpl(hits.getSingle());
-	}
-	
-	@Override
-	public List<Dataset> findSimilarDatasets(Dataset dataset) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public void addGeoAnnotations(List<GeoAnnotationBuilder> records, DatasetBuilder parent)
-		throws DatasetNotFoundException {
-		
-		Transaction tx = graphDb.beginTx();
-		try {
-			for (GeoAnnotationBuilder b : records) {
-				IndexHits<Node> hits = getDatasetIndex().get(Dataset.KEY_NAME, parent.getName());
-				if (hits.size() == 0)
-					throw new DatasetNotFoundException(parent.getName());
-				
-				Node parentNode = hits.getSingle();
-				GeoAnnotationImpl record = b.build(graphDb, getPlaceIndex());
-				Node recordNode = record.getBackingNode();
-				parentNode.createRelationshipTo(recordNode, PelagiosRelationships.RECORD);
-			}
-			tx.success();
-		} finally {
-			tx.finish();
-		}		
-	}
-	
-	public void addPlaces(List<PlaceBuilder> places) throws PlaceExistsException {
-		Transaction tx = graphDb.beginTx();
-		try {
-			for (PlaceBuilder b : places) {
-				Node subreferenceNode = subreferenceNodes.get(PelagiosRelationships.PLACES);
-				PlaceImpl place = b.build(graphDb, getPlaceIndex());
-				Node placeNode = place.getBackingNode();
-				subreferenceNode.createRelationshipTo(placeNode, PelagiosRelationships.PLACE);
-			}
-			tx.success();
-		} catch (PlaceExistsException e) {
-			tx.failure();
-			
-			// Pass it on, man
-			throw e;
-		} finally {
-			tx.finish();
-		}			
-	}
+    /**
+     * This graph's sub-reference nodes
+     */
+    private HashMap<PelagiosRelationships, Node> subreferenceNodes;
 
-	public Place getPlace(URI uri) throws PlaceNotFoundException {		
-		IndexHits<Node> hits = getPlaceIndex().get(Place.KEY_URI, uri);
-		
-		if (hits.size() == 0)
-			throw new PlaceNotFoundException(uri);
-		
-		return new PlaceImpl(hits.next());
-	}
-	
-	public List<Place> searchPlaces(String prefix, int limit) {
-		List<Place> places = new ArrayList<Place>();
-		if (prefix.length() > 2) {
-			for (Node n : getPlaceIndex().query(Place.KEY_LABEL, prefix.toLowerCase() + "*")) {
-				places.add(new PlaceImpl(n));
-				if (places.size() > limit)
-					break;
-			}
-		}
-		return places;
-	}
-	
-	public Iterable<Place> listPlaces() {
-		Node subreference = subreferenceNodes.get(PelagiosRelationships.PLACES);
+    /**
+     * This graph's indexes
+     */
+    private HashMap<String, Index<Node>> indexes;
+    
+    /**
+     * The graph traversal strategy for searching shortest paths
+     */
+    private RelationshipExpander expander = Traversal.expanderForTypes(
+            PelagiosRelationships.REFERENCES, Direction.INCOMING,
+            PelagiosRelationships.REFERENCES, Direction.OUTGOING,
+            
+            PelagiosRelationships.GEOANNOTATION, Direction.INCOMING,
+            PelagiosRelationships.GEOANNOTATION, Direction.OUTGOING,
+            
+            PelagiosRelationships.IS_SUBSET_OF, Direction.INCOMING,
+            PelagiosRelationships.IS_SUBSET_OF, Direction.OUTGOING);
 
-		final Iterator<Relationship> relationships = subreference
-			.getRelationships(PelagiosRelationships.PLACE).iterator();
-		
-		return new Iterable<Place>() {		
-			public Iterator<Place> iterator() {
-				return new Iterator<Place>() {
-					
-					public boolean hasNext() {
-						return relationships.hasNext();
-					}
 
-					public Place next() {
-						return new PlaceImpl(relationships.next().getEndNode());
-					}
+    PelagiosGraphImpl(GraphDatabaseService graphDb, HashMap<PelagiosRelationships, Node> subreferenceNodes,
+            HashMap<String, Index<Node>> indexes) {
 
-					public void remove() {
-						relationships.remove();
-						
-					}
-					
-				};
-			}
-		};
-	}
+        this.graphDb = graphDb;
+        this.subreferenceNodes = subreferenceNodes;
+        this.indexes = indexes;
+    }
 
-	@Override
-	public List<Place> findStronglyRelatedPlaces(Place place, int limit) {
-		List<Count<Dataset>> topDatasets = 
-			PelagiosGraphUtils.getTopDatasets(place.listGeoAnnotations());
-	
-		HashMap<Place, Count<Place>> ranks = new HashMap<Place, Count<Place>>();
-		for (Count<Dataset> cd : topDatasets) {
-			Dataset dataset = cd.getElement();						
-			List<GeoAnnotation> annotations = dataset.listGeoAnnotations(true);
-			for (Count<Place> cp : PelagiosGraphUtils.getUniquePlaces(annotations)) {
-				Count<Place> rank = ranks.get(cp.getElement());
-				if (rank == null) {
-					rank = new Count<Place>(cp.getElement());
-				}
-				rank.add(cd.getCount() * cp.getCount());
-				ranks.put(cp.getElement(), rank);
-			}
-		}
-		List<Count<Place>> rankedCounts= new ArrayList<Count<Place>>(ranks.values());
-		Collections.sort(rankedCounts);
-		
-		List<Place> relatedPlaces = new ArrayList<Place>();
-		int ct = 0;
-		while (ct < limit && ct < rankedCounts.size()) {
-			relatedPlaces.add(rankedCounts.get(ct).getElement());
-			ct++;
-		}
-		return relatedPlaces;
-	}
-	
-	public List<GeoAnnotation> listReferencesTo(Place place) throws PlaceNotFoundException {
-		Index<Node> index = getPlaceIndex();
-		IndexHits<Node> hits = index.get(Place.KEY_URI, place.getURI());
-		if (hits.size() == 0)
-			throw new PlaceNotFoundException(place.getURI());
-		
-		Node placeNode = hits.next();
-		List<GeoAnnotation> records = new ArrayList<GeoAnnotation>();
-		for (Relationship r : placeNode.getRelationships(PelagiosRelationships.REFERENCES)) {
-			records.add(new GeoAnnotationImpl(r.getStartNode()));
-		}
-		
-		return records;
-	}
-	
-	public List<Place> listSharedPlaces(List<Dataset> datasets) {
-		if (datasets.size() == 0)
-			return new ArrayList<Place>();
-		
-		if (datasets.size() == 1)
-			return datasets.get(0).listPlaces(true);
+    public GraphDatabaseService getGraphDB() {
+        return graphDb;
+    }
 
-		// TODO this can be further improved by sorting the
-		// datasets by number of places!
-		List<Place> sharedPlaces = new ArrayList<Place>(
-			new HashSet<Place>(datasets.get(0).listPlaces(true))
-		);
-		
-		for (int i=1; i<datasets.size(); i++) {
-			sharedPlaces = datasets.get(i).filterReferenced(sharedPlaces, true);
-		}
-		return sharedPlaces;
-	}
-	
-	public Set<org.pelagios.graph.Path> findShortestPaths(Place from, Place to)
-		throws PlaceNotFoundException {
-		
-		Node fromNode, toNode;
+    public Index<Node> getDatasetIndex() {
+        return indexes.get(DATASET_INDEX);
+    }
 
-		Index<Node> idx = getPlaceIndex();
-		IndexHits<Node> hits = idx.get(Place.KEY_URI, from.getURI());
-		if (hits.size() == 0)
-			throw new PlaceNotFoundException(from.getURI());
-		fromNode = hits.next();
-		
-		hits = idx.get(Place.KEY_URI, to.getURI());
-		if (hits.size() == 0)
-			throw new PlaceNotFoundException(to.getURI());
-		toNode = hits.next();
-		
-		RelationshipExpander expander = Traversal.expanderForTypes(
-			PelagiosRelationships.REFERENCES, Direction.INCOMING,
-			PelagiosRelationships.REFERENCES, Direction.OUTGOING,
-			
-			PelagiosRelationships.RECORD, Direction.INCOMING,
-			PelagiosRelationships.RECORD, Direction.OUTGOING,
-			
-			PelagiosRelationships.IS_SUBSET_OF, Direction.INCOMING,
-			PelagiosRelationships.IS_SUBSET_OF, Direction.OUTGOING
-		);
-		PathFinder<Path> pFinder = GraphAlgoFactory.shortestPath(expander, 8);
-		
-		Set<org.pelagios.graph.Path> paths = new HashSet<org.pelagios.graph.Path>();
-		for (Path p : pFinder.findAllPaths(fromNode, toNode)) {
-			List<PelagiosGraphNode> nodes = new ArrayList<PelagiosGraphNode>();
-			for (Node n : p.nodes()) {
-				PelagiosGraphNode gNode = wrap(n);
-				if (gNode.getType() != NodeType.GEOANNOTATION) {
-					if (!nodes.contains(gNode))
-						nodes.add(gNode);
-				} else {
-					DatasetImpl di = (DatasetImpl) new GeoAnnotationImpl(n).getParentDataset();
-					if (!nodes.contains(di)) 
-						nodes.add(di);
-				}
-			}
+    public Index<Node> getPlaceIndex() {
+        return indexes.get(PLACE_INDEX);
+    }
 
-			if (nodes.size() > 2)
-				paths.add(new org.pelagios.graph.Path(nodes));
-		}
-	
-		return paths;
-	}
-	
-	private PelagiosGraphNode wrap(Node node) {
-		// TODO there must be a better way to do this
-		// e.g. by adding a "type" property to 
-		// every node and querying that
-		try {
-			node.getProperty(Place.KEY_GEOMETRY);
-			return new PlaceImpl(node);
-		} catch (NotFoundException e) {
-			// 
-		}
-		
-		try {
-			node.getProperty(GeoAnnotation.KEY_URI);
-			return new GeoAnnotationImpl(node);
-		} catch (NotFoundException e) {
-			// 
-		}
-		
-		try {
-			node.getProperty(Dataset.KEY_NAME);
-			return new DatasetImpl(node);
-		} catch (NotFoundException e) {
-			// 
-		}
-		
-		return null;
-	}
-	
-	public void shutdown() {
-		graphDb.shutdown();
-	}
-		
+    @Override
+    public List<Dataset> listTopLevelDatasets() {
+        Iterable<Relationship> rels = subreferenceNodes.get(PelagiosRelationships.DATASETS).getRelationships(
+                PelagiosRelationships.DATASET);
+
+        List<Dataset> datasets = new ArrayList<Dataset>();
+        for (Relationship rel : rels) {
+            Node datasetNode = rel.getEndNode();
+            datasets.add(new DatasetImpl(datasetNode));
+        }
+
+        return datasets;
+    }
+
+    @Override
+    public void addDataset(DatasetBuilder dataset) throws DatasetExistsException {
+        try {
+            addDataset(dataset, null);
+        } catch (DatasetNotFoundException e) {
+            // Can never happen
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void addDataset(DatasetBuilder dataset, DatasetBuilder parent) throws DatasetExistsException,
+            DatasetNotFoundException {
+
+        IndexHits<Node> hits = getDatasetIndex().get(Dataset.KEY_NAME, dataset.getName());
+        if (hits.size() > 0)
+            throw new DatasetExistsException(dataset.getName());
+
+        Transaction tx = graphDb.beginTx();
+        try {
+            DatasetImpl d = dataset.build(graphDb, getDatasetIndex());
+            if (parent == null) {
+                // Top-level data set - attach to sub-reference node
+                Node subreference = subreferenceNodes.get(PelagiosRelationships.DATASETS);
+                subreference.createRelationshipTo(d.getBackingNode(), PelagiosRelationships.DATASET);
+            } else {
+                // Sub-set - attach to parent node (if it exists)
+                IndexHits<Node> parentHits = getDatasetIndex().get(Dataset.KEY_NAME, parent.getName());
+
+                if (parentHits.size() == 0)
+                    throw new DatasetNotFoundException(parent.getName());
+
+                Node parentNode = parentHits.getSingle();
+                d.getBackingNode().createRelationshipTo(parentNode, PelagiosRelationships.IS_SUBSET_OF);
+            }
+            tx.success();
+        } finally {
+            tx.finish();
+        }
+    }
+
+    @Override
+    public Dataset getDataset(String name) throws DatasetNotFoundException {
+        IndexHits<Node> hits = getDatasetIndex().get(Dataset.KEY_NAME, name);
+
+        if (hits.size() == 0)
+            throw new DatasetNotFoundException(name);
+
+        return new DatasetImpl(hits.getSingle());
+    }
+
+    @Override
+    public void addGeoAnnotations(List<GeoAnnotationBuilder> annotations, DatasetBuilder parent)
+            throws DatasetNotFoundException {
+
+        Transaction tx = graphDb.beginTx();
+        try {
+            for (GeoAnnotationBuilder b : annotations) {
+                IndexHits<Node> hits = getDatasetIndex().get(Dataset.KEY_NAME, parent.getName());
+                if (hits.size() == 0)
+                    throw new DatasetNotFoundException(parent.getName());
+
+                Node parentNode = hits.getSingle();
+                GeoAnnotationImpl annotation = b.build(graphDb, getPlaceIndex());
+                Node annotationNode = annotation.getBackingNode();
+                parentNode.createRelationshipTo(annotationNode, PelagiosRelationships.GEOANNOTATION);
+            }
+            tx.success();
+        } finally {
+            tx.finish();
+        }
+    }
+
+    @Override
+    public void addPlaces(List<PlaceBuilder> places) throws PlaceExistsException {
+        Transaction tx = graphDb.beginTx();
+        try {
+            for (PlaceBuilder b : places) {
+                Node subreferenceNode = subreferenceNodes.get(PelagiosRelationships.PLACES);
+                PlaceImpl place = b.build(graphDb, getPlaceIndex());
+                Node placeNode = place.getBackingNode();
+                subreferenceNode.createRelationshipTo(placeNode, PelagiosRelationships.PLACE);
+            }
+            tx.success();
+        } catch (PlaceExistsException e) {
+            tx.failure();
+
+            // Pass it on, man!
+            throw e;
+        } finally {
+            tx.finish();
+        }
+    }
+
+    @Override
+    public Place getPlace(URI uri) throws PlaceNotFoundException {
+        IndexHits<Node> hits = getPlaceIndex().get(Place.KEY_URI, uri);
+
+        if (hits.size() == 0)
+            throw new PlaceNotFoundException(uri);
+
+        return new PlaceImpl(hits.next());
+    }
+
+    @Override
+    public List<Place> searchPlaces(String prefix, int limit) {
+        List<Place> places = new ArrayList<Place>();
+        
+        // Note we're enforcing a minimum prefix length of two 
+        if (prefix.length() > 2) {
+            for (Node n : getPlaceIndex().query(Place.KEY_LABEL, prefix.toLowerCase() + "*")) {
+                places.add(new PlaceImpl(n));
+                if (places.size() > limit)
+                    break;
+            }
+        }
+        return places;
+    }
+
+    @Override
+    public Iterable<Place> listPlaces() {
+        Node subreference = subreferenceNodes.get(PelagiosRelationships.PLACES);
+
+        final Iterator<Relationship> relationships = subreference.getRelationships(PelagiosRelationships.PLACE)
+                .iterator();
+
+        return new Iterable<Place>() {
+            public Iterator<Place> iterator() {
+                return new Iterator<Place>() {
+
+                    public boolean hasNext() {
+                        return relationships.hasNext();
+                    }
+
+                    public Place next() {
+                        return new PlaceImpl(relationships.next().getEndNode());
+                    }
+
+                    public void remove() {
+                        relationships.remove();
+
+                    }
+
+                };
+            }
+        };
+    }
+
+    /**
+     * TODO the way ranking works right now is a bit arbitrary. We might
+     * play with different ways of ranking 'strong relations' in the future.
+     */
+    @Override
+    public List<Place> findStronglyRelatedPlaces(Place place, int limit) {
+        // Get all annotations that reference this place in all data sets
+        List<GeoAnnotation> referencesToPlace = place.listGeoAnnotations();
+        
+        // Create a list of those data sets, sorted by how often they reference the place
+        List<Count<Dataset>> topDatasets = PelagiosGraphUtils.rankDatasets(referencesToPlace);
+
+        // Now loop through the datasets
+        HashMap<Place, Count<Place>> ranks = new HashMap<Place, Count<Place>>();
+        for (Count<Dataset> d : topDatasets) {
+            // For each, get ALL annotations...
+            Dataset dataset = d.getElement();
+            List<GeoAnnotation> annotations = dataset.listGeoAnnotations(true);
+            for (Count<Place> p : PelagiosGraphUtils.getUniquePlaces(annotations)) {
+                // ...and create a rank R(place, p) = (number of references to 'place' * number of references to 'p') 
+                Count<Place> rank = ranks.get(p.getElement());
+                if (rank == null) {
+                    rank = new Count<Place>(p.getElement());
+                }
+                rank.add(d.getCount() * p.getCount());
+                ranks.put(p.getElement(), rank);
+            }
+        }
+        
+        // Sort
+        List<Count<Place>> rankedCounts = new ArrayList<Count<Place>>(ranks.values());
+        Collections.sort(rankedCounts);
+
+        // And wrap into an ArrayList so we can return it properly
+        List<Place> relatedPlaces = new ArrayList<Place>();
+        int ct = 0;
+        while (ct < limit && ct < rankedCounts.size()) {
+            relatedPlaces.add(rankedCounts.get(ct).getElement());
+            ct++;
+        }
+        return relatedPlaces;
+    }
+
+    @Override
+    public List<GeoAnnotation> listReferencesTo(Place place) {
+        Index<Node> index = getPlaceIndex();
+        IndexHits<Node> hits = index.get(Place.KEY_URI, place.getURI());
+        
+        // Sanity check
+        if (hits.size() == 0)
+            throw new RuntimeException(new PlaceNotFoundException(place.getURI()));
+
+        Node placeNode = hits.next();
+        List<GeoAnnotation> records = new ArrayList<GeoAnnotation>();
+        for (Relationship r : placeNode.getRelationships(PelagiosRelationships.REFERENCES)) {
+            records.add(new GeoAnnotationImpl(r.getStartNode()));
+        }
+
+        return records;
+    }
+
+    @Override
+    public List<Place> listCommonPlaces(List<Dataset> datasets) {
+        if (datasets.size() == 0)
+            return new ArrayList<Place>();
+
+        if (datasets.size() == 1)
+            return datasets.get(0).listPlaces(true);
+
+        // TODO this can be made more efficient
+        // TODO as a minimum, we could sort the datasets by number of places for improvement
+        List<Place> sharedPlaces = new ArrayList<Place>(new HashSet<Place>(datasets.get(0).listPlaces(true)));
+        for (int i = 1; i < datasets.size(); i++) {
+            sharedPlaces = datasets.get(i).filterByReferenced(sharedPlaces, true);
+        }
+        return sharedPlaces;
+    }
+
+    @Override
+    public Set<org.pelagios.graph.Path> findShortestPaths(Place from, Place to) {
+        Node fromNode, toNode;
+
+        Index<Node> idx = getPlaceIndex();
+        IndexHits<Node> hits = idx.get(Place.KEY_URI, from.getURI());
+        
+        // Sanity check
+        if (hits.size() == 0)
+            throw new RuntimeException(new PlaceNotFoundException(from.getURI()));
+        fromNode = hits.next();
+        
+        hits = idx.get(Place.KEY_URI, to.getURI());
+        
+        // Sanity check
+        if (hits.size() == 0)
+            throw new RuntimeException(new PlaceNotFoundException(to.getURI()));
+        toNode = hits.next();
+
+        // Run the shortest Path algorithm
+        PathFinder<Path> pFinder = GraphAlgoFactory.shortestPath(expander, 8);
+        
+        // Wrap the Neo4j paths into the Pelagios API
+        // TODO this is now a quick hack that needs total revision, it also
+        // dates back to the time where a GeoAnnotations was allowed to
+        // reference multiple places!
+        Set<org.pelagios.graph.Path> paths = new HashSet<org.pelagios.graph.Path>();
+        for (Path p : pFinder.findAllPaths(fromNode, toNode)) {
+            List<PelagiosGraphNode> nodes = new ArrayList<PelagiosGraphNode>();
+            for (Node n : p.nodes()) {
+                PelagiosGraphNode gNode = wrap(n);
+                if (gNode.getType() != NodeType.GEOANNOTATION) {
+                    if (!nodes.contains(gNode))
+                        nodes.add(gNode);
+                } else {
+                    DatasetImpl di = (DatasetImpl) new GeoAnnotationImpl(n).getParentDataset();
+                    if (!nodes.contains(di))
+                        nodes.add(di);
+                }
+            }
+
+            if (nodes.size() > 2)
+                paths.add(new org.pelagios.graph.Path(nodes));
+        }
+
+        return paths;
+    }
+
+    private PelagiosGraphNode wrap(Node node) {
+        // TODO this should be done in a more typesafe manner
+        try {
+            node.getProperty(Place.KEY_GEOMETRY);
+            return new PlaceImpl(node);
+        } catch (NotFoundException e) {
+            //
+        }
+
+        try {
+            node.getProperty(GeoAnnotation.KEY_URI);
+            return new GeoAnnotationImpl(node);
+        } catch (NotFoundException e) {
+            //
+        }
+
+        try {
+            node.getProperty(Dataset.KEY_NAME);
+            return new DatasetImpl(node);
+        } catch (NotFoundException e) {
+            //
+        }
+
+        throw new RuntimeException("Graph inconsistency: unkown node type encountered: " + node);
+    }
+
+    @Override
+    public void shutdown() {
+        graphDb.shutdown();
+    }
+
 }
