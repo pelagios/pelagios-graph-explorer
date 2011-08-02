@@ -46,12 +46,12 @@ Pelagios.Async.getInstance = function() {
 			Pelagios.Loadmask.getInstance().show();
 			var personalGraph = Pelagios.Graph.Local.getInstance(); 
 			var pNode = personalGraph.newPlace(place);
-			$.getJSON("places/occurences?place=" + encodeURI(place.uri), function(data) {
+			$.getJSON("places/referencesTo?place=" + encodeURI(place.uri), function(data) {
 				for (var i=0, ii=data.length; i<ii; i++) {
 					var di = data[i];
 					var dNode = personalGraph.newDataset(di.dataset, di.datasetSize, di.rootDataset);
 					// alert(pNode.name + " - " + dNode.name);
-					personalGraph.setEdge(pNode, dNode, di.occurences);
+					personalGraph.setEdge(pNode, dNode, di.referencesTo);
 					
 					var palette = Pelagios.Palette.getInstance();
 					Pelagios.Map.getInstance().addPolygon(di.dataset, di.datasetFootprint,
@@ -65,7 +65,7 @@ Pelagios.Async.getInstance = function() {
 
 		findShortestPaths : function(from, to) {
 			Pelagios.Loadmask.getInstance().show();
-			$.getJSON("places/shortestpaths?from=" + encodeURI(from.place.uri) + 
+			$.getJSON("places/shortestPaths?from=" + encodeURI(from.place.uri) + 
 				"&to=" + encodeURI(to.place.uri), function(data) {
 				
 				var personalGraph = Pelagios.Graph.Local.getInstance();

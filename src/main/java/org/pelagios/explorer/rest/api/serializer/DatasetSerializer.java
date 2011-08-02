@@ -11,23 +11,24 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
 /**
- * GSON serializer for classes implementing the Dataset interface.
+ * JSON serializer implementation for classes implementing the Dataset interface.
  * 
- * @author Rainer Simon
+ * @author Rainer Simon <rainer.simon@ait.ac.at>
+ *
  */
 public class DatasetSerializer implements JsonSerializer<Dataset> {
-	
-	private static final String KEY_ROOT_DATASET = "rootDataset";
-	private static final String KEY_SUBSETS = "subsets";
-	
-	public JsonElement serialize(Dataset dataset, Type typeOfSrc, JsonSerializationContext context) {
-		JsonObject json = new JsonObject();
-		json.add(Dataset.KEY_NAME, new JsonPrimitive(dataset.getName()));
-		json.add(KEY_ROOT_DATASET, new JsonPrimitive(dataset.getRoot().getName()));
-		json.add(KEY_SUBSETS, new JsonPrimitive(dataset.listSubsets().size()));
-		json.add(Dataset.KEY_GEOANNOTATIONS, new JsonPrimitive(dataset.listGeoAnnotations(true).size()));
-		json.add(Dataset.KEY_PLACES, new JsonPrimitive(dataset.listPlaces(true).size()));
-		return json;
-	}
-  
+
+    private static final String KEY_ROOT_DATASET = "rootDataset";
+    private static final String KEY_SUBSETS = "subsets";
+
+    public JsonElement serialize(Dataset dataset, Type typeOfSrc, JsonSerializationContext context) {
+        JsonObject json = new JsonObject();
+        json.add(Dataset.KEY_NAME, new JsonPrimitive(dataset.getName()));
+        json.add(KEY_ROOT_DATASET, new JsonPrimitive(dataset.getRoot().getName()));
+        json.add(KEY_SUBSETS, new JsonPrimitive(dataset.listSubsets().size()));
+        json.add(Dataset.KEY_GEOANNOTATIONS, new JsonPrimitive(dataset.listGeoAnnotations(true).size()));
+        json.add(Dataset.KEY_PLACES, new JsonPrimitive(dataset.listPlaces(true).size()));
+        return json;
+    }
+
 }

@@ -12,18 +12,18 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
 /**
- * GSON serializer for classes implementing the Place interface.
+ * JSON serializer implementation for classes implementing the Place interface.
  * 
- * @author Rainer Simon
+ * @author Rainer Simon <rainer.simon@ait.ac.at>
  */
 public class PlaceSerializer implements JsonSerializer<Place> {
-	
-	public JsonElement serialize(Place place, Type typeOfSrc, JsonSerializationContext context) {
-		JsonObject json = new JsonObject();
-		json.add(Place.KEY_LABEL, new JsonPrimitive(place.getLabel()));
-		json.add(Place.KEY_URI, new JsonPrimitive(place.getURI().toString()));
-		json.add(Place.KEY_GEOMETRY, new GeoJSONSerializer().toJSONObject(place.getGeometry()));
-		return json;
-	}
-  
+
+    public JsonElement serialize(Place place, Type typeOfSrc, JsonSerializationContext context) {
+        JsonObject json = new JsonObject();
+        json.add(Place.KEY_LABEL, new JsonPrimitive(place.getLabel()));
+        json.add(Place.KEY_URI, new JsonPrimitive(place.getURI().toString()));
+        json.add(Place.KEY_GEOMETRY, new GeoJSONSerializer().toJSONObject(place.getGeometry()));
+        return json;
+    }
+
 }

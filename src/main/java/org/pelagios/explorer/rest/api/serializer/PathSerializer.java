@@ -15,64 +15,70 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
+/**
+ * JSON serializer implementation for Paths within the graph.
+ * 
+ * TODO currently, this works only for Paths that start and end with a Place, and
+ * have only Datasets in between. This needs to be made more flexible in the future!
+ * 
+ * @author Rainer Simon <rainer.simon@ait.ac.at>
+ */
 public class PathSerializer implements JsonSerializer<Path> {
 
-	private static final String KEY_START = "start";
-	private static final String KEY_END = "end";
-	private static final String KEY_VIA = "via";
-	
-	private static final String KEY_PLACE = "place";
-	private static final String KEY_LABEL = "label";
-	private static final String KEY_ANNOTATIONS = "annotations";
-	
-	private static final String KEY_DATASET = "dataset";
-	private static final String KEY_DATASET_SIZE = "datasetSize";
-	private static final String KEY_ROOT_DATASET = "rootDataset";
-	
-	public JsonElement serialize(Path path, Type typeOfSrc,
-			JsonSerializationContext context) {
+    private static final String KEY_START = "start";
+    private static final String KEY_END = "end";
+    private static final String KEY_VIA = "via";
 
-		List<PelagiosGraphNode> nodes = path.getNodes();
-		JsonObject json = new JsonObject();
-		
-		try {
-			// Start
-			Place pStart = (Place) nodes.get(0);
-			Dataset firstHop = (Dataset) nodes.get(1);
-			JsonObject start = new JsonObject();
-			start.add(KEY_PLACE, new JsonPrimitive(pStart.getURI().toString()));
-			start.add(KEY_LABEL, new JsonPrimitive(pStart.getLabel()));
-			start.add(KEY_ANNOTATIONS, new JsonPrimitive(firstHop.countReferences(pStart, true))); 
-			json.add(KEY_START, start);
-			
-			// End
-			Place pEnd = (Place) nodes.get(nodes.size()-1);
-			Dataset lastHop = (Dataset) nodes.get(nodes.size() - 2);
-			JsonObject end = new JsonObject();
-			end.add(KEY_PLACE, new JsonPrimitive(pEnd.getURI().toString()));
-			end.add(KEY_LABEL, new JsonPrimitive(pEnd.getLabel()));
-			end.add(KEY_ANNOTATIONS, new JsonPrimitive(lastHop.countReferences(pEnd, true))); 
-			json.add(KEY_END, end);
-			
-			// Hops
-			JsonArray via = new JsonArray();
-			for (int i=1; i<nodes.size() - 1; i++) {
-				try {
-					Dataset d = (Dataset) nodes.get(i);
-					JsonObject hop = new JsonObject();
-					hop.add(KEY_DATASET, new JsonPrimitive(d.getName()));
-					hop.add(KEY_DATASET_SIZE, new JsonPrimitive(d.listGeoAnnotations(true).size()));
-					hop.add(KEY_ROOT_DATASET, new JsonPrimitive(d.getRoot().getName()));
-					via.add(hop);
-				} catch (Throwable t) {
-					
-				}
-			}
-			json.add(KEY_VIA, via);
-		} catch (Throwable t) {
-			
-		}
-		return json;
-	}
+    private static final String KEY_PLACE = "place";
+    private static final String KEY_LABEL = "label";
+    private static final String KEY_ANNOTATIONS = "annotations";
+
+    private static final String KEY_DATASET = "dataset";
+    private static final String KEY_DATASET_SIZE = "datasetSize";
+    private static final String KEY_ROOT_DATASET = "rootDataset";
+
+    public JsonElement serialize(Path path, Type typeOfSrc, JsonSerializationContext context) {
+        List<PelagiosGraphNode> nodes = path.getNodes();
+        JsonObject json = new JsonObject();
+
+        try {
+            // Start
+            Place pStart = (Place) nodes.get(0);
+            Dataset firstHop = (Dataset) nodes.get(1);
+            JsonObject start = new JsonObject();
+            start.add(KEY_PLACE, new JsonPrimitive(pStart.getURI().toString()));
+            start.add(KEY_LABEL, new JsonPrimitive(pStart.getLabel()));
+            start.add(KEY_ANNOTATIONS, new JsonPrimitive(firstHop.countReferences(pStart, true)));
+            json.add(KEY_START, start);
+
+            // End
+            Place pEnd = (Place) nodes.get(nodes.size() - 1);
+            Dataset lastHop = (Dataset) nodes.get(nodes.size() - 2);
+            JsonObject end = new JsonObject();
+            end.add(KEY_PLACE, new JsonPrimitive(pEnd.getURI().toString()));
+            end.add(KEY_LABEL, new JsonPrimitive(pEnd.getLabel()));
+            end.add(KEY_ANNOTATIONS, new JsonPrimitive(lastHop.countReferences(pEnd, true)));
+            json.add(KEY_END, end);
+
+            // Hops
+            JsonArray via = new JsonArray();
+            for (int i = 1; i < nodes.size() - 1; i++) {
+                try {
+                    Dataset d = (Dataset) nodes.get(i);
+                    JsonObject hop = new JsonObject();
+                    hop.add(KEY_DATASET, new JsonPrimitive(d.getName()));
+                    hop.add(KEY_DATASET_SIZE, new JsonPrimitive(d.listGeoAnnotations(true).size()));
+                    hop.add(KEY_ROOT_DATASET, new JsonPrimitive(d.getRoot().getName()));
+                    via.add(hop);
+                } catch (Throwable t) {
+
+                }
+            }
+            json.add(KEY_VIA, via);
+        } catch (Throwable t) {
+
+        }
+        return json;
+    }
 
 }

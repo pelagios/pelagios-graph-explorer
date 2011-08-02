@@ -10,53 +10,56 @@ import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 
+/**
+ * A GeoJSON serializer. Warning: handles ONLY Point, LineString and
+ * Polygon types (since this is all we have in Pelagios).
+ * 
+ * @author Rainer Simon <rainer.simon@ait.ac.at>
+ */
 public class GeoJSONSerializer {
-	
-	private static final String GEOJSON_TEMPLATE = 
-		"{\"type\": \"@type@\", " +
-		 "\"coordinates\": @coords@}";
-	
-	private Logger log = Logger.getLogger(GeoJSONSerializer.class);
 
-	public String toString(Geometry geometry) {
-		return GEOJSON_TEMPLATE
-			.replace("@type@",
-				GeometryType.valueOf(geometry.getGeometryType().toUpperCase()).toString())
-			.replace("@coords@", serializeGeometry(geometry));
-	}
-	
-	public JsonElement toJSONObject(Geometry geometry) {
-		// TODO there's probably better ways to do this...
-		return new JsonParser().parse(toString(geometry));
-	}
-	
-	private String serializeGeometry(Geometry g) {
-		if (g instanceof Point) {
-			Point p = (Point) g;
-			return serializeCoordinate(p.getCoordinate());
-		} else if (g instanceof LineString) {
-			return serializeLineString((LineString) g);
-		} else if (g instanceof Polygon) {
-			Polygon p = (Polygon) g;
-			return "[" + serializeLineString(p.getExteriorRing()) + "]"; 
-		} else {
-			// Encountered an unimplemented type
-			// Log this and fall back to centroid
-			log.warn("Can't serialize geometry properly - falling back to centroid " + g.toText());
-			return serializeCoordinate(g.getCentroid().getCoordinate());
-		}
-	}
-	
-	private String serializeLineString(LineString l) {
-		StringBuffer sb = new StringBuffer("[");
-		for (Coordinate c : l.getCoordinates()) {
-			sb.append(serializeCoordinate(c) + ", ");
-		}
-		return sb.toString().substring(0, sb.length() - 2) + "]";
-	}
-	
-	private String serializeCoordinate(Coordinate c) {
-		return "[" + c.x + ", " + c.y + "]";
-	}
-	
+    private static final String GEOJSON_TEMPLATE = "{\"type\": \"@type@\", " + "\"coordinates\": @coords@}";
+
+    private Logger log = Logger.getLogger(GeoJSONSerializer.class);
+
+    public String toString(Geometry geometry) {
+        return GEOJSON_TEMPLATE.replace("@type@",
+                GeometryType.valueOf(geometry.getGeometryType().toUpperCase()).toString()).replace("@coords@",
+                serializeGeometry(geometry));
+    }
+
+    public JsonElement toJSONObject(Geometry geometry) {
+        // TODO there's probably more efficient ways to do this...
+        return new JsonParser().parse(toString(geometry));
+    }
+
+    private String serializeGeometry(Geometry g) {
+        if (g instanceof Point) {
+            Point p = (Point) g;
+            return serializeCoordinate(p.getCoordinate());
+        } else if (g instanceof LineString) {
+            return serializeLineString((LineString) g);
+        } else if (g instanceof Polygon) {
+            Polygon p = (Polygon) g;
+            return "[" + serializeLineString(p.getExteriorRing()) + "]";
+        } else {
+            // Encountered an unimplemented type
+            // Log this and fall back to centroid
+            log.warn("Can't serialize geometry properly - falling back to centroid " + g.toText());
+            return serializeCoordinate(g.getCentroid().getCoordinate());
+        }
+    }
+
+    private String serializeLineString(LineString l) {
+        StringBuffer sb = new StringBuffer("[");
+        for (Coordinate c : l.getCoordinates()) {
+            sb.append(serializeCoordinate(c) + ", ");
+        }
+        return sb.toString().substring(0, sb.length() - 2) + "]";
+    }
+
+    private String serializeCoordinate(Coordinate c) {
+        return "[" + c.x + ", " + c.y + "]";
+    }
+
 }

@@ -10,19 +10,22 @@ import com.google.gson.JsonSerializer;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 
+/**
+ * JSON serializer implementation for basic JTS geometry types.
+ * 
+ * @author Rainer Simon <rainer.simon@ait.ac.at>
+ */
 public class GeometrySerializer implements JsonSerializer<Geometry> {
 
-	public JsonElement serialize(Geometry geom, Type typeOfSrc,
-			JsonSerializationContext context) {
-
-		JsonArray json = new JsonArray();
-		for (Coordinate c : geom.getCoordinates()) {
-			JsonArray pt = new JsonArray();
-			pt.add(new JsonPrimitive(c.x));
-			pt.add(new JsonPrimitive(c.y));
-			json.add(pt);
-		}
-		return json;
-	}
+    public JsonElement serialize(Geometry geom, Type typeOfSrc, JsonSerializationContext context) {
+        JsonArray json = new JsonArray();
+        for (Coordinate c : geom.getCoordinates()) {
+            JsonArray pt = new JsonArray();
+            pt.add(new JsonPrimitive(c.x));
+            pt.add(new JsonPrimitive(c.y));
+            json.add(pt);
+        }
+        return json;
+    }
 
 }

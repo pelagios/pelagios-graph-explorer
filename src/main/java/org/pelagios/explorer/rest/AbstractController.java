@@ -1,9 +1,5 @@
 package org.pelagios.explorer.rest;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
 
@@ -21,65 +17,53 @@ import org.pelagios.graph.nodes.Place;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
-import com.vividsolutions.jts.algorithm.ConvexHull;
-import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
 
+/**
+ * Base class with common functionality for all ReST controllers.
+ * 
+ * @author Rainer Simon <rainer.simon@ait.ac.at>
+ */
 public class AbstractController {
-	
-	/**
-	 * 'Space' String constant
-	 */
-	protected static final String _ = " ";
-	
-	/**
-	 * GSON serializer instance
-	 */
-	private GsonBuilder gsonBuilder;
-	
-	/**
-	 * Servlet context
-	 */
-	@Context
-	protected HttpServletRequest request;
-	
-	/**
-	 * Logger
-	 */
-	protected Logger log = Logger.getLogger(this.getClass());
-	
-	public AbstractController() {
-		gsonBuilder = new GsonBuilder();
-		gsonBuilder.registerTypeHierarchyAdapter(Dataset.class, new DatasetSerializer());
-		gsonBuilder.registerTypeHierarchyAdapter(GeoAnnotation.class, new GeoAnnotationSerializer());
-		gsonBuilder.registerTypeHierarchyAdapter(Place.class, new PlaceSerializer());
-		gsonBuilder.registerTypeHierarchyAdapter(Geometry.class, new GeometrySerializer());
-		gsonBuilder.registerTypeHierarchyAdapter(Path.class, new PathSerializer());
-	}
-	
-	protected String toJSON(Object object) {
-		Gson gson = gsonBuilder.create();
-		return gson.toJson(object);
-	}
-	
-	protected JsonElement toJSONTree(Object object) {
-		Gson gson = gsonBuilder.create();
-		return gson.toJsonTree(object);
-	}
-	
-	protected Geometry toConvexHull(List<Place> places) {
-		List<Coordinate> coordinates = new ArrayList<Coordinate>();
-		for (Place p : places) {
-			coordinates
-				.addAll(Arrays.asList(p.getGeometry().getCoordinates()));
-		}
-		
-		ConvexHull cv = new ConvexHull(
-				coordinates.toArray(new Coordinate[coordinates.size()]),
-				new GeometryFactory());
-		
-		return cv.getConvexHull();
-	}
+
+    /**
+     * 'Space' String constant
+     */
+    protected static final String _ = " ";
+
+    /**
+     * JSON serializer instance
+     */
+    private GsonBuilder gsonBuilder;
+
+    /**
+     * Servlet context (injected by RESTEasy)
+     */
+    @Context
+    protected HttpServletRequest request;
+
+    /**
+     * Logger
+     */
+    protected Logger log = Logger.getLogger(this.getClass());
+
+    public AbstractController() {
+        gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeHierarchyAdapter(Dataset.class, new DatasetSerializer());
+        gsonBuilder.registerTypeHierarchyAdapter(GeoAnnotation.class, new GeoAnnotationSerializer());
+        gsonBuilder.registerTypeHierarchyAdapter(Place.class, new PlaceSerializer());
+        gsonBuilder.registerTypeHierarchyAdapter(Geometry.class, new GeometrySerializer());
+        gsonBuilder.registerTypeHierarchyAdapter(Path.class, new PathSerializer());
+    }
+
+    protected String toJSON(Object object) {
+        Gson gson = gsonBuilder.create();
+        return gson.toJson(object);
+    }
+
+    protected JsonElement toJSONTree(Object object) {
+        Gson gson = gsonBuilder.create();
+        return gson.toJsonTree(object);
+    }
 
 }
