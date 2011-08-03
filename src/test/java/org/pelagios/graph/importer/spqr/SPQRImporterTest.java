@@ -4,9 +4,9 @@ import org.junit.Test;
 
 public class SPQRImporterTest {
 
-	@Test		
-	public void testSQPRImporter() {
-		
-	}
-	
+    @Test
+    public void testSQPRImporter() {
+
+    }
+
 }
