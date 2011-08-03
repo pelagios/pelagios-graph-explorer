@@ -84,12 +84,12 @@ class PerseusDatafileImporter extends AbstractDatasetImporter {
 					records = new ArrayList<GeoAnnotationBuilder>()
 					allRecords.put(h, records)
 				}
-				GeoAnnotationBuilder record =
-					new GeoAnnotationBuilder(new URI(recordURL.replace("xmlchunk", "text").replace(" ", "%20")))
+				GeoAnnotationBuilder annotation = new GeoAnnotationBuilder(
+                    new URI(recordURL.replace("xmlchunk", "text").replace(" ", "%20")),
+                    new URI(pleiadesURL));
 				
-				record.setLabel(title)
-				record.addPlaceReference(new URI(pleiadesURL))
-				records.add(record)
+				annotation.setLabel(title)
+				records.add(annotation)
 			} catch (URISyntaxException e) {
 				// Only happens in case of data set errors - we have a 
 				// zero-tolerance policy for those kinds of things
@@ -131,17 +131,17 @@ class PerseusDatafileImporter extends AbstractDatasetImporter {
        while (tokenizer.hasMoreTokens()) {
 		   String nextToken = tokenizer.nextToken()
 		   if (nextToken.startsWith('book=')) {
-			   hierarchy.add(name +':' + prefix + ':Book ' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
+			   hierarchy.add('Book ' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
 		   } else if (nextToken.startsWith('chapter')) {
-		       hierarchy.add(name +':' + prefix + ':Chapter ' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
+		       hierarchy.add('Chapter ' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
 		   } else if (nextToken.startsWith('section')) {
-		       hierarchy.add(name +':' + prefix + ':Section ' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
+		       hierarchy.add('Section ' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
 		   } else if (nextToken.startsWith('speech')) {
-		       hierarchy.add(name +':' + prefix + ':Speech ' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
+		       hierarchy.add('Speech ' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
 		   } else if (nextToken.startsWith('narrative')) {
-		   	   hierarchy.add(name +':' + prefix + ':Narrative' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
+		   	   hierarchy.add('Narrative' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
            } else if (nextToken.startsWith('poem')) {
-		       hierarchy.add(name +':' + prefix + ':Poem ' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
+		       hierarchy.add('Poem ' + nextToken.substring(nextToken.lastIndexOf('=') + 1))
 		   }
 	   }
 	   	   

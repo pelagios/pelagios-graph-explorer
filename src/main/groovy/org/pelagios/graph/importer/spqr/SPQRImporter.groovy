@@ -47,8 +47,6 @@ class SPQRImporter extends AbstractDatasetImporter {
 		HashMap<Hierarchy, List<GeoAnnotationBuilder>> allRecords =
 			new HashMap<Hierarchy, List<GeoAnnotationBuilder>>()
 		
-		Set<URI> uniqueUris = new HashSet<URI>(); 
-		
 		DatasetBuilder rootNode = new DatasetBuilder("SPQR")
 		graph.addDataset(rootNode)
 		
@@ -60,34 +58,45 @@ class SPQRImporter extends AbstractDatasetImporter {
 				.listResourcesWithProperty(model.createProperty(OAC_NAMESPACE, "hasBody"))
 				.toList()
 				
-			GeoAnnotationBuilder record = new GeoAnnotationBuilder()
-			
+            // TODO this should be cleaned up
+            URI target = null
+            URI body = null
+            String label = null
+            HashMap<String, String> properties = new HashMap<String, String>()
+            
 			for (Resource r : annotations) {
 				PelagiosAnnotation a = new PelagiosAnnotation(r)
-				record.setDataURL(a.getTarget())
-				
-				String label = (a.getLabel() == null) ? a.getTarget().toString() : a.getLabel()
-				record.setLabel(label)
-				
+
+                target = a.getTarget()		
+				label = (a.getLabel() == null) ? a.getTarget().toString() : a.getLabel()
+                
 				if (a.getMaterial() != null)
-					record.addProperty("Material", a.getMaterial())
+					properties.put("Material", a.getMaterial())
 				
 				if (a.getType() != null)
-					record.addProperty("Type", a.getType())
+					properties.put("Type", a.getType())
 				
-				if (a.getBody().toString().indexOf("pleiades") > -1) {
-					record.addPlaceReference(a.getBody())
-					uniqueUris.add(a.getBody());
-				}
+				if (a.getBody().toString().indexOf("pleiades") > -1)
+					body = a.getBody()
 			}
-	
-			Hierarchy h = getHierarchy(file)
-			List<GeoAnnotationBuilder> aList= allRecords.get(h)
-			if (aList == null) {
-				aList = new ArrayList<GeoAnnotationBuilder>()
-			}
-			aList.add(record)
-			allRecords.put(h, aList);
+            
+            if (target != null && body != null && label != null) {
+                GeoAnnotationBuilder record = 
+                    new GeoAnnotationBuilder(target, body);
+                record.setLabel(label);
+                
+                for (String key : properties.keySet()) {
+                    record.addProperty(key, properties.get(key))
+                }
+    	
+    			Hierarchy h = getHierarchy(file)
+    			List<GeoAnnotationBuilder> aList= allRecords.get(h)
+    			if (aList == null) {
+    				aList = new ArrayList<GeoAnnotationBuilder>()
+    			}
+    			aList.add(record)
+    			allRecords.put(h, aList);
+            }
 		}
 		
 		batchAdd(allRecords, graph);

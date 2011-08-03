@@ -26,7 +26,7 @@ public class GAPImporterTest {
         h = importer.getHierarchy("http://www.google.com/books?id=SwEHAAAAQAAJ&pg=PA174#bbox=994,2115,1091,2139");
         Assert.assertTrue(h.getLevels().size() == 2);
         Assert.assertEquals("GAP:SwEHAAAAQAAJ", h.getLevels().get(0));
-        Assert.assertEquals("GAP:SwEHAAAAQAAJ:PA174", h.getLevels().get(0));
+        Assert.assertEquals("GAP:SwEHAAAAQAAJ:PA174", h.getLevels().get(1));
     }
 
     @Test

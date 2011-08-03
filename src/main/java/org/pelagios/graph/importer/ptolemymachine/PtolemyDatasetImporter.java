@@ -90,7 +90,7 @@ public class PtolemyDatasetImporter extends AbstractDatasetImporter {
                 }
                 
                 GeoAnnotationBuilder annotation = 
-                    new GeoAnnotationBuilder(new URI(targetURL), new URI("http://"));
+                    new GeoAnnotationBuilder(new URI(targetURL), new URI("http://pelagios.org/null"));
                 
                 annotation.setLabel(title);
                 records.add(annotation);
@@ -103,19 +103,7 @@ public class PtolemyDatasetImporter extends AbstractDatasetImporter {
         batchAdd(allRecords, graph);
     }
 
-    /**
-     * Utility method which strips out the 'hierarchy' part of the URN, e.g.
-     * "4.7" in case of
-     * 
-     * urn:cts:greekLit:tlg0363.tlg009.chs01:4.7.10:???????????????
-     * 
-     * and returns it as a two-element array, e.g. { 4, 7 } in the above case.
-     * 
-     * @param urn
-     *            the urn
-     * @return the hierarchy indexes
-     */
-    private Hierarchy getHierarchy(String urn) {
+    Hierarchy getHierarchy(String urn) {
         StringTokenizer tokenizer = new StringTokenizer(urn, ":");
 
         if (tokenizer.countTokens() < 5)
@@ -131,7 +119,7 @@ public class PtolemyDatasetImporter extends AbstractDatasetImporter {
 
         List<String> hierarchy = new ArrayList<String>();
         hierarchy.add("Ptolemy Machine " + s[0]);
-        hierarchy.add("Ptolemy Machine " + s[0] + ":" + s[1]);
+        hierarchy.add(s[1]);
         return new Hierarchy(hierarchy);
     }
 

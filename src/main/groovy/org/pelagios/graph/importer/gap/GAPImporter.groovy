@@ -68,11 +68,10 @@ class GAPImporter extends AbstractDatasetImporter {
 						records = new ArrayList<GeoAnnotationBuilder>()
 						allRecords.put(h, records)
 					}
-					GeoAnnotationBuilder record =
-						new GeoAnnotationBuilder(new URI(target.replace(" ", "%20")))
-					record.setLabel(target.substring(target.lastIndexOf("id=") + 3))
-					record.addPlaceReference(new URI(body))
-					records.add(record)
+					GeoAnnotationBuilder annotation = new GeoAnnotationBuilder(
+                        new URI(target.replace(" ", "%20")), new URI(body))
+					annotation.setLabel(target.substring(target.lastIndexOf("id=") + 3))
+					records.add(annotation)
 				} catch (URISyntaxException e) {
 					// Only happens in case of data set errors - we have a 
 					// zero-tolerance policy for those kinds of things
@@ -106,9 +105,9 @@ class GAPImporter extends AbstractDatasetImporter {
 			   pgIdx += 3
 			   toIdx = uri.indexOf('#', pgIdx)
 			   if (toIdx > -1) {
-				   hierarchy.add('GAP:' + hierarchy.get(0) + ':' + uri.substring(pgIdx, toIdx))
+				   hierarchy.add(uri.substring(pgIdx, toIdx))
 			   } else {
-			       hierarchy.add('GAP:' + hierarchy.get(0) + ':' + uri.substring(pgIdx))
+			       hierarchy.add(uri.substring(pgIdx))
 			   }
 			   return new Hierarchy(hierarchy)
 		   }

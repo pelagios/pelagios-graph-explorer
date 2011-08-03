@@ -35,12 +35,12 @@ public class NomismaDatasetImporter extends AbstractDatasetImporter {
 		for (Resource oac : listOACAnnotations()) {
 			String target = oac.getProperty(OAC_HASTARGET).getObject().toString()
 			
-			GeoAnnotationBuilder record = new GeoAnnotationBuilder(new URI(target))
-			record.setLabel(target.substring(target.lastIndexOf('/') + 1))
-			record.setDataURL(new URI(target));
-			record.addPlaceReference(
-					new URI(oac.getProperty(OAC_HASBODY).getObject().toString()))
-			records.add(record);
+			GeoAnnotationBuilder annotation = new GeoAnnotationBuilder(
+                new URI(target), 
+                new URI(oac.getProperty(OAC_HASBODY).getObject().toString()))
+            
+			annotation.setLabel(target.substring(target.lastIndexOf('/') + 1))
+			records.add(annotation);
 		}
 		
 		graph.addGeoAnnotations(records, rootNode)

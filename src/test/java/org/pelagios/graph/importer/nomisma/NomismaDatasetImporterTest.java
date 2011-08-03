@@ -8,9 +8,6 @@ import org.pelagios.graph.exceptions.DatasetExistsException;
 
 public class NomismaDatasetImporterTest {
 
-    /**
-     * Path to the RDF file
-     */
     private static final String RDF_FILE = "data/datasets/nomisma.org.rdf";
 
     @Test
