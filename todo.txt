@@ -1,7 +1,7 @@
 TODO
 ====
 
-- JavaScript refactoring/renaming badly needed!
+- JavaScript overhaul, code review, refactoring badly needed!
 - Add 3rd party JavaScript licences + credits
 - Revise readme.txt
 - Add a sample database for download ('quick start DB')
