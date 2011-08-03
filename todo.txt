@@ -2,6 +2,7 @@ TODO
 ====
 
 - JavaScript overhaul, code review, refactoring badly needed!
+- Several bugfixes (mouseover/click behavior etc.) still needed in the JS
 - Add 3rd party JavaScript licences + credits
 - Revise readme.txt
 - Add a sample database for download ('quick start DB')
