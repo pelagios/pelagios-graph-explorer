@@ -1,14 +1,18 @@
-TODO...
+TODO
+====
 
-- Add some basic stats (total datasets, total GeoAnnotations, total places,...) to the title bar
+- JavaScript refactoring/renaming badly needed!
+- Add 3rd party JavaScript licences + credits
+- Revise readme.txt
+- Add a sample database for download ('quick start DB')
+- The shortest-path feature needs an overhaul - make it more robust & flexible (see code comments)
 - Documentation for the REST API
-- Add 3rd party JavaScript licences + credits 
-- Add sample data
 - Clean up the unit tests 
+- Add some basic stats (total datasets, total GeoAnnotations, total places,...) to the title bar
 - Add HTTP scripts for harvesting Ptolemy Machine place data 
-- JavaScript refactoring/renaming badly needed...
 - For the future, we should REALLY consider porting the client side code to GWT (along with Springy!)
-- The shortest-path feature needs a full overhaul to make it more robust & flexible
 - Ptolemy Machine data is not aligned with Pleiades (and therefore not imported at the moment) - find
   a way to deal with this.
 - Introduce unique machine-readable identifiers for datasets (URIs)
+- There are various smaller TODOs in the code -> check those
+
