@@ -6,6 +6,7 @@ import java.util.HashMap;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.index.Index;
+import org.pelagios.graph.exceptions.PlaceNotFoundException;
 
 /**
  * Builder class for the default (Neo4j-based) {@link GeoAnnotation} implementation.
@@ -26,6 +27,18 @@ public class GeoAnnotationBuilder {
         this.targetURI = targetURI;
         this.bodyURI = bodyURI;
     }
+    
+    public URI getTargetURI() {
+        return targetURI;
+    }
+    
+    public URI getBodyURI() {
+        return bodyURI;
+    }
+    
+    public String getLabel() {
+        return label;
+    }
 
     public void setLabel(String label) {
         this.label = label;
@@ -35,18 +48,26 @@ public class GeoAnnotationBuilder {
         properties.put(key, value);
     }
 
-    public GeoAnnotationImpl build(GraphDatabaseService graphDb, Index<Node> placeIndex) {
+    public GeoAnnotationImpl build(GraphDatabaseService graphDb, Index<Node> placeIndex) 
+        throws PlaceNotFoundException {
+        
         Node node = graphDb.createNode();
-        GeoAnnotationImpl record = new GeoAnnotationImpl(node);
-        record.setTargetURI(targetURI);
-        record.setLabel(label);
-        record.setPlace(bodyURI, placeIndex);
+        try {
+            GeoAnnotationImpl record = new GeoAnnotationImpl(node);
+            record.setPlace(bodyURI, placeIndex);
+            record.setTargetURI(targetURI);
+            record.setLabel(label);
+            
+            for (String key : properties.keySet()) {
+                record.addProperty(key, properties.get(key));
+            }
 
-        for (String key : properties.keySet()) {
-            record.addProperty(key, properties.get(key));
+            return record;
+        } catch (PlaceNotFoundException e) {
+            // Ouch - remove the node again
+            node.delete();
+            throw e;
         }
-
-        return record;
     }
 
 }

@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.neo4j.graphalgo.GraphAlgoFactory;
 import org.neo4j.graphalgo.PathFinder;
 import org.neo4j.graphdb.Direction;
@@ -64,6 +65,11 @@ class PelagiosGraphImpl extends PelagiosGraph {
      * This graph's indexes
      */
     private HashMap<String, Index<Node>> indexes;
+    
+    /**
+     * A logger
+     */
+    private Logger log = Logger.getLogger(PelagiosGraphImpl.class);
     
     /**
      * The graph traversal strategy for searching shortest paths
@@ -175,10 +181,14 @@ class PelagiosGraphImpl extends PelagiosGraph {
                 if (hits.size() == 0)
                     throw new DatasetNotFoundException(parent.getName());
 
-                Node parentNode = hits.getSingle();
-                GeoAnnotationImpl annotation = b.build(graphDb, getPlaceIndex());
-                Node annotationNode = annotation.getBackingNode();
-                parentNode.createRelationshipTo(annotationNode, PelagiosRelationships.GEOANNOTATION);
+                try {
+                    Node parentNode = hits.getSingle();
+                    GeoAnnotationImpl annotation = b.build(graphDb, getPlaceIndex());
+                    Node annotationNode = annotation.getBackingNode();
+                    parentNode.createRelationshipTo(annotationNode, PelagiosRelationships.GEOANNOTATION);
+                } catch (PlaceNotFoundException e) {
+                    log.warn("Place " + b.getBodyURI() + " not in graph - skipping this annotation");
+                }
             }
             tx.success();
         } finally {

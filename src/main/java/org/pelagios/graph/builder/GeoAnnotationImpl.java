@@ -12,6 +12,7 @@ import org.neo4j.graphdb.index.Index;
 import org.neo4j.graphdb.index.IndexHits;
 import org.pelagios.graph.PelagiosGraphNode;
 import org.pelagios.graph.PelagiosRelationships;
+import org.pelagios.graph.exceptions.PlaceNotFoundException;
 import org.pelagios.graph.nodes.Dataset;
 import org.pelagios.graph.nodes.GeoAnnotation;
 import org.pelagios.graph.nodes.Place;
@@ -62,17 +63,13 @@ class GeoAnnotationImpl extends PelagiosGraphNode implements GeoAnnotation {
         return properties;
     }
 
-    boolean setPlace(URI uri, Index<Node> placeIndex) {
-        boolean success = true;
+    void setPlace(URI uri, Index<Node> placeIndex) throws PlaceNotFoundException {
         IndexHits<Node> hits = placeIndex.get(Place.KEY_URI, uri);
-        if (hits.size() == 0) {
-            log.warn("Place " + uri.toString() + " not in graph - skipping this reference");
-            success = false;
-        } else {
-            Node placeNode = hits.next();
-            backingNode.createRelationshipTo(placeNode, PelagiosRelationships.REFERENCES);
-        }
-        return success;
+        if (hits.size() == 0)
+            throw new PlaceNotFoundException(uri);
+            
+        Node placeNode = hits.next();
+        backingNode.createRelationshipTo(placeNode, PelagiosRelationships.REFERENCES);
     }
     
     public Place getPlace() {
@@ -83,7 +80,8 @@ class GeoAnnotationImpl extends PelagiosGraphNode implements GeoAnnotation {
         
         // Sanity check
         if (p == null)
-            throw new RuntimeException("Graph inconsitency: annotation does not reference a place");
+            throw new RuntimeException("Graph inconsistency: annotation does not reference a place " +
+                "[" + this.getTargetURI().toString() + ", " + getParentDataset().getName() + "]");
         
         return p;
     }

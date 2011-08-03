@@ -53,7 +53,7 @@ class DatasetImpl extends PelagiosGraphNode implements Dataset {
 
     private Dataset findRoot(Dataset dataset) {
         Dataset parent = dataset.getParentDataset();
-        if (parent.equals(this))
+        if (parent.equals(dataset))
             return dataset;
 
         return findRoot(parent);
