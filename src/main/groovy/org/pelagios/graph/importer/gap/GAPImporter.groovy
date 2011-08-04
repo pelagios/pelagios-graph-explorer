@@ -8,7 +8,9 @@ import org.pelagios.graph.exceptions.DatasetExistsException;
 import org.pelagios.graph.importer.AbstractDatasetImporter;
 import org.pelagios.graph.importer.Hierarchy;
 
+import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource
+import com.hp.hpl.jena.vocabulary.RDFS;
 
 /**
  * Importer for the GAP data file. N3 Triple sampe:
@@ -57,7 +59,7 @@ class GAPImporter extends AbstractDatasetImporter {
 			String body = oac.getProperty(OAC_HASBODY).getObject().toString()
 			
 			// 'Hierarchy' based on the target URI
-			Hierarchy h = getHierarchy(target)
+			Hierarchy h = getHierarchy(target, oac.getModel())
 
 			if (h != null) {
 				// Create the record and store in memory - we'll batch-add 
@@ -70,7 +72,8 @@ class GAPImporter extends AbstractDatasetImporter {
 					}
 					GeoAnnotationBuilder annotation = new GeoAnnotationBuilder(
                         new URI(target.replace(" ", "%20")), new URI(body))
-					annotation.setLabel(target.substring(target.lastIndexOf("id=") + 3))
+                    
+					annotation.setLabel(getLabel(target, oac.getModel()))
 					records.add(annotation)
 				} catch (URISyntaxException e) {
 					// Only happens in case of data set errors - we have a 
@@ -90,30 +93,59 @@ class GAPImporter extends AbstractDatasetImporter {
 	 * @param uri the data record URI
 	 * @return the hierarchy
 	 */
-	Hierarchy getHierarchy(String uri) {
+	Hierarchy getHierarchy(String uri, model) {
 	   List<String> hierarchy = new ArrayList<String>()
 	   
 	   int idIdx = uri.indexOf('id=')
 	   if (idIdx > -1) {
 		   idIdx += 3
 		   int toIdx = uri.indexOf('&', idIdx)
-		   hierarchy.add('GAP:' + uri.substring(idIdx, toIdx))
-
+           String label = getLabel(uri.substring(0, toIdx), model)
+           label = label.substring(0, label.lastIndexOf(':'))
+           if (label.endsWith(','))
+               label = label.substring(0, label.length() - 1);
+		   hierarchy.add(label)
 	   
 		   int pgIdx = uri.indexOf('pg=')
 		   if (pgIdx > -1) {
 			   pgIdx += 3
 			   toIdx = uri.indexOf('#', pgIdx)
 			   if (toIdx > -1) {
-				   hierarchy.add(uri.substring(pgIdx, toIdx))
+				   hierarchy.add(uri.substring(pgIdx, toIdx).replace("PA", "Page "))
 			   } else {
-			       hierarchy.add(uri.substring(pgIdx))
+			       hierarchy.add(uri.substring(pgIdx).replace("PA", "Page "))
 			   }
 			   return new Hierarchy(hierarchy)
 		   }
 	   }
 	   
 	   return null;
+   }
+    
+   String getLabel(String uri, Model m) {
+       String label = null
+       Resource r;
+       if (uri.indexOf('&') > -1) {
+           r = m.getResource(uri.substring(0, uri.indexOf('&')))
+       } else {
+           r = m.getResource(uri)
+       }
+      
+       if (r != null) {
+           label = r.getProperty(RDFS.label).getString()
+       }
+       
+       if (label == null) {
+           label = uri.substring(uri.lastIndexOf("id=") + 3)
+       } else {
+           // http://www.google.com/books?id=-C0BAAAAQAAJ&pg=PA43#bbox=224,1168,301,1196
+           if (uri.indexOf("pg=PA") > -1) {
+               String page = uri.substring(uri.lastIndexOf("pg=PA") + 5, uri.indexOf('#'))
+               label += " Page " + page
+           }
+       }
+       
+       return label;
    }
 
 }
