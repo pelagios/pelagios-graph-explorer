@@ -106,11 +106,12 @@ public class PlacesController extends AbstractController {
 
         log.info(request.getRemoteAddr() + LOG_SHORTESTPATH + from + _ + to);
         
+        long startTime = System.currentTimeMillis();
         PelagiosGraph graph = PelagiosGraph.getDefaultDB();
         Place pFrom = graph.getPlace(new URI(from));
         Place pTo = graph.getPlace(new URI(to));
         Set<Path> shortestPaths = graph.findShortestPaths(pFrom, pTo);
-
+        
         // Fold the paths to a maximum of 12
         // TODO check whether this has any effect at all (and eliminate if possible)
         int loopCount = 0;
@@ -121,6 +122,9 @@ public class PlacesController extends AbstractController {
             shortestPaths = new HashSet<Path>(shortestPaths);
             loopCount++;
         }
+        
+        log.debug(shortestPaths.size() + " shortest paths between " + pFrom.getLabel() + 
+        	" to " + pTo.getLabel() + " - " + (System.currentTimeMillis() - startTime) + "ms");
 
         return Response.ok(toJSON(shortestPaths)).build();
     }
