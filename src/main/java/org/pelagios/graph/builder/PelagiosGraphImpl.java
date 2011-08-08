@@ -369,14 +369,18 @@ class PelagiosGraphImpl extends PelagiosGraph {
         toNode = hits.next();
 
         // Run the shortest Path algorithm
-        PathFinder<Path> pFinder = GraphAlgoFactory.shortestPath(expander, 8);
+        PathFinder<Path> pFinder = GraphAlgoFactory.shortestPath(expander, 5);
         
         // Wrap the Neo4j paths into the Pelagios API
         // TODO this is now a quick hack that needs total revision, it also
         // dates back to the time where a GeoAnnotations was allowed to
         // reference multiple places!
         Set<org.pelagios.graph.Path> paths = new HashSet<org.pelagios.graph.Path>();
+        int ctr = 0;
         for (Path p : pFinder.findAllPaths(fromNode, toNode)) {
+            if (ctr++ > 2000)
+                break;
+            
             List<PelagiosGraphNode> nodes = new ArrayList<PelagiosGraphNode>();
             for (Node n : p.nodes()) {
                 PelagiosGraphNode gNode = wrap(n);
