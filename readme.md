@@ -1,27 +1,20 @@
 # PELAGIOS Graph Explorer
 
-Welcome to the future home of the PELAGIOS Graph Explorer!
+Welcome to the home of the __PELAGIOS Graph Explorer__! The PELAGIOS Graph Explorer is an 
+interactive visualization for exploring how the data contributed by the [PELAGIOS project partners] 
+(http://pelagios-project.blogspot.com/) is related through place. Screencasts explaining the 
+basic usage are available on the PELAGIOS blog:
 
-Visit http://pelagios-project.blogspot.com for information about the
-PELAGIOS project.
+[The PELAGIOS Graph Explorer: A First Look] (http://pelagios-project.blogspot.com/2011/08/pelagios-graph-explorer-first-look.html)
 
-## What is the PELAGIOS Graph Explorer?
-
-The __PELAGIOS Graph Explorer__ is an interactive demo for exploring how the data
-contributed by the [PELAGIOS project partners] (http://pelagios-project.blogspot.com/)
-is related through place. 
-
-A more detailed outline will follow soon. In the meantime, you can find our publicly
-accessible development server at
-
-http://pelagios.dme.ait.ac.at/graph-explorer
+A hands-on demo you can play with online is available at http://pelagios.dme.ait.ac.at/graph-explorer.
 
 ## License
 
 The PELAGIOS Graph Explorer is licensed under the 
 [GNU General Public License v3.0] (http://www.gnu.org/licenses/gpl.html).
 
-## Getting Started
+## Developer Information
 
 The PELAGIOS Graph Explorer is built with [Gradle]
 (http://www.gradle.org). (Download and installation instructions for
