@@ -4,7 +4,7 @@ partners and licensed under the following terms:
 * 'sample-gap.n3' contains Google Books place reference metadata samples in RDF/N3 format,
   provided by the [Google Ancient Places project] (http://googleancientplaces.wordpress.com/). 
   'sample-gap.n3' is licensed under the terms of the [CC0 license]
-  (http://creativecommons.org/choose/zero/.
+  (http://creativecommons.org/choose/zero/).
   
 * 'sample-perseus.rdf.xml' contains place reference metadata samples in RDF/XML format, provided
   by the [Perseus Digital Library] (http://www.perseus.tufts.edu/). 'sample-perseus.rdf.xml' is 
