@@ -12,4 +12,4 @@ partners and licensed under the following terms:
   
 * The /sample-data/spqr folder contains sample RDF/XML metadata samples provided by the
   [SPQR project] (http://spqr.cerch.kcl.ac.uk/). The samples are licensed under the terms of
-  the [CC-BY license] (http://creativecommons.org/licenses/by/2.0/)  
+  the [CC-BY license] (http://creativecommons.org/licenses/by/2.0/).
