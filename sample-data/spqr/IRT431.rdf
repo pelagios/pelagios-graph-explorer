@@ -1,0 +1,36 @@
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:j.0="http://spqr.epcc.ed.ac.uk/"
+    xmlns:j.1="http://www.openannotation.org/ns/"
+    xmlns:j.2="http://www.openannotation.org/ns/Annotation/" > 
+  <rdf:Description rdf:about="http://irt.kcl.ac.uk/irt2009/IRT431/">
+    <j.0:textType>DEDICATION</j.0:textType>
+    <j.0:wasLocatedAt rdf:resource="http://irt.kcl.ac.uk/irt2009/IRT431/location1"/>
+    <j.0:wasLocatedAt rdf:resource="http://irt.kcl.ac.uk/irt2009/IRT431/location2"/>
+    <j.0:objectType>PANEL</j.0:objectType>
+    <j.0:material>WHITE MARBLE</j.0:material>
+    <j.0:dateOfOrigin rdf:resource="http://irt.kcl.ac.uk/irt2009/IRT431_1#dateOfOrigin"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://irt.kcl.ac.uk/irt2009/IRT431/location2">
+    <j.0:type>ANCIENTFINDSPOT</j.0:type>
+    <j.0:name>Lepcis Magna</j.0:name>
+    <j.1:hasTarget rdf:resource="http://irt.kcl.ac.uk/irt2009/IRT431/"/>
+    <j.1:hasBody>http://pleiades.stoa.org/places/344448/</j.1:hasBody>
+    <rdf:type rdf:resource="http://www.openannotation.org/ns/Annotation/"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://irt.kcl.ac.uk/irt2009/IRT431/location1">
+    <j.0:type>MODERNFINDSPOT</j.0:type>
+    <j.0:name>Leptis Magna</j.0:name>
+    <j.1:hasTarget rdf:resource="http://irt.kcl.ac.uk/irt2009/IRT431/"/>
+    <j.1:hasBody>http://www.geonames.org/2215692/</j.1:hasBody>
+    <rdf:type rdf:resource="http://www.openannotation.org/ns/Annotation/"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://irt.kcl.ac.uk/irt2009/IRT431_1#dateOfOrigin">
+    <j.0:text>Perhaps Severan (lettering and monumental character)</j.0:text>
+    <j.0:evidence>lettering-monumental-character</j.0:evidence>
+    <j.0:notAfter>0211</j.0:notAfter>
+    <j.0:notBefore>0193</j.0:notBefore>
+    <j.0:precision>LOW</j.0:precision>
+    <j.0:certainty>LOW</j.0:certainty>
+  </rdf:Description>
+</rdf:RDF>

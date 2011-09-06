@@ -1,0 +1,38 @@
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:j.0="http://spqr.epcc.ed.ac.uk/"
+    xmlns:j.1="http://www.openannotation.org/ns/"
+    xmlns:j.2="http://www.openannotation.org/ns/Annotation/" > 
+  <rdf:Description rdf:about="http://insaph.kcl.ac.uk/iaph2007/iAph010109/location1">
+    <j.1:hasTarget rdf:resource="http://insaph.kcl.ac.uk/iaph2007/iAph010109/"/>
+    <j.1:hasBody>http://sws.geonames.org/314519/</j.1:hasBody>
+    <rdf:type rdf:resource="http://www.openannotation.org/ns/Annotation/"/>
+    <j.0:type>MODERNFINDSPOT</j.0:type>
+    <j.0:name>Geyre</j.0:name>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://insaph.kcl.ac.uk/iaph2007/iAph010109/location2">
+    <j.1:hasTarget rdf:resource="http://insaph.kcl.ac.uk/iaph2007/iAph010109/"/>
+    <j.1:hasBody>http://pleiades.stoa.org/places/638753/</j.1:hasBody>
+    <rdf:type rdf:resource="http://www.openannotation.org/ns/Annotation/"/>
+    <j.0:type>ANCIENTFINDSPOT</j.0:type>
+    <j.0:name>Aphrodisias</j.0:name>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://insaph.kcl.ac.uk/iaph2007/iAph010109_1#dateOfOrigin">
+    <j.0:text>first century B.C.</j.0:text>
+    <j.0:notAfter>-1</j.0:notAfter>
+    <j.0:notBefore>-100</j.0:notBefore>
+    <j.0:certainty>LOW</j.0:certainty>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://insaph.kcl.ac.uk/iaph2007/iAph010109/">
+    <j.0:textType>DEDICATION</j.0:textType>
+    <j.0:wasLocatedAt rdf:resource="http://insaph.kcl.ac.uk/iaph2007/iAph010109/location1"/>
+    <j.0:material>WHITE MARBLE</j.0:material>
+    <j.0:textType>RELIGIOUS</j.0:textType>
+    <j.0:mentions rdf:resource="http://spqr.epcc.ed.ac.uk/person#á¼ˆÏ€Î¿Î»Î»á½½Î½Î¹Î¿Ï‚ _iAph010109"/>
+    <j.0:objectType>BASE</j.0:objectType>
+    <j.0:dateOfOrigin rdf:resource="http://insaph.kcl.ac.uk/iaph2007/iAph010109_1#dateOfOrigin"/>
+    <j.0:wasLocatedAt rdf:resource="http://insaph.kcl.ac.uk/iaph2007/iAph010109/location2"/>
+    <j.0:mentions rdf:resource="http://spqr.epcc.ed.ac.uk/person#á¼ˆÏ�Ï„ÎµÎ¼á½·Î´Ï‰Ï�Î¿Ï‚_iAph010109"/>
+    <j.0:mentions rdf:resource="http://spqr.epcc.ed.ac.uk/person#á¼ˆÏ†Ï�Î¿Î´á½·Ï„Î·"/>
+  </rdf:Description>
+</rdf:RDF>

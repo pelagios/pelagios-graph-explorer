@@ -1,0 +1,36 @@
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:j.0="http://spqr.epcc.ed.ac.uk/"
+    xmlns:j.1="http://www.openannotation.org/ns/"
+    xmlns:j.2="http://www.openannotation.org/ns/Annotation/" > 
+  <rdf:Description rdf:about="http://irt.kcl.ac.uk/irt2009/IRT432_1#dateOfOrigin">
+    <j.0:text>A.D. 201/202 (prosopography)</j.0:text>
+    <j.0:notAfter>0202</j.0:notAfter>
+    <j.0:notBefore>0201</j.0:notBefore>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://irt.kcl.ac.uk/irt2009/IRT432/">
+    <j.0:textType>DEDICATION</j.0:textType>
+    <j.0:wasLocatedAt rdf:resource="http://irt.kcl.ac.uk/irt2009/IRT432/location2"/>
+    <j.0:wasLocatedAt rdf:resource="http://irt.kcl.ac.uk/irt2009/IRT432/location3"/>
+    <j.0:mentions rdf:resource="http://spqr.epcc.ed.ac.uk/person#Flauius_Celer_IRT432"/>
+    <j.0:mentions rdf:resource="http://spqr.epcc.ed.ac.uk/person#Antoninus_Augustus_Pius"/>
+    <j.0:mentions rdf:resource="http://spqr.epcc.ed.ac.uk/person#Fuluia_Plautilla_Augusta"/>
+    <j.0:objectType>BASE</j.0:objectType>
+    <j.0:material>LIMESTONE</j.0:material>
+    <j.0:dateOfOrigin rdf:resource="http://irt.kcl.ac.uk/irt2009/IRT432_1#dateOfOrigin"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://irt.kcl.ac.uk/irt2009/IRT432/location3">
+    <j.0:type>ANCIENTFINDSPOT</j.0:type>
+    <j.0:name>Lepcis Magna</j.0:name>
+    <j.1:hasTarget rdf:resource="http://irt.kcl.ac.uk/irt2009/IRT432/"/>
+    <j.1:hasBody>http://pleiades.stoa.org/places/344448/</j.1:hasBody>
+    <rdf:type rdf:resource="http://www.openannotation.org/ns/Annotation/"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://irt.kcl.ac.uk/irt2009/IRT432/location2">
+    <j.0:type>MODERNFINDSPOT</j.0:type>
+    <j.0:name>Leptis Magna</j.0:name>
+    <j.1:hasTarget rdf:resource="http://irt.kcl.ac.uk/irt2009/IRT432/"/>
+    <j.1:hasBody>http://www.geonames.org/2215692/</j.1:hasBody>
+    <rdf:type rdf:resource="http://www.openannotation.org/ns/Annotation/"/>
+  </rdf:Description>
+</rdf:RDF>

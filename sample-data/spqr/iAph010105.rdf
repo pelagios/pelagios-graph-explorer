@@ -1,0 +1,32 @@
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:j.0="http://spqr.epcc.ed.ac.uk/"
+    xmlns:j.1="http://www.openannotation.org/ns/"
+    xmlns:j.2="http://www.openannotation.org/ns/Annotation/" > 
+  <rdf:Description rdf:about="http://insaph.kcl.ac.uk/iaph2007/iAph010105/location1">
+    <j.1:hasTarget rdf:resource="http://insaph.kcl.ac.uk/iaph2007/iAph010105/"/>
+    <j.1:hasBody>http://sws.geonames.org/314519/</j.1:hasBody>
+    <rdf:type rdf:resource="http://www.openannotation.org/ns/Annotation/"/>
+    <j.0:type>MODERNFINDSPOT</j.0:type>
+    <j.0:name>Geyre</j.0:name>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://insaph.kcl.ac.uk/iaph2007/iAph010105/">
+    <j.0:wasLocatedAt rdf:resource="http://insaph.kcl.ac.uk/iaph2007/iAph010105/location1"/>
+    <j.0:wasLocatedAt rdf:resource="http://insaph.kcl.ac.uk/iaph2007/iAph010105/location2"/>
+    <j.0:objectType>PANEL</j.0:objectType>
+    <j.0:dateOfOrigin rdf:resource="http://insaph.kcl.ac.uk/iaph2007/iAph010105_1#dateOfOrigin"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://insaph.kcl.ac.uk/iaph2007/iAph010105_1#dateOfOrigin">
+    <j.0:text>first century B.C. to first century A.D.</j.0:text>
+    <j.0:notAfter>0100</j.0:notAfter>
+    <j.0:notBefore>-0100</j.0:notBefore>
+    <j.0:certainty>LOW</j.0:certainty>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://insaph.kcl.ac.uk/iaph2007/iAph010105/location2">
+    <j.1:hasTarget rdf:resource="http://insaph.kcl.ac.uk/iaph2007/iAph010105/"/>
+    <j.1:hasBody>http://pleiades.stoa.org/places/638753/</j.1:hasBody>
+    <rdf:type rdf:resource="http://www.openannotation.org/ns/Annotation/"/>
+    <j.0:type>ANCIENTFINDSPOT</j.0:type>
+    <j.0:name>Aphrodisias</j.0:name>
+  </rdf:Description>
+</rdf:RDF>

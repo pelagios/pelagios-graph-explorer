@@ -1,0 +1,1038 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"  xmlns:dcterms="http://purl.org/dc/terms/"  xmlns:foaf="http://xmlns.com/foaf/0.1/"  xmlns:oac="http://www.openannotation.org/ns/"  xmlns:cnt="http://www.w3.org/2008/content#">
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867133:1:Perseus:text:1999.02.0025:book=3:poem=17">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/432839"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.02.0025:book=3:poem=17"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Formiae (Italy)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867133:2:Perseus:text:1999.02.0051:book=7:commline=1">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/432839"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.02.0051:book=7:commline=1"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Formiae (Italy)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867133:3:Perseus:text:1999.02.0051:book=7:commline=1">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/432839"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.02.0051:book=7:commline=1"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Formiae (Italy)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867133:4:Perseus:text:1999.02.0063:book=1:poem=5">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/432839"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.02.0063:book=1:poem=5"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Formiae (Italy)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:2440815:1:Perseus:text:1999.02.0018:text=Ver.:actio=2:book=1:section=87">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/265880"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.02.0018:text=Ver.:actio=2:book=1:section=87"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Dianium (Spain)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:2440815:2:Perseus:text:1999.02.0018:text=Ver.:actio=2:book=5:section=146">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/265880"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.02.0018:text=Ver.:actio=2:book=5:section=146"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Dianium (Spain)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:2440815:3:Perseus:text:1999.02.0018:text=Ver.:actio=2:book=5:section=146">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/265880"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.02.0018:text=Ver.:actio=2:book=5:section=146"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Dianium (Spain)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:2440815:4:Perseus:text:1999.02.0018:text=Ver.:actio=2:book=5:section=154">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/265880"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.02.0018:text=Ver.:actio=2:book=5:section=154"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Dianium (Spain)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:2441372:1:Perseus:text:1999.01.0198:book=6:chapter=3">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/393436"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0198:book=6:chapter=3"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Atria (Italy)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:2441372:2:Perseus:text:1999.01.0198:book=6:chapter=3">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/393436"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0198:book=6:chapter=3"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Atria (Italy)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:2441372:3:Perseus:text:1999.02.0025:book=3:poem=9">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/393436"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.02.0025:book=3:poem=9"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Atria (Italy)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:2441371:1:Perseus:text:1999.01.0126:book=5:chapter=46">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/599800"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0126:book=5:chapter=46"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Minoa (Italy)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:2441371:2:Perseus:text:1999.01.0160:book=3:chapter=23">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/599800"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0160:book=3:chapter=23"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Minoa (Italy)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:2441371:3:Perseus:text:1999.01.0160:book=3:chapter=23">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/599800"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0160:book=3:chapter=23"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Minoa (Italy)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867839:1:Perseus:text:1999.01.0002:speech=2:section=116">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/599905"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0002:speech=2:section=116"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Priene (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867839:2:Perseus:text:1999.01.0084:book=9:chapter=13">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/599905"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0084:book=9:chapter=13"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Priene (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867839:3:Perseus:text:1999.01.0084:book=9:chapter=13">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/599905"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0084:book=9:chapter=13"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Priene (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867839:4:Perseus:text:1999.01.0084:book=12:chapter=27">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/599905"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0084:book=12:chapter=27"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Priene (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867839:5:Perseus:text:1999.01.0126:book=1:chapter=15">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/599905"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0126:book=1:chapter=15"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Priene (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867839:6:Perseus:text:1999.01.0126:book=1:chapter=15">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/599905"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0126:book=1:chapter=15"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Priene (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867839:7:Perseus:text:1999.01.0126:book=1:chapter=27">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/599905"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0126:book=1:chapter=27"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Priene (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867839:8:Perseus:text:1999.01.0126:book=1:chapter=27">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/599905"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0126:book=1:chapter=27"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Priene (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867839:9:Perseus:text:1999.01.0126:book=1:chapter=142">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/599905"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0126:book=1:chapter=142"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Priene (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867839:10:Perseus:text:1999.01.0126:book=1:chapter=161">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/599905"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0126:book=1:chapter=161"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Priene (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867839:11:Perseus:text:1999.01.0126:book=1:chapter=170">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/599905"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0126:book=1:chapter=170"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Priene (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867839:12:Perseus:text:1999.01.0126:book=1:chapter=170">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/599905"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0126:book=1:chapter=170"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Priene (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867839:13:Perseus:text:1999.01.0160:book=4:chapter=6">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/599905"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0160:book=4:chapter=6"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Priene (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867839:14:Perseus:text:1999.01.0160:book=7:chapter=2">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/599905"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0160:book=7:chapter=2"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Priene (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867839:15:Perseus:text:1999.01.0160:book=7:chapter=2">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/599905"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0160:book=7:chapter=2"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Priene (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867839:16:Perseus:text:1999.01.0160:book=7:chapter=2">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/599905"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0160:book=7:chapter=2"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Priene (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867839:17:Perseus:text:1999.01.0160:book=7:chapter=2">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/599905"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0160:book=7:chapter=2"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Priene (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867839:18:Perseus:text:1999.01.0160:book=7:chapter=5">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/599905"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0160:book=7:chapter=5"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Priene (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867839:19:Perseus:text:1999.01.0160:book=8:chapter=24">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/599905"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0160:book=8:chapter=24"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Priene (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867839:20:Perseus:text:1999.01.0160:book=10:chapter=24">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/599905"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0160:book=10:chapter=24"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Priene (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867839:21:Perseus:text:1999.01.0178:text=Prot.:section=343a">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/599905"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0178:text=Prot.:section=343a"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Priene (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867839:22:Perseus:text:1999.01.0180:text=Hipp. Maj.:section=281c">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/599905"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0180:text=Hipp. Maj.:section=281c"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Priene (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867839:23:Perseus:text:1999.01.0200:book=1:chapter=115">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/599905"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0200:book=1:chapter=115"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Priene (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867839:24:Perseus:text:1999.02.0073:book=1:chapter=1">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/599905"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.02.0073:book=1:chapter=1"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Priene (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867839:25:Perseus:text:1999.02.0073:book=4:chapter=1">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/599905"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.02.0073:book=4:chapter=1"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Priene (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867839:26:Perseus:text:1999.02.0073:book=7:chapter=preface">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/599905"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.02.0073:book=7:chapter=preface"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Priene (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:2441378:1:Perseus:text:1999.02.0052:book=10:card=166">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/433061"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.02.0052:book=10:card=166"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Pyrgi (Italy)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:2441378:2:Perseus:text:1999.02.0132:life=nero:chapter=5">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/433061"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.02.0132:life=nero:chapter=5"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Pyrgi (Italy)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:2441378:3:Perseus:text:1999.02.0132:life=nero:chapter=5">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/433061"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.02.0132:life=nero:chapter=5"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Pyrgi (Italy)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867681:1:Perseus:text:1999.02.0080:book=3:chapter=6">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/393459"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.02.0080:book=3:chapter=6"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Opitergium (Italy)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1868133:1:Perseus:text:1999.01.0126:book=3:chapter=59">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/573576"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0126:book=3:chapter=59"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Troizen (Greece)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1868133:2:Perseus:text:1999.01.0126:book=7:chapter=99">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/573576"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0126:book=7:chapter=99"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Troizen (Greece)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1868133:3:Perseus:text:1999.01.0126:book=7:chapter=180">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/573576"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0126:book=7:chapter=180"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Troizen (Greece)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1868133:4:Perseus:text:1999.01.0126:book=8:chapter=41">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/573576"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0126:book=8:chapter=41"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Troizen (Greece)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1868133:5:Perseus:text:1999.01.0126:book=8:chapter=42">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/573576"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0126:book=8:chapter=42"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Troizen (Greece)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1868133:6:Perseus:text:1999.01.0126:book=8:chapter=42">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/573576"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0126:book=8:chapter=42"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Troizen (Greece)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1868133:7:Perseus:text:1999.01.0126:book=9:chapter=31">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/573576"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0126:book=9:chapter=31"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Troizen (Greece)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1868133:8:Perseus:text:1999.01.0126:book=9:chapter=105">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/573576"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0126:book=9:chapter=105"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Troizen (Greece)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867565:1:Perseus:text:1999.01.0020:speech=5:section=21">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/550738"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0020:speech=5:section=21"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Methymna</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867565:2:Perseus:text:1999.01.0020:speech=5:section=77">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/550738"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0020:speech=5:section=77"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Methymna</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867565:3:Perseus:text:1999.01.0078:speech=44:section=9">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/550738"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0078:speech=44:section=9"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Methymna</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867565:4:Perseus:text:1999.01.0078:speech=44:section=9">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/550738"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0078:speech=44:section=9"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Methymna</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867565:5:Perseus:text:1999.01.0126:book=1:chapter=23">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/550738"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0126:book=1:chapter=23"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Methymna</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867565:6:Perseus:text:1999.01.0126:book=1:chapter=23">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/550738"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0126:book=1:chapter=23"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Methymna</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867565:7:Perseus:text:1999.01.0126:book=1:chapter=151">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/550738"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0126:book=1:chapter=151"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Methymna</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867565:8:Perseus:text:1999.01.0160:book=9:chapter=30">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/550738"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0160:book=9:chapter=30"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Methymna</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867565:9:Perseus:text:1999.01.0160:book=10:chapter=19">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/550738"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0160:book=10:chapter=19"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Methymna</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867565:10:Perseus:text:1999.01.0160:book=10:chapter=19">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/550738"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0160:book=10:chapter=19"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Methymna</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867565:11:Perseus:text:1999.01.0160:book=10:chapter=19">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/550738"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0160:book=10:chapter=19"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Methymna</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867565:12:Perseus:text:1999.01.0200:book=3:chapter=2">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/550738"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0200:book=3:chapter=2"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Methymna</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867565:13:Perseus:text:1999.01.0200:book=3:chapter=18">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/550738"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0200:book=3:chapter=18"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Methymna</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867565:14:Perseus:text:1999.01.0200:book=8:chapter=22">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/550738"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0200:book=8:chapter=22"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Methymna</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867565:15:Perseus:text:1999.01.0200:book=8:chapter=23">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/550738"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0200:book=8:chapter=23"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Methymna</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867565:16:Perseus:text:1999.01.0200:book=8:chapter=23">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/550738"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0200:book=8:chapter=23"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Methymna</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867565:17:Perseus:text:1999.01.0200:book=8:chapter=100">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/550738"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0200:book=8:chapter=100"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Methymna</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867565:18:Perseus:text:1999.01.0200:book=8:chapter=100">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/550738"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0200:book=8:chapter=100"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Methymna</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867565:19:Perseus:text:1999.01.0200:book=8:chapter=101">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/550738"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0200:book=8:chapter=101"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Methymna</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867565:20:Perseus:text:1999.02.0028:book=11:card=1">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/550738"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.02.0028:book=11:card=1"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Methymna</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1867565:21:Perseus:text:1999.02.0058:book=2:card=83">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/550738"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.02.0058:book=2:card=83"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Methymna</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1868200:1:Perseus:text:1999.01.0056:section=1457a">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/639167"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0056:section=1457a"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Xanthos (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1868200:2:Perseus:text:1999.01.0126:book=1:chapter=176">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/639167"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0126:book=1:chapter=176"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Xanthos (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1868200:3:Perseus:text:1999.01.0126:book=1:chapter=176">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/639167"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0126:book=1:chapter=176"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Xanthos (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1868200:4:Perseus:text:1999.01.0126:book=1:chapter=176">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/639167"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0126:book=1:chapter=176"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Xanthos (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1868200:5:Perseus:text:1999.01.0217:book=2:card=840">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/639167"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0217:book=2:card=840"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Xanthos (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1868200:6:Perseus:text:1999.01.0217:book=5:card=106">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/639167"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0217:book=5:card=106"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Xanthos (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1868200:7:Perseus:text:1999.01.0217:book=5:card=443">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/639167"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0217:book=5:card=443"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Xanthos (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1868200:8:Perseus:text:1999.01.0217:book=6:card=1">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/639167"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0217:book=6:card=1"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Xanthos (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1868200:9:Perseus:text:1999.01.0217:book=6:card=102">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/639167"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0217:book=6:card=102"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Xanthos (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1868200:10:Perseus:text:1999.01.0217:book=8:card=167">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/639167"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0217:book=8:card=167"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Xanthos (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1868200:11:Perseus:text:1999.01.0217:book=8:card=542">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/639167"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0217:book=8:card=542"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Xanthos (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1868200:12:Perseus:text:1999.01.0217:book=12:card=290">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/639167"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0217:book=12:card=290"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Xanthos (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1868200:13:Perseus:text:1999.01.0217:book=14:card=378">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/639167"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0217:book=14:card=378"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Xanthos (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1868200:14:Perseus:text:1999.01.0217:book=16:card=131">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/639167"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0217:book=16:card=131"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Xanthos (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1868200:15:Perseus:text:1999.01.0217:book=19:card=349">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/639167"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0217:book=19:card=349"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Xanthos (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1868200:16:Perseus:text:1999.01.0217:book=19:card=349">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/639167"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0217:book=19:card=349"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Xanthos (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1868200:17:Perseus:text:1999.01.0217:book=19:card=349">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/639167"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0217:book=19:card=349"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Xanthos (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1868200:18:Perseus:text:1999.01.0217:book=20:card=1">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/639167"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0217:book=20:card=1"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Xanthos (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1868200:19:Perseus:text:1999.01.0217:book=20:card=1">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/639167"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0217:book=20:card=1"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Xanthos (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1868200:20:Perseus:text:1999.01.0217:book=21:card=1">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/639167"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0217:book=21:card=1"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Xanthos (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+  <oac:Annotation rdf:about="org.perseus:entityoccurrence:1868200:21:Perseus:text:1999.01.0217:book=21:card=1">
+    <oac:hasBody>
+      <rdf:Description rdf:about="http://pleiades.stoa.org/places/639167"/>
+    </oac:hasBody>
+    <oac:hasTarget>
+      <rdf:Description rdf:about="http://www.perseus.tufts.edu/hopper/xmlchunk?doc=Perseus:text:1999.01.0217:book=21:card=1"/>
+    </oac:hasTarget>
+    <dc:title xml:lang="en">Xanthos (Turkey)</dc:title>
+    <dcterms:creator>Perseus Digital Library</dcterms:creator>
+    <dcterms:created>2011-05-19</dcterms:created>
+  </oac:Annotation>
+</rdf:RDF> 
