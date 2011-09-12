@@ -8,8 +8,11 @@ partners and licensed under the following terms:
   
 * 'sample-perseus.rdf.xml' contains place reference metadata samples in RDF/XML format, provided
   by the [Perseus Digital Library] (http://www.perseus.tufts.edu/). 'sample-perseus.rdf.xml' is 
-  licensed under the terms of the [CC-BY-SA license] (http://creativecommons.org/licenses/by-sa/2.0/)
+  licensed under the terms of the [CC-BY-SA license] (http://creativecommons.org/licenses/by-sa/2.0/).
   
 * The /sample-data/spqr folder contains sample RDF/XML metadata samples provided by the
-  [SPQR project] (http://spqr.cerch.kcl.ac.uk/). The samples are licensed under the terms of
-  the [CC-BY license] (http://creativecommons.org/licenses/by/2.0/).
+  [SPQR project] (http://spqr.cerch.kcl.ac.uk/). The samples are part of the [Inscriptions of 
+  Aphrodisias] (http://insaph.kcl.ac.uk/iaph2007/index.html) collection (licensed under the terms of
+  the [CC-BY license] (http://creativecommons.org/licenses/by/2.5/)) and the ['Inscriptions of Roman
+  Tripolitania'] (http://irt.kcl.ac.uk/irt2009/) collection (licensed under the terms of the
+  [CC-BY UK] (http://creativecommons.org/licenses/by/2.0/uk/) license).
