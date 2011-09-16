@@ -1,14 +1,13 @@
 TODO
 ====
 
+- Document JSONP support in the Wiki
 - JavaScript overhaul, code review, refactoring badly needed!
 - Several bugfixes (mouseover/click behavior etc.) still needed in the JS
 - Revise readme.txt
 - Add a sample database for download ('quick start DB')
 - The shortest-path feature needs an overhaul - make it more robust & flexible (see code comments)
-- Documentation for the REST API
 - Clean up the unit tests 
-- Add some basic stats (total datasets, total GeoAnnotations, total places,...) to the title bar
 - Add HTTP scripts for harvesting Ptolemy Machine place data 
 - For the future, we should REALLY consider porting the client side code to GWT (along with Springy!)
 - Ptolemy Machine data is not aligned with Pleiades (and therefore not imported at the moment) - find
