@@ -53,10 +53,10 @@ public class PlacesController extends AbstractController {
     @GET
     @Produces("application/json")
     @javax.ws.rs.Path("/search")
-    public Response searchPlaces(@QueryParam("q") String q) {
+    public Response searchPlaces(@QueryParam("q") String q, @QueryParam("callback") String jsonpCallback) {
         PelagiosGraph graph = PelagiosGraph.getDefaultDB();
         List<Place> hits = graph.searchPlaces(q, 15);
-        return Response.ok(toJSON(hits)).build();
+        return Response.ok(toJSON(hits, jsonpCallback)).build();
     }
 
     /**
@@ -70,8 +70,8 @@ public class PlacesController extends AbstractController {
     @GET
     @Produces("application/json")
     @javax.ws.rs.Path("/intersect")
-    public Response getSharedPlaces(@QueryParam("set1") String set1, @QueryParam("set2") String set2)
-            throws DatasetNotFoundException {
+    public Response getSharedPlaces(@QueryParam("set1") String set1, @QueryParam("set2") String set2, 
+            @QueryParam("callback") String jsonpCallback) throws DatasetNotFoundException {
 
         log.info(request.getRemoteAddr() + LOG_INTERSECT + set1 + _ + set2);
         
@@ -86,7 +86,7 @@ public class PlacesController extends AbstractController {
         List<Place> commonPlaces = graph.listCommonPlaces(datasets);
         Overlap o = new Overlap(set1, set2, commonPlaces, PelagiosGraphUtils.toConvexHull(commonPlaces));
 
-        return Response.ok(toJSON(o)).build();
+        return Response.ok(toJSON(o, jsonpCallback)).build();
     }
 
     /**
@@ -101,8 +101,8 @@ public class PlacesController extends AbstractController {
     @GET
     @Produces("application/json")
     @javax.ws.rs.Path("shortestPaths")
-    public Response getShortestPaths(@QueryParam("from") String from, @QueryParam("to") String to)
-            throws PlaceNotFoundException, URISyntaxException {
+    public Response getShortestPaths(@QueryParam("from") String from, @QueryParam("to") String to,
+            @QueryParam("callback") String jsonpCallback) throws PlaceNotFoundException, URISyntaxException {
 
         log.info(request.getRemoteAddr() + LOG_SHORTESTPATH + from + _ + to);
         
@@ -123,7 +123,7 @@ public class PlacesController extends AbstractController {
             loopCount++;
         }
 
-        return Response.ok(toJSON(shortestPaths)).build();
+        return Response.ok(toJSON(shortestPaths, jsonpCallback)).build();
     }
 
     /**
@@ -138,7 +138,8 @@ public class PlacesController extends AbstractController {
     @GET
     @Produces("application/json")
     @javax.ws.rs.Path("referencesTo")
-    public Response referencesTo(@QueryParam("place") String place) throws PlaceNotFoundException, URISyntaxException {
+    public Response referencesTo(@QueryParam("place") String place, @QueryParam("callback") String jsonpCallback)
+        throws PlaceNotFoundException, URISyntaxException {
 
         log.info(request.getRemoteAddr() + LOG_REFERENCES_TO + place);
 
@@ -173,7 +174,7 @@ public class PlacesController extends AbstractController {
                     PelagiosGraphUtils.toConvexHull(s.listPlaces(true)), s.getRootDataset().getName(), referencesTo.get(s)));
         }
 
-        return Response.ok(toJSON(refJson)).build();
+        return Response.ok(toJSON(refJson, jsonpCallback)).build();
     }
 
     // TODO move this functionality into the PelagiosGraphUtils    
@@ -213,8 +214,8 @@ public class PlacesController extends AbstractController {
     @GET
     @Produces("application/json")
     @javax.ws.rs.Path("stronglyRelated")
-    public Response stronglyRelatedPlaces(@QueryParam("place") String place) throws PlaceNotFoundException,
-            URISyntaxException {
+    public Response stronglyRelatedPlaces(@QueryParam("place") String place, @QueryParam("callback") String jsonpCallback)
+        throws PlaceNotFoundException, URISyntaxException {
 
         log.info(request.getRemoteAddr() + LOG_STRONGLY_RELATED + place);
 
@@ -222,7 +223,7 @@ public class PlacesController extends AbstractController {
         Place p = graph.getPlace(new URI(place));
 
         List<Place> relatedPlaces = graph.findStronglyRelatedPlaces(p, 2);
-        return Response.ok(toJSON(relatedPlaces)).build();
+        return Response.ok(toJSON(relatedPlaces, jsonpCallback)).build();
     }
 
 }

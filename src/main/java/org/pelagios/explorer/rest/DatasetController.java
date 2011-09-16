@@ -6,6 +6,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
 import org.pelagios.explorer.rest.api.serializer.DatasetSerializer;
@@ -42,12 +43,12 @@ public class DatasetController extends AbstractController {
     @GET
     @Produces("application/json")
     @Path("/")
-    public Response listDatasets() {
+    public Response listDatasets(@QueryParam("callback") String jsonpCallback) {
         log.info(request.getRemoteAddr() + LOG_TOP_LEVEL_LIST);
         
         PelagiosGraph graph = PelagiosGraph.getDefaultDB();
         List<Dataset> datasets = graph.listTopLevelDatasets();
-        return Response.ok(toJSON(datasets)).build();
+        return Response.ok(toJSON(datasets, jsonpCallback)).build();
     }
 
     /**
@@ -59,11 +60,13 @@ public class DatasetController extends AbstractController {
     @GET
     @Produces("application/json")
     @Path("/{superset}")
-    public Response getSubsets(@PathParam("superset") String superset) throws DatasetNotFoundException {
+    public Response getSubsets(@PathParam("superset") String superset, @QueryParam("callback") String jsonpCallback) 
+        throws DatasetNotFoundException {
+        
         log.info(request.getRemoteAddr() + LOG_SUBSETS + superset);
         
         List<Dataset> datasets = PelagiosGraph.getDefaultDB().getDataset(superset).listSubsets();
-        return Response.ok(toJSON(datasets)).build();
+        return Response.ok(toJSON(datasets, jsonpCallback)).build();
     }
 
     /**
@@ -75,9 +78,11 @@ public class DatasetController extends AbstractController {
     @GET
     @Produces("application/json")
     @Path("/{dataset}/places")
-    public Response getPlaces(@PathParam("dataset") String dataset) throws DatasetNotFoundException {
+    public Response getPlaces(@PathParam("dataset") String dataset, @QueryParam("callback") String jsonpCallback)
+        throws DatasetNotFoundException {
+        
         List<Place> places = PelagiosGraph.getDefaultDB().getDataset(dataset).listPlaces(true);
-        return Response.ok(toJSON(places)).build();
+        return Response.ok(toJSON(places, jsonpCallback)).build();
     }
 
     /**
@@ -89,10 +94,12 @@ public class DatasetController extends AbstractController {
     @GET
     @Produces("application/json")
     @Path("/{dataset}/places/convexhull")
-    public Response getConvexHull(@PathParam("dataset") String dataset) throws DatasetNotFoundException {
+    public Response getConvexHull(@PathParam("dataset") String dataset, @QueryParam("callback") String jsonpCallback)
+        throws DatasetNotFoundException {
+        
         PelagiosGraph graph = PelagiosGraph.getDefaultDB();
         Geometry cv = PelagiosGraphUtils.toConvexHull(graph.getDataset(dataset).listPlaces(true));
-        return Response.ok(toJSON(cv)).build();
+        return Response.ok(toJSON(cv, jsonpCallback)).build();
     }
 
     /**
@@ -104,9 +111,11 @@ public class DatasetController extends AbstractController {
     @GET
     @Produces("application/json")
     @Path("/{dataset}/annotations")
-    public Response getGeoAnnotations(@PathParam("dataset") String dataset) throws DatasetNotFoundException {
+    public Response getGeoAnnotations(@PathParam("dataset") String dataset, @QueryParam("callback") String jsonpCallback)
+        throws DatasetNotFoundException {
+        
         List<GeoAnnotation> annotations = PelagiosGraph.getDefaultDB().getDataset(dataset).listGeoAnnotations(true);
-        return Response.ok(toJSON(annotations)).build();
+        return Response.ok(toJSON(annotations, jsonpCallback)).build();
     }
 
 }

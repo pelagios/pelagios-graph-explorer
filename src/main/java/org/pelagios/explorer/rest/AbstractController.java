@@ -55,10 +55,14 @@ public class AbstractController {
         gsonBuilder.registerTypeHierarchyAdapter(Geometry.class, new GeometrySerializer());
         gsonBuilder.registerTypeHierarchyAdapter(Path.class, new PathSerializer());
     }
-
-    protected String toJSON(Object object) {
-        Gson gson = gsonBuilder.create();
-        return gson.toJson(object);
+    
+    protected String toJSON(Object object, String jsonpCallback) {
+        String json = gsonBuilder.create().toJson(object);
+        if (jsonpCallback == null) {
+            return json;
+        } else {
+            return jsonpCallback + "(" + json + ");"; 
+        }
     }
 
     protected JsonElement toJSONTree(Object object) {

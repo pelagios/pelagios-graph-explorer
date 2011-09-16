@@ -44,8 +44,8 @@ public class GeoAnnotationController extends AbstractController {
     @GET
     @Produces("application/json")
     @Path("/")
-    public Response getAnnotations(@QueryParam("place") String place, @QueryParam("dataset") String dataset)
-            throws DatasetNotFoundException, PlaceNotFoundException, URISyntaxException {
+    public Response getAnnotations(@QueryParam("place") String place, @QueryParam("dataset") String dataset,
+            @QueryParam("callback") String jsonpCallback) throws DatasetNotFoundException, PlaceNotFoundException, URISyntaxException {
 
         log.info(request.getRemoteAddr() + LOG_GET_ANNOTATIONS + place + _ + dataset);
         
@@ -60,7 +60,7 @@ public class GeoAnnotationController extends AbstractController {
                 filteredByPlace.add(a);
         }
 
-        return Response.ok(toJSON(filteredByPlace)).build();
+        return Response.ok(toJSON(filteredByPlace, jsonpCallback)).build();
     }
 
 }
