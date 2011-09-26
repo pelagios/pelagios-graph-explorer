@@ -2,6 +2,8 @@ TODO
 ====
 
 - Document JSONP support in the Wiki
+- Document getPlace (/places/{uri}) HTTP API method in the Wiki
+- Document ?search= and ?pleiadesID= URL parameters in the Wiki 
 - JavaScript overhaul, code review, refactoring badly needed!
 - Several bugfixes (mouseover/click behavior etc.) still needed in the JS
 - Revise readme.txt
