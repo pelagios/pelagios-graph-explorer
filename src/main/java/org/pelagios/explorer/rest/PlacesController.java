@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
@@ -57,6 +58,17 @@ public class PlacesController extends AbstractController {
         PelagiosGraph graph = PelagiosGraph.getDefaultDB();
         List<Place> hits = graph.searchPlaces(q, 15);
         return Response.ok(toJSON(hits, jsonpCallback)).build();
+    }
+    
+    @GET
+    @Produces("application/json")
+    @javax.ws.rs.Path("/{uri}")
+    public Response getPlace(@PathParam("uri") String uri, @QueryParam("callback") String jsonpCallback)
+        throws PlaceNotFoundException, URISyntaxException {
+        
+        PelagiosGraph graph = PelagiosGraph.getDefaultDB();
+        Place p = graph.getPlace(new URI(uri));
+        return Response.ok(toJSON(p, jsonpCallback)).build();
     }
 
     /**
