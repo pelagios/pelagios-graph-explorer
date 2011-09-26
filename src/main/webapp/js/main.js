@@ -48,7 +48,11 @@ window.onload = function() {
 	
 	// Check if there are query params (and switch to embed mode if so)
 	var search = Pelagios.Embed.getQueryParameter('search');
-	if (search)
-		Pelagios.Embed.searchPlaces(search, async, lGraph, map);
+	var pleiadesID = Pelagios.Embed.getQueryParameter('pleiadesID');
+	if (search) {
+		Pelagios.Embed.searchPlaces(search);
+	} else if (pleiadesID) {
+		Pelagios.Embed.viewPlace("http://pleiades.stoa.org/places/" + pleiadesID);
+	}
 }
 

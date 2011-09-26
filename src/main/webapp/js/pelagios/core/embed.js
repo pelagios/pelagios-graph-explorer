@@ -14,12 +14,12 @@ Pelagios.Embed.getQueryParameter = function(param) {
 	} 	
 }
 
-Pelagios.Embed.searchPlaces = function(query, async, personalGraph, map) {
+Pelagios.Embed.searchPlaces = function(query) {
 	var terms = query.split(",");
 	var places = new Array();
 	
 	for (var i=0; i<terms.length; i++) {
-		async.search(terms[i], function(i){
+		Pelagios.Async.getInstance().search(terms[i], function(i){
 			return function(data) {
 				var p = data[0];
 				for (var j=0; j<data.length; j++) {
@@ -29,16 +29,26 @@ Pelagios.Embed.searchPlaces = function(query, async, personalGraph, map) {
 				
 				places.push(p);
 				if (places.length == terms.length)
-					Pelagios.Embed.switchView(places, async, personalGraph, map);
+					Pelagios.Embed.switchView(places);
 			}
 		}(i));
 	}
 }
 
-Pelagios.Embed.switchView = function(places, async, personalGraph, map) {
-	personalGraph.show();
+Pelagios.Embed.viewPlace = function(uri) {
+	var p = Pelagios.Async.getInstance().getPlace(uri, function(data) {
+		var places = new Array();
+		places.push(data);
+		Pelagios.Embed.switchView(places);
+	});
+}
+
+Pelagios.Embed.switchView = function(places) {
+	var lGraph = Pelagios.Graph.Local.getInstance();
+	lGraph.show();
 	for (var i=0, ii=places.length; i<ii; i++) {
+		var map = Pelagios.Map.getInstance();
 		map.addPlace(places[i]);
-		async.occurences(places[i], personalGraph, map);
+		Pelagios.Async.getInstance().occurences(places[i], lGraph, map);
 	}
 }
