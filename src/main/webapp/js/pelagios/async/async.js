@@ -41,6 +41,10 @@ Pelagios.Async.getInstance = function() {
 			})
 			.error(function(data) { alert("Something went wrong: " + data.responseText); });	
 		},
+		
+		getPlace : function(uri, callback) {
+			$.getJSON("places/" + encodeURI(uri), callback);
+		},
 
 		occurences : function(place) {
 			Pelagios.Loadmask.getInstance().show();
