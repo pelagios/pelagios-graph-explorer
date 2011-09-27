@@ -1,7 +1,9 @@
 package org.pelagios.explorer.rest;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -9,7 +11,6 @@ import java.util.List;
 import java.util.Set;
 
 import javax.ws.rs.GET;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
@@ -38,7 +39,9 @@ import org.pelagios.graph.nodes.Place;
 @javax.ws.rs.Path("/places")
 public class PlacesController extends AbstractController {
 
-    // Log message String constants
+    // String constants
+    private static final String UTF8 = "UTF-8";
+    private static final String LOG_GET_PLACE = " Getting place ";
     private static final String LOG_INTERSECT = " Intersection ";
     private static final String LOG_SHORTESTPATH = " Shortest path ";
     private static final String LOG_REFERENCES_TO = " Occurences ";
@@ -62,13 +65,21 @@ public class PlacesController extends AbstractController {
     
     @GET
     @Produces("application/json")
-    @javax.ws.rs.Path("/{uri}")
-    public Response getPlace(@PathParam("uri") String uri, @QueryParam("callback") String jsonpCallback)
+    @javax.ws.rs.Path("/")
+    public Response getPlace(@QueryParam("uri") String uri, @QueryParam("callback") String jsonpCallback)
         throws PlaceNotFoundException, URISyntaxException {
         
-        PelagiosGraph graph = PelagiosGraph.getDefaultDB();
-        Place p = graph.getPlace(new URI(uri));
-        return Response.ok(toJSON(p, jsonpCallback)).build();
+        try {
+            String url = URLDecoder.decode(uri, UTF8);
+            log.info(request.getRemoteAddr() + LOG_GET_PLACE + url);
+
+            PelagiosGraph graph = PelagiosGraph.getDefaultDB();
+            Place p = graph.getPlace(new URI(url));
+            return Response.ok(toJSON(p, jsonpCallback)).build();
+        } catch (UnsupportedEncodingException e) {
+            // Can never happen
+            throw new RuntimeException(e);
+        }
     }
 
     /**

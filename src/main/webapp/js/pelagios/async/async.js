@@ -43,7 +43,7 @@ Pelagios.Async.getInstance = function() {
 		},
 		
 		getPlace : function(uri, callback) {
-			$.getJSON("places/" + encodeURIComponent(uri), callback);
+			$.getJSON("places?uri=" + encodeURIComponent(uri), callback);
 		},
 
 		occurences : function(place) {
