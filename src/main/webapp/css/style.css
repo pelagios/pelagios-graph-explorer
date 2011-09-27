@@ -1,21 +1,34 @@
 html, body { padding:0px; margin:0px; background-color:#fff; width:100%; height:100%; overflow:hidden; }
 
-#header { font-family:Calibri, Verdana; position:absolute; top:0px; width:100%; height:35px; background-color:#2d2d2d; z-index:999; }
-#header h1 { padding:7px 10px; margin:0; color:#fff; font-size:16px; font-weight:normal; float:left; }
-#header .stats { color:#888; }
-#header .stats a { color:#888; }
-#header .stats a:visited { color:#888; }
+#header {
+	position:absolute;
+	top:0px;
+	width:100%;
+	height:130px;
+	background:#8dbbed;
+	background:-webkit-gradient(linear, left top, left bottom, from(#4f87d1), to(#8dbbed));
+	background:-moz-linear-gradient(top,  #4f87d1,  #8dbbed);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4f87d1', endColorstr='#8dbbed');
+	z-index:999;
+}
+
+#header img { position:absolute; top:20px; left:10px; }
+
+#toolbar { font-family:Calibri, Verdana; position:absolute; top:130px; width:100%; height:35px; background-color:#1c3664; z-index:999; }
+#toolbar span { padding:7px 10px; margin:0; color:#94bbe3; font-size:16px; font-weight:normal; float:left; }
+#toolbar a { color:#94bbe3; }
+#toolbar a:visited { color:#94bbe3; }
 
 #search { display:inline; float:right; padding-right:10px; }
 #search input { height:21px; }
-#search input.searchfield { font-size:12px; color:#fff; margin:7px; border-width:0px; background-color:#888; padding:2px; }
-#search .search-label { font-size:16px; color:#888; }
+#search input.searchfield { font-size:12px; color:#fff; margin:7px; border-width:0px; background-color:#94bbe3; padding:2px; }
+#search .search-label { font-size:16px; color:#94bbe3; }
 
 #controls ul { padding:0; margin:0; }
 #controls li { display:inline; float:right; padding:7px 10px; font-family:Calibri, Verdana; font-size:16px; }
-#controls li a { text-decoration:none; color:#888; }
-#controls li a:hover { color:#888; }
-#controls li a:visited { color:#888; }
+#controls li a { text-decoration:none; color:#94bbe3; }
+#controls li a:hover { color:#94bbe3; }
+#controls li a:visited { color:#94bbe3; }
 
 .pelagios-tooltip {
 	padding:3px 8px;
@@ -29,7 +42,7 @@ html, body { padding:0px; margin:0px; background-color:#fff; width:100%; height:
 .ajax-loader {
 	background-image:url('../img/transp-bg.png');
 	position:absolute;
-	top:35px;
+	top:165px;
 	left:0px;
 	width:100%;
 	height:100%;
@@ -74,7 +87,7 @@ html, body { padding:0px; margin:0px; background-color:#fff; width:100%; height:
 
 #back-button { 
 	position:absolute;
-	top:0px;
+	top:130px;
 	margin:0px;
 	padding:40px 15px;
 	font-family:Calibri, Verdana;
