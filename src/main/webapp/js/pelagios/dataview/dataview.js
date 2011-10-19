@@ -14,17 +14,7 @@ Pelagios.DataPanel.getInstance = function() {
 	}
 	
 	function toCSS(col) {
-		var css =
-			'background-color: ' + col + '; '; // +
-		/*
-			'background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(' + col + ')); ' +
-			'background-image: -webkit-linear-gradient(top, #fff, ' + col + '); ' +  
-			'background-image: -moz-linear-gradient(top, #fff, ' + col + '); ' +
-			'background-image: -ms-linear-gradient(top, #fff, ' + col + '); ' +
-			'background-image: -o-linear-gradient(top, #fff, ' + col + ');' +
-			'border-top: 1px solid ' + col + ';';
-		*/
-		return css;
+		return 'background-color: ' + col + '; '; 
 	}
 	
 	var annotationList = new Array();
@@ -132,7 +122,7 @@ Pelagios.DataPanel.getInstance = function() {
 
 			// Redraw
 			var innerHTML = '<div class="annotation-list-header"><h1>' + datasetName + '</h1>'
-			+ '<p>' + annotationList.length + ' references in selected places</p></div>'
+			+ '<p class="references">' + annotationList.length + ' references in selected places</p></div>'
 			+ '<div class="annotation-list">';
 
 			var palette = Pelagios.Palette.getInstance();
