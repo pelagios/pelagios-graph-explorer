@@ -1,8 +1,6 @@
-html, body { padding:0px; margin:0px; background-color:#fff; width:100%; height:100%; overflow:hidden; }
+html, body { padding:0px; margin:0px; background-color:#fff; width:100%; height:100%; }
 
 #header {
-	position:absolute;
-	top:0px;
 	width:100%;
 	height:130px;
 	background:#8dbbed;
@@ -12,23 +10,24 @@ html, body { padding:0px; margin:0px; background-color:#fff; width:100%; height:
 	z-index:999;
 }
 
-#header img { position:absolute; top:20px; left:10px; }
+#header img { padding:20px 10px; }
 
-#toolbar { font-family:Calibri, Verdana; position:absolute; top:130px; width:100%; height:35px; background-color:#1c3664; z-index:999; }
-#toolbar span { padding:7px 10px; margin:0; color:#94bbe3; font-size:16px; font-weight:normal; float:left; }
-#toolbar a { color:#94bbe3; }
-#toolbar a:visited { color:#94bbe3; }
+#top-bar { font-family:Calibri, Verdana; width:100%; height:35px; background-color:#1c3664; }
+#top-bar span { padding:7px 10px; display:block; margin:0; color:#94bbe3; font-size:16px; font-weight:normal; }
+#top-bar a { color:#94bbe3; }
+#top-bar a:visited { color:#94bbe3; }
+
+#container { display:block; position:absolute; height:auto; bottom:0px; top:165px; left:0px; right:0px; margin:0px; }
+#left-column { background-color:#f4f8fc; width:250px; height:100%; }
+#right-column { width:auto; position:absolute; top:0px; left:250px; bottom:0px; right:0px; }
+
+#graph-canvas { width:100%; height:60%; padding:0px; margin:0px; }
+#map-panel { width:100%; height:40%; padding:0px; margin:0px; }
 
 #search { display:inline; float:right; padding-right:10px; }
 #search input { height:21px; }
 #search input.searchfield { font-size:12px; color:#fff; margin:7px; border-width:0px; background-color:#94bbe3; padding:2px; }
 #search .search-label { font-size:16px; color:#94bbe3; }
-
-#controls ul { padding:0; margin:0; }
-#controls li { display:inline; float:right; padding:7px 10px; font-family:Calibri, Verdana; font-size:16px; }
-#controls li a { text-decoration:none; color:#94bbe3; }
-#controls li a:hover { color:#94bbe3; }
-#controls li a:visited { color:#94bbe3; }
 
 .pelagios-tooltip {
 	padding:3px 8px;
@@ -44,8 +43,8 @@ html, body { padding:0px; margin:0px; background-color:#fff; width:100%; height:
 	position:absolute;
 	top:165px;
 	left:0px;
-	width:100%;
-	height:100%;
+	width:10px;
+	height:100px;
 	text-align:center;
 	padding-top:25%;
 	z-index:1000;
@@ -61,15 +60,7 @@ html, body { padding:0px; margin:0px; background-color:#fff; width:100%; height:
 	bottom:4px;
 }
 
-#graph-canvas { width:100%; height:100%; padding:0; margin:0; position:absolute; top:0px; }
-
-#dialog { width:640px; height:480px; }
-
-#map-panel { width:100%; height:100%; padding:0px; margin:0px; }
-
 #personal-graph {
-	position:absolute;
-	top:0px;
 	width:100%;
 	height:100%;
 	padding:0px;

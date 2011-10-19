@@ -1,16 +1,6 @@
 // Map-related code
 Pelagios.Map = {}
 
-Pelagios.Map.getWindowPosition = function() {
-	var top = document.getElementById('dialog').parentNode.style.top;
-	top = top.substring(0, top.length - 2);
-	
-	var left = document.getElementById('dialog').parentNode.style.left;
-	left = left.substring(0, left.length - 2);	
-	
-	return {x:parseInt(left), y:parseInt(top)};
-}
-
 Pelagios.Map.fromLatLngToXY = function(map, latLng) {
 	var topRight = map.getProjection().fromLatLngToPoint(map.getBounds().getNorthEast());
 	var bottomLeft = map.getProjection().fromLatLngToPoint(map.getBounds().getSouthWest());
@@ -50,13 +40,6 @@ Pelagios.Map.getInstance = function() {
 	// Just those features which are currently shown on the map
 	var shown = new Array();
 	
-	$("#dialog").bind("dialogresize", function(event, ui) {
-		Pelagios.Map.instance.refresh();
-	});
-	$("#dialog").bind("dialogopen", function(event, ui) {
-		Pelagios.Map.instance.refresh();
-	});
-	
 	function addTooltip(name, feature) {
 		google.maps.event.addListener(feature, 'mouseover', function(event) {
 			var xy = Pelagios.Map.fromLatLngToXY(map, event.latLng);
@@ -77,25 +60,6 @@ Pelagios.Map.getInstance = function() {
 	}
 	
 	Pelagios.Map.instance = {
-		setVisible : function(visible) {
-			if (visible) {
-				$("#dialog").dialog("open");
-				for (var f in this.shown) {
-					this.showFeature(f);
-				}
-			} else {
-				$("#dialog").dialog("close");		
-			}
-		},
-	
-		isVisible : function() {
-			return $("#dialog").parents(".ui-dialog").is(":visible");
-		},
-	
-		refresh : function() {
-			google.maps.event.trigger(map, 'resize');
-		},
-	
 		zoomToFeature : function(name) {
 			var geom = features[name];
 				

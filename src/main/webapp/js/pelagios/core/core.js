@@ -31,7 +31,7 @@ Pelagios.getViewport = function() {
 	       h = document.getElementsByTagName('body')[0].clientHeight;
 	 }
 	 
-	 return new Vector(w, h);
+	 return new Vector(w - 250, (h - 165) * 0.6);
 }
 
 // Google Map extensions (from http://code.google.com/p/google-maps-extensions/)

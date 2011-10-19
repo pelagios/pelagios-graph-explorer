@@ -31,31 +31,6 @@
     <script type="text/javascript" src="js/pelagios/map/map.js"></script>    
 
     <script type="text/javascript" src="js/main.js"></script>
-    
-    <script>
-	$(function() {
-		var viewport = Pelagios.getViewport();
-		$("#dialog").dialog({
-			autoOpen:false,
-			width:600,
-			height:350,
-			resizable:true,
-			show:"fade",
-			hide:"fade",
-			position:[viewport.x / 2 - 300, viewport.y / 2 - 175]
-		});
-		
-		$("#data-panel").dialog({
-			autoOpen:false,
-			width:350,
-			height:350,
-			resizable:true,
-			show:"fade",
-			hide:"fade",
-			position:[viewport.x / 2 - 330, viewport.y / 2 - 205]
-		});
-	});
-    </script>
   </head>
   
   <body>
@@ -63,37 +38,49 @@
       <img src="img/pelagios-logo-sm.png">
     </div>
     
-    <div id="toolbar">
+    <div id="top-bar">
       <span>[<a target="_blank" href="http://pelagios-project.blogspot.com/2011/08/pelagios-graph-explorer-first-look.html">Information &amp; Screencasts...</a>]</span>
-      
-      <div id="controls">
-        <ul>
-          <li><a href="#" id="toggle-dataview">Show/Hide Data View</a></li>
-          <li><a href="#" id="toggle-map">Show/Hide Map</a></li>
-         </ul>
+    </div>
+    
+    <div id="container">
+      <div id="left-column">
+        <div id="search">
+          <form>
+            <span class="search-label">Search for Places:</span>
+            <input id="searchfield" class="searchfield"/>
+          </form>
+        </div>
       </div>
-      
-      <div id="search">
-        <form>
-          <span class="search-label">Search for Places:</span>
-          <input id="searchfield" class="searchfield"/>
-          <!--  input class="button" type="submit" value="SEARCH"/ -->
-        </form>
+      <div id="right-column">
+        <div id="graph-canvas">
+          <div id="personal-graph"></div>
+        </div>
+        <div id="map-panel"></div>
       </div>
     </div>
     
-    <div id="graph-canvas"></div>
-    
-    <div id="dialog" title="Map">
-      <div id="map-panel"></div>
-    </div>
-    
-    <div id="data-panel" title="Data View">
-      <div id="data-panel-records"></div>
-    </div>
+    <!--  div id="container">
+      <div id="left-column">
+        <div id="search">
+          <form>
+            <span class="search-label">Search for Places:</span>
+            <input id="searchfield" class="searchfield"/>
+          </form>
+        </div>
+        <div id="data-panel" title="Data View">
+          <div id="data-panel-records"></div>
+        </div>
+      </div>
+      <div id="right-column">
+        <div id="right-inner">
+          <div id="graph-canvas"></div>
+          <div id="map-panel"></div>
+        </div>
+      </div>
+    </div> 
     
     <div id="personal-graph">
       <p id="back-button">&lt; BACK</p>
-    </div>
+    </div> -->
   </body>
 </html>

@@ -1,31 +1,14 @@
 window.onresize = function(event) {
-	Pelagios.Graph.Dataset.getInstance().refresh();
 	Pelagios.Graph.Local.getInstance().refresh();
 }
 
 window.onload = function() {	
 	// Get references to the Big Five
-	var dGraph = Pelagios.Graph.Dataset.getInstance();
 	var lGraph = Pelagios.Graph.Local.getInstance();
+	lGraph.show();
 	var map = Pelagios.Map.getInstance();
 	var dataPanel = Pelagios.DataPanel.getInstance();
 	var async = Pelagios.Async.getInstance();
-	
-	// Attach click handler to 'toggle map' button
-    $("#toggle-map").click(function() {
-    	map.setVisible(!map.isVisible())
-    });
-    
-    // Attach click handler to 'toogle dataview' button
-    $("#toggle-dataview").click(function() {
-    	dataPanel.setVisible(!dataPanel.isVisible())
-    });    
-    
-    // Attach click handler to local graph 'back' button
-	$("#back-button").click(function(){
-		lGraph.close();
-		map.clear();
-	});
 
 	// Initialize auto-completion search field
 	$("#searchfield").autocomplete({
