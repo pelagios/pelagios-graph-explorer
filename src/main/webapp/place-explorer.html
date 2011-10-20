@@ -50,7 +50,11 @@
         </form>
         <h2>Places Searched:</h2>
         <div id="search-list"></div>
-        <div style="text-align:right; margin:4px 4px 0px 0px;"><div class="btn"><input title="Clear all Search Results" type="button" value="CLEAR"/></div></div>
+        <div style="text-align:right; margin:4px 4px 0px 0px;">
+          <div class="btn">
+            <input title="Clear all Search Results" type="button" value="CLEAR" onclick="javascript:Pelagios.Graph.Local.getInstance().close();"/>
+          </div>
+        </div>
         <h2>Data View:</h2>
         <div id="data-panel">
           <div id="data-panel-records"></div>
@@ -65,29 +69,5 @@
         <div id="map-panel"></div>
       </div>
     </div>
-    
-    <!--  div id="container">
-      <div id="left-column">
-        <div id="search">
-          <form>
-            <span class="search-label">Search for Places:</span>
-            <input id="searchfield" class="searchfield"/>
-          </form>
-        </div>
-        <div id="data-panel" title="Data View">
-          <div id="data-panel-records"></div>
-        </div>
-      </div>
-      <div id="right-column">
-        <div id="right-inner">
-          <div id="graph-canvas"></div>
-          <div id="map-panel"></div>
-        </div>
-      </div>
-    </div> 
-    
-    <div id="personal-graph">
-      <p id="back-button">&lt; BACK</p>
-    </div> -->
   </body>
 </html>
