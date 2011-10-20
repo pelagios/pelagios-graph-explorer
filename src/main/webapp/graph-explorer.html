@@ -1,0 +1,99 @@
+<html>
+  <head>
+    <title>PELAGIOS Graph Explorer</title>
+    <link rel="stylesheet" type="text/css" href="css/style-old.css" />
+    <link rel="stylesheet" type="text/css" href="css/jquery-ui.css" />
+    
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>    
+    
+    <script type="text/javascript" src="js/lib/jquery-1.6.1.min.js"></script>
+    <script type="text/javascript" src="js/lib/jquery-ui-1.8.14.custom.min.js"></script>  
+    <script type="text/javascript" src="js/lib/raphael-min-1.5.2.js"></script>
+    <script type="text/javascript" src="js/lib/GeoJSON.js"></script>
+	<script type="text/javascript" src="js/lib/springy.js"></script>
+    
+    <script type="text/javascript" src="js/pelagios/core/core.js"></script>
+    <script type="text/javascript" src="js/pelagios/core/embed.js"></script>
+    <script type="text/javascript" src="js/pelagios/core/load-indicator.js"></script>
+    <script type="text/javascript" src="js/pelagios/core/palette.js"></script>    
+    <script type="text/javascript" src="js/pelagios/core/tooltip.js"></script>
+    
+    <script type="text/javascript" src="js/pelagios/async/async.js"></script>
+    
+    <script type="text/javascript" src="js/pelagios/dataview/dataview.js"></script>   
+
+    <script type="text/javascript" src="js/pelagios/graph/abstract-graph.js"></script> 
+    <script type="text/javascript" src="js/pelagios/graph/dataset-graph.js"></script>
+    <script type="text/javascript" src="js/pelagios/graph/dataset-graph-selection.js"></script>
+	<script type="text/javascript" src="js/pelagios/graph/local-graph.js"></script>
+    <script type="text/javascript" src="js/pelagios/graph/pelagios-raphael-ext.js"></script>
+    
+    <script type="text/javascript" src="js/pelagios/map/map.js"></script>    
+
+    <script type="text/javascript" src="js/main.js"></script>
+    
+    <script>
+	$(function() {
+		var viewport = Pelagios.getViewport();
+		$("#dialog").dialog({
+			autoOpen:false,
+			width:600,
+			height:350,
+			resizable:true,
+			show:"fade",
+			hide:"fade",
+			position:[viewport.x / 2 - 300, viewport.y / 2 - 175]
+		});
+		
+		$("#data-panel").dialog({
+			autoOpen:false,
+			width:350,
+			height:350,
+			resizable:true,
+			show:"fade",
+			hide:"fade",
+			position:[viewport.x / 2 - 330, viewport.y / 2 - 205]
+		});
+	});
+    </script>
+  </head>
+  
+  <body>
+    <div id="header">
+      <img src="img/pelagios-logo-sm.png">
+    </div>
+    
+    <div id="toolbar">
+      <span>[<a target="_blank" href="http://pelagios-project.blogspot.com/2011/08/pelagios-graph-explorer-first-look.html">Information &amp; Screencasts...</a>]</span>
+      
+      <div id="controls">
+        <ul>
+          <li><a href="#" id="toggle-dataview">Show/Hide Data View</a></li>
+          <li><a href="#" id="toggle-map">Show/Hide Map</a></li>
+         </ul>
+      </div>
+      
+      <div id="search">
+        <form>
+          <span class="search-label">Search for Places:</span>
+          <input id="searchfield" class="searchfield"/>
+          <!--  input class="button" type="submit" value="SEARCH"/ -->
+        </form>
+      </div>
+    </div>
+    
+    <div id="graph-canvas"></div>
+    
+    <div id="dialog" title="Map">
+      <div id="map-panel"></div>
+    </div>
+    
+    <div id="data-panel" title="Data View">
+      <div id="data-panel-records"></div>
+    </div>
+    
+    <div id="personal-graph">
+      <p id="back-button">&lt; BACK</p>
+    </div>
+  </body>
+</html>
