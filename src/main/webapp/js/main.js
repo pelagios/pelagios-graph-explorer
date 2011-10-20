@@ -28,6 +28,9 @@ window.onload = function() {
 	$("#searchfield").focus(function() {
 		$(this).val(''); return false;
 	});
+
+	// Init the help system
+	Pelagios.Help.init();
 	
 	// Check if there are query params (and switch to embed mode if so)
 	var search = Pelagios.Embed.getQueryParameter('search');
