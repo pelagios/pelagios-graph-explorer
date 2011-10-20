@@ -4,7 +4,9 @@ Pelagios.Help.TEXT_SEARCHFORM =
 	"The search form...";
 
 Pelagios.Help.TEXT_SEARCHLIST =
-	"The search list...";
+	  "The search list displays the Places currently in the graph. Use the 'CLEAR'"
+	+ "button to remove all search results. There will be an option to remove single"
+	+ "results later down the road.";
 
 Pelagios.Help.TEXT_DATAPANEL =
 	"The data panel...";
@@ -26,20 +28,27 @@ Pelagios.Help.init = function() {
 }
 
 Pelagios.HelpBubble = function(text, x, y) {
-	this.div = document.createElement("div");
-	this.div.innerHTML = text;
-	this.div.setAttribute("class", "pelagios-helpbubble");
-	this.div.style.position = "absolute";
-	this.div.style.top = y;
-	this.div.style.left = x;
+	this.container = document.createElement("div");
+	this.container.style.position = "absolute";
+	this.container.style.top = y;
+	this.container.style.left = x;
+	this.container.style.backgroundColor = "#ff0000";
+	
+	var box = document.createElement("div");
+	box.setAttribute("class", "pelagios-help-bubble");
+	box.innerHTML = text;
+	box.style.marginLeft = "12px";
+	box.style.width = "220px";
+	this.container.appendChild(box);
+	
 	this.hide();
-	document.body.appendChild(this.div);
+	document.body.appendChild(this.container);
 }
 
 Pelagios.HelpBubble.prototype.show = function() {
-	this.div.style.visibility = 'visible';
+	this.container.style.visibility = 'visible';
 }
 
 Pelagios.HelpBubble.prototype.hide = function() {
-	this.div.style.visibility = 'hidden';
+	this.container.style.visibility = 'hidden';
 }

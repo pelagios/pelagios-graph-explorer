@@ -13,13 +13,13 @@ body { overflow-x:hidden; overflow-y:scroll; }
 
 #header img { padding:20px 10px; }
 
-#top-bar { font-family:Calibri, Verdana; width:100%; height:35px; background-color:#1c3664; }
+#top-bar { font-family:Calibri, Verdana, Arial; width:100%; height:35px; background-color:#1c3664; }
 #top-bar span { padding:7px 10px; display:block; margin:0; color:#94bbe3; font-size:16px; font-weight:normal; }
 #top-bar a { color:#94bbe3; }
 #top-bar a:visited { color:#94bbe3; }
 
 #container { display:block; position:absolute; height:auto; bottom:0px; top:165px; left:0px; right:0px; margin:0px; }
-#left-column { padding:0px; margin:0px; color:#1c3664; font-family:Calibri, Verdana; font-weight:bold; background-color:#f4f8fc; width:300px; height:100%; }
+#left-column { padding:0px; margin:0px; color:#1c3664; font-family:Calibri, Verdana, Arial; font-weight:bold; background-color:#f4f8fc; width:300px; height:100%; }
 #left-column h2 { font-size:16px; padding:18px 0px 4px 7px; margin:0px; }
 form { padding:0px; margin:0px; }
 input[type=search] { -webkit-appearance: textfield; height:21px; width:280px; font-size:12px; color:#1c3664; margin:0px 7px; border:1px solid #728dc6; background-color:#fff; padding:2px; }
@@ -35,10 +35,19 @@ input[type=search] { -webkit-appearance: textfield; height:21px; width:280px; fo
 
 #map-panel { width:100%; height:40%; padding:0px; margin:0px; }
 
+.pelagios-help-bubble {
+	font-family:Calibri, Verdana, Arial;
+	font-size:14px;
+	border-width:1px 1px 1px 0px;
+	border-style:solid;
+	border-color:black;
+	padding:3px 5px;
+}
+
 .pelagios-tooltip {
 	padding:3px 8px;
 	border:1px solid black;
-	font-family:Calibri, Verdana;
+	font-family:Calibri, Verdana, Arial;
 	font-size:14px;
 	background-color:#fff;
 	z-index:9999999;
@@ -58,7 +67,7 @@ input[type=search] { -webkit-appearance: textfield; height:21px; width:280px; fo
 
 .ajax-loader .msg {
 	color:#888;
-	font-family:Arial, Verdana;
+	font-family:Arial, Verdana, Arial;
 	font-size:11px;
 	font-weight:bold;
 	padding-right:10px;
