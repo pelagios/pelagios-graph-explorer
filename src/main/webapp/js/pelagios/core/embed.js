@@ -49,6 +49,7 @@ Pelagios.Embed.switchView = function(places) {
 	for (var i=0, ii=places.length; i<ii; i++) {
 		var map = Pelagios.Map.getInstance();
 		map.addPlace(places[i]);
+		map.showFeature(places[i].uri);
 		Pelagios.Async.getInstance().occurences(places[i], lGraph, map);
 		Pelagios.SearchList.getInstance().add(places[i].label);
 	}

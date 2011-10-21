@@ -129,6 +129,7 @@ Pelagios.Map.getInstance = function() {
 			if (features[name]) {
 				shown[name] = name;
 				features[name].setMap(map);
+				map.fitBounds(features[name].getBounds());
 			}
 		},
 	

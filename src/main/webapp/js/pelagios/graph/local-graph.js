@@ -207,15 +207,15 @@ Pelagios.Graph.Local.getInstance = function() {
 		    
 		    var map = Pelagios.Map.getInstance();
 			n.set[0].mouseover(function(event) {
-			    n.set[1].animate({
-			    	"opacity" : 1,
-			    }, 200);
+			    // n.set[1].animate({
+			    // 	"opacity" : 1,
+			    // }, 200);
 			    map.showFeature(datasetLabel);
 			});
 			n.set[0].mouseout(function (event) {
-			    n.set[1].animate({
-			    	"opacity" : 0,
-			    }, 200);
+			    // n.set[1].animate({
+			    // 	"opacity" : 0,
+			    // }, 200);
 			    map.hideFeature(datasetLabel);
 			});
 			n.set[0].click(function (event) {
