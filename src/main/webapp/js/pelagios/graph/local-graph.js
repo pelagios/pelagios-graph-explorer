@@ -201,18 +201,24 @@ Pelagios.Graph.Local.getInstance = function() {
 		    		datasetLabel + "\n" + datasetSize + " Geoannotations",
 		    		fill,
 		    		Pelagios.Palette.getInstance().darker(fill));
+		    n.tooltip = new Pelagios.Tooltip(datasetLabel);
 		    
 			var r = getRadiusFromSize(datasetSize);
 		    n.set[0].attr({rx:r, ry:r});
 		    
 		    var map = Pelagios.Map.getInstance();
 			n.set[0].mouseover(function(event) {
+				n.tooltip.show(event.clientX, event.clientY);
 			    // n.set[1].animate({
 			    // 	"opacity" : 1,
 			    // }, 200);
 			    map.showFeature(datasetLabel);
 			});
+			n.set[0].mousemove(function(event) {
+				n.tooltip.show(event.clientX, event.clientY);
+			});
 			n.set[0].mouseout(function (event) {
+				 n.tooltip.hide();
 			    // n.set[1].animate({
 			    // 	"opacity" : 0,
 			    // }, 200);

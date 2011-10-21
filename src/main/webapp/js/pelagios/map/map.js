@@ -126,10 +126,11 @@ Pelagios.Map.getInstance = function() {
 		},
 	
 		showFeature : function(name) {
-			if (features[name]) {
+			var f = features[name];
+			if (f) {
 				shown[name] = name;
-				features[name].setMap(map);
-				map.fitBounds(features[name].getBounds());
+				f.setMap(map);
+				this.zoomToFeature(name);
 			}
 		},
 	
