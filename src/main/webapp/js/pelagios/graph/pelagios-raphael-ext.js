@@ -125,10 +125,24 @@ Raphael.fn.pelagios = {
 		} else {
 			// arg0 -> data record label, arg1 -> fill, arg2 -> stroke
 		    var s = this.set();
-		    s.push(this.ellipse(this.width / 2, this.height / 2, 8, 8).attr({
+		    
+		    var ell = this.ellipse(this.width / 2, this.height / 2, 8, 8).attr({
 				"fill" : arg1, 
 				"stroke" : arg2, 
-				"stroke-width" : 2}));
+				"stroke-width" : 2});
+		    	
+			ell.mouseover(function(event) {
+			    this.animate({
+			    	"scale" : "1.3, 1.3",
+			    }, 350, "bounce");
+			});
+			ell.mouseout(function (event) {
+			    this.animate({
+			    	"scale" : "1.0, 1.0",
+			    }, 350, "bounce");
+			});		    
+		    
+		    s.push(ell);
 		    
 		    // var text = this.text(0, 0, arg0).attr({"opacity":0});
 		    // var bbox = text.getBBox();
