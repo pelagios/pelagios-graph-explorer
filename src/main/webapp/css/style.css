@@ -64,6 +64,7 @@ input#searchfield { height:21px; width:280px; font-size:12px; color:#1c3664; mar
 	background:url('../img/helpbubble-tip.png');
 	opacity:0.92;
 	z-index:1001;
+	pointer-events: none;
 }
 
 .ttip-dataset {
