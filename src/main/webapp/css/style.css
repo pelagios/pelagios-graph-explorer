@@ -23,7 +23,15 @@ body { overflow-x:hidden; overflow-y:auto; min-height:768px;}
 #left-column h2 { font-size:16px; padding:18px 0px 4px 7px; margin:0px; }
 form { padding:0px; margin:0px; }
 input#searchfield { height:21px; width:280px; font-size:12px; color:#1c3664; margin:0px 7px; border:1px solid #728dc6; background-color:#fff; padding:2px; }
-#search-list { margin-left:7px; width:280px; height:120px; border:1px solid #728dc6; background-color:#fff; }
+
+#search-list { overflow-y: auto; margin-left:7px; width:280px; height:120px; border:1px solid #728dc6; background-color:#fff; }
+#search-list span {
+	font-weight:normal;
+	display:block;
+	font-size:14px; 
+	padding:3px 4px 0px 4px;
+}
+
 .btn { display:inline-block; margin: 2px 7px 0px 0px; padding:2px; background-color:#1C3664; }
 .btn input { border:1px solid #94BBE3; margin:0px; color:#94BBE3; background-color:#1C3664; cursor:pointer; }
 
@@ -46,14 +54,16 @@ input#searchfield { height:21px; width:280px; font-size:12px; color:#1c3664; mar
 	border-bottom-width:1px;
 	border-style:solid;
 	border-color:#728DC6;
+	z-index:1001;
 }
 
-#map-panel { width:100%; height:40%; padding:00px; margin:0px; }
+#map-panel { width:100%; height:40%; padding:00px; margin:0px; z-index:1001;}
 
 
 .pelagios-help-bubble {
 	background:url('../img/helpbubble-tip.png');
 	opacity:0.85;
+	z-index:1001;
 }
 
 .pelagios-help-bubble-inner {
@@ -80,12 +90,11 @@ input#searchfield { height:21px; width:280px; font-size:12px; color:#1c3664; mar
 .ajax-loader {
 	background-image:url('../img/transp-bg.png');
 	position:absolute;
-	top:165px;
-	left:0px;
-	width:10px;
-	height:100px;
-	text-align:center;
+	top:0px;
+	width:100%;
+	height:60%;
 	padding-top:25%;
+	text-align:center;
 	z-index:1000;
 }
 

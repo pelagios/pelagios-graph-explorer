@@ -17,6 +17,7 @@ window.onload = function() {
 				},
 				
 		select: function(event, ui) {
+					Pelagios.SearchList.getInstance().add(ui.item.label);
 					lGraph.show();
 					map.addPlace(ui.item);
 					map.showFeature(ui.item.uri);

@@ -16,6 +16,7 @@
     <script type="text/javascript" src="js/pelagios/core/embed.js"></script>
     <script type="text/javascript" src="js/pelagios/core/help.js"></script>
     <script type="text/javascript" src="js/pelagios/core/load-indicator.js"></script>
+    <script type="text/javascript" src="js/pelagios/core/search-list.js"></script>
     <script type="text/javascript" src="js/pelagios/core/palette.js"></script>    
     <script type="text/javascript" src="js/pelagios/core/tooltip.js"></script>
     
@@ -32,6 +33,14 @@
     <script type="text/javascript" src="js/pelagios/map/map.js"></script>    
 
     <script type="text/javascript" src="js/main.js"></script>
+    <script>
+    function clearAll() {
+    	Pelagios.Graph.Local.getInstance().close();
+    	Pelagios.SearchList.getInstance().clear();
+    	Pelagios.DataPanel.getInstance().clear();
+    	document.getElementById('searchfield').value = "";
+    }
+    </script>
   </head>
   
   <body>
@@ -53,7 +62,7 @@
         <div id="search-list"></div>
         <div style="text-align:right; margin:4px 4px 0px 0px;">
           <div class="btn">
-            <input title="Clear all Search Results" type="button" value="CLEAR" onclick="javascript:Pelagios.Graph.Local.getInstance().close();"/>
+            <input title="Clear all Search Results" type="button" value="CLEAR" onclick="javascript:clearAll();"/>
           </div>
         </div>
         <h2>Data View:</h2>

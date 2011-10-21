@@ -24,8 +24,8 @@ Pelagios.Help.init = function() {
 	}
 	
 	attach('search-form', new Pelagios.HelpBubble(Pelagios.Help.TEXT_SEARCHFORM, 255, 215)); 
-    attach('search-list', new Pelagios.HelpBubble(Pelagios.Help.TEXT_SEARCHLIST, 255, 280));
-    attach('data-panel', new Pelagios.HelpBubble(Pelagios.Help.TEXT_DATAPANEL, 255, 475));
+    attach('search-list', new Pelagios.HelpBubble(Pelagios.Help.TEXT_SEARCHLIST, 255, 300));
+    attach('data-panel', new Pelagios.HelpBubble(Pelagios.Help.TEXT_DATAPANEL, 255, 500));
 }
 
 Pelagios.HelpBubble = function(text, x, y) {
