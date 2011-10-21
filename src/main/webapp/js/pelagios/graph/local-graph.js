@@ -141,11 +141,17 @@ Pelagios.Graph.Local.getInstance = function() {
 		    
 		    var map = Pelagios.Map.getInstance();
 		    var async = Pelagios.Async.getInstance();
+			n.set[0].mouseover(function(event) {
+				map.highlight(place.uri, true);
+			});
 			n.set[1].mouseover(function(event) {
 				map.highlight(place.uri, true);
 			});
 			n.set[1].mouseout(function (event) {
 				map.highlight(place.uri, false);			
+			});
+			n.set[0].click(function (event) {
+				map.zoomToFeature(place.uri);			
 			});
 			n.set[1].click(function (event) {
 				map.zoomToFeature(place.uri);			
@@ -203,7 +209,8 @@ Pelagios.Graph.Local.getInstance = function() {
 		    		datasetLabel + "\n" + datasetSize + " Geoannotations",
 		    		fill,
 		    		Pelagios.Palette.getInstance().darker(fill));
-		    n.tooltip = new Pelagios.Tooltip(datasetLabel);
+		    
+		    n.tooltip = new Pelagios.Graph.Local.Tooltip(datasetLabel, rootLabel, datasetSize);
 		    
 			var r = getRadiusFromSize(datasetSize);
 		    n.set[0].attr({rx:r, ry:r});
@@ -352,8 +359,11 @@ Pelagios.Graph.Local.getInstance = function() {
 		    e.connection.weight = arg2;
 		    e.from = arg0;
 		    e.to = arg1;
-			e.connection.tooltip = new Pelagios.Tooltip(arg2 + " occurences in " + arg1.name);
-		    
+			// e.connection.tooltip = new Pelagios.Tooltip(arg2 + " occurences in " + arg1.name);
+
+			arg1.tooltip.setReferencesTo(arg0.name, arg2);
+
+			/*
 		    e.connection.line.mouseover(function(event) {
 		    	e.connection.tooltip.show(event.clientX, event.clientY);
 				// map.showPolygon(arg0.name + "-" + arg1.name);
@@ -363,6 +373,7 @@ Pelagios.Graph.Local.getInstance = function() {
 		    	e.connection.tooltip.hide();
 				// map.hidePolygon(arg0.name + "-" + arg1.name);
 			});
+			*/
 		    
 		    edges[e.from.name + "-" + e.to.name] = e;
 		    return e;

@@ -20,6 +20,15 @@ Pelagios.Tooltip.prototype.hide = function() {
 	this.div.style.visibility = "hidden";
 }
 
+Pelagios.Tooltip.prototype.getInnerHTML = function(innerHTML) {
+	return this.div.innerHTML;
+}
+
+Pelagios.Tooltip.prototype.setInnerHTML = function(innerHTML) {
+	console.log(innerHTML);
+	this.div.innerHTML = innerHTML;
+}
+
 Pelagios.Tooltip.prototype.remove = function() {
 	// TODO
 }
