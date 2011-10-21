@@ -33,13 +33,16 @@ window.onload = function() {
 	// Init the help system
 	Pelagios.Help.init();
 	
-	// Check if there are query params (and switch to embed mode if so)
+	// Check if there are query params
 	var search = Pelagios.Embed.getQueryParameter('search');
 	var pleiadesID = Pelagios.Embed.getQueryParameter('pleiadesID');
 	if (search) {
 		Pelagios.Embed.searchPlaces(search);
 	} else if (pleiadesID) {
 		Pelagios.Embed.viewPlace("http://pleiades.stoa.org/places/" + pleiadesID);
+	} else {
+		// Launch with 'Athens' pre-set
+		Pelagios.Embed.viewPlace("http://pleiades.stoa.org/places/579885");
 	}
 }
 

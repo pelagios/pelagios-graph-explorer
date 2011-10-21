@@ -50,5 +50,6 @@ Pelagios.Embed.switchView = function(places) {
 		var map = Pelagios.Map.getInstance();
 		map.addPlace(places[i]);
 		Pelagios.Async.getInstance().occurences(places[i], lGraph, map);
+		Pelagios.SearchList.getInstance().add(places[i].label);
 	}
 }
