@@ -1,6 +1,38 @@
 // Map-related code
 Pelagios.Map = {}
 
+Pelagios.Map.getWindowPosition = function() {
+	function findPosX(obj) {
+		var curleft = 0;
+		if(obj.offsetParent) {
+			while(obj.offsetParent) {
+				curleft += obj.offsetLeft
+				obj = obj.offsetParent;
+			}
+		} else if(obj.x) { 
+		     curleft = obj.x;
+		}
+		return curleft;
+	}
+		 
+	function findPosY(obj) {
+		var curtop = 0;
+		if(obj.offsetParent) {
+			while(obj.offsetParent) {
+				curtop += obj.offsetTop
+				obj = obj.offsetParent;
+			}
+		} else if(obj.y) {
+			curtop = obj.y;
+		}
+		return curtop;
+	}
+
+	var x = findPosX(document.getElementById('map-panel'));
+	var y = findPosY(document.getElementById('map-panel'));
+	return {x:x, y:y};
+}
+
 Pelagios.Map.fromLatLngToXY = function(map, latLng) {
 	var topRight = map.getProjection().fromLatLngToPoint(map.getBounds().getNorthEast());
 	var bottomLeft = map.getProjection().fromLatLngToPoint(map.getBounds().getSouthWest());
@@ -50,6 +82,11 @@ Pelagios.Map.getInstance = function() {
 		google.maps.event.addListener(feature, 'mouseout', function(event) {
 			var xy = map.getProjection().fromLatLngToPoint(event.latLng);
 			feature.tooltip.hide(); 
+		});
+		
+		google.maps.event.addListener(feature, 'mousemove', function(event) {
+			var xy = Pelagios.Map.fromLatLngToXY(map, event.latLng);
+			feature.tooltip.show(xy.x, xy.y);
 		});
 	}
 	
