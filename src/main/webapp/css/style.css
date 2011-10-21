@@ -1,5 +1,5 @@
 html, body { padding:0px; margin:0px; background-color:#fff; width:100%; height:100%; }
-body { overflow-x:hidden; overflow-y:scroll; }
+body { overflow-x:hidden; overflow-y:auto; min-height:768px;}
 
 #header {
 	width:100%;
@@ -18,30 +18,54 @@ body { overflow-x:hidden; overflow-y:scroll; }
 #top-bar a { color:#94bbe3; }
 #top-bar a:visited { color:#94bbe3; }
 
-#container { display:block; position:absolute; height:auto; bottom:0px; top:165px; left:0px; right:0px; margin:0px; }
+#container { display:block; position:absolute; height:auto; min-height:603px; bottom:0px; top:165px; left:0px; right:0px; margin:0px; }
 #left-column { padding:0px; margin:0px; color:#1c3664; font-family:Calibri, Verdana, Arial; font-weight:bold; background-color:#f4f8fc; width:300px; height:100%; }
 #left-column h2 { font-size:16px; padding:18px 0px 4px 7px; margin:0px; }
 form { padding:0px; margin:0px; }
-input[type=search] { -webkit-appearance: textfield; height:21px; width:280px; font-size:12px; color:#1c3664; margin:0px 7px; border:1px solid #728dc6; background-color:#fff; padding:2px; }
+input#searchfield { height:21px; width:280px; font-size:12px; color:#1c3664; margin:0px 7px; border:1px solid #728dc6; background-color:#fff; padding:2px; }
 #search-list { margin-left:7px; width:280px; height:120px; border:1px solid #728dc6; background-color:#fff; }
 .btn { display:inline-block; margin: 2px 7px 0px 0px; padding:2px; background-color:#1C3664; }
 .btn input { border:1px solid #94BBE3; margin:0px; color:#94BBE3; background-color:#1C3664; cursor:pointer; }
 
-#right-column { width:auto; position:absolute; top:0px; left:300px; bottom:0px; right:0px; }
+#right-column { width:auto; position:absolute; top:0px; left:310px; bottom:10px; right:10px; }
 
 #graph-canvas { width:100%; height:60%; padding:0px; margin:0px; }
 
-#graph-canvas #help-icon { position:absolute; top:5px; right:5px; z-index:9998;}
+#graph-canvas #help-icon { position:absolute; top:5px; right:5px; z-index:9998; }
 
-#map-panel { width:100%; height:40%; padding:0px; margin:0px; }
+#map-title {
+	font-size:16px; 
+	padding-bottom:5px;
+	font-family:Calibri, Verdana, Arial;
+	font-weight:bold;
+	position:relative;
+	color:#1c3664;
+	top:-30px; 
+	width:100%;
+	border-width:0px;
+	border-bottom-width:1px;
+	border-style:solid;
+	border-color:#728DC6;
+}
+
+#map-panel { width:100%; height:40%; padding:00px; margin:0px; }
+
 
 .pelagios-help-bubble {
+	background:url('../img/helpbubble-tip.png');
+	opacity:0.85;
+}
+
+.pelagios-help-bubble-inner {
 	font-family:Calibri, Verdana, Arial;
+	color:#1c3664; 
 	font-size:14px;
 	border-width:1px 1px 1px 0px;
 	border-style:solid;
-	border-color:black;
+	border-color:#728dc6;
 	padding:3px 5px;
+	font-weight:bold;
+	background-color:#8dbbed;
 }
 
 .pelagios-tooltip {
@@ -94,7 +118,7 @@ input[type=search] { -webkit-appearance: textfield; height:21px; width:280px; fo
 #data-panel {
 	margin-left:7px;
 	width:280px;
-	height:250px;
+	height:200px;
 	border:1px solid #728dc6;
 	background-color:#fff;
 	padding:0px;
