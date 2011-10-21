@@ -141,16 +141,17 @@ Pelagios.Graph.Local.getInstance = function() {
 		    
 		    var map = Pelagios.Map.getInstance();
 		    var async = Pelagios.Async.getInstance();
-			n.set[0].mouseover(function(event) {
+			n.set[1].mouseover(function(event) {
 				map.highlight(place.uri, true);
 			});
-			n.set[0].mouseout(function (event) {
+			n.set[1].mouseout(function (event) {
 				map.highlight(place.uri, false);			
 			});
-			n.set[0].click(function (event) {
+			n.set[1].click(function (event) {
 				map.zoomToFeature(place.uri);			
 			});
-			n.set[0].dblclick(function (event) {
+			/*
+			n.set[1].dblclick(function (event) {
 				async.stronglyRelated(place, function(data) {
 					for (var i=0, ii=data.length; i<ii; i++) {
 						map.addPlace(data[i]);
@@ -160,6 +161,7 @@ Pelagios.Graph.Local.getInstance = function() {
 					}
 				});
 			});
+			*/
 		    
 		    n.set.drag(
 		        	this.handler.move,
