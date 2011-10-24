@@ -33,6 +33,7 @@ Pelagios.Graph.Local.getInstance = function() {
     var startX, startY;
 
     var viewport = Pelagios.getViewport();
+    
     var raphael = Raphael(Pelagios.Graph.Local.DIV_ID, viewport.x, viewport.y);
     raphael.canvas.onmousedown = function(event) {
     	if (event.target.tagName == 'svg') {
