@@ -188,7 +188,7 @@ Pelagios.Graph.Local.getInstance = function() {
 	    return n;
 	}
 	
-	Pelagios.Graph.Local.instance.toggleVisible = function(name) {
+	Pelagios.Graph.Local.instance.setVisible = function(name, visible) {
 		var subsets = new Array();
 		for (var d in datasets) {
 			if (datasets[d].label == name || datasets[d].rootLabel == name) {
@@ -198,23 +198,19 @@ Pelagios.Graph.Local.getInstance = function() {
 		
 		for (var i=0; i<subsets.length; i++) {
 			// Toggle dataset bubbles
-			if (subsets[i].hidden) {
+			if (visible) {
 				subsets[i].set.show();
-				subsets[i].hidden = false;
 			} else {
 				subsets[i].set.hide();
-				subsets[i].hidden = true;
 			}
 			
 			// Toggle connections
 			var edges = Pelagios.Graph.Local.instance.findEdgesFor(subsets[i]);
 			for (var j=0; j<edges.length; j++) {
-				if (edges[j].hidden) {
+				if (visible) {
 					edges[j].connection.line.show();
-					edges[j].hidden = false;
 				} else {
 					edges[j].connection.line.hide();
-					edges[j].hidden = true;
 				}			
 			}
 		}
@@ -392,23 +388,15 @@ Pelagios.Graph.Local.getInstance = function() {
 		    e.connection.weight = arg2;
 		    e.from = arg0;
 		    e.to = arg1;
-			// e.connection.tooltip = new Pelagios.Tooltip(arg2 + " occurences in " + arg1.name);
 
 			arg1.tooltip.setReferencesTo(arg0.name, arg2);
-
-			/*
-		    e.connection.line.mouseover(function(event) {
-		    	e.connection.tooltip.show(event.clientX, event.clientY);
-				// map.showPolygon(arg0.name + "-" + arg1.name);
-			});
-			
-		    e.connection.line.mouseout(function (event) {
-		    	e.connection.tooltip.hide();
-				// map.hidePolygon(arg0.name + "-" + arg1.name);
-			});
-			*/
 		    
 		    edges[e.from.name + "-" + e.to.name] = e;
+		    var filterList = Pelagios.DatasetList.getInstance();
+		    if (filterList.isHidden(e.to.name) || filterList.isHidden(e.to.rootLabel)) {
+		    	Pelagios.Graph.Local.instance.setVisible(e.to.rootLabel, false);
+		    }
+		    
 		    return e;
 		} else {
 			// arg0 -> edge

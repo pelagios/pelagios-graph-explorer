@@ -6,9 +6,7 @@ Pelagios.DatasetList.getInstance = function() {
 	if (Pelagios.DatasetList.instance)
 		return Pelagios.DatasetList.instance;
 	
-	var toggleDataset = function(name) {
-		
-	}
+	var hidden = new Array();
 	
 	Pelagios.DatasetList.instance = {
 		init : function() {
@@ -21,10 +19,25 @@ Pelagios.DatasetList.getInstance = function() {
 		
 		add : function(dataset) {
 			var s = '<span><input type="checkbox" checked="true" '
-				+ 'onclick="javascript:Pelagios.Graph.Local.getInstance().toggleVisible(\'' + dataset.name + '\');" '
+				+ 'onclick="javascript:Pelagios.DatasetList.getInstance().toggleVisible(\'' + dataset.name + '\');" '
 				+ 'value="' + dataset.name + '" />' 
 				+ dataset.name + '</span><br/>'; 
 			document.getElementById(Pelagios.DatasetList.PANEL_DIV_ID).innerHTML += s;
+		},
+		
+		toggleVisible : function(name) {
+			var idx = hidden.indexOf(name);
+			if (idx > -1) {
+				Pelagios.Graph.Local.getInstance().setVisible(name, true);
+				hidden.splice(idx, 1);
+			} else {
+				Pelagios.Graph.Local.getInstance().setVisible(name, false);
+				hidden.push(name);
+			}
+		},
+		
+		isHidden : function(name) {
+			return (hidden.indexOf(name) > -1);
 		}
 	}
 	
