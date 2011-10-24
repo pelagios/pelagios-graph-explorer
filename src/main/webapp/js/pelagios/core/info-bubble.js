@@ -26,8 +26,8 @@ Pelagios.InfoBubble.prototype.setText = function(text) {
 Pelagios.InfoBubble.prototype.show = function(x, y) {
 	this.container.style.visibility = 'visible';
 	if (x && y) {
-		this.container.style.top = y;
-		this.container.style.left = x;
+		this.container.style.top = y + window.pageYOffset;
+		this.container.style.left = x + window.pageXOffset;;
 	}
 }
 
