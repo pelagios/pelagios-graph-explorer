@@ -21,7 +21,7 @@ Pelagios.DatasetList.getInstance = function() {
 		
 		add : function(dataset) {
 			var s = '<span><input type="checkbox" checked="true" '
-				// + 'onclick="javascript:alert(\'' + dataset.name + '\');" '
+				+ 'onclick="javascript:Pelagios.Graph.Local.getInstance().toggleVisible(\'' + dataset.name + '\');" '
 				+ 'value="' + dataset.name + '" />' 
 				+ dataset.name + '</span><br/>'; 
 			document.getElementById(Pelagios.DatasetList.PANEL_DIV_ID).innerHTML += s;

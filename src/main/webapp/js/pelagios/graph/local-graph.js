@@ -57,7 +57,6 @@ Pelagios.Graph.Local.getInstance = function() {
     		startY = event.clientY;
     	}
     };
-
     
     // Keep track of places, datasets and edges in the graph
     var places = new Array();
@@ -189,6 +188,38 @@ Pelagios.Graph.Local.getInstance = function() {
 	    return n;
 	}
 	
+	Pelagios.Graph.Local.instance.toggleVisible = function(name) {
+		var subsets = new Array();
+		for (var d in datasets) {
+			if (datasets[d].label == name || datasets[d].rootLabel == name) {
+				subsets.push(datasets[d]);
+			}
+		}
+		
+		for (var i=0; i<subsets.length; i++) {
+			// Toggle dataset bubbles
+			if (subsets[i].hidden) {
+				subsets[i].set.show();
+				subsets[i].hidden = false;
+			} else {
+				subsets[i].set.hide();
+				subsets[i].hidden = true;
+			}
+			
+			// Toggle connections
+			var edges = Pelagios.Graph.Local.instance.findEdgesFor(subsets[i]);
+			for (var j=0; j<edges.length; j++) {
+				if (edges[j].hidden) {
+					edges[j].connection.line.show();
+					edges[j].hidden = false;
+				} else {
+					edges[j].connection.line.hide();
+					edges[j].hidden = true;
+				}			
+			}
+		}
+	}
+	
 	Pelagios.Graph.Local.instance.newDataset = function(datasetLabel, datasetSize, rootLabel) {
 		var n;
 		if (datasets[datasetLabel]) {
@@ -205,6 +236,7 @@ Pelagios.Graph.Local.getInstance = function() {
 		    
 		    n = springyGraph.newNode();
 		    n.name = datasetLabel;
+		    n.rootLabel = rootLabel;
 		    n.size = datasetSize;
 		    n.set = raphael.pelagios.datasetLabel(
 		    		datasetLabel + "\n" + datasetSize + " Geoannotations",
