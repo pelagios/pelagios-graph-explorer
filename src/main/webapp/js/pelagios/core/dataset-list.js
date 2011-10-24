@@ -6,6 +6,10 @@ Pelagios.DatasetList.getInstance = function() {
 	if (Pelagios.DatasetList.instance)
 		return Pelagios.DatasetList.instance;
 	
+	var toggleDataset = function(name) {
+		
+	}
+	
 	Pelagios.DatasetList.instance = {
 		init : function() {
 		    Pelagios.Async.getInstance().datasets(null, function(data) {
@@ -16,9 +20,11 @@ Pelagios.DatasetList.getInstance = function() {
 		},
 		
 		add : function(dataset) {
-			console.log(dataset);
-			document.getElementById(Pelagios.DatasetList.PANEL_DIV_ID)
-				.innerHTML += '<span>' + dataset.name + '</span>'; 
+			var s = '<span><input type="checkbox" checked="true" '
+				// + 'onclick="javascript:alert(\'' + dataset.name + '\');" '
+				+ 'value="' + dataset.name + '" />' 
+				+ dataset.name + '</span><br/>'; 
+			document.getElementById(Pelagios.DatasetList.PANEL_DIV_ID).innerHTML += s;
 		}
 	}
 	
