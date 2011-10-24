@@ -1,6 +1,6 @@
 Pelagios.InfoBubble = { }
 	
-Pelagios.InfoBubble = function(x, y) {
+Pelagios.InfoBubble = function(x, y, element) {
 	this.container = document.createElement("div");
 	this.container.setAttribute("class", "pelagios-info-bubble");
 	this.container.style.position = "absolute";
@@ -16,7 +16,11 @@ Pelagios.InfoBubble = function(x, y) {
 	this.container.appendChild(this.box);
 	
 	this.hide();
-	document.body.appendChild(this.container);
+	if (element) {
+		element.appendChild(this.container);
+	} else {
+		document.body.appendChild(this.container);
+	}
 }
 
 Pelagios.InfoBubble.prototype.setText = function(text) {
