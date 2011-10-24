@@ -33,6 +33,9 @@ window.onload = function() {
 	// Init the help system
 	Pelagios.Help.init();
 	
+	// Init the dataset list
+	Pelagios.DatasetList.getInstance().init();
+	
 	// Check if there are query params
 	var search = Pelagios.Embed.getQueryParameter('search');
 	var pleiadesIDs = Pelagios.Embed.getQueryParameter('pleiadesID');
