@@ -12,6 +12,9 @@ Pelagios.Help.TEXT_DATAPANEL =
 	+ "Clicking on a reference will take you to the original data "
 	+ "provider's page.";
 
+Pelagios.Help.TEXT_DATASETS =
+	  "This panel shows the available datasets. Use the checkboxes to filter the graph.";
+
 Pelagios.Help.TEXT_GRAPH =
 	  "The Graph displays the places you have searched for, and the " +
 	  "datasets connecting them. Hover over a dataset (one of the coloured " +
@@ -47,6 +50,7 @@ Pelagios.Help.init = function() {
 	attachBubble('search-form', Pelagios.Help.TEXT_SEARCHFORM, 255, 215); 
 	attachBubble('search-list', Pelagios.Help.TEXT_SEARCHLIST, 255, 300);
 	attachBubble('data-panel', Pelagios.Help.TEXT_DATAPANEL, 255, 500);
+	attachBubble('dataset-list', Pelagios.Help.TEXT_DATASETS, 255, 720);
 	
 	// 'Static' bubbles
 	var graphBubble = new Pelagios.InfoBubble("50%", "10%", document.getElementById('graph-canvas'));
