@@ -4,7 +4,11 @@ Pelagios.Embed = function() { }
 //Utility function to get URL query params
 //http://www.zrinity.com/developers/code_samples/code.cfm/CodeID/59/JavaScript/Get_Query_String_variables_in_JavaScript
 Pelagios.Embed.getQueryParameter = function(param) {
-	var query = window.location.search.substring(1);
+	var query = window.location.href;
+	if (query.indexOf('#') < 0)
+		return;
+
+	query = query.substring(query.indexOf('#') + 1);
 	var vars = query.split("&");
 	for (var i=0; i<vars.length; i++) {
 		var pair = vars[i].split("=");
@@ -35,12 +39,20 @@ Pelagios.Embed.searchPlaces = function(query) {
 	}
 }
 
-Pelagios.Embed.viewPlace = function(uri) {
-	var p = Pelagios.Async.getInstance().getPlace(uri, function(data) {
-		var places = new Array();
-		places.push(data);
-		Pelagios.Embed.switchView(places);
-	});
+Pelagios.Embed.viewPlaces = function(pleiadesIDs) {
+	var ids = pleiadesIDs.split(",");
+	var places = new Array();
+	
+	var async = Pelagios.Async.getInstance();
+	for (var i=0; i<ids.length; i++) {
+		async.getPlace("http://pleiades.stoa.org/places/" + ids[i], function(i){
+			return function(data) {
+				places.push(data);
+				if (places.length == ids.length)
+					Pelagios.Embed.switchView(places);
+			}
+		}(i));
+	}
 }
 
 Pelagios.Embed.switchView = function(places) {
@@ -51,6 +63,6 @@ Pelagios.Embed.switchView = function(places) {
 		map.addPlace(places[i]);
 		map.showFeature(places[i].uri);
 		Pelagios.Async.getInstance().occurences(places[i], lGraph, map);
-		Pelagios.SearchList.getInstance().add(places[i].label);
+		Pelagios.SearchList.getInstance().add(places[i]);
 	}
 }

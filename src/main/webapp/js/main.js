@@ -17,7 +17,7 @@ window.onload = function() {
 				},
 				
 		select: function(event, ui) {
-					Pelagios.SearchList.getInstance().add(ui.item.label);
+					Pelagios.SearchList.getInstance().add(ui.item);
 					lGraph.show();
 					map.addPlace(ui.item);
 					map.showFeature(ui.item.uri);
@@ -35,14 +35,14 @@ window.onload = function() {
 	
 	// Check if there are query params
 	var search = Pelagios.Embed.getQueryParameter('search');
-	var pleiadesID = Pelagios.Embed.getQueryParameter('pleiadesID');
+	var pleiadesIDs = Pelagios.Embed.getQueryParameter('pleiadesID');
 	if (search) {
 		Pelagios.Embed.searchPlaces(search);
-	} else if (pleiadesID) {
-		Pelagios.Embed.viewPlace("http://pleiades.stoa.org/places/" + pleiadesID);
+	} else if (pleiadesIDs) {
+		Pelagios.Embed.viewPlaces(pleiadesIDs);
 	} else {
 		// Launch with 'Athens' pre-set
-		Pelagios.Embed.viewPlace("http://pleiades.stoa.org/places/579885");
+		Pelagios.Embed.viewPlaces("579885");
 	}
 }
 
