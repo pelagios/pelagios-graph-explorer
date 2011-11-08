@@ -15,6 +15,7 @@ import org.pelagios.graph.exceptions.DatasetNotFoundException;
 import org.pelagios.graph.importer.AbstractDatasetImporter;
 
 import com.hp.hpl.jena.rdf.model.Resource
+import com.hp.hpl.jena.vocabulary.DCTerms;
 
 /**
  * Importer class for the nomisma data set.
@@ -34,12 +35,14 @@ public class NomismaDatasetImporter extends AbstractDatasetImporter {
 		List<GeoAnnotationBuilder> records = new ArrayList<GeoAnnotationBuilder>()
 		for (Resource oac : listOACAnnotations()) {
 			String target = oac.getProperty(OAC_HASTARGET).getObject().toString()
+            String title = oac.getProperty(DCTerms.title).getObject().asLiteral().getString()
 			
 			GeoAnnotationBuilder annotation = new GeoAnnotationBuilder(
                 new URI(target), 
                 new URI(oac.getProperty(OAC_HASBODY).getObject().toString()))
             
-			annotation.setLabel(target.substring(target.lastIndexOf('/') + 1))
+            annotation.setLabel(title)
+			// annotation.setLabel(target.substring(target.lastIndexOf('/') + 1))
 			records.add(annotation);
 		}
 		
