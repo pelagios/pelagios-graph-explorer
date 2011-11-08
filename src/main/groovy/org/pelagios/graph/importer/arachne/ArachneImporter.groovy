@@ -16,7 +16,11 @@ class ArachneImporter extends AbstractDatasetImporter {
     
     @Override
     public void importData(PelagiosGraph graph) throws DatasetExistsException {
-        graph.addDataset(rootNode)
+        try {
+            graph.addDataset(rootNode)
+        } catch (Exception e) {
+            println("Appending to existing Arachne root node")
+        }
         
         List<GeoAnnotationBuilder> records = new ArrayList<GeoAnnotationBuilder>()
         for (Resource oac : listOACAnnotations()) {

@@ -22,13 +22,15 @@ graph.addPlaces(places)
 duration = System.currentTimeMillis() - taskStart
 println("Done. (${duration} ms)")
 
+/*
 taskStart = System.currentTimeMillis()
 println("Importing nomisma dataset")
 def nomisma = new NomismaDatasetImporter(new File("data/datasets/nomisma.org.rdf"))
 nomisma.importData(graph)
 duration = System.currentTimeMillis() - taskStart
 println("Done. (${duration} ms)")
-		
+*/
+	
 graph.shutdown()
 duration = (System.currentTimeMillis() - initStart) / 1000
 println("Database initialized. Took ${duration} seconds.");
