@@ -35,6 +35,8 @@ public interface Dataset {
      * @return the list of GeoAnnotations
      */
     public List<GeoAnnotation> listGeoAnnotations(boolean includeSubsets);
+    
+    public int countGeoAnnotations(boolean includeSubsets);
 
     /**
      * Lists all places referenced by annotations in this data set. If

@@ -3,6 +3,7 @@ package org.pelagios.graph.builder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -94,6 +95,24 @@ class DatasetImpl extends PelagiosGraphNode implements Dataset {
         }
 
         return records;
+    }
+    
+    public int countGeoAnnotations(boolean includeSubsets) {
+        int ctr = 0;
+        
+        Iterator<Relationship> it = backingNode.getRelationships(PelagiosRelationships.GEOANNOTATION).iterator();
+        while (it.hasNext()) {
+            ctr++;
+            it.next();
+        }
+
+        if (includeSubsets) {
+            for (Dataset subset : listSubsets()) {
+                ctr += subset.countGeoAnnotations(true);
+            }
+        }       
+        
+        return ctr;
     }
 
     public List<Place> listPlaces(boolean includeSubsets) {

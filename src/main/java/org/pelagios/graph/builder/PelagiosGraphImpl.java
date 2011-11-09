@@ -369,7 +369,7 @@ class PelagiosGraphImpl extends PelagiosGraph {
         toNode = hits.next();
 
         // Run the shortest Path algorithm
-        PathFinder<Path> pFinder = GraphAlgoFactory.shortestPath(expander, 5);
+        PathFinder<Path> pFinder = GraphAlgoFactory.shortestPath(expander, 3);
         
         // Wrap the Neo4j paths into the Pelagios API
         // TODO this is now a quick hack that needs total revision, it also
@@ -378,7 +378,7 @@ class PelagiosGraphImpl extends PelagiosGraph {
         Set<org.pelagios.graph.Path> paths = new HashSet<org.pelagios.graph.Path>();
         int ctr = 0;
         for (Path p : pFinder.findAllPaths(fromNode, toNode)) {
-            if (ctr++ > 2000)
+            if (ctr++ > 1000)
                 break;
             
             List<PelagiosGraphNode> nodes = new ArrayList<PelagiosGraphNode>();

@@ -98,7 +98,7 @@ public class DatasetController extends AbstractController {
         throws DatasetNotFoundException {
         
         PelagiosGraph graph = PelagiosGraph.getDefaultDB();
-        Geometry cv = PelagiosGraphUtils.toConvexHull(graph.getDataset(dataset).listPlaces(true));
+        Geometry cv = PelagiosGraphUtils.toConvexHull(graph.getDataset(dataset));
         return Response.ok(toJSON(cv, jsonpCallback)).build();
     }
 

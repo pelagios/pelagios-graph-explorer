@@ -194,7 +194,7 @@ public class PlacesController extends AbstractController {
         List<ReferencesTo> refJson = new ArrayList<ReferencesTo>();
         for (Dataset s : referencesTo.keySet()) {
             refJson.add(new ReferencesTo(p.getURI().toString(), s.getName(), s.listGeoAnnotations(true).size(),
-                    PelagiosGraphUtils.toConvexHull(s.listPlaces(true)), s.getRootDataset().getName(), referencesTo.get(s)));
+                    PelagiosGraphUtils.toConvexHull(s), s.getRootDataset().getName(), referencesTo.get(s)));
         }
 
         return Response.ok(toJSON(refJson, jsonpCallback)).build();

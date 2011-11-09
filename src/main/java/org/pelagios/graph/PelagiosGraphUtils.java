@@ -21,6 +21,8 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * @author Rainer Simon <rainer.simon@ait.ac.at>
  */
 public class PelagiosGraphUtils {
+    
+    private static HashMap<String, Geometry> qndConvexHullCache = new HashMap<String, Geometry>();
 
     /**
      * Takes a list of GeoAnnotations and compiles a list of the places
@@ -95,6 +97,16 @@ public class PelagiosGraphUtils {
         List<Count<Dataset>> topDatasets = new ArrayList<Count<Dataset>>(datasetMap.values());
         Collections.sort(topDatasets);
         return topDatasets;
+    }
+    
+    public static Geometry toConvexHull(Dataset dataset) {
+        if (qndConvexHullCache.containsKey(dataset.getName()))
+            return qndConvexHullCache.get(dataset.getName());
+        
+        Geometry convexHull = toConvexHull(dataset.listPlaces(true));
+        qndConvexHullCache.put(dataset.getName(), convexHull);
+        
+        return convexHull;
     }
 
     /**
