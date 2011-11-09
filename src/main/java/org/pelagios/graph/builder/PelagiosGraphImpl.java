@@ -50,7 +50,7 @@ class PelagiosGraphImpl extends PelagiosGraph {
      */
     static final String DATASET_INDEX = "datasets";
     static final String PLACE_INDEX = "places";
-
+    
     /**
      * The Neo4j instance
      */
