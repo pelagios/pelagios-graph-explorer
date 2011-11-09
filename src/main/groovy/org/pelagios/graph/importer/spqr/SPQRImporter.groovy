@@ -58,13 +58,13 @@ class SPQRImporter extends AbstractDatasetImporter {
 				.listResourcesWithProperty(model.createProperty(OAC_NAMESPACE, "hasBody"))
 				.toList()
 				
-            // TODO this should be cleaned up
-            URI target = null
-            URI body = null
-            String label = null
-            HashMap<String, String> properties = new HashMap<String, String>()
-            
-			for (Resource r : annotations) {
+            for (Resource r : annotations) {
+                // TODO this should be cleaned up
+                URI target = null
+                URI body = null
+                String label = null
+                HashMap<String, String> properties = new HashMap<String, String>()
+
 				PelagiosAnnotation a = new PelagiosAnnotation(r)
 
                 target = a.getTarget()		
@@ -78,25 +78,27 @@ class SPQRImporter extends AbstractDatasetImporter {
 				
 				if (a.getBody().toString().indexOf("pleiades") > -1)
 					body = a.getBody()
-			}
+                    
+                if (target != null && body != null && label != null) {
+                    GeoAnnotationBuilder record =
+                        new GeoAnnotationBuilder(target, body);
+                    record.setLabel(label);
+                    
+                    for (String key : properties.keySet()) {
+                        record.addProperty(key, properties.get(key))
+                    }
             
-            if (target != null && body != null && label != null) {
-                GeoAnnotationBuilder record = 
-                    new GeoAnnotationBuilder(target, body);
-                record.setLabel(label);
-                
-                for (String key : properties.keySet()) {
-                    record.addProperty(key, properties.get(key))
+                    Hierarchy h = getHierarchy(file)
+                    List<GeoAnnotationBuilder> aList= allRecords.get(h)
+                    if (aList == null) {
+                        aList = new ArrayList<GeoAnnotationBuilder>()
+                    }
+                    aList.add(record)
+                    allRecords.put(h, aList);
+                } else {
+                    println("skipped: " + target + ", " + body + ", " + label)
                 }
-    	
-    			Hierarchy h = getHierarchy(file)
-    			List<GeoAnnotationBuilder> aList= allRecords.get(h)
-    			if (aList == null) {
-    				aList = new ArrayList<GeoAnnotationBuilder>()
-    			}
-    			aList.add(record)
-    			allRecords.put(h, aList);
-            }
+			}
 		}
 		
 		batchAdd(allRecords, graph);
@@ -107,12 +109,12 @@ class SPQRImporter extends AbstractDatasetImporter {
 		hierarchy.add("SPQR")
 		
 		String name = file.getName()
-		if (name.contains("hgv")) {
-			hierarchy.add("HGV Papyri")
-		} else if (name.contains("IRT")) {
-			hierarchy.add("Inscriptions of Roman Tripolitania")
+		if (name.contains("iAph")) {
+            hierarchy.add("Inscriptions of Aphrodisias and Tripolitania")
+		// } else if (name.contains("IRT")) {
+			// hierarchy.add("Inscriptions of Roman Tripolitania")
 		} else {
-			hierarchy.add("Inscriptions of Aphrodisias")
+            hierarchy.add("HGV Papyri")
 		}	
 		
 		return new Hierarchy(hierarchy)
@@ -136,7 +138,11 @@ class SPQRImporter extends AbstractDatasetImporter {
 		}
 
 		public String getName() {
-			return resource.getProperty(ResourceFactory.createProperty(SPQR_NAMESPACE, "name")).getObject().toString()
+            Property spqrName = ResourceFactory.createProperty(SPQR_NAMESPACE, "name")
+            if (resource.getProperty(spqrName) == null)
+                return null;
+                
+			return resource.getProperty(spqrName).getObject().toString()
 		}
 				
 		public String getLabel() {
@@ -148,8 +154,9 @@ class SPQRImporter extends AbstractDatasetImporter {
 			}
 			
 			String name = getName();
-			if (name.isEmpty())
+			if (name == null || name.isEmpty()) {
 				return "...";
+			}
 			
 			return name;
 		}
@@ -162,7 +169,11 @@ class SPQRImporter extends AbstractDatasetImporter {
 		}
 		
 		public String getType() {
-			return resource.getProperty(ResourceFactory.createProperty(SPQR_NAMESPACE, "type")).getObject().toString()
+            Property spqrType = ResourceFactory.createProperty(SPQR_NAMESPACE, "type");
+            if (resource.getProperty(spqrType) == null)
+                return null;
+                
+			return resource.getProperty(spqrType).getObject().toString()
 		}
 				
 		private URI get(Property p) {
