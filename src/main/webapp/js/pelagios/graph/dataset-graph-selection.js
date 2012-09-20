@@ -174,12 +174,13 @@ Pelagios.SelectionManager.prototype.setLink = function(arg0, arg1, arg2) {
 		var map = Pelagios.Map.getInstance();		
 		link.line.mouseover(function(event) {
 			link.tooltip.show(event.clientX, event.clientY);
-			map.showFeature(arg0.name + "-" + arg1.name);
+                // console.log(arg0, arg1);
+			map.showFeature(arg0.dataset.name + "-" + arg1.dataset.name);
 		});
 		
 		link.line.mouseout(function (event) {
 			link.tooltip.hide();
-			map.hideFeature(arg0.name + "-" + arg1.name);
+			map.hideFeature(arg0.dataset.name + "-" + arg1.dataset.name);
 		});
 		
 		link.line.click(function (event) {
@@ -196,7 +197,7 @@ Pelagios.SelectionManager.prototype.setLink = function(arg0, arg1, arg2) {
 		arg0.set.links.push(link);
 		
 		// Add to map
-		map.addPolygon(arg0.name + "-" + arg1.name, arg2.footprint, "#FF8000");
+		map.addPolygon(arg0.dataset.name + "-" + arg1.dataset.name, arg2.footprint, "#FF8000");
 	} else {
 		// arg0 -> line
 		arg0.line.animate({ "stroke-width" : this.getWidthFromWeigth(arg0.weight) }, 500);
